@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Question from './Question';
 let questionFile = "";
 try {
-    questionFile = require('../forms.json');
+    questionFile = require('../form.json');
 }
 catch (e) {
     console.warn("Cant find form.json")
