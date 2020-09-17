@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.form {
+  background-color: darkblue;
+}
+
+.question {
+  margin: 10px;
+  background-color: black;
+  border-radius: 15px;
+  color: lime;
+}
