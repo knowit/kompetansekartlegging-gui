@@ -2,23 +2,10 @@ import React, { useState } from 'react'
 import Question from './Question';
 
 let questionFile = "";
-try {
-    questionFile = require('../form.json');
-}
-catch (e) {
-    console.warn("Cant find form.json")
-}
+try { questionFile = require('../form.json'); }
+catch (e) { console.warn("Cant find form.json") }
 
-export default function Form(){
-
-    const [questions, setQuestions] = useState([]);
-    const [answers, setAnswers] = useState({});
-    const [constructorHasRun, setConstructorHasRun] = useState(0);
-
-
-    const printAllAnswers = () => {
-        console.log(answers);
-    }
+export default function Form() {
 
     const updateAnswer = (key, rating) => {
         //Note asynchronicity, if really quick, rating might be unset.
@@ -27,10 +14,8 @@ export default function Form(){
         setAnswers(dummy);
     }
 
-    const constructor = () => {
-        if(constructorHasRun>1) return;
+    const createQuestions = () => {
         let qs = [];
-        let as = {};
         for (const [key, value] of Object.entries(questionFile)) {
             qs.push(
                 <Question 
@@ -41,14 +26,24 @@ export default function Form(){
                     updateAnswer={updateAnswer}
                 />
             );
+        }
+        return qs;
+    };
+
+    const createAnswers = () => {
+        let as = {};
+        for (const [key, value] of Object.entries(questionFile)) {
             as[key] = {topic: value.topic, category: value.category, rating: ""};
         }
-        setQuestions(qs);
-        setAnswers(as);
-        setConstructorHasRun(constructorHasRun+1);
-    }
+        return as;
+    };
 
-    constructor();
+    const [questions] = useState(createQuestions());
+    const [answers, setAnswers] = useState(createAnswers());
+
+    const printAllAnswers = () => {
+        console.log(answers);
+    }
     
     return (
         <div className="form"> 
