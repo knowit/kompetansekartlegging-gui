@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import Question from './Question';
-const questionFile = require('../form.json')
+let questionFile = "";
+try {
+    questionFile = require('../forms.json');
+}
+catch (e) {
+    console.warn("Cant find form.json")
+}
 
 export default class Form extends Component {
 
