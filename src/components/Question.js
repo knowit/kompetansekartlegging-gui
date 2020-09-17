@@ -3,7 +3,7 @@ import Selector from './Selector'
 
 function Question(props) {
 
-    function radiobuttonClicked(event) {
+    const radiobuttonClicked = (event) => {
         props.updateAnswer(props.listID, event.target.value);
     }
 
