@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Question from './Question';
 let questionFile = "";
 try {
-    questionFile = require('../forms.json');
+    questionFile = require('../form.json');
 }
 catch (e) {
     console.warn("Cant find form.json")
@@ -19,8 +19,22 @@ export default class Form extends Component {
             testData: questionFile
         }
 
-        this.createQuestions(this.state.testData);
-        this.printAllAnswers = this.printAllAnswers.bind(this);        
+        this.printAllAnswers = this.printAllAnswers.bind(this);    
+        
+        let qs = [];
+        for (const [key, value] of Object.entries(questionFile)) {
+            qs.push(
+                <Question 
+                    key={key} 
+                    listID={key} 
+                    text={value.text} 
+                    topic={value.topic}
+                    updateAnswer={this.updateAnswer}
+                />
+            );
+            this.state.answers[key] = {topic: value.topic, category: value.category, rating: ""};
+        }
+        this.state.questions = qs;
     }
     
     printAllAnswers() {
@@ -35,24 +49,7 @@ export default class Form extends Component {
             return dumdum;
         })
     }
-
-    createQuestions(jsonFile) {
-        let qs = [];
-        for (const [key, value] of Object.entries(jsonFile)) {
-            qs.push(
-            <Question 
-                key={key} 
-                listID={key} 
-                text={value.text} 
-                topic={value.topic}
-                updateAnswer={this.updateAnswer}
-            />
-            );
-            this.state.answers[key] = {topic: value.topic, category: value.category, rating: ""};
-          }
-        this.state.questions = qs;
-    }
-
+    
     render() {
         return (
             <div className="form"> 
