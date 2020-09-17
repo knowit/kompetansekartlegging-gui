@@ -42,7 +42,7 @@ export default class Form extends Component {
     }
 
     updateAnswer = (key, rating) => {
-
+        //Note asynchronicity, if really quick, rating might be unset.
         this.setState(prevState => {
             let dumdum = {answers: {...prevState.answers}};
             dumdum.answers[key].rating = rating;
