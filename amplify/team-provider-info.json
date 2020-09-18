@@ -10,6 +10,32 @@
       "StackName": "amplify-kompetansegui-master-153847",
       "StackId": "arn:aws:cloudformation:eu-central-1:400993891727:stack/amplify-kompetansegui-master-153847/c8af3610-f758-11ea-b518-02310af8dee8",
       "AmplifyAppId": "d2kxnm6tljibk7"
+    },
+    "categories": {
+      "auth": {
+        "kompetanseguie1ac611d": {}
+      }
+    }
+  },
+  "addauth": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-kompetansegui-addauth-120832-authRole",
+      "UnauthRoleArn": "arn:aws:iam::400993891727:role/amplify-kompetansegui-addauth-120832-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::400993891727:role/amplify-kompetansegui-addauth-120832-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-kompetansegui-addauth-120832-deployment",
+      "UnauthRoleName": "amplify-kompetansegui-addauth-120832-unauthRole",
+      "StackName": "amplify-kompetansegui-addauth-120832",
+      "StackId": "arn:aws:cloudformation:eu-central-1:400993891727:stack/amplify-kompetansegui-addauth-120832/945c5c60-f804-11ea-8269-0ae1e209150e",
+      "AmplifyAppId": "d2kxnm6tljibk7"
+    },
+    "categories": {
+      "auth": {
+        "kompetansegui7b7df733": {},
+        "kompetanseguifc15d25d": {
+          "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"283540319019-hgdmq4rmk9geaqke33vtnh1m16tlkpa8.apps.googleusercontent.com\",\"client_secret\":\"ajOK3s_L8IlGXXkm2Fy5dgyc\"}]"
+        }
+      }
     }
   }
 }
