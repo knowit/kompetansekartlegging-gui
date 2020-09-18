@@ -1,26 +1,20 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Question from './Question';
+
 let questionFile = "";
-try {
-    questionFile = require('../form.json');
-}
-catch (e) {
-    console.warn("Cant find form.json")
-}
+try { questionFile = require('../form.json'); }
+catch (e) { console.warn("Cant find form.json") }
 
-export default class Form extends Component {
+export default function Form() {
 
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-            questions: [],
-            answers:{},
-            testData: questionFile
-        }
+    const updateAnswer = (key, rating) => {
+        //Note asynchronicity, if really quick, rating might be unset.
+        let dummy = {...answers};
+        dummy[key].rating = rating;
+        setAnswers(dummy);
+    }
 
-        this.printAllAnswers = this.printAllAnswers.bind(this);    
-        
+    const createQuestions = () => {
         let qs = [];
         for (const [key, value] of Object.entries(questionFile)) {
             qs.push(
@@ -29,33 +23,32 @@ export default class Form extends Component {
                     listID={key} 
                     text={value.text} 
                     topic={value.topic}
-                    updateAnswer={this.updateAnswer}
+                    updateAnswer={updateAnswer}
                 />
             );
-            this.state.answers[key] = {topic: value.topic, category: value.category, rating: ""};
         }
-        this.state.questions = qs;
+        return qs;
+    };
+
+    const createAnswers = () => {
+        let as = {};
+        for (const [key, value] of Object.entries(questionFile)) {
+            as[key] = {topic: value.topic, category: value.category, rating: ""};
+        }
+        return as;
+    };
+
+    const [questions] = useState(createQuestions());
+    const [answers, setAnswers] = useState(createAnswers());
+
+    const printAllAnswers = () => {
+        console.log(answers);
     }
     
-    printAllAnswers() {
-        console.log(this.state.answers);
-    }
-
-    updateAnswer = (key, rating) => {
-
-        this.setState(prevState => {
-            let dumdum = {answers: {...prevState.answers}};
-            dumdum.answers[key].rating = rating;
-            return dumdum;
-        })
-    }
-    
-    render() {
-        return (
-            <div className="form"> 
-                {this.state.questions}
-                <button onClick={this.printAllAnswers}>Print all</button>
-            </div>
-        )
-    }
+    return (
+        <div className="form"> 
+            {questions}
+            <button onClick={printAllAnswers}>Print all</button>
+        </div>
+    )
 }

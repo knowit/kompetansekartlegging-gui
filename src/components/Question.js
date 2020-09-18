@@ -1,25 +1,20 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Selector from './Selector'
 
-export default class Question extends Component {
+function Question(props) {
 
-    constructor(props) {
-        super(props)
-        this.radiobuttonClicked = this.radiobuttonClicked.bind(this)
+    const radiobuttonClicked = (event) => {
+        props.updateAnswer(props.listID, event.target.value);
     }
+
+    return (
+        <div className="question">
+            <div>{props.topic}</div>
+            <div>{props.text}</div>
+            <Selector radiobuttonChanged={radiobuttonClicked} title={props.topic}/>
+        </div>
+    )
     
-    radiobuttonClicked(event) {
-        //Note asynchronicity, if really quick, rating might be unset.
-        this.props.updateAnswer(this.props.listID, event.target.value);
-    }
-
-    render() {
-        return (
-            <div className="question">
-                <div>{this.props.topic}</div>
-                <div>{this.props.text}</div>
-                <Selector radiobuttonChanged={this.radiobuttonClicked} title={this.props.topic}/>
-            </div>
-        )
-    }
 }
+
+export default Question;
