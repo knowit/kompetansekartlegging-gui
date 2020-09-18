@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Amplify, { Auth, Hub } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import {Button, Box} from '@material-ui/core';
-import React from 'react';
 import Form from './components/Form';
 import './App.css';
 
@@ -38,16 +37,18 @@ function App() {
   }
 
   return (
-    <Box bgcolor="primary.main">
-      <p>User: {user ? JSON.stringify(user.attributes.email) : 'None'}</p>
-      {user ? (
-        <Button color="primary" variant="contained" onClick={() => Auth.signOut()}>Sign Out</Button>
-      ) : (
-        <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
-      )}
-    </Box>
-    <div className="App">
-      <Form/>
+    <div>
+      <Box bgcolor="primary.main">
+        <p>User: {user ? JSON.stringify(user.attributes.email) : 'None'}</p>
+        {user ? (
+          <Button color="primary" variant="contained" onClick={() => Auth.signOut()}>Sign Out</Button>
+        ) : (
+          <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
+        )}
+      </Box>
+      <div className="App">
+        <Form/>
+      </div>
     </div>
   );
 }
