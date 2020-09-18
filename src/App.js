@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Amplify, { Auth, Hub } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import {Button, Box} from '@material-ui/core';
+import React from 'react';
+import Form from './components/Form';
+import './App.css';
 
 Amplify.configure(awsconfig);
 
@@ -43,6 +46,9 @@ function App() {
         <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
       )}
     </Box>
+    <div className="App">
+      <Form/>
+    </div>
   );
 }
 
