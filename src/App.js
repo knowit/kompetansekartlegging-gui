@@ -39,8 +39,13 @@ function App() {
       .catch(() => console.log('Not signed in'));
   }
 
-  function getData() {
+  async function getData() {
     return API.graphql(graphqlOperation(queries.listFormDefinitions));
+  }
+
+  async function getAndUpdateData() {
+    const data = await getData();
+    setData(data);
   }
 
   return (
@@ -53,7 +58,7 @@ function App() {
         ) : (
           <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
         )}
-          <Button variant="contained" onclick={() => getData().then(data => setData(data))}>Get data!</Button>
+          <Button variant="contained" onclick={() => getAndUpdateData()}>Get data!</Button>
       </Box>
       <div className="App">
         <Form/>
