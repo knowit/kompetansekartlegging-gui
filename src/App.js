@@ -4,11 +4,14 @@ import awsconfig from './aws-exports';
 import {Button, Box} from '@material-ui/core';
 import Form from './components/Form';
 import './App.css';
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from './graphql/queries.ts';
 
 Amplify.configure(awsconfig);
 
 function App() {
   const [user, setUser] = useState(null);
+  const [data, setData] = useState(0);
 
   useEffect(() => {
     Hub.listen('auth', ({ payload: { event, data } }) => {
@@ -36,15 +39,21 @@ function App() {
       .catch(() => console.log('Not signed in'));
   }
 
+  function getData() {
+    return API.graphql(graphqlOperation(queries.listFormDefinitions));
+  }
+
   return (
     <div>
       <Box bgcolor="primary.main">
         <p>User: {user ? JSON.stringify(user.attributes.email) : 'None'}</p>
+        <p>{JSON.stringify(data)}</p>
         {user ? (
           <Button color="primary" variant="contained" onClick={() => Auth.signOut()}>Sign Out</Button>
         ) : (
           <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
         )}
+          <Button variant="contained" onclick={() => getData().then(data => setData(data))}>Get data!</Button>
       </Box>
       <div className="App">
         <Form/>

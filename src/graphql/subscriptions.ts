@@ -3,8 +3,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUserForm = /* GraphQL */ `
-  subscription OnCreateUserForm($owner: String) {
-    onCreateUserForm(owner: $owner) {
+  subscription OnCreateUserForm {
+    onCreateUserForm {
       id
       formDefinition {
         id
@@ -23,13 +23,12 @@ export const onCreateUserForm = /* GraphQL */ `
       answers
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const onUpdateUserForm = /* GraphQL */ `
-  subscription OnUpdateUserForm($owner: String) {
-    onUpdateUserForm(owner: $owner) {
+  subscription OnUpdateUserForm {
+    onUpdateUserForm {
       id
       formDefinition {
         id
@@ -48,13 +47,12 @@ export const onUpdateUserForm = /* GraphQL */ `
       answers
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const onDeleteUserForm = /* GraphQL */ `
-  subscription OnDeleteUserForm($owner: String) {
-    onDeleteUserForm(owner: $owner) {
+  subscription OnDeleteUserForm {
+    onDeleteUserForm {
       id
       formDefinition {
         id
@@ -73,7 +71,6 @@ export const onDeleteUserForm = /* GraphQL */ `
       answers
       createdAt
       updatedAt
-      owner
     }
   }
 `;

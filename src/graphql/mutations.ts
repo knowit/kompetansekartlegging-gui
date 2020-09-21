@@ -26,7 +26,6 @@ export const createUserForm = /* GraphQL */ `
       answers
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -54,7 +53,6 @@ export const updateUserForm = /* GraphQL */ `
       answers
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -82,7 +80,6 @@ export const deleteUserForm = /* GraphQL */ `
       answers
       createdAt
       updatedAt
-      owner
     }
   }
 `;

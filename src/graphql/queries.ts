@@ -23,7 +23,6 @@ export const getUserForm = /* GraphQL */ `
       answers
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -44,7 +43,6 @@ export const listUserForms = /* GraphQL */ `
         answers
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }

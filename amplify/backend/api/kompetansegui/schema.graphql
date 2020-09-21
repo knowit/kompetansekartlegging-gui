@@ -1,23 +1,12 @@
 type UserForm
-  @model
-  @auth(
-    rules: [
-      { allow: owner }
-      { allow: groups, groups: ["Admins"] }
-    ]
-  ) {
+  @model {
   formDefinition: FormDefinition!
   answers: [String]!
 }
 
 type Question
   @model
-  @auth(
-    rules: [
-      { allow: private, mutations: null }
-      { allow: groups, groups: ["Admins"] }
-    ]
-  )  {
+  {
     id: ID!
     text: String!
     topic: String!
@@ -26,13 +15,7 @@ type Question
 }
 
 type FormDefinition
-  @model
-  @auth(
-    rules: [
-      { allow: private, mutations: null }
-      { allow: groups, groups: ["Admins"] }
-    ]
-  ) {
+  @model {
     id: ID!
     questions: [Question!]!
 

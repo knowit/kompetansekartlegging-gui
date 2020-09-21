@@ -179,7 +179,6 @@ export type CreateUserFormMutation = {
     answers: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -211,7 +210,6 @@ export type UpdateUserFormMutation = {
     answers: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -243,7 +241,6 @@ export type DeleteUserFormMutation = {
     answers: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -400,7 +397,6 @@ export type GetUserFormQuery = {
     answers: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -425,7 +421,6 @@ export type ListUserFormsQuery = {
       answers: Array< string | null >,
       createdAt: string,
       updatedAt: string,
-      owner: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -523,10 +518,6 @@ export type ListFormDefinitionsQuery = {
   } | null,
 };
 
-export type OnCreateUserFormSubscriptionVariables = {
-  owner?: string | null,
-};
-
 export type OnCreateUserFormSubscription = {
   onCreateUserForm:  {
     __typename: "UserForm",
@@ -550,12 +541,7 @@ export type OnCreateUserFormSubscription = {
     answers: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
   } | null,
-};
-
-export type OnUpdateUserFormSubscriptionVariables = {
-  owner?: string | null,
 };
 
 export type OnUpdateUserFormSubscription = {
@@ -581,12 +567,7 @@ export type OnUpdateUserFormSubscription = {
     answers: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
   } | null,
-};
-
-export type OnDeleteUserFormSubscriptionVariables = {
-  owner?: string | null,
 };
 
 export type OnDeleteUserFormSubscription = {
@@ -612,7 +593,6 @@ export type OnDeleteUserFormSubscription = {
     answers: Array< string | null >,
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
