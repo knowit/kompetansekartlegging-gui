@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
 import Question from './Question';
 
-let questionFile = "";
-try { questionFile = require('../form.json'); }
-catch (e) { console.warn("Cant find form.json") }
-
 type AnswerData = {
     topic: string,
     category: string,
@@ -18,6 +14,13 @@ type QuestionData = {
     topic: string,
     category: string
 }
+type Questions = {
+    [key: string]: QuestionData
+}
+
+let questionFile: Questions = {};
+try { questionFile = require('../form.json'); }
+catch (e) { console.warn("Cant find form.json") }
 
 export default function Form() {
 
@@ -31,13 +34,12 @@ export default function Form() {
     function createQuestions(): JSX.Element[] {
         let qs: JSX.Element[] = [];
         Object.entries(questionFile).forEach(([key, value]) => {
-            let values = Object.entries(value);
             qs.push(
                 <Question 
                     key={key} 
                     listID={key}
-                    topic={values.find(v => v[0] === "topic")?.[1] || ""}
-                    text={values.find(v => v[0] === "text")?.[1] || ""}
+                    topic={value.topic}
+                    text={value.text}
                     updateAnswer={updateAnswer}
                 />
             );
@@ -48,23 +50,22 @@ export default function Form() {
     function createAnswers(): Answers {
         let as = {} as Answers;
         Object.entries(questionFile).forEach(([key, value]) => {
-            let values = Object.values(value);
             as[key] = {
-                topic: values.find(v => v[0] === "topic")?.[1] || "",
-                category: values.find(v => v[0] === "category")?.[1] || "",
+                topic: value.topic,
+                category: value.category,
                 rating: ""
             }
         });
         return as;
     };
-
-    const [questions] = useState(createQuestions());
-    const [answers, setAnswers] = useState(createAnswers());
-
+    
     function printAllAnswers(): void {
         console.log(answers);
     }
     
+    const [questions] = useState(createQuestions());
+    const [answers, setAnswers] = useState(createAnswers());
+
     return (
         <div className="form"> 
             {questions}
