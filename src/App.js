@@ -6,7 +6,9 @@ import Form from './components/Form';
 import RadarPlot from './components/RadarPlot';
 import './App.css';
 
-let radar_data = require('./answer-data.json'); //Temp data
+let radar_data = [];
+try {  radar_data = require('./answers-data.json'); }
+catch (e) { console.warn("Cant find answer-data.json") }
 
 Amplify.configure(awsconfig);
 
