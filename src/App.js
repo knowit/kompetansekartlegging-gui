@@ -3,7 +3,10 @@ import Amplify, { Auth, Hub } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import {Button, Box} from '@material-ui/core';
 import Form from './components/Form';
+import RadarPlot from './components/RadarPlot';
 import './App.css';
+
+let radar_data = require('./answer-data.json'); //Temp data
 
 Amplify.configure(awsconfig);
 
@@ -46,6 +49,9 @@ function App() {
           <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
         )}
       </Box>
+      <div style={{height:"400px", width:"400px"}}>
+          <RadarPlot data={radar_data}></RadarPlot>
+      </div>
       <div className="App">
         <Form/>
       </div>

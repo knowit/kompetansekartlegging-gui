@@ -8,6 +8,7 @@
 # testing
 /coverage
 src/form.json
+src/answer-data.json
 
 # production
 /build
