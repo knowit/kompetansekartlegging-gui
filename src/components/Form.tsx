@@ -1,24 +1,7 @@
 import React, { useState } from 'react'
 import Question from './Question';
+import {Questions, Answers} from '../types'
 
-type AnswerData = {
-    topic: string,
-    group: string,
-    category: string,
-    rating: number|null
-};
-type Answers = {
-    [key: string]: AnswerData
-};
-type QuestionData = {
-    text: string,
-    topic: string,
-    group: string,
-    category: string
-}
-type Questions = {
-    [key: string]: QuestionData
-}
 
 let questionFile: Questions = {};
 try { questionFile = require('../form.json'); }
