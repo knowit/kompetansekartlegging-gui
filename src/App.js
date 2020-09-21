@@ -43,7 +43,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="App">
       <BrowserRouter>
         <div>
           <Box bgcolor="primary.main">
