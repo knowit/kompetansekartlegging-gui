@@ -44,7 +44,9 @@ function App() {
   }
 
   async function getAndUpdateData() {
+    console.log("Button clicked")
     const data = await getData();
+    console.log(data);
     setData(data);
   }
 
@@ -58,7 +60,7 @@ function App() {
         ) : (
           <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
         )}
-          <Button variant="contained" onclick={() => getAndUpdateData()}>Get data!</Button>
+          <Button variant="contained" onClick={() => getAndUpdateData()}>Get data!</Button>
       </Box>
       <div className="App">
         <Form/>
