@@ -3,8 +3,9 @@ import Question from './Question';
 
 type AnswerData = {
     topic: string,
+    group: string,
     category: string,
-    rating: string
+    rating: number|null
 };
 type Answers = {
     [key: string]: AnswerData
@@ -12,6 +13,7 @@ type Answers = {
 type QuestionData = {
     text: string,
     topic: string,
+    group: string,
     category: string
 }
 type Questions = {
@@ -24,7 +26,7 @@ catch (e) { console.warn("Cant find form.json") }
 
 export default function Form() {
 
-    function updateAnswer(key: string, rating: string): void {
+    function updateAnswer(key: string, rating: number): void {
         //Note asynchronicity, if really quick, rating might be unset.
         let dummy = {...answers};
         dummy[key].rating = rating;
@@ -52,8 +54,9 @@ export default function Form() {
         Object.entries(questionFile).forEach(([key, value]) => {
             as[key] = {
                 topic: value.topic,
+                group: value.group,
                 category: value.category,
-                rating: ""
+                rating: null
             }
         });
         return as;
