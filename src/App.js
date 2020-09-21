@@ -5,6 +5,7 @@ import {Button, Box} from '@material-ui/core';
 import Form from './components/Form';
 import RadarPlot from './components/RadarPlot';
 import './App.css';
+import {BrowserRouter, Route, Link} from 'react-router-dom'
 
 let radar_data = [];
 try {  radar_data = require('./answer-data.json'); }
@@ -43,20 +44,35 @@ function App() {
 
   return (
     <div>
-      <Box bgcolor="primary.main">
-        <p>User: {user ? JSON.stringify(user.attributes.email) : 'None'}</p>
-        {user ? (
-          <Button color="primary" variant="contained" onClick={() => Auth.signOut()}>Sign Out</Button>
-        ) : (
-          <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
-        )}
-      </Box>
-      <div style={{height:"400px", width:"400px"}}>
-          <RadarPlot data={radar_data}></RadarPlot>
-      </div>
-      <div className="App">
-        <Form/>
-      </div>
+      <BrowserRouter>
+        <div>
+          <Box bgcolor="primary.main">
+            <p>User: {user ? JSON.stringify(user.attributes.email) : 'None'}</p>
+            {user ? (
+              <Button color="primary" variant="contained" onClick={() => Auth.signOut()}>Sign Out</Button>
+            ) : (
+              <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
+            )}
+            <Link to="/"><Button color="primary" variant="contained">Home</Button></Link>
+            <Link to="/form"><Button color="primary" variant="contained">Form</Button></Link>
+            <Link to="/plot"><Button color="primary" variant="contained">Plots</Button></Link>
+          </Box>
+          <Route exact path="/">
+            <div>
+              <div style={{height:"400px", width:"400px"}}>
+                <RadarPlot data={radar_data}></RadarPlot>
+              </div>
+              <Form/>
+            </div>
+          </Route>
+          <Route path="/plot">
+            <div style={{height:"400px", width:"400px"}}>
+              <RadarPlot data={radar_data}></RadarPlot>
+            </div>
+          </Route>
+          <Route path="/form"><Form/></Route>
+        </div>
+      </BrowserRouter>
     </div>
   );
 }
