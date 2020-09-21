@@ -1,0 +1,22 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-kompetansegui-dev-102046-authRole",
+      "UnauthRoleArn": "arn:aws:iam::400993891727:role/amplify-kompetansegui-dev-102046-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::400993891727:role/amplify-kompetansegui-dev-102046-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-kompetansegui-dev-102046-deployment",
+      "UnauthRoleName": "amplify-kompetansegui-dev-102046-unauthRole",
+      "StackName": "amplify-kompetansegui-dev-102046",
+      "StackId": "arn:aws:cloudformation:eu-central-1:400993891727:stack/amplify-kompetansegui-dev-102046/9ec690e0-f998-11ea-88c1-0228b727b50e",
+      "AmplifyAppId": "d2kxnm6tljibk7"
+    },
+    "categories": {
+      "auth": {
+        "kompetanseguifc15d25d": {
+          "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"283540319019-hgdmq4rmk9geaqke33vtnh1m16tlkpa8.apps.googleusercontent.com\",\"client_secret\":\"ajOK3s_L8IlGXXkm2Fy5dgyc\"}]"
+        }
+      }
+    }
+  }
+}
