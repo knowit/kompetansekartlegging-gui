@@ -15,7 +15,8 @@
       "auth": {
         "kompetanseguifc15d25d": {
           "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"283540319019-hgdmq4rmk9geaqke33vtnh1m16tlkpa8.apps.googleusercontent.com\",\"client_secret\":\"ajOK3s_L8IlGXXkm2Fy5dgyc\"}]"
-        }
+        },
+        "userPoolGroups": {}
       }
     }
   }

@@ -6,6 +6,8 @@ import Form from './components/Form';
 import RadarPlot from './components/RadarPlot';
 import './App.css';
 import {BrowserRouter, Route, Link} from 'react-router-dom'
+import { API, graphqlOperation } from 'aws-amplify';
+import * as queries from './graphql/queries';
 
 let radar_data: object[] = [];
 try {  radar_data = require('./answer-data.json'); }
@@ -15,6 +17,7 @@ Amplify.configure(awsconfig);
 
 function App() {
   const [user, setUser] = useState<any|null>(null);
+  const [data, setData] = useState<number | any>(0);
 
   useEffect(() => {
     Hub.listen('auth', ({ payload: { event, data } }) => {
@@ -42,17 +45,30 @@ function App() {
       .catch(() => console.log('Not signed in'));
   }
 
+  async function getData() {
+    return API.graphql(graphqlOperation(queries.listFormDefinitions));
+  }
+
+  async function getAndUpdateData() {
+    console.log("Button clicked")
+    const data = await getData();
+    console.log(data);
+    setData(data);
+  }
+
   return (
     <div className="App">
       <BrowserRouter>
         <div>
           <Box bgcolor="primary.main">
             <p>User: {user ? JSON.stringify(user.attributes.email) : 'None'}</p>
+            <p>{JSON.stringify(data)}</p>
             {user ? (
               <Button color="primary" variant="contained" onClick={() => Auth.signOut()}>Sign Out</Button>
             ) : (
               <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
             )}
+            <Button variant="contained" onClick={() => getAndUpdateData()}>Get data!</Button>
             <Link to="/"><Button color="primary" variant="contained">Home</Button></Link>
             <Link to="/form"><Button color="primary" variant="contained">Form</Button></Link>
             <Link to="/plot"><Button color="primary" variant="contained">Plots</Button></Link>

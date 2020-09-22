@@ -1,0 +1,22 @@
+type UserForm
+  @model {
+  formDefinition: FormDefinition!
+  answers: [String]!
+}
+
+type Question
+  @model
+  {
+    id: ID!
+    text: String!
+    topic: String!
+    category: String!
+    answerType: String!
+}
+
+type FormDefinition
+  @model {
+    id: ID!
+    questions: [Question!]!
+
+}
