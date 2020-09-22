@@ -20,3 +20,7 @@ Contributing to this project is a little more involved since we're using Amplify
 
 There are two different ways to contribute to an Amplify project, either by [sharing environments](https://docs.amplify.aws/cli/teams/shared) or by using [sandbox environments](https://docs.amplify.aws/cli/teams/sandbox). For contributing to the `master` and `dev` branches, sandbox environments should be utilized. 
 
+## Continuous Deployment
+
+We have [CD](https://dev.d2kxnm6tljibk7.amplifyapp.com/) set up. It is triggered by updating the `dev` branch. 
+
