@@ -37,8 +37,8 @@ To update an Amplify `category`, i.e. `auth`, run the command `$ amplify update 
 
 ## Useful links
 
-[Amplify CLI documentation](https://docs.amplify.aws/cli)
-[Amplify Library documentation](https://docs.amplify.aws/lib/q/platform/js)
+1. [Amplify CLI documentation](https://docs.amplify.aws/cli)
+1. [Amplify Library documentation](https://docs.amplify.aws/lib/q/platform/js)
 
 ## Problems?
 Questions related to Amplify not covered by this document can be directed to `bjorn.iversen@knowit.no`. 
