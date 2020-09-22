@@ -9,7 +9,7 @@ This project requires [npm](https://www.npmjs.com/get-npm) and the [Amplify CLI]
 Currently, the latest version of the project lies within the `dev` branch. To run the project locally:
 1. Clone the GitHub repo.
 2. Run `$ cd kompetansekartlegging-gui` (or whatever you've chosen to name the project in the cloning process).
-3. Run `$ amplify init`, and choose an existing environment---by default, the name of an environment will match the names of a branch, so for the `dev` branch the environment name will be `dev`.
+3. Run `$ amplify init`, and choose an existing environment---by default, the name of an environment will match the name of a branch, so for the `dev` branch the environment name will be `dev`.
 4. Run `$ amplify pull` to make sure that you have the most recent cloud configuration locally. 
 5. Run `$ npm install`
 6. Run `npm start`. 
