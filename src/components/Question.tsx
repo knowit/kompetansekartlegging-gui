@@ -2,7 +2,7 @@ import React from 'react'
 import Selector from './Selector'
 
 type Props = {
-    updateAnswer: (listId: string, value: string) => void,
+    updateAnswer: (listId: string, value: number) => void,
     topic: string,
     text: string,
     listID: string
@@ -11,7 +11,7 @@ type Props = {
 function Question({updateAnswer, topic, text, listID}: Props) {
 
     const radiobuttonClicked = (event: React.ChangeEvent<HTMLInputElement>) => {
-        updateAnswer(listID, event.target.value);
+        updateAnswer(listID, parseInt(event.target.value));
     }
 
     return (
