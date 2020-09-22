@@ -14,6 +14,8 @@ Currently, the latest version of the project lies within the `dev` branch. To ru
 5. Run `$ npm install`
 6. Run `npm start`. 
 
+NOTE: There seems to be a bug with Amplify auth that makes it impossible to log in using Google locally, because the URL redirects to another URL. Amplify allows to specify multiple redirect URLs, but it appears that it doesn't work as intended. 
+
 ## Contributing
 
 Contributing to this project is a little more involved since we're using Amplify. 
@@ -23,4 +25,21 @@ There are two different ways to contribute to an Amplify project, either by [sha
 ## Continuous Deployment
 
 We have [CD](https://dev.d2kxnm6tljibk7.amplifyapp.com/) set up. It is triggered by updating the `dev` branch. 
+
+## Updating Amplify resources
+
+To update an Amplify `category`, i.e. `auth`, run the command `$ amplify update category`. 
+
+## Not-so-obvious things to know
+
+1. All Amplify environment information is contained in `amplify/team-provider-info.json` (which is put in `.gitignore` since it contains secrets). 
+2. Environment variables can be set in the Amplify Console (and probably the CLI as well)
+
+## Useful links
+
+[Amplify CLI documentation](https://docs.amplify.aws/cli)
+[Amplify Library documentation](https://docs.amplify.aws/lib/q/platform/js)
+
+## Problems?
+Questions related to Amplify not covered by this document can be directed to `bjorn.iversen@knowit.no`. 
 
