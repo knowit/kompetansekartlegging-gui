@@ -7,14 +7,14 @@ import RadarPlot from './components/RadarPlot';
 import './App.css';
 import {BrowserRouter, Route, Link} from 'react-router-dom'
 
-let radar_data = [];
+let radar_data: object[] = [];
 try {  radar_data = require('./answer-data.json'); }
 catch (e) { console.warn("Cant find answer-data.json") }
 
 Amplify.configure(awsconfig);
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any|null>(null);
 
   useEffect(() => {
     Hub.listen('auth', ({ payload: { event, data } }) => {
