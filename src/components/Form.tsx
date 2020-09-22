@@ -1,22 +1,7 @@
 import React, { useState } from 'react'
 import Question from './Question';
+import {Questions, Answers} from '../types'
 
-type AnswerData = {
-    topic: string,
-    category: string,
-    rating: string
-};
-type Answers = {
-    [key: string]: AnswerData
-};
-type QuestionData = {
-    text: string,
-    topic: string,
-    category: string
-}
-type Questions = {
-    [key: string]: QuestionData
-}
 
 let questionFile: Questions = {};
 try { questionFile = require('../form.json'); }
@@ -24,7 +9,7 @@ catch (e) { console.warn("Cant find form.json") }
 
 export default function Form() {
 
-    function updateAnswer(key: string, rating: string): void {
+    function updateAnswer(key: string, rating: number): void {
         //Note asynchronicity, if really quick, rating might be unset.
         let dummy = {...answers};
         dummy[key].rating = rating;
@@ -52,8 +37,9 @@ export default function Form() {
         Object.entries(questionFile).forEach(([key, value]) => {
             as[key] = {
                 topic: value.topic,
+                group: value.group,
                 category: value.category,
-                rating: ""
+                rating: null
             }
         });
         return as;
