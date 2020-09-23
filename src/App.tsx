@@ -76,7 +76,7 @@ function App() {
               <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
             )}
             <Button variant="contained" onClick={() => getAndUpdateData()}>Get data!</Button>
-            <Button variant="contained" onClick={() => getAndUpdateData()}>Push data!</Button>
+            <Button variant="contained" onClick={() => uploadInitialData()}>Push data!</Button>
             <Link to="/"><Button color="primary" variant="contained">Home</Button></Link>
             <Link to="/form"><Button color="primary" variant="contained">Form</Button></Link>
             <Link to="/plot"><Button color="primary" variant="contained">Plots</Button></Link>
