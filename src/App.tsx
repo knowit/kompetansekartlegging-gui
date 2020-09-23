@@ -8,6 +8,7 @@ import './App.css';
 import {BrowserRouter, Route, Link} from 'react-router-dom'
 import { API, graphqlOperation } from 'aws-amplify';
 import * as queries from './graphql/queries';
+import * as mutations from './graphql/mutations';
 
 let radar_data: object[] = [];
 try {  radar_data = require('./answer-data.json'); }
@@ -56,6 +57,12 @@ function App() {
     setData(data);
   }
 
+  const testQuestion = {text: "Test Text", topic: "Test Topic", category: "Test Category", answerType: "String"}
+
+  async function uploadInitialData() {
+    return API.graphql(graphqlOperation(mutations.createQuestion, {input: testQuestion}));
+  }
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -69,6 +76,7 @@ function App() {
               <Button color="primary" variant="contained" onClick={() => Auth.federatedSignIn()}>Federated Sign In</Button>
             )}
             <Button variant="contained" onClick={() => getAndUpdateData()}>Get data!</Button>
+            <Button variant="contained" onClick={() => getAndUpdateData()}>Push data!</Button>
             <Link to="/"><Button color="primary" variant="contained">Home</Button></Link>
             <Link to="/form"><Button color="primary" variant="contained">Form</Button></Link>
             <Link to="/plot"><Button color="primary" variant="contained">Plots</Button></Link>
