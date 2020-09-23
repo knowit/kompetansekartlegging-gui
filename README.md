@@ -1,68 +1,40 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is an internal project for Knowit Objectnet. The project aims to create a tool to gauge the employees' skills and motivations through a web form, and to make the analyses based on the form available for the individual employees and managers. 
 
-## Available Scripts
+## Dependencies
 
-In the project directory, you can run:
+This project requires [npm](https://www.npmjs.com/get-npm) and the [Amplify CLI](https://docs.amplify.aws/cli/start/install). 
 
-### `npm start`
+## Running the project
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Currently, the latest version of the project lies within the `dev` branch. To run the project locally:
+1. Clone the GitHub repo.
+2. Run `$ cd kompetansekartlegging-gui` (or whatever you've chosen to name the project in the cloning process).
+3. Run `$ amplify init`, and choose an existing environment---by default, the name of an environment will match the name of a branch, so for the `dev` branch the environment name will be `dev`.
+4. Run `$ amplify pull` to make sure that you have the most recent cloud configuration locally. 
+5. Run `$ npm install`
+6. Run `npm start`. 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+NOTE: There seems to be a bug with Amplify auth that makes it impossible to log in using Google locally, because the URL redirects to another URL. Amplify allows to specify multiple redirect URLs, but it appears that it doesn't work as intended. 
 
-### `npm test`
+## Contributing
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Contributing to this project is a little more involved since we're using Amplify. 
 
-### `npm run build`
+There are two different ways to contribute to an Amplify project, either by [sharing environments](https://docs.amplify.aws/cli/teams/shared) or by using [sandbox environments](https://docs.amplify.aws/cli/teams/sandbox). For contributing to the `master` and `dev` branches, sandbox environments should be utilized. 
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Updating Amplify resources
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+To update an Amplify `category`, i.e. `auth`, run the command `$ amplify update category`. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Not-so-obvious things to know
 
-### `npm run eject`
+1. All Amplify environment information is contained in `amplify/team-provider-info.json` (which is put in `.gitignore` since it contains secrets). This means that environment information has to be pulled manually (by finding the right Amplify CLI command for the respective environment in the Amplify console). We'll have to find a proper way to share these environments eventually, either by backing the file up in a safe location or by using a tool such as [git-secret](https://git-secret.io/#using-gpg) to safely encrypt the file. 
+2. Environment variables can be set in the Amplify Console (and probably the CLI as well).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Useful links
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. [Amplify CLI documentation](https://docs.amplify.aws/cli)
+1. [Amplify Library documentation](https://docs.amplify.aws/lib/q/platform/js)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Problems?
+Questions related to Amplify not covered by this document can be directed to `bjorn.iversen@knowit.no`. 
