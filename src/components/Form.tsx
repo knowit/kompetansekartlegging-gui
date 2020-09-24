@@ -7,7 +7,7 @@ let questionFile: Questions = {};
 try { questionFile = require('../form.json'); }
 catch (e) { console.warn("Cant find form.json") }
 
-export default function Form() {
+export default function Form(props: {formDefinition: any}) {
 
     function updateAnswer(key: string, rating: number): void {
         //Note asynchronicity, if really quick, rating might be unset.
@@ -54,6 +54,8 @@ export default function Form() {
 
     return (
         <div className="form"> 
+            <p>{JSON.stringify(typeof(props.formDefinition))}</p>
+            <p>{JSON.stringify(props.formDefinition)}</p>
             {questions}
             <button onClick={printAllAnswers}>Print all</button>
         </div>

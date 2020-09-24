@@ -5,9 +5,11 @@ import Form from './components/Form'
 import Amplify, { Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
 import * as mutations from './graphql/mutations';
+import * as queries from './graphql/queries';
 import { AnsweredQuestion } from './types';
 import RadarPlot from './components/RadarPlot';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { setConstantValue } from 'typescript';
 
 Amplify.configure(awsconfig);
 
@@ -59,6 +61,7 @@ var formDef = require('./form2.json')
 
 function App() {
   const [user, setUser] = useState<any | null>(null);
+  const [formDefinition, setFormDefinition] = useState<any | null>(null);
 
   useEffect(() => {
     Hub.listen('auth', ({ payload: { event, data } }) => {
@@ -78,6 +81,8 @@ function App() {
     });
 
     getUser().then(userData => setUser(userData));
+    getFormDefinition();
+    
   }, []);
 
   function getUser() {
@@ -87,6 +92,10 @@ function App() {
   }
 
   async function sendFormDefinition() {
+    /* 
+    Dirty function to upload form definition in the initial stages of the project.
+    Should not be kept in the future.
+    */
     var i;
     var question;
     var qid;
@@ -102,6 +111,11 @@ function App() {
     }
   }
 
+  async function getFormDefinition() {
+    let res = await API.graphql(graphqlOperation(queries.getFormDefinition, {id: "fd1"}));
+    setFormDefinition(res);
+  }
+
   return (
   <div>
     <p>User: {user ? JSON.stringify(user.attributes) : 'None'}</p>
@@ -109,7 +123,7 @@ function App() {
     <AmplifySignOut />
     My App
     <div style={{height: '500px', width: '500px'}}><RadarPlot data={testData}/></div>
-    <Form/>
+    <Form formDefinition={formDefinition}/>
   </div>
   );
 }
