@@ -2,25 +2,14 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Form from './components/Form'
-import Amplify, { Auth, Hub } from 'aws-amplify';
+import Amplify, { Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
+import * as mutations from './graphql/mutations';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 
 Amplify.configure(awsconfig);
 
 var formDef = require('./form2.json')
-
-async function sendFormDefinition() {
-  var i;
-  for (i = 0; i < formDef.length; i++) {
-    console.log(formDef[i])
-  }
-  var user;
-  user = await Auth.currentAuthenticatedUser();
-  console.log(user);
-}
-
-sendFormDefinition()
 
 function App() {
   const [user, setUser] = useState<any | null>(null);
@@ -51,9 +40,26 @@ function App() {
       .catch(() => console.log('Not signed in'));
   }
 
+  async function sendFormDefinition() {
+    var i;
+    var question;
+    var qid;
+    var fdid = "fd1";
+    var res = await API.graphql(graphqlOperation(mutations.createFormDefinition, {input: {"id": fdid}}));
+    for (i = 0; i < formDef.length; i++) {
+      question = formDef[i];
+      qid = "q" + i;
+      res = await API.graphql(graphqlOperation(mutations.createQuestion, {input: {...question, "id": qid}}));
+      console.log(res);
+      res = await API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, {input: {"formDefinitionID": fdid, "questionID": qid, "id": fdid + qid}}));
+      console.log(res);
+    }
+  }
+
   return (
   <div>
     <p>User: {user ? JSON.stringify(user.attributes) : 'None'}</p>
+    <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
     <AmplifySignOut />
     My App
     <Form/>
