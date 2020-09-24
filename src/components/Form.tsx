@@ -4,10 +4,10 @@ import {Questions, Answers} from '../types'
 
 
 let questionFile: Questions = {};
-try { questionFile = require('../form.json'); }
+try { questionFile = require('../forms.json'); }
 catch (e) { console.warn("Cant find form.json") }
 
-export default function Form() {
+export default function Form(props: {formDefinition: any}) {
 
     function updateAnswer(key: string, rating: number): void {
         //Note asynchronicity, if really quick, rating might be unset.
@@ -53,8 +53,10 @@ export default function Form() {
     const [answers, setAnswers] = useState(createAnswers());
 
     return (
-        <div className="form"> 
-            {questions}
+        <div className="form">
+            {JSON.stringify(props.formDefinition)}
+            {console.log(props.formDefinition)} 
+            {/* {questions} */}
             <button onClick={printAllAnswers}>Print all</button>
         </div>
     )

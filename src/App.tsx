@@ -5,6 +5,7 @@ import Form from './components/Form'
 import Amplify, { Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
 import * as mutations from './graphql/mutations';
+import * as queries from './graphql/queries';
 import { AnsweredQuestion } from './types';
 import RadarPlot from './components/RadarPlot';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
@@ -59,6 +60,7 @@ var formDef = require('./form2.json')
 
 function App() {
   const [user, setUser] = useState<any | null>(null);
+  const [formDefinition, setFormDefinition] = useState<any | null>(null);
 
   useEffect(() => {
     Hub.listen('auth', ({ payload: { event, data } }) => {
@@ -78,7 +80,12 @@ function App() {
     });
 
     getUser().then(userData => setUser(userData));
+    getFormDefinition().then(f => setFormDefinition(f));
   }, []);
+
+  async function getFormDefinition(){
+    return API.graphql(graphqlOperation(queries.getFormDefinition, {id: "fd1"}));
+  }
 
   function getUser() {
     return Auth.currentAuthenticatedUser()
@@ -109,7 +116,7 @@ function App() {
     <AmplifySignOut />
     My App
     <div style={{height: '500px', width: '500px'}}><RadarPlot data={testData}/></div>
-    <Form/>
+    <Form formDefinition={formDefinition}/>
   </div>
   );
 }
