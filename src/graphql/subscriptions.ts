@@ -3,71 +3,134 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUserForm = /* GraphQL */ `
-  subscription OnCreateUserForm {
-    onCreateUserForm {
+  subscription OnCreateUserForm($owner: String!) {
+    onCreateUserForm(owner: $owner) {
       id
-      formDefinition {
-        id
-        questions {
+      questionAnswers {
+        items {
           id
-          text
-          topic
-          category
+          userFormID
+          answer
           createdAt
           updatedAt
+          owner
         }
-        createdAt
-        updatedAt
+        nextToken
       }
-      answers
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onUpdateUserForm = /* GraphQL */ `
-  subscription OnUpdateUserForm {
-    onUpdateUserForm {
+  subscription OnUpdateUserForm($owner: String!) {
+    onUpdateUserForm(owner: $owner) {
       id
-      formDefinition {
-        id
-        questions {
+      questionAnswers {
+        items {
           id
-          text
-          topic
-          category
+          userFormID
+          answer
           createdAt
           updatedAt
+          owner
         }
-        createdAt
-        updatedAt
+        nextToken
       }
-      answers
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onDeleteUserForm = /* GraphQL */ `
-  subscription OnDeleteUserForm {
-    onDeleteUserForm {
+  subscription OnDeleteUserForm($owner: String!) {
+    onDeleteUserForm(owner: $owner) {
       id
-      formDefinition {
-        id
-        questions {
+      questionAnswers {
+        items {
           id
-          text
-          topic
-          category
+          userFormID
+          answer
           createdAt
           updatedAt
+          owner
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onCreateQuestionAnswer = /* GraphQL */ `
+  subscription OnCreateQuestionAnswer($owner: String!) {
+    onCreateQuestionAnswer(owner: $owner) {
+      id
+      userFormID
+      question {
+        id
+        text
+        topic
+        category
+        formDefinitions {
+          nextToken
         }
         createdAt
         updatedAt
       }
-      answers
+      answer
       createdAt
       updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateQuestionAnswer = /* GraphQL */ `
+  subscription OnUpdateQuestionAnswer($owner: String!) {
+    onUpdateQuestionAnswer(owner: $owner) {
+      id
+      userFormID
+      question {
+        id
+        text
+        topic
+        category
+        formDefinitions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      answer
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteQuestionAnswer = /* GraphQL */ `
+  subscription OnDeleteQuestionAnswer($owner: String!) {
+    onDeleteQuestionAnswer(owner: $owner) {
+      id
+      userFormID
+      question {
+        id
+        text
+        topic
+        category
+        formDefinitions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      answer
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;
@@ -78,6 +141,16 @@ export const onCreateQuestion = /* GraphQL */ `
       text
       topic
       category
+      formDefinitions {
+        items {
+          id
+          formDefinitionID
+          questionID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -90,6 +163,16 @@ export const onUpdateQuestion = /* GraphQL */ `
       text
       topic
       category
+      formDefinitions {
+        items {
+          id
+          formDefinitionID
+          questionID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -102,6 +185,16 @@ export const onDeleteQuestion = /* GraphQL */ `
       text
       topic
       category
+      formDefinitions {
+        items {
+          id
+          formDefinitionID
+          questionID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -112,12 +205,14 @@ export const onCreateFormDefinition = /* GraphQL */ `
     onCreateFormDefinition {
       id
       questions {
-        id
-        text
-        topic
-        category
-        createdAt
-        updatedAt
+        items {
+          id
+          formDefinitionID
+          questionID
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
@@ -129,12 +224,14 @@ export const onUpdateFormDefinition = /* GraphQL */ `
     onUpdateFormDefinition {
       id
       questions {
-        id
-        text
-        topic
-        category
-        createdAt
-        updatedAt
+        items {
+          id
+          formDefinitionID
+          questionID
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
@@ -146,10 +243,102 @@ export const onDeleteFormDefinition = /* GraphQL */ `
     onDeleteFormDefinition {
       id
       questions {
+        items {
+          id
+          formDefinitionID
+          questionID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateQuestionFormDefinitionConnection = /* GraphQL */ `
+  subscription OnCreateQuestionFormDefinitionConnection {
+    onCreateQuestionFormDefinitionConnection {
+      id
+      formDefinitionID
+      questionID
+      question {
         id
         text
         topic
         category
+        formDefinitions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateQuestionFormDefinitionConnection = /* GraphQL */ `
+  subscription OnUpdateQuestionFormDefinitionConnection {
+    onUpdateQuestionFormDefinitionConnection {
+      id
+      formDefinitionID
+      questionID
+      question {
+        id
+        text
+        topic
+        category
+        formDefinitions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteQuestionFormDefinitionConnection = /* GraphQL */ `
+  subscription OnDeleteQuestionFormDefinitionConnection {
+    onDeleteQuestionFormDefinitionConnection {
+      id
+      formDefinitionID
+      questionID
+      question {
+        id
+        text
+        topic
+        category
+        formDefinitions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
         createdAt
         updatedAt
       }
