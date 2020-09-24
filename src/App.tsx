@@ -5,9 +5,55 @@ import Form from './components/Form'
 import Amplify, { Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
 import * as mutations from './graphql/mutations';
+import { AnsweredQuestion } from './types';
+import RadarPlot from './components/RadarPlot';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 
 Amplify.configure(awsconfig);
+
+const testData: AnsweredQuestion[] = [
+  {
+    question: {
+      text: "Text 1",
+      topic: "Topic 1",
+      group: "Group 1",
+      category: "Category 1"
+    },
+    answer: 2
+  },{
+    question: {
+      text: "Text 2",
+      topic: "Topic 2",
+      group: "Group 1",
+      category: "Category 1"
+    },
+    answer: 3
+  },{
+    question: {
+      text: "Text 3",
+      topic: "Topic 3",
+      group: "Group 1",
+      category: "Category 2"
+    },
+    answer: 3
+  },{
+    question: {
+      text: "Text 4",
+      topic: "Topic 4",
+      group: "Group 1",
+      category: "Category 2"
+    },
+    answer: 5
+  },{
+    question: {
+      text: "Text 5",
+      topic: "Topic 5",
+      group: "Group 1",
+      category: "Category 4"
+    },
+    answer: 2
+  },
+]
 
 var formDef = require('./form2.json')
 
@@ -62,6 +108,7 @@ function App() {
     <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
     <AmplifySignOut />
     My App
+    <div style={{height: '500px', width: '500px'}}><RadarPlot data={testData}/></div>
     <Form/>
   </div>
   );

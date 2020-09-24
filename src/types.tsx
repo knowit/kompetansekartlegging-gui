@@ -16,3 +16,15 @@ export type QuestionData = {
 export type Questions = {
     [key: string]: QuestionData
 }
+
+export type AggregatedCategory = {
+    category: String,
+    aggregatedValue: number,
+    numberOfValues: number,
+    aggregatedAverage: number
+};
+
+export type AnsweredQuestion = {
+    question: QuestionData,
+    answer: number
+};
