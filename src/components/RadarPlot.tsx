@@ -16,6 +16,7 @@ export default function RadarPlot(props: { data: AnsweredQuestion[] }) {
                     aggregatedAverage: 0,
                     numberOfValues: 0
                 }
+                
                 aggregatedCategories.push(category);
             }
             

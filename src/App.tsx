@@ -48,7 +48,7 @@ const testData: AnsweredQuestion[] = [
       text: "Text 5",
       topic: "Topic 5",
       group: "Group 1",
-      category: "Category 3"
+      category: "Category 4"
     },
     answer: 2
   },
