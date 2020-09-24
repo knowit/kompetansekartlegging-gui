@@ -1,7 +1,18 @@
 type UserForm
-  @model {
-  formDefinition: FormDefinition!
-  answers: [Int!]!
+  @model 
+  @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  questionAnswers: [QuestionAnswer] @connection(keyName: "byUserForm", fields: ["id"])
+}
+
+type QuestionAnswer 
+  @model 
+  @auth(rules: [{ allow: owner }])  
+  @key(name: "byUserForm", fields: ["userFormID"]) {
+    id: ID!
+    userFormID: ID!
+    question: Question! @connection
+    answer: Int!
 }
 
 type Question
@@ -11,10 +22,22 @@ type Question
     text: String!
     topic: String!
     category: String!
+    formDefinitions: [QuestionFormDefinitionConnection] @connection(keyName: "connectedQuestion", fields: ["id"])
 }
 
 type FormDefinition
   @model {
     id: ID!
-    questions: [Question!]!
+    questions: [QuestionFormDefinitionConnection] @connection(keyName: "connectedFormDefinition", fields: ["id"])
 }
+
+type QuestionFormDefinitionConnection
+  @model(queries: null) 
+  @key(name: "connectedFormDefinition", fields: ["formDefinitionID", "questionID"])
+  @key(name: "connectedQuestion", fields: ["questionID", "formDefinitionID"]) {
+    id: ID!
+    formDefinitionID: ID!
+    questionID: ID!
+    question: Question! @connection(fields: ["questionID"])
+    formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
+  }
