@@ -1,12 +1,37 @@
 import { ResponsiveRadar } from '@nivo/radar'
 import React from 'react'
+import {AggregatedCategory, AnsweredQuestion} from '../types'
 
-export default function RadarPlot(props: { data: object[] }) {
+export default function RadarPlot(props: { data: AnsweredQuestion[] }) {
+
+    let aggregatedCategories: AggregatedCategory[] = [];
+
+    props.data.map(value =>
+        {
+            let category = aggregatedCategories.find(cat => cat.category === value.question.category);
+            if(!category) {
+                category = {
+                    category: value.question.category,
+                    aggregatedValue: 0,
+                    aggregatedAverage: 0,
+                    numberOfValues: 0
+                }
+                aggregatedCategories.push(category);
+            }
+            
+            category.numberOfValues++;
+            category.aggregatedValue+=value.answer;
+            category.aggregatedAverage = category.aggregatedValue/category.numberOfValues;
+            
+        }
+    )
+
     return (
         <ResponsiveRadar
-        data={props.data}
-        keys={[ 'knowledge', 'motivation' ]}
+        data={aggregatedCategories}
+        keys={[ 'aggregatedAverage' ]}
         indexBy="category"
+        maxValue = {5}
         margin={{ top: 70, right: 80, bottom: 40, left: 80 }}
         curve="linearClosed"
         gridShape="linear"
