@@ -27,8 +27,6 @@ export default function RadarPlot(props: { data: AnsweredQuestion[] }) {
         }
     )
 
-
-export default function RadarPlot(props: { data: object[] }) {
     return (
         <ResponsiveRadar
         data={aggregatedCategories}
