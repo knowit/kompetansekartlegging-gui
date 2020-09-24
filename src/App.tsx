@@ -9,6 +9,7 @@ import * as queries from './graphql/queries';
 import { AnsweredQuestion } from './types';
 import RadarPlot from './components/RadarPlot';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { setConstantValue } from 'typescript';
 
 Amplify.configure(awsconfig);
 
@@ -80,7 +81,9 @@ function App() {
     });
 
     getUser().then(userData => setUser(userData));
+
     getFormDefinition().then(f => setFormDefinition(f));
+
   }, []);
 
   async function getFormDefinition(){
@@ -94,6 +97,10 @@ function App() {
   }
 
   async function sendFormDefinition() {
+    /* 
+    Dirty function to upload form definition in the initial stages of the project.
+    Should not be kept in the future.
+    */
     var i;
     var question;
     var qid;

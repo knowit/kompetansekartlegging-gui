@@ -53,10 +53,17 @@ export default function Form(props: {formDefinition: any}) {
     const [answers, setAnswers] = useState(createAnswers());
 
     return (
+<<<<<<< HEAD
         <div className="form">
             {JSON.stringify(props.formDefinition)}
             {console.log(props.formDefinition)} 
             {/* {questions} */}
+=======
+        <div className="form"> 
+            <p>{JSON.stringify(typeof(props.formDefinition))}</p>
+            <p>{JSON.stringify(props.formDefinition)}</p>
+            {questions}
+>>>>>>> 2858af355300a34ef7699bc19b2ac8f7f66d067b
             <button onClick={printAllAnswers}>Print all</button>
         </div>
     )

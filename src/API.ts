@@ -216,6 +216,30 @@ export type ModelFormDefinitionFilterInput = {
   not?: ModelFormDefinitionFilterInput | null,
 };
 
+export type GetFormDefinitionWithQuestionsQueryVariables = {
+  id: string,
+};
+
+export type GetFormDefinitionWithQuestionsQuery = {
+  getFormDefinition:  {
+    __typename: "FormDefinition",
+    questions:  {
+      __typename: "ModelQuestionFormDefinitionConnectionConnection",
+      items:  Array< {
+        __typename: "QuestionFormDefinitionConnection",
+        question:  {
+          __typename: "Question",
+          id: string,
+          text: string,
+          topic: string,
+          category: string,
+        },
+      } | null > | null,
+    } | null,
+    id: string,
+  } | null,
+};
+
 export type CreateUserFormMutationVariables = {
   input: CreateUserFormInput,
   condition?: ModelUserFormConditionInput | null,
