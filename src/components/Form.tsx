@@ -37,6 +37,7 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
                         updateAnswer={updateAnswer}
                     />
                 );
+
             }
         }
 
@@ -48,16 +49,30 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
     }, [props.formDefinition])
 
     function createAnswers(): Answers {
+
+        if(!props.formDefinition) return {};
+
+        let formDef = props.formDefinition.data.getFormDefinition;
+
         let as = {} as Answers;
-        Object.entries(questionFile).forEach(([key, value]) => {
-            as[key] = {
-                topic: value.topic,
-                group: value.group,
-                category: value.category,
-                rating: null
+        if(formDef.questions){
+            if(formDef.questions.items)
+
+            for (let index = 0; index < formDef.questions.items.length; index++) {
+                const element = formDef.questions.items[index];
+                if (!element) continue;
+
+                as[element.question.id] = {
+                    topic: element.question.topic,
+                    group: "knowledge",
+                    category: element.question.category,
+                    rating: null
+                }
             }
-        });
+        }
+
         return as;
+
     };
     
     function printAllAnswers(): void {
