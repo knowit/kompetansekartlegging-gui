@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Question from './Question';
-import {Questions, Answers, FormDefinitionWithQuestions} from '../types'
+import {Questions, Answers, FormDefinitionWithQuestions, UserFormCreated} from '../types'
+import { API, graphqlOperation } from 'aws-amplify';
+import * as mutations from '../graphql/mutations'
 
 
 let questionFile: Questions = {};
@@ -78,6 +80,24 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
     function printAllAnswers(): void {
         console.log(answers);
     }
+
+    
+    async function createUserForm() {
+        let userForm : any = await API.graphql(graphqlOperation(mutations.createUserForm, {input: {}}));
+        let casted : UserFormCreated = userForm;
+
+        for (const [key, value] of Object.entries(answers)) {
+            if(!value.rating) continue;
+            API.graphql(graphqlOperation(
+                mutations.createQuestionAnswer, {input: {
+                    userFormID: casted.data.createUserForm.id, 
+                    answer: value.rating, 
+                    questionAnswerQuestionId: key
+                }
+            }))
+        }
+    }
+
     
     const [questions, setQuestions] = useState<JSX.Element[] | null>(null);
     const [answers, setAnswers] = useState(createAnswers());
@@ -85,7 +105,7 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
     return (
         <div className="form">
             {questions}
-            <button onClick={printAllAnswers}>Print all</button>
+            <button onClick={createUserForm}>Print all</button>
         </div>
     )
 }

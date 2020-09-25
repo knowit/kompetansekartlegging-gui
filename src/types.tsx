@@ -53,3 +53,14 @@ export type FormDefinitionWithQuestions = {
         }
     }
 }
+
+export type UserFormCreated = {
+    data: {
+        createUserForm: {
+            id: string,
+            createdAt: string,
+            updatedAt: string,
+            owner: string
+        }
+    }
+}
