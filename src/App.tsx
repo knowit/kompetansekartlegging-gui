@@ -84,6 +84,7 @@ function App() {
 
     getFormDefinition().then(f => {
       setFormDefinition(f)
+
     });
 
   }, []);
@@ -123,7 +124,7 @@ function App() {
     <AmplifySignOut />
     My App
     <div style={{height: '500px', width: '500px'}}><RadarPlot data={testData}/></div>
-    <Form formDefinition={formDefinition}/>
+  {(!formDefinition) ? "" : <Form formDefinition={formDefinition}/>}
   </div>
   );
 }
