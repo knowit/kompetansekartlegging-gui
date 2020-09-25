@@ -112,9 +112,7 @@ function App() {
       question = formDef[i];
       qid = "q" + i;
       res = await API.graphql(graphqlOperation(mutations.createQuestion, {input: {...question, "id": qid}}));
-      console.log(res);
       res = await API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, {input: {"formDefinitionID": fdid, "questionID": qid, "id": fdid + qid}}));
-      console.log(res);
     }
   }
 

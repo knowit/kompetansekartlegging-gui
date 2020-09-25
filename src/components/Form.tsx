@@ -22,9 +22,7 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
         let formDef = props.formDefinition.data.getFormDefinition;
 
         let qs: JSX.Element[] = [];
-        console.log(props);
         if(formDef.questions){
-            console.log("Hello");
             if(formDef.questions.items)
 
             for (let index = 0; index < formDef.questions.items.length; index++) {
@@ -41,20 +39,7 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
                 );
             }
         }
-        
-        console.log(qs);
 
-        // Object.entries(questionFile).forEach(([key, value]) => {
-        //     qs.push(
-        //         <Question 
-        //             key={key} 
-        //             listID={key}
-        //             topic={value.topic}
-        //             text={value.text}
-        //             updateAnswer={updateAnswer}
-        //         />
-        //     );
-        // });
         setQuestions(qs);
     };
 
@@ -85,7 +70,6 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
     return (
         <div className="form">
             {questions}
-            {console.log(questions)}
             <button onClick={printAllAnswers}>Print all</button>
         </div>
     )
