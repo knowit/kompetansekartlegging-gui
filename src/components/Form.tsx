@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Question from './Question';
-import {Questions, Answers} from '../types'
+import {Questions, Answers, FormDefinitionWithQuestions} from '../types'
 
 
 let questionFile: Questions = {};
-try { questionFile = require('../form.json'); }
+try { questionFile = require('../forms.json'); }
 catch (e) { console.warn("Cant find form.json") }
 
-export default function Form(props: {formDefinition: any}) {
+export default function Form(props: {formDefinition: FormDefinitionWithQuestions}) {
 
     function updateAnswer(key: string, rating: number): void {
         //Note asynchronicity, if really quick, rating might be unset.
@@ -16,21 +16,36 @@ export default function Form(props: {formDefinition: any}) {
         setAnswers(dummy);
     }
 
-    function createQuestions(): JSX.Element[] {
+    function createQuestions() {
+        if(!props.formDefinition) return [];
+
+        let formDef = props.formDefinition.data.getFormDefinition;
+
         let qs: JSX.Element[] = [];
-        Object.entries(questionFile).forEach(([key, value]) => {
-            qs.push(
-                <Question 
-                    key={key} 
-                    listID={key}
-                    topic={value.topic}
-                    text={value.text}
-                    updateAnswer={updateAnswer}
-                />
-            );
-        });
-        return qs;
+        if(formDef.questions){
+            if(formDef.questions.items)
+
+            for (let index = 0; index < formDef.questions.items.length; index++) {
+                const element = formDef.questions.items[index];
+                if (!element) continue;
+                qs.push(
+                    <Question 
+                        key={element.question.id} 
+                        listID={element.question.id}
+                        topic={element.question.topic}
+                        text={element.question.text}
+                        updateAnswer={updateAnswer}
+                    />
+                );
+            }
+        }
+
+        setQuestions(qs);
     };
+
+    useEffect(() => {
+        createQuestions();
+    }, [props.formDefinition])
 
     function createAnswers(): Answers {
         let as = {} as Answers;
@@ -49,13 +64,11 @@ export default function Form(props: {formDefinition: any}) {
         console.log(answers);
     }
     
-    const [questions] = useState(createQuestions());
+    const [questions, setQuestions] = useState<JSX.Element[] | null>(null);
     const [answers, setAnswers] = useState(createAnswers());
 
     return (
-        <div className="form"> 
-            <p>{JSON.stringify(typeof(props.formDefinition))}</p>
-            <p>{JSON.stringify(props.formDefinition)}</p>
+        <div className="form">
             {questions}
             <button onClick={printAllAnswers}>Print all</button>
         </div>

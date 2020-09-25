@@ -5,8 +5,8 @@ import Form from './components/Form'
 import Amplify, { Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
 import * as mutations from './graphql/mutations';
-import * as queries from './graphql/queries';
-import { AnsweredQuestion } from './types';
+import * as queries from './graphql/custom-queries';
+import { AnsweredQuestion, FormDefinitionWithQuestions } from './types';
 import RadarPlot from './components/RadarPlot';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import { setConstantValue } from 'typescript';
@@ -81,9 +81,16 @@ function App() {
     });
 
     getUser().then(userData => setUser(userData));
-    getFormDefinition();
-    
+
+    getFormDefinition().then(f => {
+      setFormDefinition(f)
+    });
+
   }, []);
+
+  async function getFormDefinition(){
+    return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, {id: "fd1"}));
+  }
 
   function getUser() {
     return Auth.currentAuthenticatedUser()
@@ -105,15 +112,8 @@ function App() {
       question = formDef[i];
       qid = "q" + i;
       res = await API.graphql(graphqlOperation(mutations.createQuestion, {input: {...question, "id": qid}}));
-      console.log(res);
       res = await API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, {input: {"formDefinitionID": fdid, "questionID": qid, "id": fdid + qid}}));
-      console.log(res);
     }
-  }
-
-  async function getFormDefinition() {
-    let res = await API.graphql(graphqlOperation(queries.getFormDefinition, {id: "fd1"}));
-    setFormDefinition(res);
   }
 
   return (
