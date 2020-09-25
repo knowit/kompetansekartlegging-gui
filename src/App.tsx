@@ -5,8 +5,8 @@ import Form from './components/Form'
 import Amplify, { Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
 import * as mutations from './graphql/mutations';
-import * as queries from './graphql/queries';
-import { AnsweredQuestion } from './types';
+import * as queries from './graphql/custom-queries';
+import { AnsweredQuestion, FormDefinitionWithQuestions } from './types';
 import RadarPlot from './components/RadarPlot';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import { setConstantValue } from 'typescript';
@@ -82,12 +82,14 @@ function App() {
 
     getUser().then(userData => setUser(userData));
 
-    getFormDefinition().then(f => setFormDefinition(f));
+    getFormDefinition().then(f => {
+      setFormDefinition(f)
+    });
 
   }, []);
 
   async function getFormDefinition(){
-    return API.graphql(graphqlOperation(queries.getFormDefinition, {id: "fd1"}));
+    return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, {id: "fd1"}));
   }
 
   function getUser() {
