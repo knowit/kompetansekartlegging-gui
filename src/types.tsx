@@ -1,3 +1,5 @@
+import { GetFormDefinitionWithQuestionsQuery } from "./API";
+
 export type AnswerData = {
     topic: string,
     group: string,
@@ -28,3 +30,26 @@ export type AnsweredQuestion = {
     question: QuestionData,
     answer: number
 };
+
+// export interface FormDefinitionWithQuestions 
+//     extends Omit<Exclude<GetFormDefinitionWithQuestionsQuery["getFormDefinition"], null>, "__typename"> {}
+
+export type FormDefinitionWithQuestions = {
+    data: {
+        getFormDefinition: {
+            id: String,
+            questions: {
+                items: [
+                    {
+                        question: {
+                            id: string,
+                            text: string,
+                            topic: string,
+                            category: string
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
