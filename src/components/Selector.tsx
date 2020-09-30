@@ -5,10 +5,10 @@ type Props = {
     title: string
 }
 
-function Selector({radiobuttonChanged, title}: Props) {
+const Selector = ({...props}: Props) => {
     return (
-        <div onChange={radiobuttonChanged}>
-            {[0,1,2,3,4,5].map(v => <input key={v} type="radio" id={String(v)} name={title} value={v}></input> )}
+        <div onChange={props.radiobuttonChanged}>
+            {[0,1,2,3,4,5].map(v => <input key={v} type="radio" id={String(v)} name={props.title} value={v}></input>)}
         </div>
     )
 }
