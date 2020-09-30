@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import Question from './Question';
 import {Questions, Answers, FormDefinitionWithQuestions, UserFormCreated} from '../types'
-import { API, graphqlOperation } from 'aws-amplify';
+import {API, graphqlOperation} from 'aws-amplify';
 import * as mutations from '../graphql/mutations'
+import * as helper from '../helperFunctions'
 
+type Props = {
+    formDefinition: FormDefinitionWithQuestions
+}
 
-let questionFile: Questions = {};
-try { questionFile = require('../forms.json'); }
-catch (e) { console.warn("Cant find form.json") }
+const Form = ({...props}: Props) => {
 
-export default function Form(props: {formDefinition: FormDefinitionWithQuestions}) {
-
-    function updateAnswer(key: string, rating: number): void {
-        //Note asynchronicity, if really quick, rating might be unset.
-        let dummy = {...answers};
-        dummy[key].rating = rating;
-        setAnswers(dummy);
+    const updateAnswer = (key: string, rating: number): void => {
+        let newAnswers = {...answers};
+        newAnswers[key].rating = rating;
+        setAnswers(newAnswers);
     }
 
-    function createQuestions() {
-        if(!props.formDefinition) return [];
+    const createQuestions = (): void => {
+        if(!props.formDefinition) return;
 
         let formDef = props.formDefinition.data.getFormDefinition;
 
@@ -42,7 +41,6 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
 
             }
         }
-
         setQuestions(qs);
     };
 
@@ -50,7 +48,7 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
         createQuestions();
     }, [props.formDefinition])
 
-    function createAnswers(): Answers {
+    const createAnswers = (): Answers => {
 
         if(!props.formDefinition) return {};
 
@@ -72,25 +70,17 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
                 }
             }
         }
-
         return as;
-
     };
     
-    function printAllAnswers(): void {
-        console.log(answers);
-    }
-
-    
-    async function createUserForm() {
-        let userForm : any = await API.graphql(graphqlOperation(mutations.createUserForm, {input: {}}));
-        let casted : UserFormCreated = userForm;
-
+    //TODO: Need more refactoring
+    const createUserForm = async () => {
+        let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {}})).data;
         for (const [key, value] of Object.entries(answers)) {
             if(!value.rating) continue;
             API.graphql(graphqlOperation(
                 mutations.createQuestionAnswer, {input: {
-                    userFormID: casted.data.createUserForm.id, 
+                    userFormID: userForm?.data.createUserForm.id, 
                     answer: value.rating, 
                     questionAnswerQuestionId: key
                 }
@@ -109,3 +99,5 @@ export default function Form(props: {formDefinition: FormDefinitionWithQuestions
         </div>
     )
 }
+
+export default Form;
