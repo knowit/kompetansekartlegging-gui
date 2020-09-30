@@ -5,9 +5,10 @@ import Amplify, {Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
 import * as mutations from './graphql/mutations';
 import * as queries from './graphql/custom-queries';
-import {AnsweredQuestion} from './types';
+import {AnsweredQuestion, Answers, UserFormCreated} from './types';
 import RadarPlot from './components/RadarPlot';
 import {withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
+import * as helper from './helperFunctions'
 
 Amplify.configure(awsconfig);
 
@@ -60,8 +61,52 @@ let formDef = require('./form2.json')
 const App = () => {
     const [user, setUser] = useState<any | null>(null);
     const [formDefinition, setFormDefinition] = useState<any | null>(null);
-    
 
+    const updateAnswer = (key: string, rating: number): void => {
+        console.log(key);
+        console.log(rating);
+        let newAnswers = {...answers};
+        console.log(answers);
+        console.log(newAnswers);
+        newAnswers[key].rating = rating;
+        setAnswers(newAnswers);
+    }
+
+    const createAnswers = (): Answers => {
+        if(!formDefinition) return {};
+        let formDef = formDefinition.data.getFormDefinition;
+        let as = {} as Answers;
+        if(formDef.questions.items){
+            for (let index = 0; index < formDef.questions.items.length; index++) {
+                const element = formDef.questions.items[index];
+                if (!element) continue;
+                as[element.question.id] = {
+                    topic: element.question.topic,
+                    group: "knowledge",
+                    category: element.question.category,
+                    rating: null
+                }
+            }
+        }
+        return as;
+    };
+
+    //TODO: Need more refactoring
+    const createUserForm = async () => {
+        let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {}})).data;
+        for (const [key, value] of Object.entries(answers)) {
+            if(!value.rating) continue;
+            API.graphql(graphqlOperation(
+                mutations.createQuestionAnswer, {input: {
+                    userFormID: userForm?.data.createUserForm.id, 
+                    answer: value.rating, 
+                    questionAnswerQuestionId: key
+                }
+            }))
+        }
+    }
+
+    const [answers, setAnswers] = useState(createAnswers());
 
     useEffect(() => {
         Hub.listen('auth', ({ payload: { event, data } }) => {
@@ -120,7 +165,7 @@ const App = () => {
             <AmplifySignOut />
             My App
             <div style={{ height: '500px', width: '500px' }}><RadarPlot data={testData} /></div>
-            {(!formDefinition) ? "" : <Form formDefinition={formDefinition} />}
+            {(!formDefinition) ? "" : <Form updateAnswer={updateAnswer} formDefinition={formDefinition} createUserForm={createUserForm} />}
         </div>
     );
 }
