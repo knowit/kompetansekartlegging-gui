@@ -1,21 +1,13 @@
 import React from 'react'
+import { FromAppProps } from '../types'
 import Router from './Router'
 
-type Props = {
-    createUserForm: () => void,
-    updateAnswer: (key: string, rating: number) => void,
-    formDefinition: any
-}
 
-const Content = ({...props}: Props) => {
-
-
-
-
+const Content = ({...props}: FromAppProps) => {
 
     return(
         <div>
-            <Router />
+            <Router {...props} />
         </div>
     );
 

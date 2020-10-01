@@ -1,8 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { FromAppProps } from '../types';
 import * as Page from './pages/Pages'; //Directory file for all pages
 
-const Router = () => {
+
+const Router = ({...props}: FromAppProps) => {
 
 
 
@@ -32,10 +34,10 @@ const Router = () => {
                             <Page.UserPage />
                         </Route>
                         <Route path="/answer">
-                            <Page.AnswerPage />
+                            <Page.AnswerPage {...props.answerProps} />
                         </Route>
                         <Route path="/stat">
-                            <Page.StatPage />
+                            <Page.StatsPage />
                         </Route>
                         <Route path="/">
                             <Page.HomePage />

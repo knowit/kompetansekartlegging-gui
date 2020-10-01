@@ -1,8 +1,13 @@
 import React from 'react'
+import Form from '../Form'
 
+type Props = {
+    createUserForm: () => void,
+    updateAnswer: (key: string, rating: number) => void,
+    formDefinition: any
+}
 
-
-const AnswerPage = () => {
+const AnswerPage = ({...props}: Props) => {
 
 
 
@@ -10,7 +15,7 @@ const AnswerPage = () => {
 
     return(
         <div>
-            Answer Page
+            <Form {...props} />
         </div>
     );
 
