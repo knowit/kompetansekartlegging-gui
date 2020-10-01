@@ -7,6 +7,7 @@ import {withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import Content from './components/Content';
 import NavBar from './components/NavBar';
 import { Footer } from './components/Footer';
+import { BrowserRouter } from 'react-router-dom';
 
 Amplify.configure(awsconfig);
 
@@ -63,14 +64,16 @@ const App = () => {
 
     return (
         <div>
-            <NavBar/>
-            <p>User: {user ? JSON.stringify(user.attributes) : 'None'}</p>
-            <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
-            <AmplifySignOut />
-            My App
-            <Content />
-            {/*(!formDefinition) ? "" : <Form updateAnswer={updateAnswer} formDefinition={formDefinition} createUserForm={createUserForm} />*/}
-            <Footer/>
+            <BrowserRouter>
+                <NavBar/>
+                <p>User: {user ? JSON.stringify(user.attributes) : 'None'}</p>
+                <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
+                <AmplifySignOut />
+                My App
+                <Content />
+                {/*(!formDefinition) ? "" : <Form updateAnswer={updateAnswer} formDefinition={formDefinition} createUserForm={createUserForm} />*/}
+                <Footer/>
+            </BrowserRouter>
         </div>
     );
 }
