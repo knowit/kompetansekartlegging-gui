@@ -10,6 +10,7 @@ import RadarPlot from './components/RadarPlot';
 import {withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import * as helper from './helperFunctions'
 import Content from './components/Content';
+import NavBar from './components/NavBar';
 
 Amplify.configure(awsconfig);
 
@@ -165,6 +166,7 @@ const App = () => {
 
     return (
         <div>
+            <NavBar/>
             <p>User: {user ? JSON.stringify(user.attributes) : 'None'}</p>
             <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
             <AmplifySignOut />
