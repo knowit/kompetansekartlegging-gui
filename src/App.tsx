@@ -11,6 +11,7 @@ import {withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import * as helper from './helperFunctions'
 import Content from './components/Content';
 import NavBar from './components/NavBar';
+import { Footer } from './components/Footer';
 
 Amplify.configure(awsconfig);
 
@@ -183,6 +184,7 @@ const App = () => {
                 }}
             />}
             {/*(!formDefinition) ? "" : <Form updateAnswer={updateAnswer} formDefinition={formDefinition} createUserForm={createUserForm} />*/}
+            <Footer/>
         </div>
     );
 }
