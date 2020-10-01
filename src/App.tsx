@@ -61,16 +61,7 @@ let formDef = require('./form2.json')
 const App = () => {
     const [user, setUser] = useState<any | null>(null);
     const [formDefinition, setFormDefinition] = useState<any | null>(null);
-
-    const updateAnswer = (key: string, rating: number): void => {
-        console.log(key);
-        console.log(rating);
-        let newAnswers = {...answers};
-        console.log(answers);
-        console.log(newAnswers);
-        newAnswers[key].rating = rating;
-        setAnswers(newAnswers);
-    }
+    const [answers, setAnswers] = useState<Answers>();
 
     const createAnswers = (): Answers => {
         if(!formDefinition) return {};
@@ -91,22 +82,35 @@ const App = () => {
         return as;
     };
 
+    const updateAnswer = (key: string, rating: number): void => {
+        let newAnswers = {...answers};
+        newAnswers[key].rating = rating;
+        setAnswers(newAnswers);
+    }
+
+    useEffect(() => {
+        setAnswers(createAnswers());
+    }, [formDefinition]);
+
     //TODO: Need more refactoring
     const createUserForm = async () => {
         let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {}})).data;
+        console.log(userForm);
+        if(!answers){
+            console.warn("answers is undefined");
+            return;
+        }
         for (const [key, value] of Object.entries(answers)) {
             if(!value.rating) continue;
             API.graphql(graphqlOperation(
                 mutations.createQuestionAnswer, {input: {
-                    userFormID: userForm?.data.createUserForm.id, 
+                    userFormID: userForm?.createUserForm.id, 
                     answer: value.rating, 
                     questionAnswerQuestionId: key
                 }
             }))
         }
     }
-
-    const [answers, setAnswers] = useState(createAnswers());
 
     useEffect(() => {
         Hub.listen('auth', ({ payload: { event, data } }) => {
