@@ -1,4 +1,5 @@
 import React from 'react'
+import Router from './Router'
 
 type Props = {
     createUserForm: () => void,
@@ -14,7 +15,7 @@ const Content = ({...props}: Props) => {
 
     return(
         <div>
-            Content
+            <Router />
         </div>
     );
 
