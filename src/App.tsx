@@ -169,7 +169,6 @@ const App = () => {
             <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
             <AmplifySignOut />
             My App
-            <div style={{ height: '500px', width: '500px' }}><RadarPlot data={testData} /></div>
             {(!formDefinition) ? "" : 
             <Content 
                 answerProps={{

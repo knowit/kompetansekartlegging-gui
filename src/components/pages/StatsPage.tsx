@@ -1,8 +1,10 @@
 import React from 'react'
+import { StatsProps } from '../../types';
+import RadarPlot from '../RadarPlot';
 
 
 
-const StatsPage = () => {
+const StatsPage = ({...props}: StatsProps) => {
 
 
 
@@ -10,7 +12,7 @@ const StatsPage = () => {
 
     return(
         <div>
-            Stat Page
+            <div style={{ height: '500px', width: '500px' }}><RadarPlot data={props.data} /></div>
         </div>
     );
 

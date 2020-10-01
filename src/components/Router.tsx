@@ -37,7 +37,7 @@ const Router = ({...props}: FromAppProps) => {
                             <Page.AnswerPage {...props.answerProps} />
                         </Route>
                         <Route path="/stat">
-                            <Page.StatsPage />
+                            <Page.StatsPage {...props.statsProps} />
                         </Route>
                         <Route path="/">
                             <Page.HomePage />

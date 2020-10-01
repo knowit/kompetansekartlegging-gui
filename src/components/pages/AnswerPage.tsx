@@ -1,18 +1,10 @@
 import React from 'react'
+import { AnswerProps } from '../../types';
 import Form from '../Form'
 
-type Props = {
-    createUserForm: () => void,
-    updateAnswer: (key: string, rating: number) => void,
-    formDefinition: any
-}
 
-const AnswerPage = ({...props}: Props) => {
-
-
-
-
-
+const AnswerPage = ({...props}: AnswerProps) => {
+    
     return(
         <div>
             <Form {...props} />
