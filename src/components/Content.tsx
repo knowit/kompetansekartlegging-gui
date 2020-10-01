@@ -1,8 +1,12 @@
 import React from 'react'
 
+type Props = {
+    createUserForm: () => void,
+    updateAnswer: (key: string, rating: number) => void,
+    formDefinition: any
+}
 
-
-const Content = () => {
+const Content = ({...props}: Props) => {
 
 
 
