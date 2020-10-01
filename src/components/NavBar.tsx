@@ -1,18 +1,20 @@
 import { AmplifySignOut } from '@aws-amplify/ui-react'
 import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import MenuIcon from '@material-ui/icons/Menu'
 import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      flexGrow: 1,
+        flexGrow: 1,
+      },
+    navigation: {
+    flexGrow: 1,
     },
-    menuButton: {
+    logoutButton: {
       marginRight: theme.spacing(2),
     },
-    title: {
-      flexGrow: 1,
+    button: {
+      width:"150px"
     },
   }));
 
@@ -23,13 +25,11 @@ const NavBar = () => {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <MenuIcon/>
-                    </IconButton> */}
-                    <Typography variant="h6" className={classes.title}>
-                        News
-                    </Typography>
-                    <AmplifySignOut/>
+                    <div className={classes.navigation}>
+                        <Button variant="contained" href="/stat" className={classes.button}>Statistics</Button>
+                        <Button variant="contained" href="/answer" className={classes.button}>Answers</Button>
+                    </div>
+                    <AmplifySignOut className={classes.logoutButton}/>
                 </Toolbar>
             </AppBar>
         </div>
