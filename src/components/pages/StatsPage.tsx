@@ -2,7 +2,7 @@ import React from 'react'
 
 
 
-const StatPage = () => {
+const StatsPage = () => {
 
 
 
@@ -16,4 +16,4 @@ const StatPage = () => {
 
 };
 
-export default StatPage;
+export default StatsPage;
