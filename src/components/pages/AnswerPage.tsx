@@ -1,16 +1,13 @@
 import React from 'react'
+import { AnswerProps } from '../../types';
+import Form from '../Form'
 
 
-
-const AnswerPage = () => {
-
-
-
-
-
+const AnswerPage = ({...props}: AnswerProps) => {
+    
     return(
         <div>
-            Answer Page
+            <Form {...props} />
         </div>
     );
 

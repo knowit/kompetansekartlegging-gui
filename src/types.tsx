@@ -62,3 +62,18 @@ export type UserFormCreated = {
         owner: string
     }
 }
+
+export type AnswerProps = {
+    createUserForm: () => void,
+    updateAnswer: (key: string, rating: number) => void,
+    formDefinition: any
+}
+
+export type StatsProps = {
+    data: AnsweredQuestion[]
+}
+
+export type FromAppProps = {
+    answerProps: AnswerProps,
+    statsProps: StatsProps
+}

@@ -1,13 +1,8 @@
 import React, {useEffect, useState} from 'react'
+import { AnswerProps } from '../types';
 import Question from './Question';
 
-type Props = {
-    createUserForm: () => void,
-    updateAnswer: (key: string, rating: number) => void,
-    formDefinition: any
-}
-
-const Form = ({...props}: Props) => {
+const Form = ({...props}: AnswerProps) => {
 
     const createQuestions = (): JSX.Element[] => {
         if(!props.formDefinition) return[];
