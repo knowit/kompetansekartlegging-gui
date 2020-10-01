@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react'
-import { AnsweredQuestion, Answers, FromAppProps, UserFormCreated } from '../types'
+import { AnsweredQuestion, Answers, UserFormCreated } from '../types'
 import Router from './Router'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
@@ -49,7 +49,6 @@ const testData: AnsweredQuestion[] = [
         answer: 2
     },
 ]
-
 
 const Content = () => {
     

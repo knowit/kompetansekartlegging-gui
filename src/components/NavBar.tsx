@@ -1,5 +1,5 @@
 import { AmplifySignOut } from '@aws-amplify/ui-react'
-import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Button, Toolbar } from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import React from 'react'
 import { useHistory } from "react-router-dom";
