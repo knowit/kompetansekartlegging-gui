@@ -12,7 +12,6 @@ const Router = ({...props}: FromAppProps) => {
 
     return (
         <div>
-            <BrowserRouter>
                 <div>
                     <nav>
                         <ul>
@@ -44,7 +43,6 @@ const Router = ({...props}: FromAppProps) => {
                         </Route>
                     </Switch>
                 </div>
-            </BrowserRouter>
         </div>
     );
 

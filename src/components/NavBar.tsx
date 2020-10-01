@@ -2,6 +2,7 @@ import { AmplifySignOut } from '@aws-amplify/ui-react'
 import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import React from 'react'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,14 +21,19 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
     const classes = useStyles();
+    const history = useHistory();
+
+    function handleClick(path: string){
+        history.push(path);
+    }
 
     return (
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
                     <div className={classes.navigation}>
-                        <Button variant="contained" href="/stat" className={classes.button}>Statistics</Button>
-                        <Button variant="contained" href="/answer" className={classes.button}>Answers</Button>
+                        <Button variant="contained" onClick={() => handleClick("/stat")} className={classes.button}>Statistics</Button>
+                        <Button variant="contained" onClick={() => handleClick("/answer")}  className={classes.button}>Answers</Button>
                     </div>
                     <AmplifySignOut className={classes.logoutButton}/>
                 </Toolbar>
