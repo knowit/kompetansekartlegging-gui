@@ -92,16 +92,22 @@ const Content = () => {
             console.warn("answers is undefined");
             return;
         }
+
+        let questionAnswers = [];
+
         for (const [key, value] of Object.entries(answers)) {
             if(!value.rating) continue;
-            API.graphql(graphqlOperation(
-                mutations.createQuestionAnswer, {input: {
+            questionAnswers.push(
+                {
                     userFormID: userForm?.createUserForm.id, 
                     answer: value.rating, 
                     questionAnswerQuestionId: key
                 }
-            }))
+            )
         }
+
+        API.graphql(graphqlOperation(mutations.batchCreateQuestionAnswer, {input: questionAnswers}));
+
     }
 
     useEffect(() => {
@@ -111,7 +117,7 @@ const Content = () => {
     }, []);
 
     async function getFormDefinition() {
-        return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, { id: "fd1" }));
+        return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, { id: "fd2" }));
     }
 
     return(
