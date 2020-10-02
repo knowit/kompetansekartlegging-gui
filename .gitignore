@@ -38,5 +38,10 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .gitsecret/keys/random_seed
+
+src/API.ts
+src/graphql
+!src/graphql/custom-*
+
 !*.secret
 amplify/team-provider-info.json
