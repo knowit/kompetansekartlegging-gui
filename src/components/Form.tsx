@@ -8,7 +8,7 @@ const Form = ({...props}: AnswerProps) => {
         if(!props.formDefinition) return[];
         let formDef = props.formDefinition.data.getFormDefinition;
         let qs: JSX.Element[] = [];
-        if(formDef.questions.items){
+        if(formDef?.questions.items){
             for (let index = 0; index < formDef.questions.items.length; index++) {
                 const element = formDef.questions.items[index];
                 if (!element) continue;
