@@ -41,3 +41,14 @@ type QuestionFormDefinitionConnection
     question: Question! @connection(fields: ["questionID"])
     formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
   }
+
+input CreateQuestionAnswerInput {
+  id: ID
+  userFormID: ID!
+  answer: Int!
+  questionAnswerQuestionId: ID!
+}
+
+type Mutation {
+  batchCreateQuestionAnswer(input: [CreateQuestionAnswerInput]): [QuestionAnswer]
+}
