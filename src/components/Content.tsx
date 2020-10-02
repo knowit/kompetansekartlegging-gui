@@ -59,7 +59,7 @@ const Content = () => {
         if(!formDefinition) return {};
         let formDef = formDefinition.data.getFormDefinition;
         let as = {} as Answers;
-        if(formDef.questions.items){
+        if(formDef?.questions.items){
             for (let index = 0; index < formDef.questions.items.length; index++) {
                 const element = formDef.questions.items[index];
                 if (!element) continue;
