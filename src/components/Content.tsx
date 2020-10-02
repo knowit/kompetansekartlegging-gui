@@ -117,7 +117,7 @@ const Content = () => {
     }, []);
 
     async function getFormDefinition() {
-        return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, { id: "fd2" }));
+        return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, { id: "fd1" }));
     }
 
     return(
