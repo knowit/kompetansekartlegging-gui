@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(2),
     },
     button: {
-      width:"150px"
+      width:"100px"
     },
   }));
 
@@ -32,8 +32,11 @@ const NavBar = () => {
             <AppBar position="static">
                 <Toolbar>
                     <div className={classes.navigation}>
-                        <Button variant="contained" onClick={() => handleClick("/stat")} className={classes.button}>Statistics</Button>
+                        <Button variant="contained" onClick={() => handleClick("/home")} className={classes.button}>Home</Button>
+                        <Button variant="contained" onClick={() => handleClick("/stats")} className={classes.button}>Statistics</Button>
                         <Button variant="contained" onClick={() => handleClick("/answer")}  className={classes.button}>Answers</Button>
+                        <Button variant="contained" onClick={() => handleClick("/user")}  className={classes.button}>User</Button>
+                        <Button variant="contained" onClick={() => handleClick("/admin")}  className={classes.button}>Admin</Button>
                     </div>
                     <AmplifySignOut className={classes.logoutButton}/>
                 </Toolbar>

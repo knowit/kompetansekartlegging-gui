@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { FromAppProps } from '../types';
 import * as Page from './pages/Pages'; //Directory file for all pages
 
@@ -9,21 +9,29 @@ const Router = ({...props}: FromAppProps) => {
     return (
         <div>
             <Switch>
+                <Route exact path="/">
+                    <Redirect to="/home" />
+                </Route>
                 <Route path="/admin">
-                    <Page.AdminPage />
+                    <Page.WIPPage />
                 </Route>
                 <Route path="/user">
-                    <Page.UserPage />
+                    <Page.WIPPage />
                 </Route>
                 <Route path="/answer">
                     <Page.AnswerPage {...props.answerProps} />
                 </Route>
-                <Route path="/stat">
+                <Route path="/stats">
                     <Page.StatsPage {...props.statsProps} />
                 </Route>
-                <Route path="/">
+                <Route path="/home">
                     <Page.HomePage />
                 </Route>
+                <Route path="/*">
+                    <Page.Page404 />
+                </Route>
+                
+                
             </Switch>
         </div>
     );
