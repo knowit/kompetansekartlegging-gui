@@ -17,6 +17,14 @@ export const onCreateUserForm = /* GraphQL */ `
         }
         nextToken
       }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       owner
@@ -38,6 +46,14 @@ export const onUpdateUserForm = /* GraphQL */ `
         }
         nextToken
       }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       owner
@@ -58,6 +74,14 @@ export const onDeleteUserForm = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt

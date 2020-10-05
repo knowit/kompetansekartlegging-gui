@@ -17,6 +17,14 @@ export const getUserForm = /* GraphQL */ `
         }
         nextToken
       }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       owner
@@ -34,6 +42,11 @@ export const listUserForms = /* GraphQL */ `
         id
         questionAnswers {
           nextToken
+        }
+        formDefinition {
+          id
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt

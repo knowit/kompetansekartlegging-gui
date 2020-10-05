@@ -11,6 +11,7 @@ export type CreateQuestionAnswerInput = {
 
 export type CreateUserFormInput = {
   id?: string | null,
+  userFormFormDefinitionId: string,
 };
 
 export type ModelUserFormConditionInput = {
@@ -21,6 +22,7 @@ export type ModelUserFormConditionInput = {
 
 export type UpdateUserFormInput = {
   id: string,
+  userFormFormDefinitionId?: string | null,
 };
 
 export type DeleteUserFormInput = {
@@ -291,6 +293,16 @@ export type CreateUserFormMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -319,6 +331,16 @@ export type UpdateUserFormMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -347,6 +369,16 @@ export type DeleteUserFormMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -746,6 +778,16 @@ export type GetUserFormQuery = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -768,6 +810,12 @@ export type ListUserFormsQuery = {
         __typename: "ModelQuestionAnswerConnection",
         nextToken: string | null,
       } | null,
+      formDefinition:  {
+        __typename: "FormDefinition",
+        id: string,
+        createdAt: string,
+        updatedAt: string,
+      },
       createdAt: string,
       updatedAt: string,
       owner: string | null,
@@ -959,6 +1007,16 @@ export type OnCreateUserFormSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -986,6 +1044,16 @@ export type OnUpdateUserFormSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -1013,6 +1081,16 @@ export type OnDeleteUserFormSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
