@@ -12,6 +12,7 @@ export const batchCreateQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -134,6 +135,7 @@ export const createQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -160,6 +162,7 @@ export const updateQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -186,6 +189,7 @@ export const deleteQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -209,6 +213,7 @@ export const createQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -234,6 +239,7 @@ export const updateQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -259,6 +265,7 @@ export const deleteQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -357,6 +364,7 @@ export const createQuestionFormDefinitionConnection = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -393,6 +401,7 @@ export const updateQuestionFormDefinitionConnection = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -429,6 +438,7 @@ export const deleteQuestionFormDefinitionConnection = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
