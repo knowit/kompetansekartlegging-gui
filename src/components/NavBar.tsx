@@ -32,7 +32,7 @@ const NavBar = () => {
             <AppBar position="static">
                 <Toolbar>
                     <div className={classes.navigation}>
-                        <Button variant="contained" onClick={() => handleClick("/")} className={classes.button}>Home</Button>
+                        <Button variant="contained" onClick={() => handleClick("/home")} className={classes.button}>Home</Button>
                         <Button variant="contained" onClick={() => handleClick("/stats")} className={classes.button}>Statistics</Button>
                         <Button variant="contained" onClick={() => handleClick("/answer")}  className={classes.button}>Answers</Button>
                         <Button variant="contained" onClick={() => handleClick("/user")}  className={classes.button}>User</Button>
