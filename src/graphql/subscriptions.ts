@@ -17,6 +17,14 @@ export const onCreateUserForm = /* GraphQL */ `
         }
         nextToken
       }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       owner
@@ -37,6 +45,14 @@ export const onUpdateUserForm = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -59,6 +75,14 @@ export const onDeleteUserForm = /* GraphQL */ `
         }
         nextToken
       }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       owner
@@ -75,6 +99,7 @@ export const onCreateQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -98,6 +123,7 @@ export const onUpdateQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -121,6 +147,7 @@ export const onDeleteQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -141,6 +168,7 @@ export const onCreateQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -163,6 +191,7 @@ export const onUpdateQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -185,6 +214,7 @@ export const onDeleteQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -268,6 +298,7 @@ export const onCreateQuestionFormDefinitionConnection = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -298,6 +329,7 @@ export const onUpdateQuestionFormDefinitionConnection = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -328,6 +360,7 @@ export const onDeleteQuestionFormDefinitionConnection = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }

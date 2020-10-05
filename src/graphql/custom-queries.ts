@@ -12,6 +12,7 @@ export const getFormDefinitionWithQuestions = /* GraphQL */ `
             text
             topic
             category
+            type
           }
         }
       }

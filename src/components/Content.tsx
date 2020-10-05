@@ -86,7 +86,8 @@ const Content = () => {
     
     //TODO: Need more refactoring
     const createUserForm = async () => {
-        let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {}})).data;
+        let fdid = formDefinition.data.getFormDefinition.id
+        let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"userFormFormDefinitionId": fdid}})).data;
         console.log(userForm);
         if(!answers){
             console.warn("answers is undefined");
@@ -118,7 +119,7 @@ const Content = () => {
 
     async function getFormDefinition() {
         //TODO: Should remove hard-coding to look at id fd1, and rather find last
-        return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, { id: "fd1" }));
+        return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, { id: "fd5" }));
     }
 
     return(

@@ -11,6 +11,7 @@ export type CreateQuestionAnswerInput = {
 
 export type CreateUserFormInput = {
   id?: string | null,
+  userFormFormDefinitionId: string,
 };
 
 export type ModelUserFormConditionInput = {
@@ -21,6 +22,7 @@ export type ModelUserFormConditionInput = {
 
 export type UpdateUserFormInput = {
   id: string,
+  userFormFormDefinitionId?: string | null,
 };
 
 export type DeleteUserFormInput = {
@@ -103,12 +105,14 @@ export type CreateQuestionInput = {
   text: string,
   topic: string,
   category: string,
+  type: string,
 };
 
 export type ModelQuestionConditionInput = {
   text?: ModelStringInput | null,
   topic?: ModelStringInput | null,
   category?: ModelStringInput | null,
+  type?: ModelStringInput | null,
   and?: Array< ModelQuestionConditionInput | null > | null,
   or?: Array< ModelQuestionConditionInput | null > | null,
   not?: ModelQuestionConditionInput | null,
@@ -135,6 +139,7 @@ export type UpdateQuestionInput = {
   text?: string | null,
   topic?: string | null,
   category?: string | null,
+  type?: string | null,
 };
 
 export type DeleteQuestionInput = {
@@ -204,6 +209,7 @@ export type ModelQuestionFilterInput = {
   text?: ModelStringInput | null,
   topic?: ModelStringInput | null,
   category?: ModelStringInput | null,
+  type?: ModelStringInput | null,
   and?: Array< ModelQuestionFilterInput | null > | null,
   or?: Array< ModelQuestionFilterInput | null > | null,
   not?: ModelQuestionFilterInput | null,
@@ -255,6 +261,7 @@ export type BatchCreateQuestionAnswerMutation = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -291,6 +298,16 @@ export type CreateUserFormMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -319,6 +336,16 @@ export type UpdateUserFormMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -347,6 +374,16 @@ export type DeleteUserFormMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -369,6 +406,7 @@ export type CreateQuestionAnswerMutation = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -399,6 +437,7 @@ export type UpdateQuestionAnswerMutation = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -429,6 +468,7 @@ export type DeleteQuestionAnswerMutation = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -455,6 +495,7 @@ export type CreateQuestionMutation = {
     text: string,
     topic: string,
     category: string,
+    type: string,
     formDefinitions:  {
       __typename: "ModelQuestionFormDefinitionConnectionConnection",
       items:  Array< {
@@ -484,6 +525,7 @@ export type UpdateQuestionMutation = {
     text: string,
     topic: string,
     category: string,
+    type: string,
     formDefinitions:  {
       __typename: "ModelQuestionFormDefinitionConnectionConnection",
       items:  Array< {
@@ -513,6 +555,7 @@ export type DeleteQuestionMutation = {
     text: string,
     topic: string,
     category: string,
+    type: string,
     formDefinitions:  {
       __typename: "ModelQuestionFormDefinitionConnectionConnection",
       items:  Array< {
@@ -625,6 +668,7 @@ export type CreateQuestionFormDefinitionConnectionMutation = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -664,6 +708,7 @@ export type UpdateQuestionFormDefinitionConnectionMutation = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -703,6 +748,7 @@ export type DeleteQuestionFormDefinitionConnectionMutation = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -746,6 +792,16 @@ export type GetUserFormQuery = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -768,6 +824,12 @@ export type ListUserFormsQuery = {
         __typename: "ModelQuestionAnswerConnection",
         nextToken: string | null,
       } | null,
+      formDefinition:  {
+        __typename: "FormDefinition",
+        id: string,
+        createdAt: string,
+        updatedAt: string,
+      },
       createdAt: string,
       updatedAt: string,
       owner: string | null,
@@ -791,6 +853,7 @@ export type GetQuestionAnswerQuery = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -824,6 +887,7 @@ export type ListQuestionAnswersQuery = {
         text: string,
         topic: string,
         category: string,
+        type: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -847,6 +911,7 @@ export type GetQuestionQuery = {
     text: string,
     topic: string,
     category: string,
+    type: string,
     formDefinitions:  {
       __typename: "ModelQuestionFormDefinitionConnectionConnection",
       items:  Array< {
@@ -879,6 +944,7 @@ export type ListQuestionsQuery = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -959,6 +1025,16 @@ export type OnCreateUserFormSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -986,6 +1062,16 @@ export type OnUpdateUserFormSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -1013,6 +1099,16 @@ export type OnDeleteUserFormSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    formDefinition:  {
+      __typename: "FormDefinition",
+      id: string,
+      questions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
     owner: string | null,
@@ -1034,6 +1130,7 @@ export type OnCreateQuestionAnswerSubscription = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -1063,6 +1160,7 @@ export type OnUpdateQuestionAnswerSubscription = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -1092,6 +1190,7 @@ export type OnDeleteQuestionAnswerSubscription = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -1113,6 +1212,7 @@ export type OnCreateQuestionSubscription = {
     text: string,
     topic: string,
     category: string,
+    type: string,
     formDefinitions:  {
       __typename: "ModelQuestionFormDefinitionConnectionConnection",
       items:  Array< {
@@ -1137,6 +1237,7 @@ export type OnUpdateQuestionSubscription = {
     text: string,
     topic: string,
     category: string,
+    type: string,
     formDefinitions:  {
       __typename: "ModelQuestionFormDefinitionConnectionConnection",
       items:  Array< {
@@ -1161,6 +1262,7 @@ export type OnDeleteQuestionSubscription = {
     text: string,
     topic: string,
     category: string,
+    type: string,
     formDefinitions:  {
       __typename: "ModelQuestionFormDefinitionConnectionConnection",
       items:  Array< {
@@ -1253,6 +1355,7 @@ export type OnCreateQuestionFormDefinitionConnectionSubscription = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -1287,6 +1390,7 @@ export type OnUpdateQuestionFormDefinitionConnectionSubscription = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
@@ -1321,6 +1425,7 @@ export type OnDeleteQuestionFormDefinitionConnectionSubscription = {
       text: string,
       topic: string,
       category: string,
+      type: string,
       formDefinitions:  {
         __typename: "ModelQuestionFormDefinitionConnectionConnection",
         nextToken: string | null,
