@@ -40,3 +40,6 @@ amplifytools.xcconfig
 .gitsecret/keys/random_seed
 !*.secret
 amplify/team-provider-info.json
+
+
+todo
