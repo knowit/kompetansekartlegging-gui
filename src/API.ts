@@ -2,6 +2,13 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type CreateQuestionAnswerInput = {
+  id?: string | null,
+  userFormID: string,
+  answer: number,
+  questionAnswerQuestionId: string,
+};
+
 export type CreateUserFormInput = {
   id?: string | null,
 };
@@ -18,13 +25,6 @@ export type UpdateUserFormInput = {
 
 export type DeleteUserFormInput = {
   id?: string | null,
-};
-
-export type CreateQuestionAnswerInput = {
-  id?: string | null,
-  userFormID: string,
-  answer: number,
-  questionAnswerQuestionId: string,
 };
 
 export type ModelQuestionAnswerConditionInput = {
@@ -238,6 +238,35 @@ export type GetFormDefinitionWithQuestionsQuery = {
     } | null,
     id: string,
   } | null,
+};
+
+export type BatchCreateQuestionAnswerMutationVariables = {
+  input?: Array< CreateQuestionAnswerInput | null > | null,
+};
+
+export type BatchCreateQuestionAnswerMutation = {
+  batchCreateQuestionAnswer:  Array< {
+    __typename: "QuestionAnswer",
+    id: string,
+    userFormID: string,
+    question:  {
+      __typename: "Question",
+      id: string,
+      text: string,
+      topic: string,
+      category: string,
+      formDefinitions:  {
+        __typename: "ModelQuestionFormDefinitionConnectionConnection",
+        nextToken: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    answer: number,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null > | null,
 };
 
 export type CreateUserFormMutationVariables = {

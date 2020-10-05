@@ -59,7 +59,7 @@ const Content = () => {
         if(!formDefinition) return {};
         let formDef = formDefinition.data.getFormDefinition;
         let as = {} as Answers;
-        if(formDef.questions.items){
+        if(formDef?.questions.items){
             for (let index = 0; index < formDef.questions.items.length; index++) {
                 const element = formDef.questions.items[index];
                 if (!element) continue;
@@ -92,16 +92,22 @@ const Content = () => {
             console.warn("answers is undefined");
             return;
         }
+
+        let questionAnswers = [];
+
         for (const [key, value] of Object.entries(answers)) {
             if(!value.rating) continue;
-            API.graphql(graphqlOperation(
-                mutations.createQuestionAnswer, {input: {
+            questionAnswers.push(
+                {
                     userFormID: userForm?.createUserForm.id, 
                     answer: value.rating, 
                     questionAnswerQuestionId: key
                 }
-            }))
+            )
         }
+
+        API.graphql(graphqlOperation(mutations.batchCreateQuestionAnswer, {input: questionAnswers}));
+
     }
 
     useEffect(() => {
@@ -111,6 +117,7 @@ const Content = () => {
     }, []);
 
     async function getFormDefinition() {
+        //TODO: Should remove hard-coding to look at id fd1, and rather find last
         return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, { id: "fd1" }));
     }
 

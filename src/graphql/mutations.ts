@@ -2,6 +2,29 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const batchCreateQuestionAnswer = /* GraphQL */ `
+  mutation BatchCreateQuestionAnswer($input: [CreateQuestionAnswerInput]) {
+    batchCreateQuestionAnswer(input: $input) {
+      id
+      userFormID
+      question {
+        id
+        text
+        topic
+        category
+        formDefinitions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      answer
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const createUserForm = /* GraphQL */ `
   mutation CreateUserForm(
     $input: CreateUserFormInput!
