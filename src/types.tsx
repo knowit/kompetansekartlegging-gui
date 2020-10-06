@@ -88,7 +88,8 @@ export type UserFormCreated = {
 export type AnswerProps = {
     createUserForm: () => void,
     updateAnswer: (key: string, rating: number) => void,
-    formDefinition: FormDefinition | null
+    formDefinition: FormDefinition | null,
+    answers: AnswerData[]
 }
 
 export type StatsProps = {
