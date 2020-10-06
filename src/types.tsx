@@ -1,18 +1,20 @@
-import { GetFormDefinitionWithQuestionsQuery } from "./API";
+
 
 export type AnswerData = {
+    questionId: string,
     topic: string,
-    group: string,
+    type: string,
     category: string,
-    rating: number|null
+    rating: number | null
 };
 export type Answers = {
     [key: string]: AnswerData
 };
 export type QuestionData = {
+    id: string,
     text: string,
     topic: string,
-    group: string,
+    type: string,
     category: string
 }
 export type Questions = {
@@ -45,7 +47,8 @@ export type FormDefinitionWithQuestions = {
                             id: string,
                             text: string,
                             topic: string,
-                            category: string
+                            category: string,
+                            type: string
                         }
                     }
                 ]
@@ -53,6 +56,25 @@ export type FormDefinitionWithQuestions = {
         }
     }
 }
+
+export type FormDefinition = {
+    getFormDefinition: {
+        id: String,
+        questions: {
+            items: [
+                {
+                    question: {
+                        id: string,
+                        text: string,
+                        topic: string,
+                        category: string,
+                        type: string
+                    }
+                }
+            ]
+        }
+    }
+};
 
 export type UserFormCreated = {
     createUserForm: {
@@ -66,7 +88,7 @@ export type UserFormCreated = {
 export type AnswerProps = {
     createUserForm: () => void,
     updateAnswer: (key: string, rating: number) => void,
-    formDefinition: any
+    formDefinition: FormDefinition | null
 }
 
 export type StatsProps = {
@@ -76,4 +98,20 @@ export type StatsProps = {
 export type FromAppProps = {
     answerProps: AnswerProps,
     statsProps: StatsProps
+}
+
+export type BatchCreatedQuestionAnswer = {
+    batchCreateQuestionAnswer: {
+        answer: number,
+        createdAt: string,
+        id: string,
+        owner: string,
+        userFormID: string,
+        question: {
+            id: string,
+            text: string,
+            topic: string,
+            type: string
+        }
+    }[]
 }
