@@ -5,23 +5,22 @@ import Question from './Question';
 const Form = ({...props}: AnswerProps) => {
 
     const createQuestions = (): JSX.Element[] => {
-        if(!props.formDefinition) return[];
-        let formDef = props.formDefinition.data.getFormDefinition;
+        if(!props.formDefinition) return [];
+        let items = props.formDefinition.getFormDefinition.questions.items;
+        if(!items) return [];
         let qs: JSX.Element[] = [];
-        if(formDef?.questions.items){
-            for (let index = 0; index < formDef.questions.items.length; index++) {
-                const element = formDef.questions.items[index];
-                if (!element) continue;
-                qs.push(
-                    <Question 
-                        key={element.question.id} 
-                        listID={element.question.id}
-                        topic={element.question.topic}
-                        text={element.question.text}
-                        updateAnswer={props.updateAnswer}
-                    />
-                );
-            }
+        for (let index = 0; index < items.length; index++) {
+            const item = items[index];
+            if (!item) continue;
+            qs.push(
+                <Question 
+                    key={item.question.id} 
+                    listID={item.question.id}
+                    topic={item.question.topic}
+                    text={item.question.text}
+                    updateAnswer={props.updateAnswer}
+                />
+            );
         }
         return qs;
     };
