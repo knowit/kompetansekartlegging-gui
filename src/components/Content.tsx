@@ -1,92 +1,56 @@
-import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react'
-import { AnsweredQuestion, Answers, UserFormCreated } from '../types'
+import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, UserFormCreated } from '../types'
 import Router from './Router'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/custom-queries';
 
-const testData: AnsweredQuestion[] = [
-    {
-        question: {
-            text: "Text 1",
-            topic: "Topic 1",
-            group: "Group 1",
-            category: "Category 1"
-        },
-        answer: 2
-    }, {
-        question: {
-            text: "Text 2",
-            topic: "Topic 2",
-            group: "Group 1",
-            category: "Category 1"
-        },
-        answer: 3
-    }, {
-        question: {
-            text: "Text 3",
-            topic: "Topic 3",
-            group: "Group 1",
-            category: "Category 2"
-        },
-        answer: 3
-    }, {
-        question: {
-            text: "Text 4",
-            topic: "Topic 4",
-            group: "Group 1",
-            category: "Category 2"
-        },
-        answer: 5
-    }, {
-        question: {
-            text: "Text 5",
-            topic: "Topic 5",
-            group: "Group 1",
-            category: "Category 4"
-        },
-        answer: 2
-    },
-]
-
 const Content = () => {
     
-    const [answers, setAnswers] = useState<Answers>();
-    const [formDefinition, setFormDefinition] = useState<any | null>(null);
+    const [answers, setAnswers] = useState<AnswerData[]>([]);
+    const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
+    const [radarData, setRadarData] = useState<AnsweredQuestion[]>([]);
 
-    const createAnswers = (): Answers => {
-        if(!formDefinition) return {};
-        let formDef = formDefinition.data.getFormDefinition;
-        let as = {} as Answers;
+    const createAnswers = (): AnswerData[] => {
+        if(!formDefinition) return [];
+        let formDef = formDefinition.getFormDefinition;
+        let as: AnswerData[] = [];
         if(formDef?.questions.items){
             for (let index = 0; index < formDef.questions.items.length; index++) {
                 const element = formDef.questions.items[index];
                 if (!element) continue;
-                as[element.question.id] = {
+                as.push({
+                    questionId: element.question.id,
                     topic: element.question.topic,
-                    group: "knowledge",
+                    type: "knowledge",
                     category: element.question.category,
                     rating: null
-                }
+                });
             }
         }
         return as;
     };
 
-    const updateAnswer = (key: string, rating: number): void => {
-        let newAnswers = {...answers};
-        newAnswers[key].rating = rating;
-        setAnswers(newAnswers);
-    }
-
-    useEffect(() => {
-        setAnswers(createAnswers());
-    }, [formDefinition]);
+    const createRadarData = (): AnsweredQuestion[] => {
+        if(!formDefinition) return [];
+        let formDef = formDefinition.getFormDefinition;
+        let radarData: AnsweredQuestion[] = [];
+        if(formDef?.questions.items){
+            for (let index = 0; index < formDef.questions.items.length; index++) {
+                const item = formDef.questions.items[index];
+                if (!item) continue;
+                radarData.push({
+                    question: item.question,
+                    answer: -1
+                });
+            }
+        }
+        return radarData;
+    };
     
-    //TODO: Need more refactoring
     const createUserForm = async () => {
-        let fdid = formDefinition.data.getFormDefinition.id
+        if(!formDefinition) return;
+        let fdid = formDefinition.getFormDefinition.id;
         let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"userFormFormDefinitionId": fdid}})).data;
         console.log(userForm);
         if(!answers){
@@ -96,31 +60,51 @@ const Content = () => {
 
         let questionAnswers = [];
 
-        for (const [key, value] of Object.entries(answers)) {
-            if(!value.rating) continue;
-            questionAnswers.push(
-                {
-                    userFormID: userForm?.createUserForm.id, 
-                    answer: value.rating, 
-                    questionAnswerQuestionId: key
-                }
-            )
+        for(let i = 0; i < answers.length; i++){
+            if(!answers[i].rating) continue;
+            questionAnswers.push({
+                userFormID: userForm?.createUserForm.id,
+                answer: answers[i].rating,
+                questionAnswerQuestionId: answers[i].questionId
+            });
         }
 
-        API.graphql(graphqlOperation(mutations.batchCreateQuestionAnswer, {input: questionAnswers}));
+        let result = (await helper.callGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers})).data;
+        if(!result) return;
+        updateRadarData(result);
+    }
 
+    const updateRadarData = (batchData: BatchCreatedQuestionAnswer): void => {
+        let data = batchData.batchCreateQuestionAnswer;
+        let newRadarData: AnsweredQuestion[] = [...radarData];
+        for(let i = 0; i < data.length; i++){
+            let rData = newRadarData.find(d => d.question.id === data[i].question.id);
+            if(rData) rData.answer = data[i].answer;
+        }
+        setRadarData(newRadarData);
+    }
+
+    const updateAnswer = (questionId: string, rating: number): void => {
+        let newAnswers: AnswerData[] = [...answers];
+        let answer = newAnswers.find(a => a.questionId === questionId);
+        if(!answer) return;
+        answer.rating = rating;
+        setAnswers(newAnswers);
     }
 
     useEffect(() => {
-        getFormDefinition().then(f => {
-            setFormDefinition(f);
+        helper.callGraphQL<FormDefinition>(queries.getFormDefinitionWithQuestions, { id: "fd5" }).then(f => {
+            if(f.data) setFormDefinition(f.data);
         });
     }, []);
 
-    async function getFormDefinition() {
-        //TODO: Should remove hard-coding to look at id fd1, and rather find last
-        return API.graphql(graphqlOperation(queries.getFormDefinitionWithQuestions, { id: "fd5" }));
-    }
+
+    useEffect(() => {
+        setAnswers(createAnswers());
+        setRadarData(createRadarData());
+    }, [formDefinition]);
+
+    
 
     return(
         <div>
@@ -131,7 +115,7 @@ const Content = () => {
                     createUserForm: createUserForm
                 }}
                 statsProps={{
-                    data: testData
+                    data: radarData
                 }} />
         </div>
     );
