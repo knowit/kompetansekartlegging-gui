@@ -21,8 +21,8 @@ export default function RadarPlot(props: { data: AnsweredQuestion[] }) {
             }
             if(value.answer !== -1) {
                 category.numberOfValues++;
-                category.aggregatedValue+=value.answer;
-                category.aggregatedAverage = category.aggregatedValue/category.numberOfValues;
+                category.aggregatedValue += value.answer;
+                category.aggregatedAverage = category.aggregatedValue / category.numberOfValues;
             }
         });
     }, [props.data]);
