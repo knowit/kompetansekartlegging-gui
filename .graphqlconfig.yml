@@ -1,6 +1,6 @@
 projects:
   kompetansekartleggin:
-    schemaPath: src/graphql/schema.json
+    schemaPath: amplify/backend/api/kompetansekartleggin/build/schema.graphql
     includes:
       - src/graphql/**/*.ts
     excludes:

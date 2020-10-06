@@ -8,17 +8,17 @@ type Props = {
     listID: string
 }
 
-function Question({updateAnswer, topic, text, listID}: Props) {
+const Question = ({...props}: Props) => {
 
     const radiobuttonClicked = (event: React.ChangeEvent<HTMLInputElement>) => {
-        updateAnswer(listID, parseInt(event.target.value));
+        props.updateAnswer(props.listID, parseInt(event.target.value));
     }
 
     return (
         <div className="question">
-            <div>{topic}</div>
-            <div>{text}</div>
-            <Selector radiobuttonChanged={radiobuttonClicked} title={topic}/>
+            <div>{props.topic}</div>
+            <div>{props.text}</div>
+            <Selector radiobuttonChanged={radiobuttonClicked} title={props.topic}/>
         </div>
     )
     

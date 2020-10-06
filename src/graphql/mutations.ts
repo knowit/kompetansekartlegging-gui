@@ -2,6 +2,30 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const batchCreateQuestionAnswer = /* GraphQL */ `
+  mutation BatchCreateQuestionAnswer($input: [CreateQuestionAnswerInput]) {
+    batchCreateQuestionAnswer(input: $input) {
+      id
+      userFormID
+      question {
+        id
+        text
+        topic
+        category
+        type
+        formDefinitions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      answer
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const createUserForm = /* GraphQL */ `
   mutation CreateUserForm(
     $input: CreateUserFormInput!
@@ -19,6 +43,14 @@ export const createUserForm = /* GraphQL */ `
           owner
         }
         nextToken
+      }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -44,6 +76,14 @@ export const updateUserForm = /* GraphQL */ `
         }
         nextToken
       }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       owner
@@ -68,6 +108,14 @@ export const deleteUserForm = /* GraphQL */ `
         }
         nextToken
       }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       owner
@@ -87,6 +135,7 @@ export const createQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -113,6 +162,7 @@ export const updateQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -139,6 +189,7 @@ export const deleteQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -162,6 +213,7 @@ export const createQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -187,6 +239,7 @@ export const updateQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -212,6 +265,7 @@ export const deleteQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -310,6 +364,7 @@ export const createQuestionFormDefinitionConnection = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -346,6 +401,7 @@ export const updateQuestionFormDefinitionConnection = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -382,6 +438,7 @@ export const deleteQuestionFormDefinitionConnection = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }

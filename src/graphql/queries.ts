@@ -17,6 +17,14 @@ export const getUserForm = /* GraphQL */ `
         }
         nextToken
       }
+      formDefinition {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
       owner
@@ -34,6 +42,11 @@ export const listUserForms = /* GraphQL */ `
         id
         questionAnswers {
           nextToken
+        }
+        formDefinition {
+          id
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -53,6 +66,7 @@ export const getQuestionAnswer = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
@@ -81,6 +95,7 @@ export const listQuestionAnswers = /* GraphQL */ `
           text
           topic
           category
+          type
           createdAt
           updatedAt
         }
@@ -100,6 +115,7 @@ export const getQuestion = /* GraphQL */ `
       text
       topic
       category
+      type
       formDefinitions {
         items {
           id
@@ -127,6 +143,7 @@ export const listQuestions = /* GraphQL */ `
         text
         topic
         category
+        type
         formDefinitions {
           nextToken
         }
