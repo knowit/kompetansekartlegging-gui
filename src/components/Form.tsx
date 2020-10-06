@@ -9,9 +9,11 @@ const Form = ({...props}: AnswerProps) => {
         let items = props.formDefinition.getFormDefinition.questions.items;
         if(!items) return [];
         let qs: JSX.Element[] = [];
-        for (let index = 0; index < items.length; index++) {
-            const item = items[index];
-            if (!item) continue;
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            if(!item) continue;
+            const answer = props.answers.find(a => a.questionId === item.question.id);
+            if(!answer) continue;
             qs.push(
                 <Question 
                     key={item.question.id} 
@@ -19,6 +21,7 @@ const Form = ({...props}: AnswerProps) => {
                     topic={item.question.topic}
                     text={item.question.text}
                     updateAnswer={props.updateAnswer}
+                    checked={answer.rating}
                 />
             );
         }
@@ -32,7 +35,7 @@ const Form = ({...props}: AnswerProps) => {
     return (
         <div className="form">
             {createQuestions()}
-            <button onClick={props.createUserForm}>Print all</button>
+            <button onClick={props.createUserForm}>Submit Answers</button>
         </div>
     )
 }
