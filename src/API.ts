@@ -239,6 +239,7 @@ export type GetFormDefinitionWithQuestionsQuery = {
           text: string,
           topic: string,
           category: string,
+          type: string,
         },
       } | null > | null,
     } | null,
