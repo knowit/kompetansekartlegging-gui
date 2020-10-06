@@ -33,17 +33,16 @@ const Content = () => {
 
     const createRadarData = (): AnsweredQuestion[] => {
         if(!formDefinition) return [];
-        let formDef = formDefinition.getFormDefinition;
+        let questionList = formDefinition.getFormDefinition.questions.items;
+        if(!answers || !questionList) return [];
         let radarData: AnsweredQuestion[] = [];
-        if(formDef?.questions.items){
-            for (let index = 0; index < formDef.questions.items.length; index++) {
-                const item = formDef.questions.items[index];
-                if (!item) continue;
-                radarData.push({
-                    question: item.question,
-                    answer: -1
-                });
-            }
+        for (let i = 0; i < answers.length; i++) {
+            const question = questionList.find(q => q.question.id === answers[i].questionId);
+            if (!question) continue;
+            radarData.push({
+                question: question.question,
+                answer: answers[i].rating || -1
+            });
         }
         return radarData;
     };
@@ -101,8 +100,11 @@ const Content = () => {
 
     useEffect(() => {
         setAnswers(createAnswers());
-        setRadarData(createRadarData());
     }, [formDefinition]);
+
+    useEffect(() => {
+        setRadarData(createRadarData());
+    }, [answers]);
 
     
 
@@ -112,7 +114,8 @@ const Content = () => {
                 answerProps={{
                     updateAnswer: updateAnswer,
                     formDefinition: formDefinition,
-                    createUserForm: createUserForm
+                    createUserForm: createUserForm,
+                    answers: answers
                 }}
                 statsProps={{
                     data: radarData
