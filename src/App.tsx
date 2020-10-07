@@ -73,7 +73,7 @@ const App = () => {
         <div>
             <BrowserRouter>
                 <NavBar/>
-                <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
+                {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
                 <Content />
                 {/*(!formDefinition) ? "" : <Form updateAnswer={updateAnswer} formDefinition={formDefinition} createUserForm={createUserForm} />*/}
                 <Footer/>
