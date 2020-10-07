@@ -62,7 +62,7 @@ const Content = () => {
         let questionAnswers = [];
 
         for(let i = 0; i < answers.length; i++){
-            if(!answers[i].knowledge && !answers[i].motivation) continue;
+            if(answers[i].knowledge<=0 && answers[i].motivation<=0) continue;
             questionAnswers.push({
                 userFormID: userForm?.createUserForm.id,
                 knowledge: answers[i].knowledge,
