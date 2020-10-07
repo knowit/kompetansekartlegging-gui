@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, UserFormCreated } from '../types'
+import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserFormCreated } from '../types'
 import Router from './Router'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
-import * as queries from '../graphql/custom-queries';
+import * as queries from '../graphql/queries';
+import * as customQueries from '../graphql/custom-queries';
 
 const Content = () => {
     
@@ -91,10 +92,15 @@ const Content = () => {
         setAnswers(newAnswers);
     }
 
+    const fetchLastFormDefinition = async () => {
+        let formList = await helper.callGraphQL<ListedFormDefinition>(queries.listFormDefinitions);
+        let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
+        let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
+        if(currentForm.data) setFormDefinition(currentForm.data);
+    }
+
     useEffect(() => {
-        helper.callGraphQL<FormDefinition>(queries.getFormDefinitionWithQuestions, { id: "fd5" }).then(f => {
-            if(f.data) setFormDefinition(f.data);
-        });
+        fetchLastFormDefinition();
     }, []);
 
 

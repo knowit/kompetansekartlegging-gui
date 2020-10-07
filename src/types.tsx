@@ -76,6 +76,17 @@ export type FormDefinition = {
     }
 };
 
+export type ListedFormDefinition = {
+    listFormDefinitions: {
+        items: [
+            {
+                createdAt: string,
+                id: string
+            }
+        ]
+    }
+}
+
 export type UserFormCreated = {
     createUserForm: {
         id: string,
