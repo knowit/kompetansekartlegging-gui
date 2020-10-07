@@ -8,6 +8,7 @@ import Content from './components/Content';
 import NavBar from './components/NavBar';
 import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
+import { callGraphQL } from './helperFunctions';
 
 Amplify.configure(awsconfig);
 
@@ -51,18 +52,19 @@ const App = () => {
         */
         let i;
         let question;
-        let qid;
-        let fdid = "fd5";
-        let res = await API.graphql(graphqlOperation(mutations.createFormDefinition, { input: { "id": fdid } }));
+        let qid:string;
+        let res:any = await API.graphql(graphqlOperation(mutations.createFormDefinition, { input: {} }));
+        console.log(res);
+        let fdid = res.data.createFormDefinition.id;
         for (i = 0; i < formDef.length; i++) {
             question = formDef[i];
-            qid = "qq" + i + "k";
-            res = await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid, "type": "knowledge" } }));
-            res = await API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
+            qid = Date.now() + "_" + i + "k";
+            await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid, "type": "knowledge" } }));
+            API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
             console.log(qid);
-            qid = "qq" + i + "m";
-            res = await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid, "type": "motivation" } }));
-            res = await API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
+            qid = Date.now() + "_" + i + "m";
+            await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid, "type": "motivation" } }));
+            API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
             console.log(qid);
         }
     }
@@ -71,7 +73,7 @@ const App = () => {
         <div>
             <BrowserRouter>
                 <NavBar/>
-                {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
+                <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
                 <Content />
                 {/*(!formDefinition) ? "" : <Form updateAnswer={updateAnswer} formDefinition={formDefinition} createUserForm={createUserForm} />*/}
                 <Footer/>
