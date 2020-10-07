@@ -22,3 +22,13 @@ export const callGraphQL2 = async <T>(query: any, variales?: {} | undefined): Pr
 // getFormDefinition().then(f => {
 //     setFormDefinition(f);
 // });
+
+type SearchableItem = {
+    createdAt:string
+}
+
+export const getLastItem = <T extends SearchableItem>(itemsArray?:T[]) => {
+    if(!itemsArray) return null;
+    let sortedArray = itemsArray.sort((a,b) => (Date.parse(a.createdAt) > Date.parse(b.createdAt)) ? -1 : 1);
+    return sortedArray[0];
+}
