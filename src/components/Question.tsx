@@ -1,25 +1,62 @@
-import React from 'react'
-import Selector from './Selector'
+import React from 'react';
+import Selector from './Selector';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        margin: 10,
+        backgroundColor: 'lightBlue'
+    },
+    motivation: {
+        marginTop: 20
+    },
+    selector: {
+        marginTop: 5
+    }
+}));
 
 type Props = {
-    updateAnswer: (listId: string, value: number) => void,
+    updateAnswer: (listId: string, value: number, motivation: boolean) => void,
     topic: string,
     text: string,
-    listID: string,
-    checked: number | null
+    questionId: string,
+    checked: number
 }
 
 const Question = ({...props}: Props) => {
 
-    const radiobuttonClicked = (event: React.ChangeEvent<HTMLInputElement>) => {
-        props.updateAnswer(props.listID, parseInt(event.target.value));
+    const styles = useStyles();
+
+    const radiobuttonClicked = (value: number, motivation: boolean) => {
+        props.updateAnswer(props.questionId, value, motivation);
     }
 
     return (
-        <div className="question">
-            <div>{props.topic}</div>
-            <div>{props.text}</div>
-            <Selector radiobuttonChanged={radiobuttonClicked} title={props.topic} checked={props.checked} />
+        <div className={styles.root}>
+            <div>
+                <div>{props.topic}</div>
+                <div>{props.text}</div>
+                <div className={styles.selector}>
+                    <Selector
+                        radiobuttonChanged={radiobuttonClicked} 
+                        motivation={false} 
+                        questionId={props.questionId} 
+                        checked={props.checked} 
+                    />
+                </div>
+            </div>
+            <div className={styles.motivation}>
+                <div>{props.topic} motivasjon</div>
+                <div className={styles.selector}>
+                    <Selector 
+                        radiobuttonChanged={radiobuttonClicked} 
+                        motivation={true}
+                        questionId={props.questionId} 
+                        checked={props.checked} 
+                    />
+                </div>
+            </div>
         </div>
     )
     
