@@ -71,10 +71,7 @@ const App = () => {
         <div>
             <BrowserRouter>
                 <NavBar/>
-                <p>User: {user ? JSON.stringify(user.attributes) : 'None'}</p>
-                <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
-                <AmplifySignOut />
-                My App
+                {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
                 <Content />
                 {/*(!formDefinition) ? "" : <Form updateAnswer={updateAnswer} formDefinition={formDefinition} createUserForm={createUserForm} />*/}
                 <Footer/>

@@ -5,7 +5,8 @@ export type AnswerData = {
     topic: string,
     type: string,
     category: string,
-    rating: number | null
+    rating: number,
+    motivation: number
 };
 export type Answers = {
     [key: string]: AnswerData
@@ -21,16 +22,20 @@ export type Questions = {
     [key: string]: QuestionData
 }
 
-export type AggregatedCategory = {
+export type AggregatedAnswer = {
     category: String,
-    aggregatedValue: number,
-    numberOfValues: number,
-    aggregatedAverage: number
+    totalAnswerValue: number,
+    numberOfAnswerValues: number,
+    answerAverage: number,
+    totalMotivationValue: number,
+    numberOfMotivationValues: number,
+    motivationAverage: number
 };
 
 export type AnsweredQuestion = {
     question: QuestionData,
-    answer: number
+    answer: number,
+    motivation: number
 };
 
 // export interface FormDefinitionWithQuestions 
@@ -87,7 +92,7 @@ export type UserFormCreated = {
 
 export type AnswerProps = {
     createUserForm: () => void,
-    updateAnswer: (key: string, rating: number) => void,
+    updateAnswer: (key: string, rating: number, motivation: boolean) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[]
 }
