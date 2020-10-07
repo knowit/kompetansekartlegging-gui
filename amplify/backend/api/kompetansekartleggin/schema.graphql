@@ -13,7 +13,8 @@ type QuestionAnswer
     id: ID!
     userFormID: ID!
     question: Question! @connection
-    answer: Int!
+    knowledge: Int!
+    motivation: Int!
 }
 
 type Question
@@ -23,7 +24,6 @@ type Question
     text: String!
     topic: String!
     category: String!
-    type: String!
     formDefinitions: [QuestionFormDefinitionConnection] @connection(keyName: "connectedQuestion", fields: ["id"])
 }
 
@@ -47,7 +47,8 @@ type QuestionFormDefinitionConnection
 input CreateQuestionAnswerInput {
   id: ID
   userFormID: ID!
-  answer: Int!
+  knowledge: Int!
+  motivation: Int!
   questionAnswerQuestionId: ID!
 }
 
