@@ -21,7 +21,7 @@ const Form = ({...props}: AnswerProps) => {
                     topic={item.question.topic}
                     text={item.question.text}
                     updateAnswer={props.updateAnswer}
-                    checked={answer.rating}
+                    checked={answer.knowledge}
                 />
             );
         }
