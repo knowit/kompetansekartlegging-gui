@@ -17,7 +17,7 @@ const Form = ({...props}: AnswerProps) => {
             qs.push(
                 <Question 
                     key={item.question.id} 
-                    listID={item.question.id}
+                    questionId={item.question.id}
                     topic={item.question.topic}
                     text={item.question.text}
                     updateAnswer={props.updateAnswer}

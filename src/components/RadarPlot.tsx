@@ -1,44 +1,51 @@
 import { ResponsiveRadar } from '@nivo/radar'
 import React, { useEffect } from 'react'
-import {AggregatedCategory, AnsweredQuestion} from '../types'
+import {AggregatedAnswer, AnsweredQuestion} from '../types'
 
 export default function RadarPlot(props: { data: AnsweredQuestion[] }) {
 
-    let aggregatedCategories: AggregatedCategory[] = [];
+    let categoryAnswers: AggregatedAnswer[] = [];
 
     useEffect(() => {
         props.data.map(value => {
-            let category = aggregatedCategories.find(cat => cat.category === value.question.category);
+            let category = categoryAnswers.find(cat => cat.category === value.question.category);
             if(!category) {
                 category = {
                     category: value.question.category,
-                    aggregatedValue: 0,
-                    aggregatedAverage: 0,
-                    numberOfValues: 0
+                    totalAnswerValue: 0,
+                    numberOfAnswerValues: 0,
+                    answerAverage: 0,
+                    totalMotivationValue: 0,
+                    numberOfMotivationValues: 0,
+                    motivationAverage: 0
                 }
-                
-                aggregatedCategories.push(category);
+                categoryAnswers.push(category);
             }
             if(value.answer !== -1) {
-                category.numberOfValues++;
-                category.aggregatedValue += value.answer;
-                category.aggregatedAverage = category.aggregatedValue / category.numberOfValues;
+                category.numberOfAnswerValues++;
+                category.totalAnswerValue += value.answer;
+                category.answerAverage = category.totalAnswerValue / category.numberOfAnswerValues;
+            }
+            if(value.motivation !== -1) {
+                category.numberOfMotivationValues++;
+                category.totalMotivationValue += value.motivation;
+                category.motivationAverage = category.totalMotivationValue / category.numberOfMotivationValues;
             }
         });
     }, [props.data]);
 
     return (
         <ResponsiveRadar
-        data={aggregatedCategories}
-        keys={[ 'aggregatedAverage' ]}
+        data={categoryAnswers}
+        keys={['answerAverage', 'motivationAverage']}
         indexBy="category"
-        maxValue = {5}
-        margin={{ top: 70, right: 80, bottom: 40, left: 80 }}
+        maxValue={5}
+        margin={{top: 70, right: 80, bottom: 40, left: 200}}
         curve="linearClosed"
         gridShape="linear"
         dotSize={10}
         enableDotLabel={true}
-        colors={{ scheme: 'nivo' }}
+        colors={{scheme: 'nivo'}}
         blendMode="multiply"
         legends={[
             {

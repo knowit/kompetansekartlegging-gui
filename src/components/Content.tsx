@@ -25,7 +25,8 @@ const Content = () => {
                     topic: element.question.topic,
                     type: "knowledge",
                     category: element.question.category,
-                    rating: null
+                    rating: -1,
+                    motivation: -1
                 });
             }
         }
@@ -42,7 +43,8 @@ const Content = () => {
             if (!question) continue;
             radarData.push({
                 question: question.question,
-                answer: answers[i].rating || -1
+                answer: answers[i].rating,
+                motivation: answers[i].motivation
             });
         }
         return radarData;
@@ -84,11 +86,12 @@ const Content = () => {
         setRadarData(newRadarData);
     }
 
-    const updateAnswer = (questionId: string, rating: number): void => {
+    const updateAnswer = (questionId: string, rating: number, motivation: boolean): void => {
         let newAnswers: AnswerData[] = [...answers];
         let answer = newAnswers.find(a => a.questionId === questionId);
         if(!answer) return;
-        answer.rating = rating;
+        if(motivation) answer.motivation = rating;
+        else answer.rating = rating;
         setAnswers(newAnswers);
     }
 
