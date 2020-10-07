@@ -23,9 +23,8 @@ const Content = () => {
                 as.push({
                     questionId: element.question.id,
                     topic: element.question.topic,
-                    type: "knowledge",
                     category: element.question.category,
-                    rating: -1,
+                    knowledge: -1,
                     motivation: -1
                 });
             }
@@ -43,7 +42,7 @@ const Content = () => {
             if (!question) continue;
             radarData.push({
                 question: question.question,
-                answer: answers[i].rating,
+                answer: answers[i].knowledge,
                 motivation: answers[i].motivation
             });
         }
@@ -63,10 +62,11 @@ const Content = () => {
         let questionAnswers = [];
 
         for(let i = 0; i < answers.length; i++){
-            if(!answers[i].rating) continue;
+            if(!answers[i].knowledge && !answers[i].motivation) continue;
             questionAnswers.push({
                 userFormID: userForm?.createUserForm.id,
-                answer: answers[i].rating,
+                knowledge: answers[i].knowledge,
+                motivation: answers[i].motivation,
                 questionAnswerQuestionId: answers[i].questionId
             });
         }
@@ -86,12 +86,13 @@ const Content = () => {
         setRadarData(newRadarData);
     }
 
+    //TODO: This might be broken with new motivation setup
     const updateAnswer = (questionId: string, rating: number, motivation: boolean): void => {
         let newAnswers: AnswerData[] = [...answers];
         let answer = newAnswers.find(a => a.questionId === questionId);
         if(!answer) return;
         if(motivation) answer.motivation = rating;
-        else answer.rating = rating;
+        else answer.motivation = rating;
         setAnswers(newAnswers);
     }
 
