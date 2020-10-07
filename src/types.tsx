@@ -3,9 +3,8 @@
 export type AnswerData = {
     questionId: string,
     topic: string,
-    type: string,
     category: string,
-    rating: number,
+    knowledge: number,
     motivation: number
 };
 export type Answers = {
@@ -15,7 +14,6 @@ export type QuestionData = {
     id: string,
     text: string,
     topic: string,
-    type: string,
     category: string
 }
 export type Questions = {
@@ -53,7 +51,6 @@ export type FormDefinitionWithQuestions = {
                             text: string,
                             topic: string,
                             category: string,
-                            type: string
                         }
                     }
                 ]
@@ -73,7 +70,6 @@ export type FormDefinition = {
                         text: string,
                         topic: string,
                         category: string,
-                        type: string
                     }
                 }
             ]
@@ -128,7 +124,6 @@ export type BatchCreatedQuestionAnswer = {
             id: string,
             text: string,
             topic: string,
-            type: string
         }
     }[]
 }
