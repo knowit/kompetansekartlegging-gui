@@ -14,6 +14,7 @@ const Form = ({...props}: AnswerProps) => {
             if(!item) continue;
             const answer = props.answers.find(a => a.questionId === item.question.id);
             if(!answer) continue;
+            //TODO: Previous motivation should also be checked
             qs.push(
                 <Question 
                     key={item.question.id} 
@@ -21,7 +22,7 @@ const Form = ({...props}: AnswerProps) => {
                     topic={item.question.topic}
                     text={item.question.text}
                     updateAnswer={props.updateAnswer}
-                    checked={answer.rating}
+                    checked={answer.knowledge}
                 />
             );
         }

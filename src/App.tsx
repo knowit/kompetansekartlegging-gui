@@ -58,12 +58,8 @@ const App = () => {
         let fdid = res.data.createFormDefinition.id;
         for (i = 0; i < formDef.length; i++) {
             question = formDef[i];
-            qid = Date.now() + "_" + i + "k";
-            await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid, "type": "knowledge" } }));
-            API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
-            console.log(qid);
-            qid = Date.now() + "_" + i + "m";
-            await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid, "type": "motivation" } }));
+            qid = Date.now() + "_" + i;
+            await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid} }));
             API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
             console.log(qid);
         }
