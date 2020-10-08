@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import { AnswerProps } from '../types';
+import { Category } from './Category';
 import Question from './Question';
 
 const Form = ({...props}: AnswerProps) => {
@@ -8,12 +9,32 @@ const Form = ({...props}: AnswerProps) => {
         if(!props.formDefinition) return [];
         let items = props.formDefinition.getFormDefinition.questions.items;
         if(!items) return [];
+
+        items = items.sort((a,b) => (a.question.category < b.question.category) ? -1 : 1)
         let qs: JSX.Element[] = [];
+        let cs: JSX.Element[] = [];
+        let categoryNames: string[] = [];
+        
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
             if(!item) continue;
             const answer = props.answers.find(a => a.questionId === item.question.id);
             if(!answer) continue;
+            if(!categoryNames.includes(item.question.category)) {
+                //Get last category name and add all current questions to it.
+                if(categoryNames.length > 0){
+                    let categoryName = categoryNames[categoryNames.length-1];
+                    console.log(categoryName);
+                    cs.push(
+                        <Category name={categoryName} key={categoryNames.length}>
+                            {qs}
+                        </Category>
+                    )
+                    qs = [];
+                }
+
+                categoryNames.push(item.question.category);
+            }
             qs.push(
                 <Question 
                     key={item.question.id} 
@@ -26,7 +47,16 @@ const Form = ({...props}: AnswerProps) => {
                 />
             );
         }
-        return qs;
+        //Add last category
+        let categoryName = categoryNames[categoryNames.length-1];
+        console.log(categoryName);
+        cs.push(
+            <Category name={categoryName} key={categoryNames.length+1} >
+                {qs}
+            </Category>
+        )
+
+        return cs;
     };
 
     useEffect(() => {
