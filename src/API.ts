@@ -256,6 +256,10 @@ export type ListUserFormsWithAnswersQuery = {
         __typename: "ModelQuestionAnswerConnection",
         items:  Array< {
           __typename: "QuestionAnswer",
+          question:  {
+            __typename: "Question",
+            id: string,
+          },
           id: string,
           knowledge: number,
           motivation: number,

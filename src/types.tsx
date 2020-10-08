@@ -77,6 +77,32 @@ export type FormDefinition = {
     }
 };
 
+export type UserFormWithAnswers = {
+    listUserForms: {
+        items: [
+            {
+                id: string,
+                createdAt: string,
+                questionAnswers: {
+                    items: [
+                        UserAnswer
+                    ]
+                }
+                
+            }
+        ]
+    }
+};
+
+export type UserAnswer = {
+    question: {
+        id: string
+    }
+    id: string,
+    knowledge: number,
+    motivation: number
+}
+
 export type ListedFormDefinition = {
     listFormDefinitions: {
         items: [
@@ -128,3 +154,5 @@ export type BatchCreatedQuestionAnswer = {
         }
     }[]
 }
+
+
