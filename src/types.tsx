@@ -101,6 +101,7 @@ export type AnswerProps = {
     createUserForm: () => void,
     updateAnswer: (key: string, rating: number, motivation: boolean) => void,
     formDefinition: FormDefinition | null,
+    submitEnabled: boolean,
     answers: AnswerData[]
 }
 
