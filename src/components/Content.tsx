@@ -71,9 +71,11 @@ const Content = () => {
             });
         }
 
-        let result = (await helper.callGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers})).data;
+        //TODO: Use result to update: Remember that result is now an array, which must be looped.
+        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}));
         if(!result) return;
-        updateRadarData(result);
+        console.log(result);
+        //updateRadarData(result);
     }
 
     const updateRadarData = (batchData: BatchCreatedQuestionAnswer): void => {
