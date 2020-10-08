@@ -92,7 +92,7 @@ const Content = () => {
         let answer = newAnswers.find(a => a.questionId === questionId);
         if(!answer) return;
         if(motivation) answer.motivation = rating;
-        else answer.motivation = rating;
+        else answer.knowledge = rating;
         setAnswers(newAnswers);
     }
 

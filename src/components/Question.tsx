@@ -21,7 +21,8 @@ type Props = {
     topic: string,
     text: string,
     questionId: string,
-    checked: number
+    knowledgeChecked: number,
+    motivationChecked: number
 }
 
 const Question = ({...props}: Props) => {
@@ -42,7 +43,7 @@ const Question = ({...props}: Props) => {
                         radiobuttonChanged={radiobuttonClicked} 
                         motivation={false} 
                         questionId={props.questionId} 
-                        checked={props.checked} 
+                        checked={props.knowledgeChecked} 
                     />
                 </div>
             </div>
@@ -53,7 +54,7 @@ const Question = ({...props}: Props) => {
                         radiobuttonChanged={radiobuttonClicked} 
                         motivation={true}
                         questionId={props.questionId} 
-                        checked={props.checked} 
+                        checked={props.motivationChecked} 
                     />
                 </div>
             </div>
