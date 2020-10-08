@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserFormCreated } from '../types'
+import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormWithAnswers } from '../types'
 import Router from './Router'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
@@ -12,21 +12,23 @@ const Content = () => {
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
     const [radarData, setRadarData] = useState<AnsweredQuestion[]>([]);
     const [submitEnabled, setSubmitEnabled] = useState<boolean>(true);
+    const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
 
     const createAnswers = (): AnswerData[] => {
         if(!formDefinition) return [];
         let formDef = formDefinition.getFormDefinition;
         let as: AnswerData[] = [];
         if(formDef?.questions.items){
-            for (let index = 0; index < formDef.questions.items.length; index++) {
-                const element = formDef.questions.items[index];
+            for (let i = 0; i < formDef.questions.items.length; i++) {
+                const element = formDef.questions.items[i];
                 if (!element) continue;
+                let preAnswer = userAnswers.find(answer => answer.question.id === element.question.id);
                 as.push({
                     questionId: element.question.id,
                     topic: element.question.topic,
                     category: element.question.category,
-                    knowledge: -1,
-                    motivation: -1
+                    knowledge: preAnswer ? (preAnswer.knowledge ? preAnswer.knowledge : 0) : -1,
+                    motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1
                 });
             }
         }
@@ -34,6 +36,7 @@ const Content = () => {
     };
 
     const createRadarData = (): AnsweredQuestion[] => {
+        console.log("Creting radar");
         if(!formDefinition) return [];
         let questionList = formDefinition.getFormDefinition.questions.items;
         if(!answers || !questionList) return [];
@@ -55,15 +58,10 @@ const Content = () => {
         let fdid = formDefinition.getFormDefinition.id;
         let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"userFormFormDefinitionId": fdid}})).data;
         console.log(userForm);
-        if(!answers){
-            console.warn("answers is undefined");
-            return;
-        }
-
+        if(!answers) return;
         let questionAnswers = [];
-
         for(let i = 0; i < answers.length; i++){
-            if(answers[i].knowledge<=0 && answers[i].motivation<=0) continue;
+            if(answers[i].knowledge < 0 && answers[i].motivation < 0) continue;
             questionAnswers.push({
                 userFormID: userForm?.createUserForm.id,
                 knowledge: answers[i].knowledge,
@@ -112,20 +110,30 @@ const Content = () => {
         }
         return false;
     };
+
+    const getUserAnswers = async () => {
+        let allUserAnswers = (await helper.callGraphQL<UserFormWithAnswers>(customQueries.listUserFormsWithAnswers)).data;
+        if(!allUserAnswers) return;
+        let lastUserAnswer = (await helper.getLastItem(allUserAnswers.listUserForms.items))?.questionAnswers.items;
+        if(lastUserAnswer) setUserAnswers(lastUserAnswer);
+    };
     
     useEffect(() => {
         fetchLastFormDefinition();
     }, []);
 
+    useEffect(() => {
+        getUserAnswers();
+    }, [formDefinition]);
 
     useEffect(() => {
         setAnswers(createAnswers());
-    }, [formDefinition]);
+    }, [userAnswers]);
 
     useEffect(() => {
         setRadarData(createRadarData());
         setSubmitEnabled(hasAnsweredAtleastOnce());
-    }, [answers]);
+    }, [answers, userAnswers]);
 
     
 

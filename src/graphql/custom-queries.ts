@@ -27,6 +27,9 @@ export const listUserFormsWithAnswers = /* GraphQL */ `
         id
         questionAnswers {
           items {
+            question {
+              id
+            }
             id
             knowledge
             motivation
