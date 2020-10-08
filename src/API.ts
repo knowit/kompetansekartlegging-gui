@@ -246,6 +246,26 @@ export type GetFormDefinitionWithQuestionsQuery = {
   } | null,
 };
 
+export type ListUserFormsWithAnswersQuery = {
+  listUserForms:  {
+    __typename: "ModelUserFormConnection",
+    items:  Array< {
+      __typename: "UserForm",
+      id: string,
+      questionAnswers:  {
+        __typename: "ModelQuestionAnswerConnection",
+        items:  Array< {
+          __typename: "QuestionAnswer",
+          id: string,
+          knowledge: number,
+          motivation: number,
+        } | null > | null,
+      } | null,
+      createdAt: string,
+    } | null > | null,
+  } | null,
+};
+
 export type BatchCreateQuestionAnswerMutationVariables = {
   input?: Array< CreateQuestionAnswerInput | null > | null,
 };

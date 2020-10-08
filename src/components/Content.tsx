@@ -11,6 +11,7 @@ const Content = () => {
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
     const [radarData, setRadarData] = useState<AnsweredQuestion[]>([]);
+    const [submitEnabled, setSubmitEnabled] = useState<boolean>(true);
 
     const createAnswers = (): AnswerData[] => {
         if(!formDefinition) return [];
@@ -71,9 +72,11 @@ const Content = () => {
             });
         }
 
-        let result = (await helper.callGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers})).data;
+        //TODO: Use result to update: Remember that result is now an array, which must be looped.
+        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}));
         if(!result) return;
-        updateRadarData(result);
+        console.log(result);
+        //updateRadarData(result);
     }
 
     const updateRadarData = (batchData: BatchCreatedQuestionAnswer): void => {
@@ -102,7 +105,14 @@ const Content = () => {
         let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
         if(currentForm.data) setFormDefinition(currentForm.data);
     }
-
+    
+    const hasAnsweredAtleastOnce = (): boolean =>{
+        for(const answer of answers) {
+            if(answer.knowledge >= 0 || answer.motivation >= 0) return true;
+        }
+        return false;
+    };
+    
     useEffect(() => {
         fetchLastFormDefinition();
     }, []);
@@ -114,6 +124,7 @@ const Content = () => {
 
     useEffect(() => {
         setRadarData(createRadarData());
+        setSubmitEnabled(hasAnsweredAtleastOnce());
     }, [answers]);
 
     
@@ -125,6 +136,7 @@ const Content = () => {
                     updateAnswer: updateAnswer,
                     formDefinition: formDefinition,
                     createUserForm: createUserForm,
+                    submitEnabled: submitEnabled,
                     answers: answers
                 }}
                 statsProps={{

@@ -22,6 +22,15 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+### VisualStudioCode ###
+.vscode
+*.code-workspace
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
