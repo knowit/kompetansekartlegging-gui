@@ -19,3 +19,21 @@ export const getFormDefinitionWithQuestions = /* GraphQL */ `
     }
   }
 `;
+
+export const listUserFormsWithAnswers = /* GraphQL */ `
+  query ListUserFormsWithAnswers {
+    listUserForms {
+      items {
+        id
+        questionAnswers {
+          items {
+            id
+            knowledge
+            motivation
+          }
+        }
+        createdAt
+      }
+    }
+  }
+`;
