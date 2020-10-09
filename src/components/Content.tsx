@@ -36,7 +36,6 @@ const Content = () => {
     };
 
     const createRadarData = (): AnsweredQuestion[] => {
-        console.log("Creting radar");
         if(!formDefinition) return [];
         let questionList = formDefinition.getFormDefinition.questions.items;
         if(!answers || !questionList) return [];

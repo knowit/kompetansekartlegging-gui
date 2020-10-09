@@ -26,7 +26,6 @@ const Form = ({...props}: AnswerProps) => {
                 //Get last category name and add all current questions to it.
                 if(categoryNames.length > 0){
                     let categoryName = categoryNames[categoryNames.length-1];
-                    console.log(categoryName);
                     cs.push(
                         <Category name={categoryName} key={categoryNames.length}>
                             {qs}
@@ -51,7 +50,6 @@ const Form = ({...props}: AnswerProps) => {
         }
         //Add last category
         let categoryName = categoryNames[categoryNames.length-1];
-        console.log(categoryName);
         cs.push(
             <Category name={categoryName} key={categoryNames.length+1} >
                 {qs}
