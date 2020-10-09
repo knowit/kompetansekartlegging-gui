@@ -43,8 +43,8 @@ const Form = ({...props}: AnswerProps) => {
                     topic={item.question.topic}
                     text={item.question.text}
                     updateAnswer={props.updateAnswer}
-                    knowledgeChecked={answer?.knowledge || -1}
-                    motivationChecked={answer?.motivation || -1}
+                    knowledgeChecked={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
+                    motivationChecked={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                 />
             );
         }
