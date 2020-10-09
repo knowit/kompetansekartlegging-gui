@@ -13,6 +13,7 @@ const Content = () => {
     const [radarData, setRadarData] = useState<AnsweredQuestion[]>([]);
     const [submitEnabled, setSubmitEnabled] = useState<boolean>(true);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+    const [submitFeedback, setSubmitFeedback] = useState<string>("");
 
     const createAnswers = (): AnswerData[] => {
         if(!formDefinition) return [];
@@ -54,10 +55,10 @@ const Content = () => {
     };
     
     const createUserForm = async () => {
+        setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
         let fdid = formDefinition.getFormDefinition.id;
         let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"userFormFormDefinitionId": fdid}})).data;
-        console.log(userForm);
         if(!answers) return;
         let questionAnswers = [];
         for(let i = 0; i < answers.length; i++){
@@ -72,8 +73,11 @@ const Content = () => {
 
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
         let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}));
-        if(!result) return;
-        console.log(result);
+        if(!result) {
+            setSubmitFeedback("Something went wrong when inserting data to server database..");
+            return;
+        }
+        setSubmitFeedback("Your answers has been saved!");
         //updateRadarData(result);
     }
 
@@ -120,6 +124,7 @@ const Content = () => {
     
     useEffect(() => {
         fetchLastFormDefinition();
+        setSubmitFeedback("");
     }, []);
 
     useEffect(() => {
@@ -145,7 +150,8 @@ const Content = () => {
                     formDefinition: formDefinition,
                     createUserForm: createUserForm,
                     submitEnabled: submitEnabled,
-                    answers: answers
+                    answers: answers,
+                    submitFeedback: submitFeedback
                 }}
                 statsProps={{
                     data: radarData
