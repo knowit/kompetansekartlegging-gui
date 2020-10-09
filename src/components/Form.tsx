@@ -1,9 +1,11 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { AnswerProps } from '../types';
 import { Category } from './Category';
 import Question from './Question';
 
 const Form = ({...props}: AnswerProps) => {
+
+    const [questions, setQuestions] = useState<JSX.Element[]>();
 
     const createQuestions = (): JSX.Element[] => {
         if(!props.formDefinition) return [];
@@ -55,17 +57,17 @@ const Form = ({...props}: AnswerProps) => {
                 {qs}
             </Category>
         )
-
+        
         return cs;
     };
 
     useEffect(() => {
-        createQuestions();
+        setQuestions(createQuestions());
     }, [props.formDefinition])
 
     return (
         <div className="form">
-            {createQuestions()}
+            {questions}
             <button onClick={props.createUserForm} disabled={!props.submitEnabled}>Submit Answers</button>
         </div>
     )
