@@ -128,7 +128,8 @@ export type AnswerProps = {
     updateAnswer: (key: string, rating: number, motivation: boolean) => void,
     formDefinition: FormDefinition | null,
     submitEnabled: boolean,
-    answers: AnswerData[]
+    answers: AnswerData[],
+    submitFeedback: string
 }
 
 export type StatsProps = {
