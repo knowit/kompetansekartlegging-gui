@@ -28,13 +28,13 @@ const splitArray = <T>(array: T[]): T[][] => {
     return splitArray;
 }
 
-export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]}): Promise<GraphQLResult<T>[]> => {
+export const callBatchGraphQL = async <T>(query: any, variables: {input: any[], env:{envID:String}}): Promise<GraphQLResult<T>[]> => {
     if(variables.input.length === 0) throw new Error("Array size must be more than 0 in a batch mutation");
 
     let split = splitArray(variables.input);
     let returnValue = [];
     for (const element of split) {
-        returnValue.push(await API.graphql(graphqlOperation(query, {input: element})) as GraphQLResult<T>);
+        returnValue.push(await API.graphql(graphqlOperation(query, {input: element, env: variables.env})) as GraphQLResult<T>);
     }
     return returnValue;
 };
