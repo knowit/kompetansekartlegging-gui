@@ -64,6 +64,7 @@ const Form = ({...props}: AnswerProps) => {
 
     return (
         <div className="form">
+            <button onClick={props.createUserForm} disabled={!props.submitEnabled}>Submit Answers</button>
             {questions}
             <button onClick={props.createUserForm} disabled={!props.submitEnabled}>Submit Answers</button>
             <p>{props.submitFeedback}</p>

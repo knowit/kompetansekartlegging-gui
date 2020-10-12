@@ -1,8 +1,9 @@
 import React from 'react'
+import { UserProps } from '../../types';
 
 
 
-const UserPage = () => {
+const UserPage = ({...props}: UserProps) => {
 
 
 
@@ -10,7 +11,8 @@ const UserPage = () => {
 
     return(
         <div>
-            User Page
+            <button onClick={props.listUserForms}>List my data</button>
+            <button onClick={props.deleteUserData}>Delete my data</button>
         </div>
     );
 

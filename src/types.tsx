@@ -88,7 +88,7 @@ export type UserFormWithAnswers = {
                         UserAnswer
                     ]
                 }
-                
+
             }
         ]
     }
@@ -123,6 +123,22 @@ export type UserFormCreated = {
     }
 }
 
+export type UserFormList = {
+    listUserForms: {
+        items: [
+            {
+                id: string,
+                createdAt: string,
+                questionAnswers: {
+                    items: [
+                        UserAnswer
+                    ]
+                }
+            }
+        ]
+    }
+}
+
 export type AnswerProps = {
     createUserForm: () => void,
     updateAnswer: (key: string, rating: number, motivation: boolean) => void,
@@ -130,7 +146,12 @@ export type AnswerProps = {
     submitEnabled: boolean,
     answers: AnswerData[],
     submitFeedback: string
-}
+};
+
+export type UserProps = {
+    deleteUserData: () => void,
+    listUserForms: () => void
+};
 
 export type StatsProps = {
     data: AnsweredQuestion[]
@@ -138,7 +159,8 @@ export type StatsProps = {
 
 export type FromAppProps = {
     answerProps: AnswerProps,
-    statsProps: StatsProps
+    statsProps: StatsProps,
+    userProps: UserProps
 }
 
 export type BatchCreatedQuestionAnswer = {

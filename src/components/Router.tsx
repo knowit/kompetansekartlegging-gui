@@ -16,7 +16,7 @@ const Router = ({...props}: FromAppProps) => {
                     <Page.WIPPage />
                 </Route>
                 <Route path="/user">
-                    <Page.WIPPage />
+                    <Page.UserPage {...props.userProps} />
                 </Route>
                 <Route path="/answer">
                     <Page.AnswerPage {...props.answerProps} />
