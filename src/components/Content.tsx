@@ -59,6 +59,7 @@ const Content = () => {
         let fdid = formDefinition.getFormDefinition.id;
         let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"userFormFormDefinitionId": fdid}})).data;
         if(!answers) return;
+        let env = {envID: "QuestionAnswer-c6oprrghzvemrnzcmy5hb73lqu-agnostic"};
         let questionAnswers = [];
         for(let i = 0; i < answers.length; i++){
             if(answers[i].knowledge < 0 && answers[i].motivation < 0) continue;
@@ -71,11 +72,12 @@ const Content = () => {
         }
 
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
-        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}));
+        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers, env}));
         if(!result) {
             setSubmitFeedback("Something went wrong when inserting data to server database..");
             return;
         }
+        console.log(result);
         setSubmitFeedback("Your answers has been saved!");
         //updateRadarData(result);
     }
