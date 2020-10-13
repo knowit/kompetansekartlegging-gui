@@ -10,6 +10,10 @@ export type CreateQuestionAnswerInput = {
   questionAnswerQuestionId: string,
 };
 
+export type BatchTableEnvironmentInput = {
+  envID: string,
+};
+
 export type CreateUserFormInput = {
   id?: string | null,
   userFormFormDefinitionId: string,
@@ -272,6 +276,7 @@ export type ListUserFormsWithAnswersQuery = {
 
 export type BatchCreateQuestionAnswerMutationVariables = {
   input?: Array< CreateQuestionAnswerInput | null > | null,
+  env?: BatchTableEnvironmentInput | null,
 };
 
 export type BatchCreateQuestionAnswerMutation = {
