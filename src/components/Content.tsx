@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormWithAnswers } from '../types'
+import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
 import Router from './Router'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
@@ -40,17 +40,17 @@ const Content = () => {
         if(!formDefinition) return [];
         let questionList = formDefinition.getFormDefinition.questions.items;
         if(!answers || !questionList) return [];
-        let radarData: AnsweredQuestion[] = [];
+        let newRadarData: AnsweredQuestion[] = [];
         for (let i = 0; i < answers.length; i++) {
             const question = questionList.find(q => q.question.id === answers[i].questionId);
             if (!question) continue;
-            radarData.push({
+            newRadarData.push({
                 question: question.question,
                 answer: answers[i].knowledge,
                 motivation: answers[i].motivation
             });
         }
-        return radarData;
+        return newRadarData;
     };
     
     const createUserForm = async () => {
@@ -124,6 +124,25 @@ const Content = () => {
         let lastUserAnswer = (await helper.getLastItem(allUserAnswers.listUserForms.items))?.questionAnswers.items;
         if(lastUserAnswer) setUserAnswers(lastUserAnswer);
     };
+
+    const deleteUserData = async () => {
+        let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
+        let deleteResult = [];
+        if(userForms && userForms.listUserForms.items.length > 0){
+            for(let i = 0; i < userForms.listUserForms.items.length; i++) {
+                for(const answer of userForms.listUserForms.items[i].questionAnswers.items){
+                    deleteResult.push((await helper.callGraphQL(mutations.deleteQuestionAnswer, {input: {"id": answer.id}})));
+                }
+                deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": userForms.listUserForms.items[i].id}})));
+            }
+            console.log(deleteResult);
+        } else console.log("No Userforms active");
+    };
+
+    const listUserForms = async () => {
+        let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
+        console.log(userForms);
+    }
     
     useEffect(() => {
         fetchLastFormDefinition();
@@ -159,7 +178,12 @@ const Content = () => {
                 }}
                 statsProps={{
                     data: radarData
-                }} />
+                }}
+                userProps={{
+                    deleteUserData: deleteUserData,
+                    listUserForms: listUserForms
+                }}
+            />
         </div>
     );
 
