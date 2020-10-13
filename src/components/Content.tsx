@@ -71,11 +71,12 @@ const Content = () => {
         }
 
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
-        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}));
+        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
         if(!result) {
             setSubmitFeedback("Something went wrong when inserting data to server database..");
             return;
         }
+        console.log(result);
         setSubmitFeedback("Your answers has been saved!");
         //updateRadarData(result);
     }
