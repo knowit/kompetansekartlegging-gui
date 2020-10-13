@@ -29,6 +29,10 @@ const splitArray = <T>(array: T[]): T[][] => {
 }
 
 export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]}): Promise<GraphQLResult<T>[]> => {
+
+    if(process.env.REACT_APP_ENV_TABLE_ID) console.log(process.env.REACT_APP_ENV_TABLE_ID);
+    else console.log("No process.env.REACT_APP_ENV_TABLE_ID found");
+
     if(variables.input.length === 0) throw new Error("Array size must be more than 0 in a batch mutation");
 
     let split = splitArray(variables.input);
