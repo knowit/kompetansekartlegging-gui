@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormWithAnswers } from '../types'
+import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
 import Router from './Router'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
@@ -13,6 +13,7 @@ const Content = () => {
     const [radarData, setRadarData] = useState<AnsweredQuestion[]>([]);
     const [submitEnabled, setSubmitEnabled] = useState<boolean>(true);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+    const [submitFeedback, setSubmitFeedback] = useState<string>("");
 
     const createAnswers = (): AnswerData[] => {
         if(!formDefinition) return [];
@@ -39,24 +40,24 @@ const Content = () => {
         if(!formDefinition) return [];
         let questionList = formDefinition.getFormDefinition.questions.items;
         if(!answers || !questionList) return [];
-        let radarData: AnsweredQuestion[] = [];
+        let newRadarData: AnsweredQuestion[] = [];
         for (let i = 0; i < answers.length; i++) {
             const question = questionList.find(q => q.question.id === answers[i].questionId);
             if (!question) continue;
-            radarData.push({
+            newRadarData.push({
                 question: question.question,
                 answer: answers[i].knowledge,
                 motivation: answers[i].motivation
             });
         }
-        return radarData;
+        return newRadarData;
     };
     
     const createUserForm = async () => {
+        setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
         let fdid = formDefinition.getFormDefinition.id;
         let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"userFormFormDefinitionId": fdid}})).data;
-        console.log(userForm);
         if(!answers) return;
         let questionAnswers = [];
         for(let i = 0; i < answers.length; i++){
@@ -70,9 +71,13 @@ const Content = () => {
         }
 
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
-        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}));
-        if(!result) return;
+        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
+        if(!result) {
+            setSubmitFeedback("Something went wrong when inserting data to server database..");
+            return;
+        }
         console.log(result);
+        setSubmitFeedback("Your answers has been saved!");
         //updateRadarData(result);
     }
 
@@ -88,12 +93,15 @@ const Content = () => {
 
     //TODO: This might be broken with new motivation setup
     const updateAnswer = (questionId: string, rating: number, motivation: boolean): void => {
-        let newAnswers: AnswerData[] = [...answers];
-        let answer = newAnswers.find(a => a.questionId === questionId);
-        if(!answer) return;
-        if(motivation) answer.motivation = rating;
-        else answer.knowledge = rating;
-        setAnswers(newAnswers);
+
+        setAnswers(prevAnswers => {
+            let newAnswers: AnswerData[] = [...prevAnswers];
+            let answer = newAnswers.find(a => a.questionId === questionId);
+            if(!answer) return [];
+            if(motivation) answer.motivation = rating;
+            else answer.knowledge = rating;
+            return newAnswers
+        })
     }
 
     const fetchLastFormDefinition = async () => {
@@ -116,13 +124,34 @@ const Content = () => {
         let lastUserAnswer = (await helper.getLastItem(allUserAnswers.listUserForms.items))?.questionAnswers.items;
         if(lastUserAnswer) setUserAnswers(lastUserAnswer);
     };
+
+    const deleteUserData = async () => {
+        let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
+        let deleteResult = [];
+        if(userForms && userForms.listUserForms.items.length > 0){
+            for(let i = 0; i < userForms.listUserForms.items.length; i++) {
+                for(const answer of userForms.listUserForms.items[i].questionAnswers.items){
+                    deleteResult.push((await helper.callGraphQL(mutations.deleteQuestionAnswer, {input: {"id": answer.id}})));
+                }
+                deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": userForms.listUserForms.items[i].id}})));
+            }
+            console.log(deleteResult);
+        } else console.log("No Userforms active");
+    };
+
+    const listUserForms = async () => {
+        let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
+        console.log(userForms);
+    }
     
     useEffect(() => {
         fetchLastFormDefinition();
+        setSubmitFeedback("");
     }, []);
 
     useEffect(() => {
         getUserAnswers();
+        setAnswers(createAnswers());
     }, [formDefinition]);
 
     useEffect(() => {
@@ -144,11 +173,17 @@ const Content = () => {
                     formDefinition: formDefinition,
                     createUserForm: createUserForm,
                     submitEnabled: submitEnabled,
-                    answers: answers
+                    answers: answers,
+                    submitFeedback: submitFeedback
                 }}
                 statsProps={{
                     data: radarData
-                }} />
+                }}
+                userProps={{
+                    deleteUserData: deleteUserData,
+                    listUserForms: listUserForms
+                }}
+            />
         </div>
     );
 

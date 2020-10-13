@@ -52,6 +52,10 @@ input CreateQuestionAnswerInput {
   questionAnswerQuestionId: ID!
 }
 
+input BatchTableEnvironmentInput {
+  envID: String!
+}
+
 type Mutation {
-  batchCreateQuestionAnswer(input: [CreateQuestionAnswerInput]): [QuestionAnswer]
+  batchCreateQuestionAnswer(input: [CreateQuestionAnswerInput], env: BatchTableEnvironmentInput): [QuestionAnswer]
 }

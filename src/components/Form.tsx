@@ -20,8 +20,6 @@ const Form = ({...props}: AnswerProps) => {
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
             if(!item) continue;
-            const answer = props.answers.find(a => a.questionId === item.question.id);
-            if(!answer) continue;
             if(!categoryNames.includes(item.question.category)) {
                 //Get last category name and add all current questions to it.
                 if(categoryNames.length > 0){
@@ -33,9 +31,11 @@ const Form = ({...props}: AnswerProps) => {
                     )
                     qs = [];
                 }
-
+                
                 categoryNames.push(item.question.category);
             }
+            
+            const answer = props.answers.find(a => a.questionId === item.question.id);
             qs.push(
                 <Question 
                     key={item.question.id} 
@@ -43,8 +43,8 @@ const Form = ({...props}: AnswerProps) => {
                     topic={item.question.topic}
                     text={item.question.text}
                     updateAnswer={props.updateAnswer}
-                    knowledgeChecked={answer.knowledge}
-                    motivationChecked={answer.motivation}
+                    knowledgeChecked={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
+                    motivationChecked={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                 />
             );
         }
@@ -55,7 +55,6 @@ const Form = ({...props}: AnswerProps) => {
                 {qs}
             </Category>
         )
-        
         return cs;
     };
 
@@ -65,8 +64,10 @@ const Form = ({...props}: AnswerProps) => {
 
     return (
         <div className="form">
+            <button onClick={props.createUserForm} disabled={!props.submitEnabled}>Submit Answers</button>
             {questions}
             <button onClick={props.createUserForm} disabled={!props.submitEnabled}>Submit Answers</button>
+            <p>{props.submitFeedback}</p>
         </div>
     )
 }
