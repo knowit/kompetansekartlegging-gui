@@ -28,6 +28,7 @@ const splitArray = <T>(array: T[]): T[][] => {
     return splitArray;
 }
 
+
 //For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
 const getEnvTableID = () => {
     if(process.env.REACT_APP_ENV_TABLE_ID) return process.env.REACT_APP_ENV_TABLE_ID;
@@ -35,6 +36,10 @@ const getEnvTableID = () => {
 }
 
 export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]}, table:string): Promise<GraphQLResult<T>[]> => {
+
+    //if(process.env.REACT_APP_ENV_TABLE_ID) console.log(process.env.REACT_APP_ENV_TABLE_ID);
+    //else console.log("No process.env.REACT_APP_ENV_TABLE_ID found");
+
     if(variables.input.length === 0) throw new Error("Array size must be more than 0 in a batch mutation");
 
     let split = splitArray(variables.input);
