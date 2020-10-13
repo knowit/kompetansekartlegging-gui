@@ -147,7 +147,6 @@ const Content = () => {
 
     return(
         <div>
-            {console.log(process.env)}
             <Router  
                 answerProps={{
                     updateAnswer: updateAnswer,
