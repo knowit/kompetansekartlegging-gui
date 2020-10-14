@@ -163,6 +163,12 @@ export type FromAppProps = {
     userProps: UserProps
 }
 
+export type SliderProps = {
+    sliderChanged: (newValue: number, motivation: boolean) => void,
+    motivation: boolean,
+    value: number
+};
+
 export type BatchCreatedQuestionAnswer = {
     batchCreateQuestionAnswer: {
         answer: number,
