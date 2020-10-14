@@ -1,42 +1,26 @@
 import React, {useEffect, useState} from 'react'
-import { AnswerProps } from '../types';
+import { AnswerProps, QuestionData } from '../types';
 import { Category } from './Category';
 import Question from './Question';
 
 const Form = ({...props}: AnswerProps) => {
 
+    type Question = {
+        question: {
+            id: string,
+            text: string,
+            topic: string,
+            category: string
+        }
+    }
+
     const [questions, setQuestions] = useState<JSX.Element[]>();
 
-    const createQuestions = (): JSX.Element[] => {
-        if(!props.formDefinition) return [];
-        let items = props.formDefinition.getFormDefinition.questions.items;
-        if(!items) return [];
-
-        items = items.sort((a,b) => (a.question.category < b.question.category) ? -1 : 1)
-        let qs: JSX.Element[] = [];
-        let cs: JSX.Element[] = [];
-        let categoryNames: string[] = [];
-        
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
-            if(!item) continue;
-            if(!categoryNames.includes(item.question.category)) {
-                //Get last category name and add all current questions to it.
-                if(categoryNames.length > 0){
-                    let categoryName = categoryNames[categoryNames.length-1];
-                    cs.push(
-                        <Category name={categoryName} key={categoryNames.length}>
-                            {qs}
-                        </Category>
-                    )
-                    qs = [];
-                }
-                
-                categoryNames.push(item.question.category);
-            }
-            
+    const getQuestionsForCategory = (items: Question[]): JSX.Element[] => {
+        let questions: JSX.Element[] = [];
+        for(const item of items){
             const answer = props.answers.find(a => a.questionId === item.question.id);
-            qs.push(
+            questions.push(
                 <Question 
                     key={item.question.id} 
                     questionId={item.question.id}
@@ -48,14 +32,29 @@ const Form = ({...props}: AnswerProps) => {
                 />
             );
         }
-        //Add last category
-        let categoryName = categoryNames[categoryNames.length-1];
-        cs.push(
-            <Category name={categoryName} key={categoryNames.length+1} >
-                {qs}
-            </Category>
-        )
-        return cs;
+        return questions;
+    }; 
+
+    const createQuestions = (): JSX.Element[] => {
+        if(!props.formDefinition) return [];
+        let items = props.formDefinition.getFormDefinition.questions.items;
+        if(!items) return [];
+
+        items = items.sort((a,b) => (a.question.category < b.question.category) ? -1 : 1);
+
+        let categories: JSX.Element[] = [];
+        let catNames: string[] = Array.from(new Set(
+            items.map(i => i.question.category)      
+        ));
+        for(let i = 0; i < catNames.length; i++){
+            const questions = items.filter(item => item.question.category === catNames[i]);
+            categories.push(
+                <Category name={catNames[i]} key={i}>
+                    {getQuestionsForCategory(questions)}
+                </Category>
+            );
+        };
+        return categories;
     };
 
     useEffect(() => {
