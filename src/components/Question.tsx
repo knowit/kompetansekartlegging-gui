@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { QuestionProps } from '../types';
 import { QuestionBlock } from '../styles';
 import Slider from './Slider';
@@ -21,6 +21,11 @@ const Question = ({...props}: QuestionProps) => {
             props.updateAnswer(props.questionId, newValue, motivationValue);
         }
     };
+
+    useEffect(() => {
+        setKnowledgeValue(props.knowledgeDefaultValue);
+        setMotivationValue(props.motivationDefaultValue);
+    }, [props.knowledgeDefaultValue, props.motivationDefaultValue]);
 
     return (
         <div className={styles.root}>

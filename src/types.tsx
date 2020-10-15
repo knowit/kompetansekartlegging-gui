@@ -140,11 +140,10 @@ export type UserFormList = {
             }
         ]
     }
-}
+};
 
 export type AnswerProps = {
     createUserForm: () => void,
-    // updateAnswer: (key: string, rating: number, motivation: boolean) => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
@@ -173,7 +172,6 @@ export type SliderProps = {
 };
 
 export type QuestionProps = {
-    // updateAnswer: (key: string, rating: number, motivation: boolean) => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     topic: string,
     text: string,

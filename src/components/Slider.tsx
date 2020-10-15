@@ -12,12 +12,10 @@ const Slider = ({ ...props }: SliderProps) => {
 
     return (
         <div className={classes.root}>
-            {/* {console.log(props.value)} */}
             <ValueSlider
-                defaultValue={props.value}
                 valueLabelDisplay="on"
                 valueLabelFormat={value => Math.round(value * 10) / 10}
-                value={props.value >= 0 ? props.value : 0}
+                value={props.value}
                 onChange={sliderChanged}
                 step={0.01}
                 max={5}

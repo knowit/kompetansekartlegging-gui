@@ -31,7 +31,6 @@ const Content = () => {
                     motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1
                 });
             }
-            console.log(as);
         }
         return as;
     };
@@ -160,6 +159,7 @@ const Content = () => {
 
     useEffect(() => {
         setAnswers(createAnswers());
+
     }, [userAnswers]);
 
     useEffect(() => {
