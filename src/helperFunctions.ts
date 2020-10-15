@@ -32,7 +32,7 @@ const splitArray = <T>(array: T[]): T[][] => {
 //For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
 const getEnvTableID = () => {
     if(process.env.REACT_APP_ENV_TABLE_ID) return process.env.REACT_APP_ENV_TABLE_ID;
-    else return "c6oprrghzvemrnzcmy5hb73lqu-agnostic";
+    else return "ofjt5xeegrby3ekcwwyrzz2xv4-devdev";
 }
 
 export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]}, table:string): Promise<GraphQLResult<T>[]> => {
