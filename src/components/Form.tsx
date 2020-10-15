@@ -43,8 +43,8 @@ const Form = ({...props}: AnswerProps) => {
                     topic={item.question.topic}
                     text={item.question.text}
                     updateAnswer={props.updateAnswer}
-                    knowledgeChecked={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
-                    motivationChecked={answer ? (answer.motivation ? answer.motivation : 0) : -1}
+                    knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
+                    motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                 />
             );
         }
@@ -54,7 +54,7 @@ const Form = ({...props}: AnswerProps) => {
             <Category name={categoryName} key={categoryNames.length+1} >
                 {qs}
             </Category>
-        )
+        );
         return cs;
     };
 
@@ -64,9 +64,9 @@ const Form = ({...props}: AnswerProps) => {
 
     return (
         <div className="form">
-            <button onClick={props.createUserForm} disabled={!props.submitEnabled}>Submit Answers</button>
+            <button onClick={props.createUserForm} >Submit Answers</button>
             {questions}
-            <button onClick={props.createUserForm} disabled={!props.submitEnabled}>Submit Answers</button>
+            <button onClick={props.createUserForm} >Submit Answers</button>
             <p>{props.submitFeedback}</p>
         </div>
     )

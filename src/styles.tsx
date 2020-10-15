@@ -7,7 +7,7 @@ export const useStyles = makeStyles({
     root: {
         width: 400,
         marginLeft: 50
-    },
+    }
 });
 
 
@@ -41,4 +41,24 @@ export const ValueSlider = withStyles({
     }
 })(Slider);
 
+export const QuestionBlock = makeStyles({
+    root: {
+        flexGrow: 1,
+        margin: 10,
+        backgroundColor: 'lightBlue'
+    },
+    topic: {
+        fontWeight: "bold",
+        marginLeft: 20,
+        paddingTop: 10
+    },
+    text: {
+        margin: 5,
+        marginLeft: 20
+    },
+    slider: {
+        paddingTop: 20,
+        paddingBottom: 10
+    }
+});
 

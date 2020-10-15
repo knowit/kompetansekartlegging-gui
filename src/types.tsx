@@ -7,18 +7,21 @@ export type AnswerData = {
     knowledge: number,
     motivation: number
 };
+
 export type Answers = {
     [key: string]: AnswerData
 };
+
 export type QuestionData = {
     id: string,
     text: string,
     topic: string,
     category: string
-}
+};
+
 export type Questions = {
     [key: string]: QuestionData
-}
+};
 
 export type AggregatedAnswer = {
     category: String,
@@ -141,9 +144,9 @@ export type UserFormList = {
 
 export type AnswerProps = {
     createUserForm: () => void,
-    updateAnswer: (key: string, rating: number, motivation: boolean) => void,
+    // updateAnswer: (key: string, rating: number, motivation: boolean) => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
-    submitEnabled: boolean,
     answers: AnswerData[],
     submitFeedback: string
 };
@@ -167,6 +170,16 @@ export type SliderProps = {
     sliderChanged: (newValue: number, motivation: boolean) => void,
     motivation: boolean,
     value: number
+};
+
+export type QuestionProps = {
+    // updateAnswer: (key: string, rating: number, motivation: boolean) => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    topic: string,
+    text: string,
+    questionId: string,
+    knowledgeDefaultValue: number,
+    motivationDefaultValue: number
 };
 
 export type BatchCreatedQuestionAnswer = {
