@@ -1,6 +1,6 @@
 {
   "auth": {
-    "kompetansekartleggin06384670": {
+    "kompetansekartleggind11d7cce": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -16,7 +16,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authkompetansekartleggin06384670"
+              "userPoolId": "authkompetansekartleggind11d7cce"
             }
           },
           "additionalAuthenticationProviders": []
