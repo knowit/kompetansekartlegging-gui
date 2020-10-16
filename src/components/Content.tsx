@@ -90,19 +90,6 @@ const Content = () => {
         setRadarData(newRadarData);
     }
 
-    //TODO: This might be broken with new motivation setup
-    const updateAnswer2 = (questionId: string, rating: number, motivation: boolean): void => {
-
-        setAnswers(prevAnswers => {
-            let newAnswers: AnswerData[] = [...prevAnswers];
-            let answer = newAnswers.find(a => a.questionId === questionId);
-            if(!answer) return [];
-            if(motivation) answer.motivation = rating;
-            else answer.knowledge = rating;
-            return newAnswers
-        })
-    }
-
     const updateAnswer = (questionId: string, knowledgeValue: number, motivationValue: number): void => {
         setAnswers(prevAnswers => {
             let newAnswers: AnswerData[] = [...prevAnswers];
