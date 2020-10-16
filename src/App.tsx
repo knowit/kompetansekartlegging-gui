@@ -11,6 +11,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
 import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
 
+awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
+awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
+
 Amplify.configure(awsconfig);
 
 let formDef = require('./form2.json')
