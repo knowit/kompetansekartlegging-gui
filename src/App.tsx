@@ -10,9 +10,10 @@ import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
 import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
+import Login from './components/Login';
 
-// awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
-// awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
+awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
+awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 Amplify.configure(awsconfig);
 
@@ -69,16 +70,20 @@ const App = () => {
     return (
         <div>
             <BrowserRouter>
-                {!user && <button onClick={() => Auth.federatedSignIn({customProvider: CognitoHostedUIIdentityProvider.Google})}>Log in</button>}
-                {user && <button onClick={() => Auth.signOut()}>Sign Out {user.getUsername()}</button>}
-                <NavBar/>
-                <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
-                <Content />
-                <Footer/>
+                {user ? 
+                <div>
+                    <NavBar/>
+                    <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
+                    <Content />
+                    <Footer/>
+                </div>
+                :
+                <Login/>
+                }
+
             </BrowserRouter>
         </div>
     );
 }
 
-// export default withAuthenticator(App);
 export default App;
