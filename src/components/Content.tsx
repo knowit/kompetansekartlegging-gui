@@ -11,7 +11,6 @@ const Content = () => {
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
     const [radarData, setRadarData] = useState<AnsweredQuestion[]>([]);
-    const [submitEnabled, setSubmitEnabled] = useState<boolean>(true);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
 
@@ -69,7 +68,7 @@ const Content = () => {
                 questionAnswerQuestionId: answers[i].questionId
             });
         }
-
+        
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
         let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
         if(!result) {
@@ -91,31 +90,22 @@ const Content = () => {
         setRadarData(newRadarData);
     }
 
-    //TODO: This might be broken with new motivation setup
-    const updateAnswer = (questionId: string, rating: number, motivation: boolean): void => {
-
+    const updateAnswer = (questionId: string, knowledgeValue: number, motivationValue: number): void => {
         setAnswers(prevAnswers => {
             let newAnswers: AnswerData[] = [...prevAnswers];
             let answer = newAnswers.find(a => a.questionId === questionId);
             if(!answer) return [];
-            if(motivation) answer.motivation = rating;
-            else answer.knowledge = rating;
+            answer.knowledge = knowledgeValue;
+            answer.motivation = motivationValue;
             return newAnswers
-        })
-    }
+        });
+    };
 
     const fetchLastFormDefinition = async () => {
         let formList = await helper.callGraphQL<ListedFormDefinition>(queries.listFormDefinitions);
         let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
         let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
         if(currentForm.data) setFormDefinition(currentForm.data);
-    }
-    
-    const hasAnsweredAtleastOnce = (): boolean =>{
-        for(const answer of answers) {
-            if(answer.knowledge >= 0 || answer.motivation >= 0) return true;
-        }
-        return false;
     };
 
     const getUserAnswers = async () => {
@@ -142,7 +132,7 @@ const Content = () => {
     const listUserForms = async () => {
         let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
         console.log(userForms);
-    }
+    };
     
     useEffect(() => {
         fetchLastFormDefinition();
@@ -156,11 +146,11 @@ const Content = () => {
 
     useEffect(() => {
         setAnswers(createAnswers());
+
     }, [userAnswers]);
 
     useEffect(() => {
         setRadarData(createRadarData());
-        setSubmitEnabled(hasAnsweredAtleastOnce());
     }, [answers, userAnswers]);
 
     
@@ -172,7 +162,6 @@ const Content = () => {
                     updateAnswer: updateAnswer,
                     formDefinition: formDefinition,
                     createUserForm: createUserForm,
-                    submitEnabled: submitEnabled,
                     answers: answers,
                     submitFeedback: submitFeedback
                 }}

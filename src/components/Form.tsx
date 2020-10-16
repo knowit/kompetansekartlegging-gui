@@ -14,7 +14,7 @@ const Form = ({...props}: AnswerProps) => {
         }
     }
 
-    const [questions, setQuestions] = useState<JSX.Element[]>();
+    const [questions, setQuestions] = useState<JSX.Element[]>([]);
 
     const getQuestionsForCategory = (items: Question[]): JSX.Element[] => {
         let questions: JSX.Element[] = [];
@@ -27,10 +27,10 @@ const Form = ({...props}: AnswerProps) => {
                     topic={item.question.topic}
                     text={item.question.text}
                     updateAnswer={props.updateAnswer}
-                    knowledgeChecked={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
-                    motivationChecked={answer ? (answer.motivation ? answer.motivation : 0) : -1}
+                    knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
+                    motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                 />
-            );
+                );
         }
         return questions;
     }; 
@@ -58,14 +58,14 @@ const Form = ({...props}: AnswerProps) => {
     };
 
     useEffect(() => {
-        setQuestions(createQuestions());
-    }, [props.formDefinition])
+        if(questions.length === 0) setQuestions(createQuestions());
+    }, [props.answers])
 
     return (
         <div className="form">
-            <button onClick={props.createUserForm} disabled={!props.submitEnabled}>Submit Answers</button>
+            <button onClick={props.createUserForm} >Submit Answers</button>
             {questions}
-            <button onClick={props.createUserForm} disabled={!props.submitEnabled}>Submit Answers</button>
+            <button onClick={props.createUserForm} >Submit Answers</button>
             <p>{props.submitFeedback}</p>
         </div>
     )
