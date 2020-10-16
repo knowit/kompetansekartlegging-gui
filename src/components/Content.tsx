@@ -5,6 +5,9 @@ import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as customQueries from '../graphql/custom-queries';
+import { Overview } from './cards/Overview';
+import { ScaleDescription } from './cards/ScaleDescription';
+import { YourAnswers } from './cards/YourAnswers';
 
 const Content = () => {
     
@@ -153,28 +156,75 @@ const Content = () => {
         setRadarData(createRadarData());
     }, [answers, userAnswers]);
 
-    
 
-    return(
+    //New States etc for new card functionality
+    /*
+     * Really cryptic, using array for storing if card is active or not, using hardcoded number
+     *  for index. this rly need another look and a fix to make it readable
+     *
+     * Indexes is mapped to Cards like this:
+     * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
+    */
+    const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
+
+    
+    const setActiveCard = (cardIndex: number, active: boolean) => {
+        let newActiveCards = [...activeCards];
+        if(cardIndex === 0 && newActiveCards[1]) newActiveCards[2] = false;
+        if(cardIndex === 2 && newActiveCards[1]) newActiveCards[0] = false;
+        if(cardIndex === 1 && newActiveCards[0] && newActiveCards[2]) newActiveCards[0] = false;
+        newActiveCards[cardIndex] = active;
+        setActiveCards(newActiveCards);
+    };
+
+    
+    return (
         <div>
-            <Router  
-                answerProps={{
-                    updateAnswer: updateAnswer,
-                    formDefinition: formDefinition,
-                    createUserForm: createUserForm,
-                    answers: answers,
-                    submitFeedback: submitFeedback
+            <Overview 
+                commonCardProps={{
+                    setActiveCard: setActiveCard,
+                    active: activeCards[0],
+                    index: 0
                 }}
-                statsProps={{
-                    data: radarData
+                radarData={radarData}
+            />
+            <ScaleDescription 
+                commonCardProps={{
+                    setActiveCard: setActiveCard,
+                    active: activeCards[1],
+                    index: 1
                 }}
-                userProps={{
-                    deleteUserData: deleteUserData,
-                    listUserForms: listUserForms
+            />
+            <YourAnswers 
+                commonCardProps={{
+                    setActiveCard: setActiveCard,
+                    active: activeCards[2],
+                    index: 2
                 }}
             />
         </div>
     );
+
+    // return(
+    //     <div>
+    //         <Router  
+    //             answerProps={{
+    //                 updateAnswer: updateAnswer,
+    //                 formDefinition: formDefinition,
+    //                 createUserForm: createUserForm,
+    //                 answers: answers,
+    //                 submitFeedback: submitFeedback
+    //             }}
+    //             statsProps={{
+    //                 data: radarData
+    //             }}
+    //             userProps={{
+    //                 deleteUserData: deleteUserData,
+    //                 listUserForms: listUserForms
+    //             }}
+    //         />
+    //     </div>
+    // );
 
 };
 

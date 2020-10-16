@@ -193,6 +193,31 @@ export type BatchCreatedQuestionAnswer = {
             topic: string,
         }
     }[]
-}
+};
 
+//Types for new card functionality
+// export enum CardTypes {
+//     Overview = 0,
+//     ScaleDescription = 1,
+//     YourAnswer = 2
+// };
+
+export type OverviewProps = {
+    commonCardProps: CommonCardProps,
+    radarData: AnsweredQuestion[]
+};
+
+export type ScaleDescriptionProps = {
+    commonCardProps: CommonCardProps
+};
+
+export type YourAnswerProps = {
+    commonCardProps: CommonCardProps
+};
+
+type CommonCardProps = {
+    setActiveCard: (cardIndex: number, active: boolean) => void,
+    active: boolean,
+    index: number
+};
 
