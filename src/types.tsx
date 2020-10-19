@@ -212,7 +212,12 @@ export type ScaleDescriptionProps = {
 };
 
 export type YourAnswerProps = {
-    commonCardProps: CommonCardProps
+    commonCardProps: CommonCardProps,
+    createUserForm: () => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    formDefinition: FormDefinition | null,
+    answers: AnswerData[],
+    submitFeedback: string
 };
 
 type CommonCardProps = {

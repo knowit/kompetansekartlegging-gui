@@ -201,6 +201,11 @@ const Content = () => {
                     active: activeCards[2],
                     index: 2
                 }}
+                createUserForm={createUserForm}
+                updateAnswer={updateAnswer}
+                formDefinition={formDefinition}
+                answers={answers}
+                submitFeedback={submitFeedback}
             />
         </div>
     );
