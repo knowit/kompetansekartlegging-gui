@@ -1,115 +1,75 @@
 import { ResponsiveRadar } from '@nivo/radar'
 import React, { useEffect, useState } from 'react'
-import { AnswerData, AnsweredQuestion, CalculatedAnswer, CalculationData, ResultData } from '../types'
+import { roundDecimals } from '../helperFunctions';
+import { AnswerData, CalculationData, ResultData } from '../types'
 
 export default function ResultDiagram(props: { data: AnswerData[] }) {
 
-    const [answerData, setAnswerData] = useState<CalculationData[]>([]);
-    const [resultData, setResultData] = useState<ResultData[]>([]);
+    const [answerData, setAnswerData] = useState<ResultData[]>([]);
 
-    const mapData = (): CalculatedAnswer[] => {
-        let calculatedAnswers: CalculatedAnswer[] = [];
-        props.data.forEach(value => {
-            
-        });
-        return calculatedAnswers;
-    };
+    let calcData: CalculationData[] = [];
+    let result: ResultData[] = [];
+
+    // useEffect(() => {
+    //     if(answerData.length === 0){
+    //         let newAnswerData: ResultData[] = [];
+    //         props.data.forEach(dat => {
+    //             let cat = newAnswerData.find(ans => ans.category === dat.category);
+    //             if(!cat){
+    //                 cat = {
+    //                     category: dat.category,
+    //                     knowledgeCount: 0,
+    //                     knowledgeTotal: 0,
+    //                     motivationCount: 0,
+    //                     motivationTotal: 0,
+    //                     questionIds: []
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }), [];
 
     useEffect(() => {
-        let answers = [...answerData];
-        props.data.forEach(value => {
-            if(!answers.find(ans => ans.category === value.category)){
-                answers.push({
-                    questionIds: [],
-                    category: value.category,
+        props.data.forEach(dat => {
+            if(dat.knowledge < 0 && dat.motivation < 0) return;
+            let catIndex = calcData.findIndex(calc => calc.category === dat.category);
+            if(catIndex === -1){
+                catIndex = calcData.length;
+                calcData.push({
+                    category: dat.category,
                     knowledgeCount: 0,
                     knowledgeTotal: 0,
                     motivationCount: 0,
-                    motivationTotal: 0
+                    motivationTotal: 0,
+                    questionIds: []
                 });
-            };
+            }
+            if(dat.knowledge >= 0){
+                calcData[catIndex].knowledgeCount += 1;
+                calcData[catIndex].knowledgeTotal += dat.knowledge;
+            }
+            if(dat.motivation >= 0){
+                calcData[catIndex].motivationCount += 1;
+                calcData[catIndex].motivationTotal += dat.motivation;
+            }
         });
-
-        let data: AnswerData[] = [];
-        props.data.forEach(value => {
-            if(value.knowledge >= 0 || value.motivation >= 0) data.push(value);
+        console.log(calcData);
+        calcData.forEach(dat => {
+            let resIndex = result.findIndex(res => res.category === dat.category);
+            if(resIndex === -1){
+                resIndex = result.length;
+                result.push({
+                    category: dat.category,
+                    averageKnowledge: 0,
+                    averageMotivation: 0
+                });
+            }
+            result[resIndex].averageKnowledge = roundDecimals(dat.knowledgeTotal / dat.knowledgeCount || 0, 2);
+            result[resIndex].averageMotivation = roundDecimals(dat.motivationTotal / dat.motivationCount || 0, 2);
         });
-
-        let calcData: CalculationData[] = [];
-        data.forEach(dat => {
-
-        });
-
-
-
-
-        // props.data.map(value => {
-        //     let category = answers.find(cat => cat.category === value.category);
-        //     if(!category) {
-        //         category = {
-        //             questionIds: [],
-        //             category: value.category,
-        //             totalKnowledgeValue: 0,
-        //             numberOfKnowledgeValues: 0,
-        //             knowledgeAverage: 0,
-        //             totalMotivationValue: 0,
-        //             numberOfMotivationValues: 0,
-        //             motivationAverage: 0
-        //         }
-        //         answers.push(category);
-        //     }
-        //     if(!category.questionIds.includes(value.questionId)){
-        //         category.questionIds.push(value.questionId);
-        //     }
-        //     if(value.knowledge !== -1){
-        //         category.totalKnowledgeValue +=
-        //     }
-
-
-        //     //Edit value
-        //     if(value.knowledge !== -1) {
-        //         category.numberOfKnowledgeValues++;
-        //         category.totalKnowledgeValue += value.knowledge;
-        //         category.knowledgeAverage = category.totalKnowledgeValue / category.numberOfKnowledgeValues;
-        //     }
-        //     if(value.motivation !== -1) {
-        //         category.numberOfMotivationValues++;
-        //         category.totalMotivationValue += value.motivation;
-        //         category.motivationAverage = category.totalMotivationValue / category.numberOfMotivationValues;
-        //     }
-        // });
-        setAnswerData(answers);
+        // setAnswerData(result);
+        console.log(result);
     }, [props.data]);
-
-
-    // let categoryAnswers: AggregatedAnswer[] = [];
-    // useEffect(() => {
-    //     props.data.map(value => {
-    //         let category = categoryAnswers.find(cat => cat.category === value.question.category);
-    //         if(!category) {
-    //             category = {
-    //                 category: value.question.category,
-    //                 totalKnowledgeValue: 0,
-    //                 numberOfKnowledgeValues: 0,
-    //                 knowledgeAverage: 0,
-    //                 totalMotivationValue: 0,
-    //                 numberOfMotivationValues: 0,
-    //                 motivationAverage: 0
-    //             }
-    //             categoryAnswers.push(category);
-    //         }
-    //         if(value.answer !== -1) {
-    //             category.numberOfKnowledgeValues++;
-    //             category.totalKnowledgeValue += value.answer;
-    //             category.knowledgeAverage = category.totalKnowledgeValue / category.numberOfKnowledgeValues;
-    //         }
-    //         if(value.motivation !== -1) {
-    //             category.numberOfMotivationValues++;
-    //             category.totalMotivationValue += value.motivation;
-    //             category.motivationAverage = category.totalMotivationValue / category.numberOfMotivationValues;
-    //         }
-    //     });
-    // }, [props.data]);
 
     return (
         <ResponsiveRadar
