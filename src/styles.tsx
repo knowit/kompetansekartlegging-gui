@@ -110,7 +110,7 @@ export const CardStyle = makeStyles({
     closed: {
     },
     open: {
-        height: 300,
+        height: 500,
         overflow: "auto"
     }
 });
