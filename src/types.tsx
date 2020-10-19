@@ -33,6 +33,31 @@ export type AggregatedAnswer = {
     motivationAverage: number
 };
 
+export type CalculatedAnswer = {
+    category: string,
+    totalKnowledgeValue: number,
+    numberOfKnowledgeValues: number,
+    knowledgeAverage: number,
+    totalMotivationValue: number,
+    numberOfMotivationValues: number,
+    motivationAverage: number
+};
+
+export type CalculationData = {
+    questionIds: string[],
+    category: string,
+    knowledgeCount: number,
+    knowledgeTotal: number,
+    motivationCount: number,
+    motivationTotal: number
+};
+
+export type ResultData = {
+    category: string,
+    averageKnowledge: number,
+    averageMotivation: number
+};
+
 export type AnsweredQuestion = {
     question: QuestionData,
     answer: number,
@@ -204,7 +229,7 @@ export type BatchCreatedQuestionAnswer = {
 
 export type OverviewProps = {
     commonCardProps: CommonCardProps,
-    radarData: AnsweredQuestion[]
+    radarData: AnswerData[]
 };
 
 export type ScaleDescriptionProps = {
