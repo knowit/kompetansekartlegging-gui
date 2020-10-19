@@ -29,7 +29,7 @@ export const Overview = ({...props}: OverviewProps) => {
             </div>
             {props.commonCardProps.active ? 
                 <div className={style.radarPlot}>
-                    {/* <ResultDiagram data={props.radarData} /> */}
+                    <ResultDiagram data={props.radarData} />
                 </div>
             : ""}
         </div>
