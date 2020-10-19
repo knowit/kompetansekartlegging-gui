@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React from 'react'
 import { AnswersStyle, CardStyle } from '../../styles';
 import { YourAnswerProps } from '../../types';
+import Form from '../Form';
 
 export const YourAnswers = ({...props}: YourAnswerProps) => {
     const style = AnswersStyle();
@@ -22,6 +23,11 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                     YOUR ANSWERS
                 </button>
             </div>
+            {props.commonCardProps.active ? 
+                <div >
+                    <Form {...props} />
+                </div>
+            : ""}
         </div>
     );
 };

@@ -23,6 +23,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                     SCALE DESCRIPTION
                 </button>
             </div>
+            
         </div>
     );
 };

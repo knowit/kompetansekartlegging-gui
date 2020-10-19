@@ -11,7 +11,7 @@ export const KnowitColors = {
     darkGreen: "#596961",
     lightGreen: "#C3DEC3",
     ecaluptus: "#DFEDE1",
-    blueGreen: "#ADB7AF",
+    greyGreen: "#ADB7AF",
     fuchsia: "#EA3FF3",
     burgunder: "#7A3E50",
     flamingo: "#F3C8BA",
@@ -110,32 +110,33 @@ export const CardStyle = makeStyles({
     closed: {
     },
     open: {
-        height: 300
+        height: 300,
+        overflow: "auto"
     }
 });
 
 export const OverviewStyle = makeStyles({
     root: {
         width: "100%",
-        backgroundColor: KnowitColors.lightGreen
+        backgroundColor: KnowitColors.white
     },
     radarPlot: {
-        height: 200,
-        width: 200
+        height: 400,
+        width: 400
     }
 });
 
 export const ScaleDescStyle = makeStyles({
     root: {
         width: "100%",
-        backgroundColor: KnowitColors.green
+        backgroundColor: KnowitColors.ecaluptus
     }
 });
 
 export const AnswersStyle = makeStyles({
     root: {
         width: "100%",
-        backgroundColor: KnowitColors.darkGreen
+        backgroundColor: KnowitColors.greyGreen
     }
 });
 
