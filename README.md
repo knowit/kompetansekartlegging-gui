@@ -28,7 +28,7 @@ To update an Amplify `category`, i.e. `auth`, run the command `$ amplify update 
 
 ## Not-so-obvious things to know
 
-1. All Amplify environment information is contained in `amplify/team-provider-info.json` (which is put in `.gitignore` since it contains secrets). This means that environment information has to be pulled manually (by finding the right Amplify CLI command for the respective environment in the Amplify console). We'll have to find a proper way to share these environments eventually, either by backing the file up in a safe location or by using a tool such as [git-secret](https://git-secret.io/#using-gpg) to safely encrypt the file. 
+1. All Amplify environment information is contained in `amplify/team-provider-info.json` (which is put in `.gitignore` since it contains secrets). This means that environment information has to be pulled manually (by finding the right Amplify CLI command for the respective environment in the Amplify console). We are currently using [git-secret](https://git-secret.io/#using-gpg) to safly encrypt the environments file.
 2. Environment variables can be set in the Amplify Console (and probably the CLI as well).
 
 ## Useful links
