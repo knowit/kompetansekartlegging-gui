@@ -36,8 +36,8 @@ export type DeleteUserFormInput = {
 
 export type ModelQuestionAnswerConditionInput = {
   userFormID?: ModelIDInput | null,
-  knowledge?: ModelIntInput | null,
-  motivation?: ModelIntInput | null,
+  knowledge?: ModelFloatInput | null,
+  motivation?: ModelFloatInput | null,
   and?: Array< ModelQuestionAnswerConditionInput | null > | null,
   or?: Array< ModelQuestionAnswerConditionInput | null > | null,
   not?: ModelQuestionAnswerConditionInput | null,
@@ -83,7 +83,7 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type ModelIntInput = {
+export type ModelFloatInput = {
   ne?: number | null,
   eq?: number | null,
   le?: number | null,
@@ -202,8 +202,8 @@ export type ModelUserFormFilterInput = {
 export type ModelQuestionAnswerFilterInput = {
   id?: ModelIDInput | null,
   userFormID?: ModelIDInput | null,
-  knowledge?: ModelIntInput | null,
-  motivation?: ModelIntInput | null,
+  knowledge?: ModelFloatInput | null,
+  motivation?: ModelFloatInput | null,
   and?: Array< ModelQuestionAnswerFilterInput | null > | null,
   or?: Array< ModelQuestionAnswerFilterInput | null > | null,
   not?: ModelQuestionAnswerFilterInput | null,

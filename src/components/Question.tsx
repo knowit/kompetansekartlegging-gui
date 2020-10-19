@@ -1,60 +1,52 @@
-import React from 'react';
-import Selector from './Selector';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
+import { QuestionProps } from '../types';
+import { QuestionBlock } from '../styles';
+import Slider from './Slider';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        margin: 10,
-        backgroundColor: 'lightBlue'
-    },
-    motivation: {
-        marginTop: 20
-    },
-    selector: {
-        marginTop: 5
-    }
-}));
 
-type Props = {
-    updateAnswer: (listId: string, value: number, motivation: boolean) => void,
-    topic: string,
-    text: string,
-    questionId: string,
-    knowledgeChecked: number,
-    motivationChecked: number
-}
 
-const Question = ({...props}: Props) => {
+const Question = ({...props}: QuestionProps) => {
+    
+    const [knowledgeValue, setKnowledgeValue] = useState<number>(props.knowledgeDefaultValue);
+    const [motivationValue, setMotivationValue] = useState<number>(props.motivationDefaultValue);
 
-    const styles = useStyles();
+    const styles = QuestionBlock();
 
-    const radiobuttonClicked = (value: number, motivation: boolean) => {
-        props.updateAnswer(props.questionId, value, motivation);
-    }
+    const sliderChanged = (newValue: number, motivation: boolean) => {
+        if(motivation){
+            setMotivationValue(newValue);
+            props.updateAnswer(props.questionId, knowledgeValue, newValue);
+        } else {
+            setKnowledgeValue(newValue);
+            props.updateAnswer(props.questionId, newValue, motivationValue);
+        }
+    };
+
+    useEffect(() => {
+        setKnowledgeValue(props.knowledgeDefaultValue);
+        setMotivationValue(props.motivationDefaultValue);
+    }, [props.knowledgeDefaultValue, props.motivationDefaultValue]);
 
     return (
         <div className={styles.root}>
             <div>
-                <div>{props.topic}</div>
-                <div>{props.text}</div>
-                <div className={styles.selector}>
-                    <Selector
-                        radiobuttonChanged={radiobuttonClicked} 
-                        motivation={false} 
-                        questionId={props.questionId} 
-                        checked={props.knowledgeChecked} 
+                <div className={styles.topic}>{props.topic}</div>
+                <div className={styles.text}>{props.text}</div>
+                <div className={styles.slider}>
+                    <Slider
+                        value={knowledgeValue}
+                        motivation={false}
+                        sliderChanged={sliderChanged}
                     />
                 </div>
             </div>
-            <div className={styles.motivation}>
-                <div>{props.topic} motivasjon</div>
-                <div className={styles.selector}>
-                    <Selector 
-                        radiobuttonChanged={radiobuttonClicked} 
+            <div>
+                <div className={styles.topic}>{props.topic} motivasjon</div>
+                <div className={styles.slider}>
+                    <Slider
+                        value={motivationValue}
                         motivation={true}
-                        questionId={props.questionId} 
-                        checked={props.motivationChecked} 
+                        sliderChanged={sliderChanged}
                     />
                 </div>
             </div>
