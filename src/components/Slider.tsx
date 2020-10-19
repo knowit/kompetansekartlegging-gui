@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { roundDecimals } from "../helperFunctions";
 import { ValueSlider, useStyles } from '../styles'
 import { SliderProps } from "../types";
 
@@ -20,7 +21,7 @@ const Slider = ({ ...props }: SliderProps) => {
         <div className={classes.root}>
             <ValueSlider
                 valueLabelDisplay="on"
-                valueLabelFormat={value => Math.round(value * 10) / 10}
+                valueLabelFormat={value => roundDecimals(value, 1)}
                 value={sliderValue}
                 onChange={sliderChanged}
                 onChangeCommitted={sliderCommitted}
