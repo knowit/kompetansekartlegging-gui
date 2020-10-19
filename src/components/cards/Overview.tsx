@@ -3,6 +3,7 @@ import React from 'react'
 import { CardStyle, OverviewStyle } from '../../styles';
 import { OverviewProps } from '../../types';
 import RadarPlot from '../RadarPlot';
+import ResultDiagram from '../ResultDiagram';
 
 
 export const Overview = ({...props}: OverviewProps) => {
@@ -28,7 +29,7 @@ export const Overview = ({...props}: OverviewProps) => {
             </div>
             {props.commonCardProps.active ? 
                 <div className={style.radarPlot}>
-                    <RadarPlot data={props.radarData} />
+                    <ResultDiagram data={props.radarData} />
                 </div>
             : ""}
         </div>
