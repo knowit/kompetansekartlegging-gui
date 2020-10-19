@@ -13,7 +13,7 @@ const Content = () => {
     
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
-    const [radarData, setRadarData] = useState<AnsweredQuestion[]>([]);
+    const [radarData, setRadarData] = useState<AnswerData[]>([]);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
 
@@ -38,17 +38,17 @@ const Content = () => {
         return as;
     };
 
-    const createRadarData = (): AnsweredQuestion[] => {
+    const createRadarData = (): AnswerData[] => {
         if(!formDefinition) return [];
         let questionList = formDefinition.getFormDefinition.questions.items;
         if(!answers || !questionList) return [];
-        let newRadarData: AnsweredQuestion[] = [];
+        let newRadarData: AnswerData[] = [];
         for (let i = 0; i < answers.length; i++) {
-            const question = questionList.find(q => q.question.id === answers[i].questionId);
-            if (!question) continue;
             newRadarData.push({
-                question: question.question,
-                answer: answers[i].knowledge,
+                questionId: answers[i].questionId,
+                category: answers[i].category,
+                topic: answers[i].topic,
+                knowledge: answers[i].knowledge,
                 motivation: answers[i].motivation
             });
         }
@@ -83,15 +83,15 @@ const Content = () => {
         //updateRadarData(result);
     }
 
-    const updateRadarData = (batchData: BatchCreatedQuestionAnswer): void => {
-        let data = batchData.batchCreateQuestionAnswer;
-        let newRadarData: AnsweredQuestion[] = [...radarData];
-        for(let i = 0; i < data.length; i++){
-            let rData = newRadarData.find(d => d.question.id === data[i].question.id);
-            if(rData) rData.answer = data[i].answer;
-        }
-        setRadarData(newRadarData);
-    }
+    // const updateRadarData = (batchData: BatchCreatedQuestionAnswer): void => {
+    //     let data = batchData.batchCreateQuestionAnswer;
+    //     let newRadarData: AnsweredQuestion[] = [...radarData];
+    //     for(let i = 0; i < data.length; i++){
+    //         let rData = newRadarData.find(d => d.question.id === data[i].question.id);
+    //         if(rData) rData.answer = data[i].answer;
+    //     }
+    //     setRadarData(newRadarData);
+    // }
 
     const updateAnswer = (questionId: string, knowledgeValue: number, motivationValue: number): void => {
         setAnswers(prevAnswers => {
@@ -136,6 +136,10 @@ const Content = () => {
         let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
         console.log(userForms);
     };
+
+    const updateRadarData = () => {
+        setRadarData(answers);
+    }
     
     useEffect(() => {
         fetchLastFormDefinition();
@@ -153,7 +157,8 @@ const Content = () => {
     }, [userAnswers]);
 
     useEffect(() => {
-        setRadarData(createRadarData());
+        if(radarData.length === 0) setRadarData(createRadarData());
+        else updateRadarData();
     }, [answers, userAnswers]);
 
 
