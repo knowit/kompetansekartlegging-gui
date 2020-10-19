@@ -9,6 +9,11 @@ import NavBar from './components/NavBar';
 import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
+import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
+import Login from './components/Login';
+
+awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
+awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 Amplify.configure(awsconfig);
 
@@ -16,34 +21,31 @@ let formDef = require('./form2.json')
 
 const App = () => {
     const [user, setUser] = useState<any | null>(null);
+    const [customState, setCustomState] = useState<any | null>(null)
     
 
     useEffect(() => {
         Hub.listen('auth', ({ payload: { event, data } }) => {
             switch (event) {
-                case 'signIn':
-                case 'cognitoHostedUI':
-                    getUser().then(userData => setUser(userData));
+                case "signIn":
+                    setUser(data);
                     break;
-                case 'signOut':
+                case "signOut":
                     setUser(null);
                     break;
-                case 'signIn_failure':
-                case 'cognitoHostedUI_failure':
-                    console.log('Sign in failure', data);
-                    break;
+                case "customOAuthState":
+                    setCustomState(data);
             }
         });
-        getUser().then(userData => setUser(userData));
+
+        Auth.currentAuthenticatedUser()
+            .then(user => setUser(user))
+            .catch(() => console.log("Not signed in"));
     }, []);
 
-    
-
-    const getUser = () => {
-        return Auth.currentAuthenticatedUser()
-            .then(userData => userData)
-            .catch(() => console.log('Not signed in'));
-    }
+    useEffect(() => {
+        console.log(user);
+    }, [user])
 
     async function sendFormDefinition() {
         /* 
@@ -68,13 +70,20 @@ const App = () => {
     return (
         <div>
             <BrowserRouter>
-                <NavBar/>
-                {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
-                <Content />
-                <Footer/>
+                {user ? 
+                <div>
+                    <NavBar/>
+                    <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
+                    <Content />
+                    <Footer/>
+                </div>
+                :
+                <Login/>
+                }
+
             </BrowserRouter>
         </div>
     );
 }
 
-export default withAuthenticator(App);
+export default App;
