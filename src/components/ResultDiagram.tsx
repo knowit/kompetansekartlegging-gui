@@ -17,88 +17,67 @@ export default function ResultDiagram(props: { data: AnswerData[] }) {
 
     useEffect(() => {
         let answers = [...answerData];
-        if(answerData.length === 0){
-            props.data.forEach(value => {
-                if(!answers.find(ans => ans.category === value.category)){
-                    answers.push({
-                        questionIds: [],
-                        category: value.category,
-                        knowledgeCount: 0,
-                        knowledgeTotal: 0,
-                        motivationCount: 0,
-                        motivationTotal: 0
-                    });
-                };
-            });
-        }
-
         props.data.forEach(value => {
-            let calcData = answers.find(ans => ans.category === value.category);
-            if(!calcData){
-                console.error("No calcData found!");
-                return;
-            }
-
-
-            if(!category.questionIds.includes(value.questionId)){
-                category.questionIds.push(value.questionId);
-            }
-            if(value.knowledge !== -1){
-                category.totalKnowledgeValue +=
-            }
-            //Edit value
-            if(value.knowledge !== -1) {
-                category.numberOfKnowledgeValues++;
-                category.totalKnowledgeValue += value.knowledge;
-                category.knowledgeAverage = category.totalKnowledgeValue / category.numberOfKnowledgeValues;
-            }
-            if(value.motivation !== -1) {
-                category.numberOfMotivationValues++;
-                category.totalMotivationValue += value.motivation;
-                category.motivationAverage = category.totalMotivationValue / category.numberOfMotivationValues;
-            }
-        });
-
-
-
-
-
-
-        props.data.map(value => {
-            let category = answers.find(cat => cat.category === value.category);
-            if(!category) {
-                category = {
+            if(!answers.find(ans => ans.category === value.category)){
+                answers.push({
                     questionIds: [],
                     category: value.category,
-                    totalKnowledgeValue: 0,
-                    numberOfKnowledgeValues: 0,
-                    knowledgeAverage: 0,
-                    totalMotivationValue: 0,
-                    numberOfMotivationValues: 0,
-                    motivationAverage: 0
-                }
-                answers.push(category);
-            }
-            if(!category.questionIds.includes(value.questionId)){
-                category.questionIds.push(value.questionId);
-            }
-            if(value.knowledge !== -1){
-                category.totalKnowledgeValue +=
-            }
-
-
-            //Edit value
-            if(value.knowledge !== -1) {
-                category.numberOfKnowledgeValues++;
-                category.totalKnowledgeValue += value.knowledge;
-                category.knowledgeAverage = category.totalKnowledgeValue / category.numberOfKnowledgeValues;
-            }
-            if(value.motivation !== -1) {
-                category.numberOfMotivationValues++;
-                category.totalMotivationValue += value.motivation;
-                category.motivationAverage = category.totalMotivationValue / category.numberOfMotivationValues;
-            }
+                    knowledgeCount: 0,
+                    knowledgeTotal: 0,
+                    motivationCount: 0,
+                    motivationTotal: 0
+                });
+            };
         });
+
+        let data: AnswerData[] = [];
+        props.data.forEach(value => {
+            if(value.knowledge >= 0 || value.motivation >= 0) data.push(value);
+        });
+
+        let calcData: CalculationData[] = [];
+        data.forEach(dat => {
+
+        });
+
+
+
+
+        // props.data.map(value => {
+        //     let category = answers.find(cat => cat.category === value.category);
+        //     if(!category) {
+        //         category = {
+        //             questionIds: [],
+        //             category: value.category,
+        //             totalKnowledgeValue: 0,
+        //             numberOfKnowledgeValues: 0,
+        //             knowledgeAverage: 0,
+        //             totalMotivationValue: 0,
+        //             numberOfMotivationValues: 0,
+        //             motivationAverage: 0
+        //         }
+        //         answers.push(category);
+        //     }
+        //     if(!category.questionIds.includes(value.questionId)){
+        //         category.questionIds.push(value.questionId);
+        //     }
+        //     if(value.knowledge !== -1){
+        //         category.totalKnowledgeValue +=
+        //     }
+
+
+        //     //Edit value
+        //     if(value.knowledge !== -1) {
+        //         category.numberOfKnowledgeValues++;
+        //         category.totalKnowledgeValue += value.knowledge;
+        //         category.knowledgeAverage = category.totalKnowledgeValue / category.numberOfKnowledgeValues;
+        //     }
+        //     if(value.motivation !== -1) {
+        //         category.numberOfMotivationValues++;
+        //         category.totalMotivationValue += value.motivation;
+        //         category.motivationAverage = category.totalMotivationValue / category.numberOfMotivationValues;
+        //     }
+        // });
         setAnswerData(answers);
     }, [props.data]);
 
