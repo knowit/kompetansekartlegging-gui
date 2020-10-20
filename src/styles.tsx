@@ -84,14 +84,23 @@ export const QuestionBlock = makeStyles({
     },
     text: {
     },
+    sliderGroup: {
+        display: 'flex',
+        flexWrap: "nowrap",
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    sliderComponent: {
+    },
     slider: {
+
     },
     smallBold: {
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: "bold"
     },
     largeBold: {
-        fontSize: 14,
+        fontSize: 18,
         fontWeight: "bold"
     }
 });
