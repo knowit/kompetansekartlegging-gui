@@ -121,8 +121,9 @@ export const OverviewStyle = makeStyles({
         backgroundColor: KnowitColors.white
     },
     radarPlot: {
+        paddingLeft: '5%',
         height: 400,
-        width: 400
+        width: '75%'
     }
 });
 
@@ -139,7 +140,6 @@ export const AnswersStyle = makeStyles({
         backgroundColor: KnowitColors.greyGreen
     }
 });
-
 
 
 
