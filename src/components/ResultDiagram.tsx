@@ -84,7 +84,6 @@ export default function ResultDiagram(props: { data: AnswerData[] }) {
                     }
                 ]
             }}
-            height={300}
             options={{
                 maintainAspectRatio: false,
                 scales: {

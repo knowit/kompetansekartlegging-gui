@@ -110,7 +110,7 @@ export const CardStyle = makeStyles({
     closed: {
     },
     open: {
-        height: 500,
+        height: 400,
         overflow: "auto"
     }
 });
@@ -122,7 +122,7 @@ export const OverviewStyle = makeStyles({
     },
     radarPlot: {
         paddingLeft: '5%',
-        height: 400,
+        height: 350,
         width: '75%'
     }
 });
