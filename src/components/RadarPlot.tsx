@@ -1,4 +1,3 @@
-import { ResponsiveRadar } from '@nivo/radar'
 import React, { useEffect } from 'react'
 import {AggregatedAnswer, AnsweredQuestion} from '../types'
 
@@ -35,39 +34,42 @@ export default function RadarPlot(props: { data: AnsweredQuestion[] }) {
     }, [props.data]);
 
     return (
-        <ResponsiveRadar
-        data={categoryAnswers}
-        keys={['answerAverage', 'motivationAverage']}
-        indexBy="category"
-        maxValue={5}
-        margin={{top: 70, right: 80, bottom: 40, left: 200}}
-        curve="linearClosed"
-        gridShape="linear"
-        dotSize={10}
-        enableDotLabel={true}
-        colors={{scheme: 'nivo'}}
-        blendMode="multiply"
-        legends={[
-            {
-                anchor: 'top-left',
-                direction: 'column',
-                translateX: -50,
-                translateY: -40,
-                itemWidth: 80,
-                itemHeight: 20,
-                itemTextColor: '#999',
-                symbolSize: 12,
-                symbolShape: 'circle',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemTextColor: '#000'
-                        }
-                    }
-                ]
-            }
-        ]}
-    />
+        <div>
+
+        </div>
+    //     <ResponsiveRadar
+    //     data={categoryAnswers}
+    //     keys={['answerAverage', 'motivationAverage']}
+    //     indexBy="category"
+    //     maxValue={5}
+    //     margin={{top: 70, right: 80, bottom: 40, left: 200}}
+    //     curve="linearClosed"
+    //     gridShape="linear"
+    //     dotSize={10}
+    //     enableDotLabel={true}
+    //     colors={{scheme: 'nivo'}}
+    //     blendMode="multiply"
+    //     legends={[
+    //         {
+    //             anchor: 'top-left',
+    //             direction: 'column',
+    //             translateX: -50,
+    //             translateY: -40,
+    //             itemWidth: 80,
+    //             itemHeight: 20,
+    //             itemTextColor: '#999',
+    //             symbolSize: 12,
+    //             symbolShape: 'circle',
+    //             effects: [
+    //                 {
+    //                     on: 'hover',
+    //                     style: {
+    //                         itemTextColor: '#000'
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     ]}
+    // />
     )
 }
