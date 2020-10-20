@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { roundDecimals } from "../helperFunctions";
 import { ValueSlider, useStyles } from '../styles'
 import { SliderProps } from "../types";
@@ -16,6 +16,10 @@ const Slider = ({ ...props }: SliderProps) => {
     const sliderCommitted = () => {
         props.sliderChanged(sliderValue, props.motivation);
     };
+
+    useEffect(() => {
+        setSliderValue(props.value);
+    },[]);
 
     return (
         <div className={classes.root}>
