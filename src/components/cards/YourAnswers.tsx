@@ -15,7 +15,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
 
     return (
         <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.open : cardStyle.closed)}>
-            <div >
+            <div className={style.header}>
                 <button 
                     onClick={buttonClick} 
                     className={clsx(cardStyle.cardButton)}
@@ -23,9 +23,11 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                     YOUR ANSWERS
                 </button>
             </div>
-            {props.commonCardProps.active ?
-                    <Form {...props} />
-            : ""}
+            <div className={style.form}>
+                {props.commonCardProps.active ?
+                        <Form {...props} />
+                : ""}
+            </div>
         </div>
     );
 };

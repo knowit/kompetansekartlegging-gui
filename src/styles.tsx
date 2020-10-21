@@ -136,10 +136,10 @@ export const CardStyle = makeStyles({
         height: '100%'
     },
     closed: {
-        flexGrow: 0
     },
     open: {
-        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
         overflowY: 'auto',
         height: '100%'
     }
@@ -147,19 +147,24 @@ export const CardStyle = makeStyles({
 
 export const OverviewStyle = makeStyles({
     root: {
+        maxHeight: '20%',
         width: "100%",
-        flexGrow: 0.5,
         backgroundColor: KnowitColors.white
     },
+    radarHolder: {
+        
+        // height: '100%'
+    },
     radarPlot: {
-        paddingLeft: '5%',
-        height: '90%',
+        paddingLeft: '10%',
         width: '75%'
     }
 });
 
 export const ScaleDescStyle = makeStyles({
     root: {
+        flexGrow: 2,
+        flex: '0 1 auto',
         width: "100%",
         backgroundColor: KnowitColors.ecaluptus
     }
@@ -169,6 +174,15 @@ export const AnswersStyle = makeStyles({
     root: {
         width: "100%",
         backgroundColor: KnowitColors.greyGreen
+    },
+    header: {
+        
+    },
+    form: {
+        flexGrow: 2,
+        flex: '0 1 auto',
+        overflowY: 'auto',
+        height: '100%'
     }
 });
 
