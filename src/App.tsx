@@ -9,12 +9,15 @@ import NavBar from './components/NavBar';
 import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
+import { AppStyle } from './styles';
 
 Amplify.configure(awsconfig);
 
 let formDef = require('./form2.json')
 
 const App = () => {
+    const style = AppStyle();
+
     const [user, setUser] = useState<any | null>(null);
     
 
@@ -66,11 +69,13 @@ const App = () => {
     }
 
     return (
-        <div>
+        <div className={style.root}>
             <BrowserRouter>
                 <NavBar/>
                 {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
-                <Content />
+                {/* <div className={style.content}>
+                </div> */}
+                    <Content />
                 <Footer/>
             </BrowserRouter>
         </div>

@@ -8,6 +8,7 @@ import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
 import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
+import { CardStyle } from '../styles';
 
 const Content = () => {
     
@@ -170,7 +171,8 @@ const Content = () => {
      * Indexes is mapped to Cards like this:
      * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
     */
-    const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
+    const [activeCards, setActiveCards] = useState<boolean[]>([false, false, true]);
+    const style = CardStyle();
 
     
     const setActiveCard = (cardIndex: number, active: boolean) => {
@@ -184,7 +186,7 @@ const Content = () => {
 
     
     return (
-        <div>
+        <div className={style.cardHolder}>
             <Overview 
                 commonCardProps={{
                     setActiveCard: setActiveCard,

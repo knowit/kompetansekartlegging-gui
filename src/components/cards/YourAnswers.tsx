@@ -23,10 +23,8 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                     YOUR ANSWERS
                 </button>
             </div>
-            {props.commonCardProps.active ? 
-                <div >
+            {props.commonCardProps.active ?
                     <Form {...props} />
-                </div>
             : ""}
         </div>
     );

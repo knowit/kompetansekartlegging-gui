@@ -1,4 +1,5 @@
 import { makeStyles, Slider, withStyles } from "@material-ui/core";
+import { autoShowTooltip } from "aws-amplify";
 
 
 export const KnowitColors = {
@@ -25,6 +26,18 @@ export const useStyles = makeStyles({
     }
 });
 
+
+export const AppStyle = makeStyles({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh'
+    },
+    content: {
+        height: '100%',
+        flexGrow: 1
+    }
+});
 
 export const FontSettings = makeStyles({
     lighter: {
@@ -116,22 +129,31 @@ export const CardStyle = makeStyles({
         textAlign: "left",
         width: "100%"
     },
+    cardHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: '100%'
+    },
     closed: {
+        flexGrow: 0
     },
     open: {
-        height: 400,
-        overflow: "auto"
+        flexGrow: 1,
+        overflowY: 'auto',
+        height: '100%'
     }
 });
 
 export const OverviewStyle = makeStyles({
     root: {
         width: "100%",
+        flexGrow: 0.5,
         backgroundColor: KnowitColors.white
     },
     radarPlot: {
         paddingLeft: '5%',
-        height: 350,
+        height: '90%',
         width: '75%'
     }
 });
@@ -149,6 +171,17 @@ export const AnswersStyle = makeStyles({
         backgroundColor: KnowitColors.greyGreen
     }
 });
+
+
+
+
+
+
+
+
+
+
+
 
 
 
