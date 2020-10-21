@@ -66,35 +66,50 @@ export default function ResultDiagram(props: { data: AnswerData[] }) {
                 datasets: [
                     {
                         label: 'Knowledge',
-                        backgroundColor: 'rgba(255,99,132,0.2)',
-                        borderColor: 'rgba(255,99,132,1)',
+                        backgroundColor: 'red', //'rgba(255,99,132,0.2)',
+                        borderColor: 'red', //'rgba(255,99,132,1)',
                         borderWidth: 1,
-                        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                        hoverBorderColor: 'rgba(255,99,132,1)',
+                        // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                        // hoverBorderColor: 'rgba(255,99,132,1)',
                         data: answerData.map(value => value.averageKnowledge)
                     },
                     {
                         label: 'Motivation',
-                        backgroundColor: 'rgba(99,255,132,0.2)',
-                        borderColor: 'rgba(99,255,132,1)',
+                        backgroundColor: 'green',  //'rgba(99,255,132,0.2)',
+                        borderColor: 'green', //'rgba(99,255,132,1)',
                         borderWidth: 1,
-                        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                        hoverBorderColor: 'rgba(255,99,132,1)',
+                        // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                        // hoverBorderColor: 'rgba(255,99,132,1)',
                         data: answerData.map(value => value.averageMotivation)
                     }
                 ]
             }}
             options={{
                 maintainAspectRatio: false,
+                legend: {
+                    labels: {
+                        fontColor: 'black'
+                    }
+                },
                 scales: {
-                    xAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true,
-                                max: 5
-                            }
+                    yAxes: [{
+                        gridLines: {
+                            color: '#E4E0DC'
+                        },
+                        ticks: {
+                            fontColor: 'black'
                         }
-                    ]
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            color: '#E4E0DC'
+                        },
+                        ticks: {
+                            fontColor: 'black',
+                            beginAtZero: true,
+                            max: 5
+                        }
+                    }]
                 }
             }}
 

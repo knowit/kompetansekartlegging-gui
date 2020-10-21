@@ -171,7 +171,7 @@ const Content = () => {
      * Indexes is mapped to Cards like this:
      * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
     */
-    const [activeCards, setActiveCards] = useState<boolean[]>([false, false, true]);
+    const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
     const style = CardStyle();
 
     
