@@ -29,22 +29,18 @@ const Question = ({...props}: QuestionProps) => {
     }, [props.knowledgeDefaultValue, props.motivationDefaultValue]);
 
     return (
-        <div>
-
+        <div className={style.root}>
             <div className={style.topic}>{props.topic}</div>
-            <div className={style.text}>{props.text}</div>
+            <div>{props.text}</div>
             <div className={style.sliderGroup}>
-                <div className={clsx(style.largeBold, style.sliderComponent)}>KOMPETANSE</div>
-                <div className={clsx(style.smallBold, style.sliderComponent)}>Kjenner ikke til området</div>
+                <div className={clsx(style.largeBold)}>KOMPETANSE</div>
+                <div className={clsx(style.smallBold)}>Kjenner ikke til området</div>
                 <Slider
                         value={knowledgeValue}
                         motivation={false}
                         sliderChanged={sliderChanged}
                     />
-                {/* <div className={style.sliderComponent}>
-                    
-                </div> */}
-                <div className={clsx(style.smallBold, style.sliderComponent)}>Ekspert</div>
+                <div className={clsx(style.smallBold)}>Ekspert</div>
             </div>
             <div>
                 <div className={style.largeBold}>Motivasjon</div>

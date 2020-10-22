@@ -17,6 +17,23 @@ const Content = () => {
     const [radarData, setRadarData] = useState<AnswerData[]>([]);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
+    const [categories, setCategories] = useState<string[]>([]);
+    const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
+
+    const createCategories = () => {
+        if(!formDefinition) return [];
+        let formDef = formDefinition.getFormDefinition;
+        let categories: string[] = [];
+        if(formDef?.questions.items){
+            for (let i = 0; i < formDef.questions.items.length; i++) {
+                const element = formDef.questions.items[i];
+                if (!element) continue;
+                if(categories.includes(element.question.category)) continue
+                categories.push(element.question.category);
+            }
+        }
+        return categories;
+    };
 
     const createAnswers = (): AnswerData[] => {
         if(!formDefinition) return [];
@@ -138,6 +155,11 @@ const Content = () => {
         console.log(userForms);
     };
 
+    const changeActiveCategory = (newActiveCategory: string) => {
+        // console.log("New category: " + newActiveCategory);
+        setActiveCategory(newActiveCategory);
+    };
+
     const updateRadarData = () => {
         setRadarData(answers);
     }
@@ -150,6 +172,7 @@ const Content = () => {
     useEffect(() => {
         getUserAnswers();
         setAnswers(createAnswers());
+        setCategories(createCategories());
     }, [formDefinition]);
 
     useEffect(() => {
@@ -213,6 +236,9 @@ const Content = () => {
                 formDefinition={formDefinition}
                 answers={answers}
                 submitFeedback={submitFeedback}
+                changeActiveCategory={changeActiveCategory}
+                categories={categories}
+                activeCategory={activeCategory}
             />
         </div>
     );

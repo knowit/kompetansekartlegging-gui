@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import { QuestionBlock } from '../styles';
 import { AnswerProps, QuestionData } from '../types';
 import { Category } from './Category';
 import Question from './Question';
@@ -14,7 +15,9 @@ const Form = ({...props}: AnswerProps) => {
         }
     }
 
-    const [questions, setQuestions] = useState<JSX.Element[]>([]);
+    const questionStyle = QuestionBlock();
+
+    const [categories, setCategories] = useState<JSX.Element[]>([]);
 
     const getQuestionsForCategory = (items: Question[]): JSX.Element[] => {
         let questions: JSX.Element[] = [];
@@ -49,22 +52,27 @@ const Form = ({...props}: AnswerProps) => {
         for(let i = 0; i < catNames.length; i++){
             const questions = items.filter(item => item.question.category === catNames[i]);
             categories.push(
-                <Category name={catNames[i]} key={i}>
-                    {getQuestionsForCategory(questions)}
-                </Category>
+                <div className={questionStyle.categoryGroup}>
+                    <Category 
+                        name={catNames[i]} 
+                        key={i} 
+                        activeCategory={props.activeCategory} >
+                            {getQuestionsForCategory(questions)}
+                    </Category>
+                </div>
             );
         };
         return categories;
     };
 
     useEffect(() => {
-        if(questions.length === 0) setQuestions(createQuestions());
+        if(categories.length === 0) setCategories(createQuestions());
     }, [props.answers])
 
     return (
         <div className="form">
             <button onClick={props.createUserForm} >Submit Answers</button>
-            {questions}
+            {categories}
             <button onClick={props.createUserForm} >Submit Answers</button>
             <p>{props.submitFeedback}</p>
         </div>

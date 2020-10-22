@@ -86,38 +86,6 @@ export const ValueSlider = withStyles({
     }
 })(Slider);
 
-export const QuestionBlock = makeStyles({
-    root: {
-        flexGrow: 1,
-        margin: 10,
-        backgroundColor: 'lightBlue'
-    },
-    topic: {
-        fontWeight: "bold"
-    },
-    text: {
-    },
-    sliderGroup: {
-        display: 'flex',
-        flexWrap: "nowrap",
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-    sliderComponent: {
-    },
-    slider: {
-
-    },
-    smallBold: {
-        fontSize: 14,
-        fontWeight: "bold"
-    },
-    largeBold: {
-        fontSize: 18,
-        fontWeight: "bold"
-    }
-});
-
 export const CardStyle = makeStyles({
     cardButton: {
         fontWeight: "bold",
@@ -147,13 +115,9 @@ export const CardStyle = makeStyles({
 
 export const OverviewStyle = makeStyles({
     root: {
-        maxHeight: '20%',
+        maxHeight: '30%',
         width: "100%",
         backgroundColor: KnowitColors.white
-    },
-    radarHolder: {
-        
-        // height: '100%'
     },
     radarPlot: {
         paddingLeft: '10%',
@@ -164,30 +128,62 @@ export const OverviewStyle = makeStyles({
 
 export const ScaleDescStyle = makeStyles({
     root: {
-        flexGrow: 2,
-        flex: '0 1 auto',
+        maxHeight: '30%',
         width: "100%",
         backgroundColor: KnowitColors.ecaluptus
     }
 });
 
-export const AnswersStyle = makeStyles({
+// export const AnswersStyle = makeStyles({
+//     root: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         width: "100%",
+//         backgroundColor: KnowitColors.greyGreen
+//     },
+//     header: {
+//     },
+//     form: {
+//         flexGrow: 2,
+//         flex: '0 1 auto',
+//         overflowY: 'auto',
+//         height: '100%'
+//     }
+// });
+
+export const QuestionBlock = makeStyles({
     root: {
-        width: "100%",
-        backgroundColor: KnowitColors.greyGreen
+        margin: 10,
+        backgroundColor: KnowitColors.ecaluptus
     },
-    header: {
-        
+    categoryGroup: {
+        marginTop: 10,
+        marginBottom: 20,
+        backgroundColor: KnowitColors.lightGreen,
+        width: '100%'
     },
-    form: {
-        flexGrow: 2,
-        flex: '0 1 auto',
-        overflowY: 'auto',
-        height: '100%'
+    categoryText: {
+        fontSize: 22,
+        fontWeight: 'bold'
+    },
+    topic: {
+        fontWeight: "bold"
+    },
+    sliderGroup: {
+        display: 'flex',
+        flexWrap: "nowrap",
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    smallBold: {
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    largeBold: {
+        fontSize: 18,
+        fontWeight: "bold"
     }
 });
-
-
 
 
 

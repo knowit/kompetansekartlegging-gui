@@ -172,7 +172,9 @@ export type AnswerProps = {
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
-    submitFeedback: string
+    submitFeedback: string,
+    categories: string[],
+    activeCategory: string
 };
 
 export type UserProps = {
@@ -242,7 +244,10 @@ export type YourAnswerProps = {
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
-    submitFeedback: string
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string
 };
 
 type CommonCardProps = {
@@ -250,4 +255,5 @@ type CommonCardProps = {
     active: boolean,
     index: number
 };
+
 
