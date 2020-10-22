@@ -10,12 +10,6 @@ type CategoryProps = {
 export const Category = ({...props}: CategoryProps) => {
     const style = QuestionBlock();
 
-    useEffect(() => {console.log(props.activeCategory)}, []);
-
-    useEffect(() => {
-        console.log(props.activeCategory);
-    }, [props.activeCategory]);
-
     return (
         props.activeCategory === props.name ? 
             <div>
