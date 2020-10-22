@@ -173,6 +173,7 @@ export type AnswerProps = {
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
     submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string
 };
