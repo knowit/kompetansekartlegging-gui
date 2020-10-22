@@ -23,16 +23,10 @@ const Content = () => {
     const createCategories = () => {
         if(!formDefinition) return [];
         let formDef = formDefinition.getFormDefinition;
-        let categories: string[] = [];
-        if(formDef?.questions.items){
-            for (let i = 0; i < formDef.questions.items.length; i++) {
-                const element = formDef.questions.items[i];
-                if (!element) continue;
-                if(categories.includes(element.question.category)) continue
-                categories.push(element.question.category);
-            }
-        }
-        return categories;
+        if(!formDef?.questions.items) return [];
+        return formDef.questions.items
+            .filter((value, index, array) => array.indexOf(value) === index)
+            .map(item => item.question.category);
     };
 
     const createAnswers = (): AnswerData[] => {
@@ -159,6 +153,14 @@ const Content = () => {
         // console.log("New category: " + newActiveCategory);
         setActiveCategory(newActiveCategory);
     };
+
+    useEffect(() => {
+        changeActiveCategory(categories[0]);
+    }, [categories]);
+
+    useEffect(() => {
+        console.log(activeCategory);
+    }, [activeCategory]);
 
     const updateRadarData = () => {
         setRadarData(answers);
