@@ -33,7 +33,7 @@ const Form = ({...props}: AnswerProps) => {
                     knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                 />
-                );
+            );
         }
         return questions;
     }; 
@@ -52,7 +52,7 @@ const Form = ({...props}: AnswerProps) => {
         for(let i = 0; i < catNames.length; i++){
             const questions = items.filter(item => item.question.category === catNames[i]);
             categories.push(
-                <div className={questionStyle.categoryGroup}>
+                <div key={i} className={questionStyle.categoryGroup}>
                     <Category 
                         name={catNames[i]} 
                         key={i} 
@@ -65,14 +65,16 @@ const Form = ({...props}: AnswerProps) => {
         return categories;
     };
 
-    useEffect(() => {
-        if(categories.length === 0) setCategories(createQuestions());
-    }, [props.answers])
+    // useEffect(() => {
+    //     if(categories.length === 0) setCategories(createQuestions());
+    // }, [props.answers])
 
     return (
         <div className="form">
             <button onClick={props.createUserForm} >Submit Answers</button>
-            {categories}
+            <div>
+                {createQuestions()}
+            </div>
             <button onClick={props.createUserForm} >Submit Answers</button>
             <p>{props.submitFeedback}</p>
         </div>

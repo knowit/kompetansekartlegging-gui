@@ -36,6 +36,7 @@ const AnswersStyle = makeStyles({
     },
     catgoryButton: {
         width: '100%',
+        minHeight: '50px',
         overflow: 'wrap',
         fontSize: 13,
         fontWeight: 'bolder'
@@ -60,10 +61,11 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
         let buttons: JSX.Element[] = [];
         categories.forEach(cat => {
             buttons.push(
-            <button 
-                className={style.catgoryButton} 
-                onClick={() => props.changeActiveCategory(cat)}
-            >{cat}</button>
+                <button 
+                    key={cat}
+                    className={style.catgoryButton} 
+                    onClick={() => props.changeActiveCategory(cat)}
+                >{cat}</button>
             );
         });
         return buttons;
@@ -79,18 +81,18 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                     YOUR ANSWERS
                 </button>
             </div>
-            <div className={style.answerBox}>
-                <div className={style.categoryList}>
-                    <div className={style.categoryListInner}>
-                        {props.commonCardProps.active ?
-                            getCategories() : ""}
+            {props.commonCardProps.active ?
+                <div className={style.answerBox}>
+                    <div className={style.categoryList}>
+                        <div className={style.categoryListInner}>
+                            {getCategories()}
+                        </div>
+                    </div>
+                    <div className={style.form}>
+                        <Form {...props}/>
                     </div>
                 </div>
-                <div className={style.form}>
-                    {props.commonCardProps.active ?
-                        <Form {...props} /> : ""}
-                </div>
-            </div>
+            : ""}
         </div>
     );
 };
