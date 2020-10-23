@@ -47,7 +47,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        console.log(user);
+        // console.log(user);
     }, [user])
 
     async function sendFormDefinition() {
@@ -66,7 +66,7 @@ const App = () => {
             qid = Date.now() + "_" + i;
             await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid} }));
             await API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
-            console.log(qid);
+            // console.log(qid);
         }
     }
 

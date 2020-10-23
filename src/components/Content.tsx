@@ -158,9 +158,9 @@ const Content = () => {
         changeActiveCategory(categories[0]);
     }, [categories]);
 
-    useEffect(() => {
-        console.log(activeCategory);
-    }, [activeCategory]);
+    // useEffect(() => {
+    //     console.log(activeCategory);
+    // }, [activeCategory]);
 
     const updateRadarData = () => {
         setRadarData(answers);

@@ -64,9 +64,9 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
         });
     };
 
-    useEffect(() => {
-        console.log(props.boolDraw);
-    }, [props.boolDraw]);
+    // useEffect(() => {
+    //     console.log(props.boolDraw);
+    // }, [props.boolDraw]);
 
     return (
         <Fragment>
