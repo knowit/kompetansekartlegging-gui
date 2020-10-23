@@ -1,7 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { FullscreenExitRounded } from '@material-ui/icons';
 import clsx from 'clsx';
-import { wrap } from 'module';
 import React from 'react'
 import { CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';

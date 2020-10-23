@@ -1,5 +1,4 @@
 import { makeStyles, Slider, withStyles } from "@material-ui/core";
-import { autoShowTooltip } from "aws-amplify";
 
 
 export const KnowitColors = {
