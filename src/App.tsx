@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './App.css';
 import Amplify, {Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
@@ -73,13 +73,13 @@ const App = () => {
     return (
         <div className={style.root}>
             <BrowserRouter>
-                {user ? 
-                <div>
-                    <NavBar/>
-                    {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
-                    <Content />
-                    <Footer/>
-                </div>
+                {user ?
+                    <Fragment>
+                        <NavBar/>
+                        {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
+                        <Content />
+                        <Footer/>
+                    </Fragment>
                 :
                 <Login/>
                 }
