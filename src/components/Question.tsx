@@ -32,19 +32,19 @@ const Question = ({...props}: QuestionProps) => {
         <div className={style.root}>
             <div className={style.topic}>{props.topic}</div>
             <div>{props.text}</div>
-            <div className={style.sliderGroup}>
+            <div> {/*className={style.sliderGroup}>*/}
                 <div className={clsx(style.largeBold)}>KOMPETANSE</div>
-                <div className={clsx(style.smallBold)}>Kjenner ikke til området</div>
+                {/* <div className={clsx(style.smallBold)}>Kjenner ikke til området</div> */}
                 <Slider
                         value={knowledgeValue}
                         motivation={false}
                         sliderChanged={sliderChanged}
                     />
-                <div className={clsx(style.smallBold)}>Ekspert</div>
+                {/* <div className={clsx(style.smallBold)}>Ekspert</div> */}
             </div>
             <div>
                 <div className={style.largeBold}>Motivasjon</div>
-                <div className={style.smallBold}>Ikke motivert i det heletatt</div>
+                {/* <div className={style.smallBold}>Ikke motivert i det heletatt</div> */}
                 <div>
                     <Slider
                         value={motivationValue}
@@ -52,7 +52,7 @@ const Question = ({...props}: QuestionProps) => {
                         sliderChanged={sliderChanged}
                     />
                 </div>
-                <div className={style.smallBold}>Ekstremt motivert</div>
+                {/* <div className={style.smallBold}>Ekstremt motivert</div> */}
             </div>
         </div>
     );

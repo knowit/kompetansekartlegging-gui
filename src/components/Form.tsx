@@ -38,6 +38,7 @@ const Form = ({...props}: AnswerProps) => {
         return questions;
     }; 
 
+    //TODO: Return only used category, not everyone
     const createQuestions = (): JSX.Element[] => {
         if(!props.formDefinition) return [];
         let items = props.formDefinition.getFormDefinition.questions.items;
