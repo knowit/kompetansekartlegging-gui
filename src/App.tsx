@@ -9,6 +9,7 @@ import NavBar from './components/NavBar';
 import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
+import { AppStyle } from './styles';
 import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
 import Login from './components/Login';
 
@@ -20,6 +21,8 @@ Amplify.configure(awsconfig);
 let formDef = require('./form2.json')
 
 const App = () => {
+    const style = AppStyle();
+
     const [user, setUser] = useState<any | null>(null);
     const [customState, setCustomState] = useState<any | null>(null)
     
@@ -68,19 +71,18 @@ const App = () => {
     }
 
     return (
-        <div>
+        <div className={style.root}>
             <BrowserRouter>
                 {user ? 
                 <div>
                     <NavBar/>
-                    <button onClick={() => sendFormDefinition()}>Send form definition to server</button>
+                    {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
                     <Content />
                     <Footer/>
                 </div>
                 :
                 <Login/>
                 }
-
             </BrowserRouter>
         </div>
     );

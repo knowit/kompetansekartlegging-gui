@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { roundDecimals } from "../helperFunctions";
 import { ValueSlider, useStyles } from '../styles'
 import { SliderProps } from "../types";
 
@@ -6,17 +7,28 @@ import { SliderProps } from "../types";
 const Slider = ({ ...props }: SliderProps) => {
     const classes = useStyles();
 
+    const [sliderValue, setSliderValue] = useState<number>(-1);
+
     const sliderChanged = (event: any, newValue: number | number[]) => {
-        props.sliderChanged(newValue as number, props.motivation);
+        setSliderValue(newValue as number);
     };
+
+    const sliderCommitted = () => {
+        props.sliderChanged(sliderValue, props.motivation);
+    };
+
+    useEffect(() => {
+        setSliderValue(props.value);
+    },[]);
 
     return (
         <div className={classes.root}>
             <ValueSlider
                 valueLabelDisplay="on"
-                valueLabelFormat={value => Math.round(value * 10) / 10}
-                value={props.value}
+                valueLabelFormat={value => roundDecimals(value, 1)}
+                value={sliderValue}
                 onChange={sliderChanged}
+                onChangeCommitted={sliderCommitted}
                 step={0.01}
                 max={5}
             />

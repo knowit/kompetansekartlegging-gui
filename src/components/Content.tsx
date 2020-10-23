@@ -5,14 +5,29 @@ import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 import * as customQueries from '../graphql/custom-queries';
+import { Overview } from './cards/Overview';
+import { ScaleDescription } from './cards/ScaleDescription';
+import { YourAnswers } from './cards/YourAnswers';
+import { CardStyle } from '../styles';
 
 const Content = () => {
     
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
-    const [radarData, setRadarData] = useState<AnsweredQuestion[]>([]);
+    const [radarData, setRadarData] = useState<AnswerData[]>([]);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
+    const [categories, setCategories] = useState<string[]>([]);
+    const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
+
+    const createCategories = () => {
+        if(!formDefinition) return [];
+        let formDef = formDefinition.getFormDefinition;
+        if(!formDef?.questions.items) return [];
+        return formDef.questions.items
+            .filter((value, index, array) => array.indexOf(value) === index)
+            .map(item => item.question.category);
+    };
 
     const createAnswers = (): AnswerData[] => {
         if(!formDefinition) return [];
@@ -35,17 +50,17 @@ const Content = () => {
         return as;
     };
 
-    const createRadarData = (): AnsweredQuestion[] => {
+    const createRadarData = (): AnswerData[] => {
         if(!formDefinition) return [];
         let questionList = formDefinition.getFormDefinition.questions.items;
         if(!answers || !questionList) return [];
-        let newRadarData: AnsweredQuestion[] = [];
+        let newRadarData: AnswerData[] = [];
         for (let i = 0; i < answers.length; i++) {
-            const question = questionList.find(q => q.question.id === answers[i].questionId);
-            if (!question) continue;
             newRadarData.push({
-                question: question.question,
-                answer: answers[i].knowledge,
+                questionId: answers[i].questionId,
+                category: answers[i].category,
+                topic: answers[i].topic,
+                knowledge: answers[i].knowledge,
                 motivation: answers[i].motivation
             });
         }
@@ -80,15 +95,15 @@ const Content = () => {
         //updateRadarData(result);
     }
 
-    const updateRadarData = (batchData: BatchCreatedQuestionAnswer): void => {
-        let data = batchData.batchCreateQuestionAnswer;
-        let newRadarData: AnsweredQuestion[] = [...radarData];
-        for(let i = 0; i < data.length; i++){
-            let rData = newRadarData.find(d => d.question.id === data[i].question.id);
-            if(rData) rData.answer = data[i].answer;
-        }
-        setRadarData(newRadarData);
-    }
+    // const updateRadarData = (batchData: BatchCreatedQuestionAnswer): void => {
+    //     let data = batchData.batchCreateQuestionAnswer;
+    //     let newRadarData: AnsweredQuestion[] = [...radarData];
+    //     for(let i = 0; i < data.length; i++){
+    //         let rData = newRadarData.find(d => d.question.id === data[i].question.id);
+    //         if(rData) rData.answer = data[i].answer;
+    //     }
+    //     setRadarData(newRadarData);
+    // }
 
     const updateAnswer = (questionId: string, knowledgeValue: number, motivationValue: number): void => {
         setAnswers(prevAnswers => {
@@ -133,6 +148,23 @@ const Content = () => {
         let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
         console.log(userForms);
     };
+
+    const changeActiveCategory = (newActiveCategory: string) => {
+        // console.log("New category: " + newActiveCategory);
+        setActiveCategory(newActiveCategory);
+    };
+
+    useEffect(() => {
+        changeActiveCategory(categories[0]);
+    }, [categories]);
+
+    useEffect(() => {
+        console.log(activeCategory);
+    }, [activeCategory]);
+
+    const updateRadarData = () => {
+        setRadarData(answers);
+    }
     
     useEffect(() => {
         fetchLastFormDefinition();
@@ -142,6 +174,7 @@ const Content = () => {
     useEffect(() => {
         getUserAnswers();
         setAnswers(createAnswers());
+        setCategories(createCategories());
     }, [formDefinition]);
 
     useEffect(() => {
@@ -150,31 +183,88 @@ const Content = () => {
     }, [userAnswers]);
 
     useEffect(() => {
-        setRadarData(createRadarData());
+        if(radarData.length === 0) setRadarData(createRadarData());
+        else updateRadarData();
     }, [answers, userAnswers]);
 
-    
 
-    return(
-        <div>
-            <Router  
-                answerProps={{
-                    updateAnswer: updateAnswer,
-                    formDefinition: formDefinition,
-                    createUserForm: createUserForm,
-                    answers: answers,
-                    submitFeedback: submitFeedback
+    //New States etc for new card functionality
+    /*
+     * Really cryptic, using array for storing if card is active or not, using hardcoded number
+     *  for index. this rly need another look and a fix to make it readable
+     *
+     * Indexes is mapped to Cards like this:
+     * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
+    */
+    const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
+    const style = CardStyle();
+
+    
+    const setActiveCard = (cardIndex: number, active: boolean) => {
+        let newActiveCards = [...activeCards];
+        if(cardIndex === 0 && newActiveCards[1]) newActiveCards[2] = false;
+        if(cardIndex === 2 && newActiveCards[1]) newActiveCards[0] = false;
+        if(cardIndex === 1 && newActiveCards[0] && newActiveCards[2]) newActiveCards[0] = false;
+        newActiveCards[cardIndex] = active;
+        setActiveCards(newActiveCards);
+    };
+
+    
+    return (
+        <div className={style.cardHolder}>
+            <Overview 
+                commonCardProps={{
+                    setActiveCard: setActiveCard,
+                    active: activeCards[0],
+                    index: 0
                 }}
-                statsProps={{
-                    data: radarData
+                radarData={radarData}
+            />
+            <ScaleDescription 
+                commonCardProps={{
+                    setActiveCard: setActiveCard,
+                    active: activeCards[1],
+                    index: 1
                 }}
-                userProps={{
-                    deleteUserData: deleteUserData,
-                    listUserForms: listUserForms
+            />
+            <YourAnswers 
+                commonCardProps={{
+                    setActiveCard: setActiveCard,
+                    active: activeCards[2],
+                    index: 2
                 }}
+                createUserForm={createUserForm}
+                updateAnswer={updateAnswer}
+                formDefinition={formDefinition}
+                answers={answers}
+                submitFeedback={submitFeedback}
+                changeActiveCategory={changeActiveCategory}
+                categories={categories}
+                activeCategory={activeCategory}
             />
         </div>
     );
+
+    // return(
+    //     <div>
+    //         <Router  
+    //             answerProps={{
+    //                 updateAnswer: updateAnswer,
+    //                 formDefinition: formDefinition,
+    //                 createUserForm: createUserForm,
+    //                 answers: answers,
+    //                 submitFeedback: submitFeedback
+    //             }}
+    //             statsProps={{
+    //                 data: radarData
+    //             }}
+    //             userProps={{
+    //                 deleteUserData: deleteUserData,
+    //                 listUserForms: listUserForms
+    //             }}
+    //         />
+    //     </div>
+    // );
 
 };
 

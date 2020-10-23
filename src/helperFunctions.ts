@@ -50,3 +50,8 @@ export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]},
     }
     return returnValue;
 };
+
+export const roundDecimals = (valueToRound: number, decimalCount: number): number => {
+    return Math.round(valueToRound * Math.pow(10, decimalCount)) / Math.pow(10, decimalCount);
+};
+

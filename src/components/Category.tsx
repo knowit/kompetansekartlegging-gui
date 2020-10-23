@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { QuestionBlock } from '../styles'
 
 type CategoryProps = {
     name: string,
-    children: JSX.Element[]
+    children: JSX.Element[],
+    activeCategory: string
 }
 
 export const Category = ({...props}: CategoryProps) => {
+    const style = QuestionBlock();
+
     return (
-        <div>
-            <h2>{props.name}</h2>
-            {props.children}
-        </div>
+        props.activeCategory === props.name ? 
+            <div>
+                <div className={style.categoryText}>
+                    {props.name}
+                </div>
+                {props.children}
+            </div>
+        : <div></div>
     )
 }

@@ -33,6 +33,31 @@ export type AggregatedAnswer = {
     motivationAverage: number
 };
 
+export type CalculatedAnswer = {
+    category: string,
+    totalKnowledgeValue: number,
+    numberOfKnowledgeValues: number,
+    knowledgeAverage: number,
+    totalMotivationValue: number,
+    numberOfMotivationValues: number,
+    motivationAverage: number
+};
+
+export type CalculationData = {
+    questionIds: string[],
+    category: string,
+    knowledgeCount: number,
+    knowledgeTotal: number,
+    motivationCount: number,
+    motivationTotal: number
+};
+
+export type ResultData = {
+    category: string,
+    averageKnowledge: number,
+    averageMotivation: number
+};
+
 export type AnsweredQuestion = {
     question: QuestionData,
     answer: number,
@@ -147,7 +172,10 @@ export type AnswerProps = {
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
-    submitFeedback: string
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string
 };
 
 export type UserProps = {
@@ -193,6 +221,40 @@ export type BatchCreatedQuestionAnswer = {
             topic: string,
         }
     }[]
-}
+};
+
+//Types for new card functionality
+// export enum CardTypes {
+//     Overview = 0,
+//     ScaleDescription = 1,
+//     YourAnswer = 2
+// };
+
+export type OverviewProps = {
+    commonCardProps: CommonCardProps,
+    radarData: AnswerData[]
+};
+
+export type ScaleDescriptionProps = {
+    commonCardProps: CommonCardProps
+};
+
+export type YourAnswerProps = {
+    commonCardProps: CommonCardProps,
+    createUserForm: () => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    formDefinition: FormDefinition | null,
+    answers: AnswerData[],
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string
+};
+
+type CommonCardProps = {
+    setActiveCard: (cardIndex: number, active: boolean) => void,
+    active: boolean,
+    index: number
+};
 
 
