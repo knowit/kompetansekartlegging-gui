@@ -1,6 +1,7 @@
 import { AmplifySignOut } from '@aws-amplify/ui-react'
 import { AppBar, Button, Toolbar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { Auth } from 'aws-amplify';
 import React from 'react'
 import { useHistory } from "react-router-dom";
 
@@ -38,7 +39,7 @@ const NavBar = () => {
                         <Button variant="contained" onClick={() => handleClick("/user")} className={classes.button}>User</Button>
                         <Button variant="contained" onClick={() => handleClick("/admin")} className={classes.button}>Admin</Button>
                     </div>
-                    <AmplifySignOut className={classes.logoutButton} />
+                    <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button> 
                 </Toolbar>
             </AppBar>
         </div>
