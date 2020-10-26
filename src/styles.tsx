@@ -18,14 +18,6 @@ export const KnowitColors = {
     lightPink: "#F7E1DD"
 };
 
-export const useStyles = makeStyles({
-    root: {
-        width: 400,
-        marginLeft: 50
-    }
-});
-
-
 export const AppStyle = makeStyles({
     root: {
         display: 'flex',
@@ -151,41 +143,41 @@ export const ScaleDescStyle = makeStyles({
 //     }
 // });
 
-export const QuestionBlock = makeStyles({
-    root: {
-        marginTop: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        backgroundColor: KnowitColors.ecaluptus
-    },
-    categoryGroup: {
-        // marginTop: 10,
-        paddingBottom: 10,
-        backgroundColor: KnowitColors.lightGreen,
-        width: '100%'
-    },
-    categoryText: {
-        fontSize: 22,
-        fontWeight: 'bold'
-    },
-    topic: {
-        fontWeight: "bold"
-    },
-    sliderGroup: {
-        display: 'flex',
-        flexWrap: "nowrap",
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-    smallBold: {
-        fontSize: 14,
-        fontWeight: "bold"
-    },
-    largeBold: {
-        fontSize: 18,
-        fontWeight: "bold"
-    }
-});
+// export const QuestionBlock = makeStyles({
+//     root: {
+//         marginTop: 10,
+//         marginLeft: 10,
+//         marginRight: 10,
+//         backgroundColor: KnowitColors.ecaluptus
+//     },
+//     categoryGroup: {
+//         // marginTop: 10,
+//         paddingBottom: 10,
+//         backgroundColor: KnowitColors.lightGreen,
+//         width: '100%'
+//     },
+//     categoryText: {
+//         fontSize: 22,
+//         fontWeight: 'bold'
+//     },
+//     topic: {
+//         fontWeight: "bold"
+//     },
+//     sliderGroup: {
+//         display: 'flex',
+//         flexWrap: "nowrap",
+//         justifyContent: 'flex-start',
+//         alignItems: 'center'
+//     },
+//     smallBold: {
+//         fontSize: 14,
+//         fontWeight: "bold"
+//     },
+//     largeBold: {
+//         fontSize: 18,
+//         fontWeight: "bold"
+//     }
+// });
 
 
 
