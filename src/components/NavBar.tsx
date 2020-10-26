@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
 const NavBar = (user : any) => {
     const classes = useStyles();
     const history = useHistory();
-    const [userName, setUserName] = useState<any | null>(null);
-    const [userPicture, setUserPicture] = useState<any | null>(null);
+    const [userName, setUserName] = useState<string>('');
+    const [userPicture, setUserPicture] = useState<string>('');
 
 
     function handleClick(path: string) {
