@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Fragment } from 'react'
 import { QuestionBlock } from '../styles'
 
 type CategoryProps = {
@@ -10,11 +10,11 @@ export const Category = ({...props}: CategoryProps) => {
     const style = QuestionBlock();
 
     return (
-        <div>
+        <Fragment>
             <div className={style.categoryText}>
                 {props.name}
             </div>
             {props.children}
-        </div>
+        </Fragment>
     )
 }
