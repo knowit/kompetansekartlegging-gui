@@ -2,8 +2,16 @@ import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { QuestionProps } from '../types';
 import Slider from './Slider';
-import { makeStyles } from '@material-ui/core';
-import { KnowitColors } from '../styles';
+import { Icon, makeStyles, SvgIcon } from '@material-ui/core';
+import { KnowitColors, IconPaths } from '../styles';
+import icons from './data'
+
+/*
+    Create image controller in data folder
+    import all images there and export function to
+    get a single image based om a string or something
+
+*/
 
 const QuestionBlock = makeStyles({
     root: {
@@ -34,6 +42,7 @@ const QuestionBlock = makeStyles({
     },
     sliderArea: {
         marginLeft: 30,
+        marginRight: 20,
         width: '75%'
     },
     slider: {
@@ -41,8 +50,7 @@ const QuestionBlock = makeStyles({
     },
     iconArea: {
         width: '100%',
-        height: 30,
-        backgroundColor: 'red'
+        height: 30
     },
     smallBold: {
         fontSize: 14,
@@ -71,6 +79,31 @@ const Question = ({...props}: QuestionProps) => {
         }
     };
 
+    const createSliderIcons = (motivation: boolean): JSX.Element[] => {
+        let icons: JSX.Element[] = [];
+        if(motivation){
+            IconPaths.slice(6).forEach(path => {
+                icons.push(
+                    <SvgIcon>
+                        <path d={`../../data/${path}`} />
+                    </SvgIcon>
+                );
+            });
+        } else {
+            IconPaths.slice(0, 6).forEach((path, index) => {
+                // console.log(`../../data/${path}`);
+                icons.push(
+                    <Icon key={index} style={{textAlign: "center"}}>
+                        <img style={{height: '100%'}} src={`./data/K_ingen.svg`} /> 
+                        {/* `https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTVJDpGrsSOmxRkcHECYt_goEIEgFcxjfNQYw&usqp=CAU`} /> */}
+                        {/* <path d={`../../data/${path}`} /> */}
+                    </Icon>
+                );
+            });
+        }
+        return icons;
+    };
+
     useEffect(() => {
         setKnowledgeValue(props.knowledgeDefaultValue);
         setMotivationValue(props.motivationDefaultValue);
@@ -84,7 +117,7 @@ const Question = ({...props}: QuestionProps) => {
                 <div className={clsx(style.largeBold)}>KOMPETANSE</div>
                 <div className={style.sliderArea}>
                     <div className={style.iconArea}>
-
+                        {createSliderIcons(false)}
                     </div>
                     <div className={style.slider}>
                         <Slider
