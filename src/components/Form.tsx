@@ -34,9 +34,9 @@ const Form = ({...props}: AnswerProps) => {
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                 />
             );
-        }
+        };
         return questions;
-    }; 
+    };
 
     //TODO: Return only used category, not everyone
     const createQuestionCategory = (): JSX.Element => {
@@ -46,11 +46,9 @@ const Form = ({...props}: AnswerProps) => {
         let questions = items.filter(item => item.question.category === props.activeCategory)
             .sort((a, b) => (a.question.category < b.question.category) ? -1 : 1);
         return (
-            <div className={questionStyle.categoryGroup}>
-                <Category name={props.activeCategory} >
-                    {getQuestionsForCategory(questions)}
-                </Category>
-            </div>
+            <Category name={props.activeCategory} >
+                {getQuestionsForCategory(questions)}
+            </Category>
         );
         // let categories: JSX.Element[] = [];
         // for(let i = 0; i < props.categories.length; i++){
@@ -67,9 +65,8 @@ const Form = ({...props}: AnswerProps) => {
     // }, [props.answers])
 
     return (
-        <div className="form">
+        <div className={questionStyle.categoryGroup}>
             {createQuestionCategory()}
-            {/* <p>{props.submitFeedback}</p> */}
         </div>
     )
 }
