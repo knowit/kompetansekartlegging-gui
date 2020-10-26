@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, AnsweredQuestion, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
-import Router from './Router'
+import { AnswerData, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
@@ -25,8 +24,8 @@ const Content = () => {
         let formDef = formDefinition.getFormDefinition;
         if(!formDef?.questions.items) return [];
         return formDef.questions.items
-            .filter((value, index, array) => array.indexOf(value) === index)
-            .map(item => item.question.category);
+            .map(item => item.question.category)
+            .filter((value, index, array) => array.indexOf(value) === index);
     };
 
     const createAnswers = (): AnswerData[] => {
