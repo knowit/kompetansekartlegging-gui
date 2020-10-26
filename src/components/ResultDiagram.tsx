@@ -68,6 +68,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
     //     console.log(props.boolDraw);
     // }, [props.boolDraw]);
 
+    // TODO: del opp i to horizontalbar. drop labels i motivation. Splitt opp knowledge og motivation i to forskjellige
     return (
         <Fragment>
             <HorizontalBar 
