@@ -48,6 +48,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
+        debugger;
         console.log(user);
     }, [user])
 
