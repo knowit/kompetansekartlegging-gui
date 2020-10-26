@@ -123,6 +123,18 @@ export const OverviewStyle = makeStyles({
         paddingLeft: '10%',
         height: '100%',
         width: '75%'
+    },
+
+    cardHeader: {
+        display: "flex"
+    },
+
+    closeButton: {
+        marginTop: "3px",
+        marginRight: "32px",
+        '&:hover': {
+            color: KnowitColors.darkGreen
+        }
     }
 });
 
