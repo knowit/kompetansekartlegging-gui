@@ -131,6 +131,18 @@ export const ScaleDescStyle = makeStyles({
         maxHeight: '30%',
         width: "100%",
         backgroundColor: KnowitColors.ecaluptus
+    },
+
+    cardHeader: {
+        display: "flex"
+    },
+
+    closeButton: {
+        marginTop: "3px",
+        marginRight: "32px",
+        '&:hover': {
+            color: KnowitColors.darkGreen
+        }
     }
 });
 
