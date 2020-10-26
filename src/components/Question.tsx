@@ -1,10 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { QuestionProps } from '../types';
-import { QuestionBlock } from '../styles';
 import Slider from './Slider';
+import { makeStyles } from '@material-ui/core';
+import { KnowitColors } from '../styles';
 
-
+const QuestionBlock = makeStyles({
+    root: {
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        paddingLeft: 10,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingRight: 5,
+        backgroundColor: KnowitColors.ecaluptus
+    },
+    topic: {
+        fontSize: 18,
+        fontWeight: "bold"
+    },
+    sliderGroup: {
+        display: 'flex',
+        flexWrap: "nowrap",
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    smallBold: {
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    largeBold: {
+        fontSize: 18,
+        fontWeight: "bold"
+    }
+});
 
 const Question = ({...props}: QuestionProps) => {
     
