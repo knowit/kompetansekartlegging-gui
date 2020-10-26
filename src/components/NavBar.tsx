@@ -1,7 +1,7 @@
-import { AppBar, Button, Toolbar } from '@material-ui/core'
+import { AppBar, Button, Toolbar, Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Auth } from 'aws-amplify';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from "react-router-dom";
 import { KnowitColors } from '../styles';
 
@@ -20,32 +20,49 @@ const useStyles = makeStyles((theme) => ({
     },
     header: {
         backgroundColor: KnowitColors.darkGreen
+    },
+    userName: {
+        margin: "5px",
+        fontFamily: "Arial",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: "20px",
+        lineHeight: "23px",
+        color: KnowitColors.ecaluptus
+    },
+    userPicture: {
+        margin: "5px",
+        width: "44px",
+        height: "44px",
     }
 }));
 
-const NavBar = () => {
+const NavBar = (user : any) => {
     const classes = useStyles();
     const history = useHistory();
+    const [userName, setUserName] = useState<string>('');
+    const [userPicture, setUserPicture] = useState<string>('');
 
-    function handleClick(path: string) {
-        history.push(path);
-    }
+    useEffect(() => {
+        if (typeof user != "undefined" && user.user.hasOwnProperty("attributes")) {
+            let attributes = user.user.attributes
+            setUserName(attributes.name)
+            setUserPicture(attributes.picture)
+        } 
+    }, [user]);
+
 
     return (
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar className={classes.header}>
-                    <div className={classes.navigation}>
-                        {/* <Button variant="contained" onClick={() => handleClick("/home")} className={classes.button}>Home</Button>
-                        <Button variant="contained" onClick={() => handleClick("/stats")} className={classes.button}>Statistics</Button>
-                        <Button variant="contained" onClick={() => handleClick("/answer")} className={classes.button}>Answers</Button>
-                        <Button variant="contained" onClick={() => handleClick("/user")} className={classes.button}>User</Button>
-                        <Button variant="contained" onClick={() => handleClick("/admin")} className={classes.button}>Admin</Button> */}
-                    </div>
+                    <div className={classes.userName}>{userName}</div>
+                    <Avatar className={classes.userPicture} src={userPicture} />
                     <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button> 
                 </Toolbar>
             </AppBar>
         </div>
+
     )
 }
 
