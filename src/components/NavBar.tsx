@@ -50,16 +50,11 @@ const NavBar = (user : any) => {
     }
 
     useEffect(() => {
-        debugger;
-        console.log("Nav:")
-        console.log(user)
-
         if (typeof user != "undefined" && user.user.hasOwnProperty("attributes")) {
             let attributes = user.user.attributes
             setUserName(attributes.name)
             setUserPicture(attributes.picture)
         } 
-
     }, [user]);
 
 

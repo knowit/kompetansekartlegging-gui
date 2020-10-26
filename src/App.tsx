@@ -48,8 +48,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        debugger;
-        console.log(user);
+        // console.log(user);
     }, [user])
 
     async function sendFormDefinition() {
