@@ -4,7 +4,6 @@ import { Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react'
 import { useHistory } from "react-router-dom";
 import { KnowitColors } from '../styles';
-import { User } from '../types';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,11 +43,6 @@ const NavBar = (user : any) => {
     const [userName, setUserName] = useState<string>('');
     const [userPicture, setUserPicture] = useState<string>('');
 
-
-    function handleClick(path: string) {
-        history.push(path);
-    }
-
     useEffect(() => {
         if (typeof user != "undefined" && user.user.hasOwnProperty("attributes")) {
             let attributes = user.user.attributes
@@ -62,13 +56,6 @@ const NavBar = (user : any) => {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar className={classes.header}>
-                    <div className={classes.navigation}>
-                        {/* <Button variant="contained" onClick={() => handleClick("/home")} className={classes.button}>Home</Button>
-                        <Button variant="contained" onClick={() => handleClick("/stats")} className={classes.button}>Statistics</Button>
-                        <Button variant="contained" onClick={() => handleClick("/answer")} className={classes.button}>Answers</Button>
-                        <Button variant="contained" onClick={() => handleClick("/user")} className={classes.button}>User</Button>
-                        <Button variant="contained" onClick={() => handleClick("/admin")} className={classes.button}>Admin</Button> */}
-                    </div>
                     <div className={classes.userName}>{userName}</div>
                     <Avatar className={classes.userPicture} src={userPicture} />
                     <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button> 

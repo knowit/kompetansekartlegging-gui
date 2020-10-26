@@ -257,14 +257,14 @@ type CommonCardProps = {
     index: number
 };
 
-export type User = {
-    Session: string,
-    attributes: {
-        email: string,
-        email_verified: boolean,
-        identities: string,
-        name: string,
-        picture: string,
-        sub: string
-    }
-}
+// export type User = {
+//     Session: string,
+//     attributes: {
+//         email: string,
+//         email_verified: boolean,
+//         identities: string,
+//         name: string,
+//         picture: string,
+//         sub: string
+//     }
+// }
