@@ -17,17 +17,19 @@ const AnswersStyle = makeStyles({
     answerBox: {
         display: 'flex',
         flexDirection: 'row',
+        overflow: 'auto',
         height: '100%'
     },
     form: {
-        width: '80%'
-        // flexGrow: 2,
+        width: '80%',
+        // flexGrow: 1,
         // flex: '0 1 auto',
-        // overflowY: 'auto',
-        // height: '100%'
+        overflowY: 'auto',
+        height: '100%'
     },
     categoryList: {
-        width: '20%'
+        width: '20%',
+        height: '100%'
     },
     categoryListInner: {
         margin: 10
@@ -50,14 +52,9 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
         props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
     };
 
-    const getCategories = () => {
-        let categories: string[] = [];
-        props.answers.forEach(answer => {
-            if(!categories.includes(answer.category))
-                categories.push(answer.category);
-        });
+    const getCategoryButtons = () => {
         let buttons: JSX.Element[] = [];
-        categories.forEach(cat => {
+        props.categories.forEach(cat => {
             buttons.push(
                 <button 
                     key={cat}
@@ -83,7 +80,8 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                 <div className={style.answerBox}>
                     <div className={style.categoryList}>
                         <div className={style.categoryListInner}>
-                            {getCategories()}
+                            <button onClick={props.createUserForm} >Submit Answers</button>
+                            {getCategoryButtons()}
                         </div>
                     </div>
                     <div className={style.form}>
