@@ -108,6 +108,7 @@ export const CardStyle = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'auto',
+        // flexGrow: 1
         height: '100%'
     }
 });
@@ -152,12 +153,14 @@ export const ScaleDescStyle = makeStyles({
 
 export const QuestionBlock = makeStyles({
     root: {
-        margin: 10,
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
         backgroundColor: KnowitColors.ecaluptus
     },
     categoryGroup: {
-        marginTop: 10,
-        marginBottom: 20,
+        // marginTop: 10,
+        paddingBottom: 10,
         backgroundColor: KnowitColors.lightGreen,
         width: '100%'
     },
