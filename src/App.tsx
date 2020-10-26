@@ -76,10 +76,10 @@ const App = () => {
             <BrowserRouter>
                 {user ?
                     <Fragment>
-                        <NavBar/>
+                        <NavBar user={user}/>
                         {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
                         <Content />
-                        <Footer user={user}/>
+                        <Footer/>
                     </Fragment>
                 :
                 <Login/>
