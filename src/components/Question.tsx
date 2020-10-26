@@ -20,11 +20,29 @@ const QuestionBlock = makeStyles({
         fontSize: 18,
         fontWeight: "bold"
     },
-    sliderGroup: {
+    text: {
+        fontSize: 15,
+        paddingLeft: 10,
+        paddingTop: 5,
+        paddingBottom: 10
+    },
+    answerArea: {
         display: 'flex',
         flexWrap: "nowrap",
         justifyContent: 'flex-start',
         alignItems: 'center'
+    },
+    sliderArea: {
+        marginLeft: 30,
+        width: '75%'
+    },
+    slider: {
+        width: '100%'
+    },
+    iconArea: {
+        width: '100%',
+        height: 30,
+        backgroundColor: 'red'
     },
     smallBold: {
         fontSize: 14,
@@ -61,20 +79,26 @@ const Question = ({...props}: QuestionProps) => {
     return (
         <div className={style.root}>
             <div className={style.topic}>{props.topic}</div>
-            <div>{props.text}</div>
-            <div> {/*className={style.sliderGroup}>*/}
+            <div className={style.text}>{props.text}</div>
+            <div className={style.answerArea}>
                 <div className={clsx(style.largeBold)}>KOMPETANSE</div>
-                {/* <div className={clsx(style.smallBold)}>Kjenner ikke til området</div> */}
-                <Slider
-                        value={knowledgeValue}
-                        motivation={false}
-                        sliderChanged={sliderChanged}
-                    />
+                <div className={style.sliderArea}>
+                    <div className={style.iconArea}>
+
+                    </div>
+                    <div className={style.slider}>
+                        <Slider
+                            value={knowledgeValue}
+                            motivation={false}
+                            sliderChanged={sliderChanged}
+                        />
+                    </div>
+                </div>
                 {/* <div className={clsx(style.smallBold)}>Ekspert</div> */}
             </div>
-            <div>
+            {/* <div>
                 <div className={style.largeBold}>Motivasjon</div>
-                {/* <div className={style.smallBold}>Ikke motivert i det heletatt</div> */}
+                <div className={style.smallBold}>Ikke motivert i det heletatt</div>
                 <div>
                     <Slider
                         value={motivationValue}
@@ -82,8 +106,8 @@ const Question = ({...props}: QuestionProps) => {
                         sliderChanged={sliderChanged}
                     />
                 </div>
-                {/* <div className={style.smallBold}>Ekstremt motivert</div> */}
-            </div>
+                <div className={style.smallBold}>Ekstremt motivert</div>
+            </div> */}
         </div>
     );
     
