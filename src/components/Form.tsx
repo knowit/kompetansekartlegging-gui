@@ -1,8 +1,21 @@
+import { makeStyles } from '@material-ui/core';
 import React, { Fragment, useState } from 'react'
-import { QuestionBlock } from '../styles';
+import { KnowitColors } from '../styles';
 import { AnswerProps } from '../types';
 import { Category } from './Category';
 import Question from './Question';
+
+const FormStyle = makeStyles({
+    root: {
+        paddingBottom: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+        backgroundColor: KnowitColors.lightGreen,
+        width: '100%',
+        boxSizing: "border-box"
+    }
+});
 
 const Form = ({...props}: AnswerProps) => {
 
@@ -15,9 +28,7 @@ const Form = ({...props}: AnswerProps) => {
         }
     }
 
-    const questionStyle = QuestionBlock();
-
-    const [categories, setCategories] = useState<JSX.Element[]>([]);
+    const style = FormStyle();
 
     const getQuestionsForCategory = (items: Question[]): JSX.Element[] => {
         let questions: JSX.Element[] = [];
@@ -65,7 +76,7 @@ const Form = ({...props}: AnswerProps) => {
     // }, [props.answers])
 
     return (
-        <div className={questionStyle.categoryGroup}>
+        <div className={style.root}>
             {createQuestionCategory()}
         </div>
     )
