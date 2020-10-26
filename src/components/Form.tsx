@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React, { Fragment, useState } from 'react'
 import { QuestionBlock } from '../styles';
-import { AnswerProps, QuestionData } from '../types';
+import { AnswerProps } from '../types';
 import { Category } from './Category';
 import Question from './Question';
 
@@ -39,31 +39,27 @@ const Form = ({...props}: AnswerProps) => {
     }; 
 
     //TODO: Return only used category, not everyone
-    const createQuestions = (): JSX.Element[] => {
-        if(!props.formDefinition) return [];
+    const createQuestionCategory = (): JSX.Element => {
+        if(!props.formDefinition) return <Fragment />;
         let items = props.formDefinition.getFormDefinition.questions.items;
-        if(!items) return [];
-
-        items = items.sort((a,b) => (a.question.category < b.question.category) ? -1 : 1);
-
-        let categories: JSX.Element[] = [];
-        let catNames: string[] = Array.from(new Set(
-            items.map(i => i.question.category)      
-        ));
-        for(let i = 0; i < catNames.length; i++){
-            const questions = items.filter(item => item.question.category === catNames[i]);
-            categories.push(
-                <div key={i} className={questionStyle.categoryGroup}>
-                    <Category 
-                        name={catNames[i]} 
-                        key={i} 
-                        activeCategory={props.activeCategory} >
-                            {getQuestionsForCategory(questions)}
-                    </Category>
-                </div>
-            );
-        };
-        return categories;
+        if(!items) return <Fragment />;
+        let questions = items.filter(item => item.question.category === props.activeCategory)
+            .sort((a, b) => (a.question.category < b.question.category) ? -1 : 1);
+        return (
+            <div className={questionStyle.categoryGroup}>
+                <Category name={props.activeCategory} >
+                    {getQuestionsForCategory(questions)}
+                </Category>
+            </div>
+        );
+        // let categories: JSX.Element[] = [];
+        // for(let i = 0; i < props.categories.length; i++){
+        //     const questions = items.filter(item => item.question.category === props.categories[i]);
+        //     categories.push(
+                
+        //     );
+        // };
+        // return categories;
     };
 
     // useEffect(() => {
@@ -72,12 +68,8 @@ const Form = ({...props}: AnswerProps) => {
 
     return (
         <div className="form">
-            <button onClick={props.createUserForm} >Submit Answers</button>
-            <div>
-                {createQuestions()}
-            </div>
-            <button onClick={props.createUserForm} >Submit Answers</button>
-            <p>{props.submitFeedback}</p>
+            {createQuestionCategory()}
+            {/* <p>{props.submitFeedback}</p> */}
         </div>
     )
 }

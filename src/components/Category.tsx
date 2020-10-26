@@ -3,21 +3,18 @@ import { QuestionBlock } from '../styles'
 
 type CategoryProps = {
     name: string,
-    children: JSX.Element[],
-    activeCategory: string
+    children: JSX.Element[]
 }
 
 export const Category = ({...props}: CategoryProps) => {
     const style = QuestionBlock();
 
     return (
-        props.activeCategory === props.name ? 
-            <div>
-                <div className={style.categoryText}>
-                    {props.name}
-                </div>
-                {props.children}
+        <div>
+            <div className={style.categoryText}>
+                {props.name}
             </div>
-        : <div></div>
+            {props.children}
+        </div>
     )
 }
