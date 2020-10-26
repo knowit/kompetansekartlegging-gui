@@ -124,11 +124,9 @@ export const OverviewStyle = makeStyles({
         height: '100%',
         width: '75%'
     },
-
     cardHeader: {
         display: "flex"
     },
-
     closeButton: {
         marginTop: "3px",
         marginRight: "32px",
