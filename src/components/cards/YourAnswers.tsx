@@ -23,7 +23,7 @@ const AnswersStyle = makeStyles({
     form: {
         width: '80%',
         overflowY: 'auto',
-        height: '100%'
+        height: '100%',
     },
     categoryList: {
         width: '20%',
@@ -103,7 +103,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         <div className={style.categoryListInner}>
                             {props.categories.length > 0
                                 ? <Button 
-                                    onClick={props.createUserForm} 
+                                    // onClick={props.createUserForm} 
                                     className={clsx(style.buttonGeneral, style.submitButton)} 
                                  >Submit Answers</Button>
                                 : ""
