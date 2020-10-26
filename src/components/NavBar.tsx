@@ -21,6 +21,20 @@ const useStyles = makeStyles((theme) => ({
     },
     header: {
         backgroundColor: KnowitColors.darkGreen
+    },
+    userName: {
+        margin: "5px",
+        fontFamily: "Arial",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: "20px",
+        lineHeight: "23px",
+        color: KnowitColors.ecaluptus
+    },
+    userPicture: {
+        margin: "5px",
+        width: "44px",
+        height: "44px",
     }
 }));
 
@@ -60,8 +74,8 @@ const NavBar = (user : any) => {
                         <Button variant="contained" onClick={() => handleClick("/user")} className={classes.button}>User</Button>
                         <Button variant="contained" onClick={() => handleClick("/admin")} className={classes.button}>Admin</Button> */}
                     </div>
-                    <div>{userName}</div>
-                    <Avatar src={userPicture} />
+                    <div className={classes.userName}>{userName}</div>
+                    <Avatar className={classes.userPicture} src={userPicture} />
                     <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button> 
                 </Toolbar>
             </AppBar>
