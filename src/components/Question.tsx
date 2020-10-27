@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { QuestionProps } from '../types';
 import Slider from './Slider';
-import { Icon, makeStyles, SvgIcon } from '@material-ui/core';
+import { makeStyles, SvgIcon } from '@material-ui/core';
 import { KnowitColors, IconPaths } from '../styles';
-// import icons from './data'
-
-/*
-    Create image controller in data folder
-    import all images there and export function to
-    get a single image based om a string or something
-
-*/
+import * as Icon from '../icons/iconController';
 
 const QuestionBlock = makeStyles({
     root: {
@@ -46,11 +39,18 @@ const QuestionBlock = makeStyles({
         width: '75%'
     },
     slider: {
-        width: '100%'
+        marginRight: 15,
+        marginLeft: 15
     },
     iconArea: {
         width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         height: 30
+    },
+    icon: {
+        height: '100%'
     },
     smallBold: {
         fontSize: 14,
@@ -79,29 +79,26 @@ const Question = ({...props}: QuestionProps) => {
         }
     };
 
-    const createSliderIcons = (motivation: boolean): JSX.Element[] => {
-        let icons: JSX.Element[] = [];
-        if(motivation){
-            IconPaths.slice(6).forEach(path => {
-                icons.push(
-                    <SvgIcon>
-                        <path d={`../../data/${path}`} />
-                    </SvgIcon>
-                );
-            });
-        } else {
-            IconPaths.slice(0, 6).forEach((path, index) => {
-                // console.log(`../../data/${path}`);
-                icons.push(
-                    <Icon key={index} style={{textAlign: "center"}}>
-                        <img style={{height: '100%'}} src={`./data/K_ingen.svg`} /> 
-                        {/* `https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTVJDpGrsSOmxRkcHECYt_goEIEgFcxjfNQYw&usqp=CAU`} /> */}
-                        {/* <path d={`../../data/${path}`} /> */}
-                    </Icon>
-                );
-            });
+    // Not pretty, but works
+    const createSliderIcons = (knowledge: boolean): JSX.Element[] => {
+        if(knowledge) {
+            return [
+                <Icon.K0 key={0} className={style.icon} />,
+                <Icon.K1 key={1} className={style.icon} />,
+                <Icon.K2 key={2} className={style.icon} />,
+                <Icon.K3 key={3} className={style.icon} />,
+                <Icon.K4 key={4} className={style.icon} />,
+                <Icon.K5 key={5} className={style.icon} />
+            ];
         }
-        return icons;
+        return [
+            <Icon.M0 key={0} className={style.icon} />,
+            <Icon.M1 key={1} className={style.icon} />,
+            <Icon.M2 key={2} className={style.icon} />,
+            <Icon.M3 key={3} className={style.icon} />,
+            <Icon.M4 key={4} className={style.icon} />,
+            <Icon.M5 key={5} className={style.icon} />
+        ];
     };
 
     useEffect(() => {
@@ -117,7 +114,7 @@ const Question = ({...props}: QuestionProps) => {
                 <div className={clsx(style.largeBold)}>KOMPETANSE</div>
                 <div className={style.sliderArea}>
                     <div className={style.iconArea}>
-                        {createSliderIcons(false)}
+                        {createSliderIcons(true)}
                     </div>
                     <div className={style.slider}>
                         <Slider
@@ -127,20 +124,22 @@ const Question = ({...props}: QuestionProps) => {
                         />
                     </div>
                 </div>
-                {/* <div className={clsx(style.smallBold)}>Ekspert</div> */}
             </div>
-            {/* <div>
-                <div className={style.largeBold}>Motivasjon</div>
-                <div className={style.smallBold}>Ikke motivert i det heletatt</div>
-                <div>
-                    <Slider
-                        value={motivationValue}
-                        motivation={true}
-                        sliderChanged={sliderChanged}
-                    />
+            <div className={style.answerArea}>
+                <div className={clsx(style.largeBold)}>MOTIVASJON</div>
+                <div className={style.sliderArea}>
+                    <div className={style.iconArea}>
+                        {createSliderIcons(false)}
+                    </div>
+                    <div className={style.slider}>
+                        <Slider
+                            value={motivationValue}
+                            motivation={true}
+                            sliderChanged={sliderChanged}
+                        />
+                    </div>
                 </div>
-                <div className={style.smallBold}>Ekstremt motivert</div>
-            </div> */}
+            </div>
         </div>
     );
     
