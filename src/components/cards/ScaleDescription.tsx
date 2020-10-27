@@ -1,8 +1,9 @@
 import clsx from 'clsx';
-import React from 'react'
+import React from 'react';
 import { CardStyle, ScaleDescStyle } from '../../styles';
 import { ScaleDescriptionProps } from '../../types';
 import CloseIcon from '@material-ui/icons/Close';
+import DescriptionTable from '../DescriptionTable';
 
 
 export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
@@ -33,6 +34,12 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                         />
                     ) : null}
             </div>
+            {props.commonCardProps.active ?
+                <div className={style.row}>
+                    <div className={style.col}><DescriptionTable heading='BESKRIVELSE AV KOMPETANSESKALA'/></div>
+                    <div className={style.col}><DescriptionTable heading='BESKRIVELSE AV MOTIVASJONSSKALA'/></div>
+                </div>
+            : ""}
             
         </div>
     );
