@@ -122,7 +122,8 @@ export const OverviewStyle = makeStyles({
     radarPlot: {
         paddingLeft: '10%',
         height: '100%',
-        width: '75%'
+        width: '75%',
+        display: "flex"
     }
 });
 
