@@ -1,20 +1,28 @@
-import React, { useEffect } from 'react'
-import { QuestionBlock } from '../styles'
+import { makeStyles } from '@material-ui/core';
+import React, { Fragment } from 'react'
+import { KnowitColors } from '../styles'
 
 type CategoryProps = {
     name: string,
     children: JSX.Element[]
-}
+};
+
+const CategoryStyle = makeStyles({
+    categoryText: {
+        fontSize: 22,
+        fontWeight: 'bold'
+    }
+});
 
 export const Category = ({...props}: CategoryProps) => {
-    const style = QuestionBlock();
+    const style = CategoryStyle();
 
     return (
-        <div>
+        <Fragment>
             <div className={style.categoryText}>
                 {props.name}
             </div>
             {props.children}
-        </div>
+        </Fragment>
     )
 }

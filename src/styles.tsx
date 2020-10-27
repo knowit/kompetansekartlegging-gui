@@ -18,13 +18,20 @@ export const KnowitColors = {
     lightPink: "#F7E1DD"
 };
 
-export const useStyles = makeStyles({
-    root: {
-        width: 400,
-        marginLeft: 50
-    }
-});
-
+export const IconPaths: string[] = [
+    "K_ingen.svg",
+    "K_noeInnsikt.svg",
+    "K_potesieltBrukbar.svg",
+    "K_profesjoneltNivå.svg",
+    "K_ekspert.svg",
+    "K_superstjerne.svg",
+    "M_nei.svg",
+    "M_egentligIkke.svg",
+    "M_nja.svg",
+    "M_ok.svg",
+    "M_godt.svg",
+    "M_perfekt.svg"
+];
 
 export const AppStyle = makeStyles({
     root: {
@@ -180,41 +187,41 @@ export const ScaleDescStyle = makeStyles({
 //     }
 // });
 
-export const QuestionBlock = makeStyles({
-    root: {
-        marginTop: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        backgroundColor: KnowitColors.ecaluptus
-    },
-    categoryGroup: {
-        // marginTop: 10,
-        paddingBottom: 10,
-        backgroundColor: KnowitColors.lightGreen,
-        width: '100%'
-    },
-    categoryText: {
-        fontSize: 22,
-        fontWeight: 'bold'
-    },
-    topic: {
-        fontWeight: "bold"
-    },
-    sliderGroup: {
-        display: 'flex',
-        flexWrap: "nowrap",
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-    smallBold: {
-        fontSize: 14,
-        fontWeight: "bold"
-    },
-    largeBold: {
-        fontSize: 18,
-        fontWeight: "bold"
-    }
-});
+// export const QuestionBlock = makeStyles({
+//     root: {
+//         marginTop: 10,
+//         marginLeft: 10,
+//         marginRight: 10,
+//         backgroundColor: KnowitColors.ecaluptus
+//     },
+//     categoryGroup: {
+//         // marginTop: 10,
+//         paddingBottom: 10,
+//         backgroundColor: KnowitColors.lightGreen,
+//         width: '100%'
+//     },
+//     categoryText: {
+//         fontSize: 22,
+//         fontWeight: 'bold'
+//     },
+//     topic: {
+//         fontWeight: "bold"
+//     },
+//     sliderGroup: {
+//         display: 'flex',
+//         flexWrap: "nowrap",
+//         justifyContent: 'flex-start',
+//         alignItems: 'center'
+//     },
+//     smallBold: {
+//         fontSize: 14,
+//         fontWeight: "bold"
+//     },
+//     largeBold: {
+//         fontSize: 18,
+//         fontWeight: "bold"
+//     }
+// });
 
 export const DescTableStyle = makeStyles({
     root: {

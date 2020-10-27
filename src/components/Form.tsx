@@ -1,10 +1,24 @@
+import { makeStyles } from '@material-ui/core';
 import React, { Fragment, useState } from 'react'
-import { QuestionBlock } from '../styles';
+import { KnowitColors } from '../styles';
 import { AnswerProps } from '../types';
 import { Category } from './Category';
 import Question from './Question';
 
-const Form = ({...props}: AnswerProps) => {
+const FormStyle = makeStyles({
+    root: {
+        paddingBottom: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+        backgroundColor: KnowitColors.lightGreen,
+        width: '100%',
+        boxSizing: "border-box",
+        borderRadius: 10
+    }
+});
+
+export const Form = ({...props}: AnswerProps) => {
 
     type Question = {
         question: {
@@ -15,9 +29,7 @@ const Form = ({...props}: AnswerProps) => {
         }
     }
 
-    const questionStyle = QuestionBlock();
-
-    const [categories, setCategories] = useState<JSX.Element[]>([]);
+    const style = FormStyle();
 
     const getQuestionsForCategory = (items: Question[]): JSX.Element[] => {
         let questions: JSX.Element[] = [];
@@ -34,9 +46,9 @@ const Form = ({...props}: AnswerProps) => {
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                 />
             );
-        }
+        };
         return questions;
-    }; 
+    };
 
     //TODO: Return only used category, not everyone
     const createQuestionCategory = (): JSX.Element => {
@@ -46,32 +58,15 @@ const Form = ({...props}: AnswerProps) => {
         let questions = items.filter(item => item.question.category === props.activeCategory)
             .sort((a, b) => (a.question.category < b.question.category) ? -1 : 1);
         return (
-            <div className={questionStyle.categoryGroup}>
-                <Category name={props.activeCategory} >
-                    {getQuestionsForCategory(questions)}
-                </Category>
-            </div>
+            <Category name={props.activeCategory} >
+                {getQuestionsForCategory(questions)}
+            </Category>
         );
-        // let categories: JSX.Element[] = [];
-        // for(let i = 0; i < props.categories.length; i++){
-        //     const questions = items.filter(item => item.question.category === props.categories[i]);
-        //     categories.push(
-                
-        //     );
-        // };
-        // return categories;
     };
 
-    // useEffect(() => {
-    //     if(categories.length === 0) setCategories(createQuestions());
-    // }, [props.answers])
-
     return (
-        <div className="form">
+        <div className={style.root}>
             {createQuestionCategory()}
-            {/* <p>{props.submitFeedback}</p> */}
         </div>
     )
-}
-
-export default Form;
+};

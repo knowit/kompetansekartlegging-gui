@@ -1,6 +1,6 @@
 import React from 'react'
 import { AnswerProps } from '../../types';
-import Form from '../Form'
+import { Form } from '../Form'
 
 
 const AnswerPage = ({...props}: AnswerProps) => {
