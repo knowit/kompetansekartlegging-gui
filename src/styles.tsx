@@ -128,9 +128,19 @@ export const OverviewStyle = makeStyles({
 
 export const ScaleDescStyle = makeStyles({
     root: {
-        maxHeight: '30%',
+        maxHeight: '40%',
         width: "100%",
         backgroundColor: KnowitColors.ecaluptus
+    },
+    row: {
+        width: '80%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyItems: 'space-around',
+        alignContent: 'center'
+    },
+    col: {
+        width: '30%'
     }
 });
 
@@ -187,7 +197,37 @@ export const QuestionBlock = makeStyles({
     }
 });
 
-
+export const DescTableStyle = makeStyles({
+    root: {
+        width: "100%",
+        backgroundColor: KnowitColors.ecaluptus
+    },
+    block: {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        padding: '5px'
+    },
+    rightBlock: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center'
+    },
+    heading: {
+        fontSize: 10,
+        fontWeight: "bold"
+    },
+    description: {
+        fontSize: 10
+    },
+    icon: {
+        height: 28,
+        width: 28,
+        flexShrink: 0
+    }
+});
 
 
 
