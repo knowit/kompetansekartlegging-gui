@@ -157,6 +157,7 @@ export const ScaleDescStyle = makeStyles({
         marginRight: "32px",
         '&:hover': {
             color: KnowitColors.darkGreen
+        }
     },
     row: {
         width: '80%',
