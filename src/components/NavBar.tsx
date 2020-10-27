@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "bold",
         fontSize: "20px",
         lineHeight: "23px",
-        color: KnowitColors.ecaluptus
+        color: KnowitColors.ecaluptus,
+        marginLeft: "auto"
     },
     userPicture: {
         margin: "5px",
