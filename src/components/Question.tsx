@@ -15,7 +15,8 @@ const QuestionBlock = makeStyles({
         paddingTop: 5,
         paddingBottom: 5,
         paddingRight: 5,
-        backgroundColor: KnowitColors.ecaluptus
+        backgroundColor: KnowitColors.ecaluptus,
+        borderRadius: 10
     },
     topic: {
         fontSize: 18,
