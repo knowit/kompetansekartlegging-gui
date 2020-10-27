@@ -4,6 +4,7 @@ import React from 'react'
 import { CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
+import CloseIcon from '@material-ui/icons/Close';
 
 const AnswersStyle = makeStyles({
     root: {
@@ -11,8 +12,6 @@ const AnswersStyle = makeStyles({
         flexDirection: 'column',
         width: "100%",
         backgroundColor: KnowitColors.greyGreen
-    },
-    header: {
     },
     answerBox: {
         display: 'flex',
@@ -23,7 +22,7 @@ const AnswersStyle = makeStyles({
     form: {
         width: '80%',
         overflowY: 'auto',
-        height: '100%',
+        height: '100%'
     },
     categoryList: {
         width: '20%',
@@ -58,7 +57,19 @@ const AnswersStyle = makeStyles({
         backgroundColor: KnowitColors.ecaluptus,
         '&:hover': {
             background: KnowitColors.flamingo
-        },
+        }
+    },
+
+    cardHeader: {
+        display: "flex"
+    },
+
+    closeButton: {
+        marginTop: "3px",
+        marginRight: "32px",
+        '&:hover': {
+            color: KnowitColors.darkGreen
+        }
     }
 });
 
@@ -91,13 +102,20 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
 
     return (
         <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.open : cardStyle.closed)}>
-            <div className={style.header}>
+            <div className={style.cardHeader}>
                 <button 
                     onClick={buttonClick} 
                     className={clsx(cardStyle.cardButton)}
                 >
                     YOUR ANSWERS
                 </button>
+                {props.commonCardProps.active ? (
+                        <CloseIcon 
+                            fontSize="large" 
+                            className={style.closeButton}
+                            onClick={buttonClick}    
+                        />
+                    ) : null}
             </div>
             {props.commonCardProps.active ?
                 <div className={style.answerBox}>

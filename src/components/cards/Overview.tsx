@@ -5,6 +5,7 @@ import { CardStyle, OverviewStyle } from '../../styles';
 import { OverviewProps } from '../../types';
 import RadarPlot from '../RadarPlot';
 import ResultDiagram from '../ResultDiagram';
+import CloseIcon from '@material-ui/icons/Close';
 
 
 export const Overview = ({...props}: OverviewProps) => {
@@ -26,13 +27,20 @@ export const Overview = ({...props}: OverviewProps) => {
 
     return (
         <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.open : cardStyle.closed)}>
-            <div >
+            <div className={style.cardHeader}>
                 <button 
                     onClick={buttonClick} 
                     className={clsx(cardStyle.cardButton)}
                 >
                     OVERVIEW
                 </button>
+                {props.commonCardProps.active ? (
+                        <CloseIcon 
+                            fontSize="large" 
+                            className={style.closeButton}
+                            onClick={buttonClick}    
+                        />
+                    ) : null}
             </div>
             {props.commonCardProps.active ? 
                 <div className={style.radarPlot}>
