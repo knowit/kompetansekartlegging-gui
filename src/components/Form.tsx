@@ -13,11 +13,12 @@ const FormStyle = makeStyles({
         paddingTop: 5,
         backgroundColor: KnowitColors.lightGreen,
         width: '100%',
-        boxSizing: "border-box"
+        boxSizing: "border-box",
+        borderRadius: 10
     }
 });
 
-const Form = ({...props}: AnswerProps) => {
+export const Form = ({...props}: AnswerProps) => {
 
     type Question = {
         question: {
@@ -61,25 +62,11 @@ const Form = ({...props}: AnswerProps) => {
                 {getQuestionsForCategory(questions)}
             </Category>
         );
-        // let categories: JSX.Element[] = [];
-        // for(let i = 0; i < props.categories.length; i++){
-        //     const questions = items.filter(item => item.question.category === props.categories[i]);
-        //     categories.push(
-                
-        //     );
-        // };
-        // return categories;
     };
-
-    // useEffect(() => {
-    //     if(categories.length === 0) setCategories(createQuestions());
-    // }, [props.answers])
 
     return (
         <div className={style.root}>
             {createQuestionCategory()}
         </div>
     )
-}
-
-export default Form;
+};
