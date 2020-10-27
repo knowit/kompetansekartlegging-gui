@@ -3,8 +3,20 @@ import { HorizontalBar } from 'react-chartjs-2';
 import { roundDecimals } from '../helperFunctions';
 import { KnowitColors } from '../styles';
 import { AnswerData, CalculationData, ResultData } from '../types'
+import { makeStyles } from '@material-ui/core/styles'
+
+const style = makeStyles((theme) => ({
+    knowledgeChart: {
+        width: '58%',
+
+    },
+    motivationChart: {
+        width: '42%'
+    }
+}));
 
 export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boolean }) {
+    const classes = style();
 
     const [answerData, setAnswerData] = useState<ResultData[]>([]);
     
@@ -71,6 +83,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
     // TODO: del opp i to horizontalbar. drop labels i motivation. Splitt opp knowledge og motivation i to forskjellige
     return (
         <Fragment>
+            <div className={classes.knowledgeChart}>
             <HorizontalBar 
                 redraw={props.boolDraw}
                 data={{
@@ -84,15 +97,6 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                             // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                             // hoverBorderColor: 'rgba(255,99,132,1)',
                             data: answerData.map(value => value.averageKnowledge)
-                        },
-                        {
-                            label: 'Motivation',
-                            backgroundColor: KnowitColors.greyGreen,  //'rgba(99,255,132,0.2)',
-                            //borderColor: 'green', //'rgba(99,255,132,1)',
-                            borderWidth: 1,
-                            // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                            // hoverBorderColor: 'rgba(255,99,132,1)',
-                            data: answerData.map(value => value.averageMotivation)
                         }
                     ]
                 }}
@@ -126,6 +130,56 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                 }}
     
             />
+            </div>
+            <div className={classes.motivationChart}>
+
+            <HorizontalBar 
+                redraw={props.boolDraw}
+                data={{
+                    labels: answerData.map(value => ""),
+                    datasets: [
+                        {
+                            label: 'Motivation',
+                            backgroundColor: KnowitColors.greyGreen,  //'rgba(99,255,132,0.2)',
+                            //borderColor: 'green', //'rgba(99,255,132,1)',
+                            borderWidth: 1,
+                            // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                            // hoverBorderColor: 'rgba(255,99,132,1)',
+                            data: answerData.map(value => value.averageMotivation)
+                        }
+                    ]
+                }}
+                options={{
+                    maintainAspectRatio: false,
+                    // legend: {
+                    //     labels: {
+                    //         fontColor: 'black'
+                    //     }
+                    // },
+                    scales: {
+                        yAxes: [{
+                            gridLines: {
+                                color: '#E4E0DC'
+                            },
+                            ticks: {
+                                fontColor: 'black'
+                            }
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                                color: '#E4E0DC'
+                            },
+                            ticks: {
+                                fontColor: 'black',
+                                beginAtZero: true,
+                                max: 5
+                            }
+                        }]
+                    }
+                }}
+    
+            />
+            </div>
         </Fragment>
     );
 };
