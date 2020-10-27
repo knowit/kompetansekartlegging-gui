@@ -4,7 +4,7 @@ import { QuestionProps } from '../types';
 import Slider from './Slider';
 import { Icon, makeStyles, SvgIcon } from '@material-ui/core';
 import { KnowitColors, IconPaths } from '../styles';
-import icons from './data'
+// import icons from './data'
 
 /*
     Create image controller in data folder
