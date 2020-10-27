@@ -129,7 +129,9 @@ export const OverviewStyle = makeStyles({
     radarPlot: {
         paddingLeft: '10%',
         height: '100%',
-        width: '75%'
+        width: '75%',
+        display: "flex"
+
     },
     cardHeader: {
         display: "flex"
@@ -142,6 +144,7 @@ export const OverviewStyle = makeStyles({
         }
     }
 });
+
 
 export const ScaleDescStyle = makeStyles({
     root: {
