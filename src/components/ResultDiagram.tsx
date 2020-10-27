@@ -7,11 +7,11 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const style = makeStyles((theme) => ({
     knowledgeChart: {
-        width: '58%',
+        width: '58.8%',
 
     },
     motivationChart: {
-        width: '42%'
+        width: '41.2%'
     }
 }));
 
@@ -136,7 +136,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
             <HorizontalBar 
                 redraw={props.boolDraw}
                 data={{
-                    labels: answerData.map(value => ""),
+                    labels: answerData.map(value => " "),
                     datasets: [
                         {
                             label: 'Motivation',
