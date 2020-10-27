@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React from 'react'
 import { CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
-import Form from '../Form';
+import { Form } from '../Form';
 
 const AnswersStyle = makeStyles({
     root: {
@@ -30,20 +30,21 @@ const AnswersStyle = makeStyles({
         height: '100%'
     },
     categoryListInner: {
-        marginLeft: 10
+        marginLeft: 10,
+        textAlign: 'center'
     },
     buttonGeneral: {
-        width: '100%',
         overflow: 'wrap',
         fontSize: 13,
         fontWeight: 'bolder',
-        border: 'none',
+        border: 'none'
+    },
+    categoryButton: {
+        width: '100%',
         borderTopLeftRadius: 20,
         borderBottomLeftRadius: 20,
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0,
-    },
-    categoryButton: {
         backgroundColor: KnowitColors.greyGreen,
         '&:hover': {
             background: KnowitColors.lightGreen
@@ -53,6 +54,7 @@ const AnswersStyle = makeStyles({
         backgroundColor: KnowitColors.lightGreen
     },
     submitButton: {
+        width: '80%',
         backgroundColor: KnowitColors.ecaluptus,
         '&:hover': {
             background: KnowitColors.flamingo
@@ -103,7 +105,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         <div className={style.categoryListInner}>
                             {props.categories.length > 0
                                 ? <Button 
-                                    // onClick={props.createUserForm} 
+                                    onClick={props.createUserForm} 
                                     className={clsx(style.buttonGeneral, style.submitButton)} 
                                  >Submit Answers</Button>
                                 : ""
