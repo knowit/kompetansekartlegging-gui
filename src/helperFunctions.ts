@@ -55,3 +55,10 @@ export const roundDecimals = (valueToRound: number, decimalCount: number): numbe
     return Math.round(valueToRound * Math.pow(10, decimalCount)) / Math.pow(10, decimalCount);
 };
 
+export const clampNumber = (value: number, min: number, max?: number): number => {
+    let newValue = value < min ? min : value;
+    if(max) newValue = value > max ? max : value;
+    // console.log(`v:${value}, min:${min}, max:${max}, new:${newValue}`);
+    return newValue;
+};
+
