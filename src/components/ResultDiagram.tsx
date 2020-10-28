@@ -4,6 +4,7 @@ import { roundDecimals } from '../helperFunctions';
 import { KnowitColors } from '../styles';
 import { AnswerData, CalculationData, ResultData } from '../types'
 import { makeStyles } from '@material-ui/core/styles'
+import { GetIcons } from '../icons/iconController'
 
 const graphStyle = makeStyles({
     chart: {
@@ -11,42 +12,30 @@ const graphStyle = makeStyles({
         maxHeight: '80%'
     },
     iconBar: {
-        height: 30,
-        background: 'red'
+        height: 30 ,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    icon: {
+        height: '100%'
+    },
+    categoryList: {
+        marginTop: 30,
+        marginBottom: 60,
+        textAlign: 'right',
+        width: '20%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
+    },
+    category: {
+        fontSize: '1.2vw',
     }
 });
 
-// let temp = true;
-
-// const plugins = [{
-//     afterDraw: (chart: any) => {
-//         let ctx = chart.chart.ctx;
-//         // ctx.save();
-//         let xAxis = chart.scales['x-axis-0'];
-//         let yAxis = chart.scales['y-axis-0'];
-//         if(temp) {
-//             console.log("Axis");
-//             console.log(xAxis);
-//         }
-//         yAxis.ticks.forEach((value: any, index: any) => {
-//             let y = xAxis.getPixelForTick(index);
-//             let image = new Image();
-//             image.src = '../icons/K - ekspert.svg';
-//             if(temp) console.log(image);
-//             ctx.drawImage(image, y - 12, xAxis.bottom + 10);
-//         });
-//         if(temp) temp = false;
-//         // ctx.restore();    
-//     }
-// }];
-
 const graphOptions = {
     maintainAspectRatio: false,
-    layout: {
-        margin: {
-            bottom: -50
-        }
-    },
     legend: {
         labels: {
             fontColor: 'black'
@@ -143,6 +132,9 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
 
     return (
         <Fragment>
+            <div className={style.categoryList}>
+                {answerData.map(value => <div className={style.category}>{value.category}</div>)}
+            </div>
             <div className={style.chart}>
                 <HorizontalBar
                     redraw={props.boolDraw}
@@ -158,10 +150,9 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                         ]
                     }}
                     options={graphOptions}
-                    // plugins={plugins}
                 />
                 <div className={style.iconBar}>
-                    0, 1, 2, 3, 4, 5
+                    {GetIcons(true, style.icon)}
                 </div>
             </div>
             <div className={style.chart}>
@@ -180,6 +171,9 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                     }}
                     options={graphOptions}
                 />
+                <div className={style.iconBar}>
+                    {GetIcons(false, style.icon)}
+                </div>
             </div>
         </Fragment>
     );
