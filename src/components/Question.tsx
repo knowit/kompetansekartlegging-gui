@@ -80,28 +80,6 @@ const Question = ({...props}: QuestionProps) => {
         }
     };
 
-    // Not pretty, but works
-    const createSliderIcons = (knowledge: boolean): JSX.Element[] => {
-        if(knowledge) {
-            return [
-                <Icon.K0 key={0} className={style.icon} />,
-                <Icon.K1 key={1} className={style.icon} />,
-                <Icon.K2 key={2} className={style.icon} />,
-                <Icon.K3 key={3} className={style.icon} />,
-                <Icon.K4 key={4} className={style.icon} />,
-                <Icon.K5 key={5} className={style.icon} />
-            ];
-        }
-        return [
-            <Icon.M0 key={0} className={style.icon} />,
-            <Icon.M1 key={1} className={style.icon} />,
-            <Icon.M2 key={2} className={style.icon} />,
-            <Icon.M3 key={3} className={style.icon} />,
-            <Icon.M4 key={4} className={style.icon} />,
-            <Icon.M5 key={5} className={style.icon} />
-        ];
-    };
-
     useEffect(() => {
         setKnowledgeValue(props.knowledgeDefaultValue);
         setMotivationValue(props.motivationDefaultValue);
@@ -115,7 +93,7 @@ const Question = ({...props}: QuestionProps) => {
                 <div className={clsx(style.largeBold)}>KOMPETANSE</div>
                 <div className={style.sliderArea}>
                     <div className={style.iconArea}>
-                        {createSliderIcons(true)}
+                        {Icon.GetIcons(true, style.icon)}
                     </div>
                     <div className={style.slider}>
                         <Slider
@@ -130,7 +108,7 @@ const Question = ({...props}: QuestionProps) => {
                 <div className={clsx(style.largeBold)}>MOTIVASJON</div>
                 <div className={style.sliderArea}>
                     <div className={style.iconArea}>
-                        {createSliderIcons(false)}
+                        {Icon.GetIcons(false, style.icon)}
                     </div>
                     <div className={style.slider}>
                         <Slider
