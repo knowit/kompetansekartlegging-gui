@@ -127,7 +127,7 @@ export const OverviewStyle = makeStyles({
         backgroundColor: KnowitColors.white
     },
     radarPlot: {
-        paddingLeft: '10%',
+        paddingLeft: '5%',
         height: '100%',
         width: '75%',
         display: "flex",

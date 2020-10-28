@@ -21,13 +21,13 @@ const graphStyle = makeStyles({
         height: '100%'
     },
     categoryList: {
-        marginTop: 30,
-        marginBottom: 70,
+        marginTop: '2%',
+        marginBottom: '4.5%',
         textAlign: 'right',
-        width: '20%',
+        width: '30%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-evenly'
     },
     category: {
         fontSize: '0.95vw',
