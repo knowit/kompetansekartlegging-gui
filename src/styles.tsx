@@ -122,7 +122,7 @@ export const CardStyle = makeStyles({
 
 export const OverviewStyle = makeStyles({
     root: {
-        maxHeight: '30%',
+        maxHeight: '35%',
         width: "100%",
         backgroundColor: KnowitColors.white
     },

@@ -4,41 +4,49 @@ import { roundDecimals } from '../helperFunctions';
 import { KnowitColors } from '../styles';
 import { AnswerData, CalculationData, ResultData } from '../types'
 import { makeStyles } from '@material-ui/core/styles'
-import { Icon } from '@material-ui/core';
-import { K0 } from '../icons/iconController';
-import { couldStartTrivia } from 'typescript';
 
-const graphStyle = makeStyles((theme) => ({
-    knowledgeChart: {
-        width: '58.8%',
-
+const graphStyle = makeStyles({
+    chart: {
+        width: '40%',
+        maxHeight: '80%'
     },
-    motivationChart: {
-        width: '41.2%'
+    iconBar: {
+        height: 30,
+        background: 'red'
     }
-}));
+});
 
-const plugins = [{
-    afterDraw: (chart: any) => {
-        console.log("After draw");
-        let ctx = chart.chart.ctx;
-        ctx.save();
-        let xAxis = chart.scales['x-axis-0'];
-        let yAxis = chart.scales['y-axis-0'];
-        xAxis.ticks.forEach((value: any, index: any) => {
-            let x = xAxis.getPixelForTick(index);
-            let image = new Image();
-            image.src = '../icons/K - ekspert.svg';
-            ctx.drawImage(image, x - 12, yAxis.bottom + 10);
-        });
-        ctx.restore();    
-    }
-}];
+// let temp = true;
+
+// const plugins = [{
+//     afterDraw: (chart: any) => {
+//         let ctx = chart.chart.ctx;
+//         // ctx.save();
+//         let xAxis = chart.scales['x-axis-0'];
+//         let yAxis = chart.scales['y-axis-0'];
+//         if(temp) {
+//             console.log("Axis");
+//             console.log(xAxis);
+//         }
+//         yAxis.ticks.forEach((value: any, index: any) => {
+//             let y = xAxis.getPixelForTick(index);
+//             let image = new Image();
+//             image.src = '../icons/K - ekspert.svg';
+//             if(temp) console.log(image);
+//             ctx.drawImage(image, y - 12, xAxis.bottom + 10);
+//         });
+//         if(temp) temp = false;
+//         // ctx.restore();    
+//     }
+// }];
 
 const graphOptions = {
-    
-    plugins: {plugins},
     maintainAspectRatio: false,
+    layout: {
+        margin: {
+            bottom: -50
+        }
+    },
     legend: {
         labels: {
             fontColor: 'black'
@@ -50,7 +58,8 @@ const graphOptions = {
                 color: '#E4E0DC'
             },
             ticks: {
-                fontColor: 'black'
+                fontColor: 'black',
+                fontSize: 1
             }
         }],
         xAxes: [{
@@ -59,13 +68,13 @@ const graphOptions = {
             },
             ticks: {
                 fontColor: 'black',
+                fontSize: 1,
                 beginAtZero: true,
                 max: 5,
-                // callback: (/*value, index, values*/) => {
-                //     let img = new Image();
-                //     img.src = '../icons/K - ekspert.svg'
-                //     return img;
-                // }
+                stepSize: 1,
+                callback: (/*value, index, values*/) => {
+                    return " ";
+                }
             }
         }]
     }
@@ -134,11 +143,11 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
 
     return (
         <Fragment>
-            <div className={style.knowledgeChart}>
+            <div className={style.chart}>
                 <HorizontalBar
                     redraw={props.boolDraw}
                     data={{
-                        labels: answerData.map(value => value.category),
+                        labels: answerData.map(value => " "),
                         datasets: [
                             {
                                 label: 'Knowledge',
@@ -149,9 +158,13 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                         ]
                     }}
                     options={graphOptions}
+                    // plugins={plugins}
                 />
+                <div className={style.iconBar}>
+                    0, 1, 2, 3, 4, 5
+                </div>
             </div>
-            <div className={style.motivationChart}>
+            <div className={style.chart}>
                 <HorizontalBar
                     redraw={props.boolDraw}
                     data={{
