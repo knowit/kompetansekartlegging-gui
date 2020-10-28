@@ -22,7 +22,7 @@ const graphStyle = makeStyles({
     },
     categoryList: {
         marginTop: 30,
-        marginBottom: 60,
+        marginBottom: 70,
         textAlign: 'right',
         width: '20%',
         display: 'flex',
@@ -30,7 +30,7 @@ const graphStyle = makeStyles({
         justifyContent: 'space-between'
     },
     category: {
-        fontSize: '1.2vw',
+        fontSize: '0.95vw',
     }
 });
 
@@ -133,7 +133,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
     return (
         <Fragment>
             <div className={style.categoryList}>
-                {answerData.map(value => <div className={style.category}>{value.category}</div>)}
+                {answerData.map((value, index) => <div key={index} className={style.category}>{value.category}</div>)}
             </div>
             <div className={style.chart}>
                 <HorizontalBar
