@@ -130,8 +130,8 @@ export const OverviewStyle = makeStyles({
         paddingLeft: '10%',
         height: '100%',
         width: '75%',
-        display: "flex"
-
+        display: "flex",
+        flexDirection: 'row'
     },
     cardHeader: {
         display: "flex"
