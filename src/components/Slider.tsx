@@ -12,7 +12,7 @@ const Slider = ({ ...props }: SliderProps) => {
     };
 
     const sliderCommitted = () => {
-        props.sliderChanged(sliderValue, props.motivation);
+        props.sliderChanged(sliderValue, props.knowledge);
     };
 
     useEffect(() => {

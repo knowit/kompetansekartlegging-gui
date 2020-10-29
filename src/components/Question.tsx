@@ -70,12 +70,12 @@ const Question = ({...props}: QuestionProps) => {
 
     const style = QuestionBlock();
 
-    const sliderChanged = (newValue: number, motivation: boolean) => {
-        if(motivation){
-            setMotivationValue(newValue);
+    const sliderChanged = (newValue: number, knowledge: boolean) => {
+        if(knowledge){
+            setKnowledgeValue(newValue);
             props.updateAnswer(props.questionId, knowledgeValue, newValue);
         } else {
-            setKnowledgeValue(newValue);
+            setMotivationValue(newValue);
             props.updateAnswer(props.questionId, newValue, motivationValue);
         }
     };
@@ -120,7 +120,7 @@ const Question = ({...props}: QuestionProps) => {
                     <div className={style.slider}>
                         <Slider
                             value={knowledgeValue}
-                            motivation={false}
+                            knowledge={true}
                             sliderChanged={sliderChanged}
                         />
                     </div>
@@ -135,7 +135,7 @@ const Question = ({...props}: QuestionProps) => {
                     <div className={style.slider}>
                         <Slider
                             value={motivationValue}
-                            motivation={true}
+                            knowledge={false}
                             sliderChanged={sliderChanged}
                         />
                     </div>
