@@ -32,7 +32,7 @@ export const Overview = ({...props}: OverviewProps) => {
                     onClick={buttonClick} 
                     className={clsx(cardStyle.cardButton)}
                 >
-                    OVERVIEW
+                    OVERSIKT
                 </button>
                 {props.commonCardProps.active ? (
                         <CloseIcon 

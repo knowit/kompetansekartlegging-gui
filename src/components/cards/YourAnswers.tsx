@@ -107,7 +107,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                     onClick={buttonClick} 
                     className={clsx(cardStyle.cardButton)}
                 >
-                    YOUR ANSWERS
+                    DINE SVAR
                 </button>
                 {props.commonCardProps.active ? (
                         <CloseIcon 
@@ -125,7 +125,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                                 ? <Button 
                                     onClick={props.createUserForm} 
                                     className={clsx(style.buttonGeneral, style.submitButton)} 
-                                 >Submit Answers</Button>
+                                 >Send Inn Svar</Button>
                                 : ""
                             }
                             {getCategoryButtons()}

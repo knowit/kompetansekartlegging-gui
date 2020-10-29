@@ -90,7 +90,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                     labels: answerData.map(value => value.category),
                     datasets: [
                         {
-                            label: 'Knowledge',
+                            label: 'Kunnskap',
                             backgroundColor: KnowitColors.lightGreen, //'rgba(255,99,132,0.2)',
                             //borderColor: 'red', //'rgba(255,99,132,1)',
                             borderWidth: 1,
@@ -139,7 +139,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                     labels: answerData.map(value => " "),
                     datasets: [
                         {
-                            label: 'Motivation',
+                            label: 'Motivasjon',
                             backgroundColor: KnowitColors.greyGreen,  //'rgba(99,255,132,0.2)',
                             //borderColor: 'green', //'rgba(99,255,132,1)',
                             borderWidth: 1,
