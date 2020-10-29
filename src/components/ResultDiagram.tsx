@@ -9,7 +9,8 @@ import { GetIcons } from '../icons/iconController'
 const graphStyle = makeStyles({
     chart: {
         width: '40%',
-        maxHeight: '80%'
+        maxHeight: '80%',
+        marginRight: 20
     },
     iconBar: {
         height: 30 ,
