@@ -277,7 +277,12 @@ export const DescTableStyle = makeStyles({
     }
 });
 
-
+export const HighlightsStyle = makeStyles({
+    root: {
+        width: "100%",
+        backgroundColor: KnowitColors.white
+    }
+});
 
 
 
