@@ -122,16 +122,16 @@ export const CardStyle = makeStyles({
 
 export const OverviewStyle = makeStyles({
     root: {
-        maxHeight: '30%',
+        maxHeight: '35%',
         width: "100%",
         backgroundColor: KnowitColors.white
     },
     radarPlot: {
-        paddingLeft: '10%',
+        paddingLeft: '5%',
         height: '100%',
         width: '75%',
-        display: "flex"
-
+        display: "flex",
+        flexDirection: 'row'
     },
     cardHeader: {
         display: "flex"
