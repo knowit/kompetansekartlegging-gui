@@ -44,8 +44,8 @@ const NavBar = (user : any) => {
     const history = useHistory();
     const [userName, setUserName] = useState<string>('');
     const [userPicture, setUserPicture] = useState<string>('');
-    // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [open, setOpen] = useState(false);
+    const [avatarMenuOpen, setAvatarMenuOpen] = useState<boolean>(false);
+
     const anchorRef = React.useRef<HTMLButtonElement>(null);
 
 
@@ -58,7 +58,7 @@ const NavBar = (user : any) => {
     }, [user]);
 
     const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
+        setAvatarMenuOpen((avatarMenuPrevOpen) => !avatarMenuPrevOpen);
     };
 
     const handleCloseSignout = (event: React.MouseEvent<EventTarget>) => {
@@ -66,7 +66,7 @@ const NavBar = (user : any) => {
           return;
         }
         
-        setOpen(false);
+        setAvatarMenuOpen(false);
         Auth.signOut();
     };
 
@@ -75,26 +75,26 @@ const NavBar = (user : any) => {
           return;
         }
         
-        setOpen(false);
+        setAvatarMenuOpen(false);
     };
 
     function handleListKeyDown(event: React.KeyboardEvent) {
         if (event.key === 'Tab') {
           event.preventDefault();
-          setOpen(false);
+          setAvatarMenuOpen(false);
         }
       }
 
-    // return focus to the button when we transitioned from !open -> open
-    const prevOpen = React.useRef(open);
+    // return focus to the button when we transitioned from !avatarMenuOpen -> avatarMenuOpen
+    const avatarMenuPrevOpen = React.useRef(avatarMenuOpen);
 
     useEffect(() => {
-        if (prevOpen.current === true && open === false) {
+        if (avatarMenuPrevOpen.current === true && avatarMenuOpen === false) {
         anchorRef.current!.focus();
         }
 
-        prevOpen.current = open;
-    }, [open]);
+        avatarMenuPrevOpen.current = avatarMenuOpen;
+    }, [avatarMenuOpen]);
 
 
     return (
@@ -108,14 +108,14 @@ const NavBar = (user : any) => {
                     <div>
                     <Button
                         ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
+                        aria-controls={avatarMenuOpen ? 'menu-list-grow' : undefined}
                         aria-haspopup="true"
                         onClick={handleToggle}
                     >
                         <Avatar className={classes.userPicture} src={userPicture}
                      />
                     </Button>
-                <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                <Popper open={avatarMenuOpen} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                 {({ TransitionProps, placement }) => (
                     <Grow
                     {...TransitionProps}
@@ -123,7 +123,7 @@ const NavBar = (user : any) => {
                     >
                     <Paper>
                         <ClickAwayListener onClickAway={handleClose}>
-                        <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                        <MenuList autoFocusItem={avatarMenuOpen} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                             <MenuItem onClick={handleCloseSignout}>Sign out</MenuItem>
                         </MenuList>
                         </ClickAwayListener>
