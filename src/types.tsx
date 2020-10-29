@@ -194,8 +194,8 @@ export type FromAppProps = {
 }
 
 export type SliderProps = {
-    sliderChanged: (newValue: number, motivation: boolean) => void,
-    motivation: boolean,
+    sliderChanged: (newValue: number, knowledge: boolean) => void,
+    knowledge: boolean,
     value: number
 };
 
