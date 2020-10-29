@@ -148,7 +148,7 @@ export const OverviewStyle = makeStyles({
 
 export const ScaleDescStyle = makeStyles({
     root: {
-        maxHeight: '40%',
+        maxHeight: '30%',
         width: "100%",
         backgroundColor: KnowitColors.ecaluptus
     },
@@ -161,16 +161,6 @@ export const ScaleDescStyle = makeStyles({
         '&:hover': {
             color: KnowitColors.darkGreen
         }
-    },
-    row: {
-        width: '80%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyItems: 'space-around',
-        alignContent: 'center'
-    },
-    col: {
-        width: '30%'
     }
 });
 
@@ -229,33 +219,61 @@ export const ScaleDescStyle = makeStyles({
 
 export const DescTableStyle = makeStyles({
     root: {
-        width: "100%",
-        backgroundColor: KnowitColors.ecaluptus
-    },
-    block: {
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
-        padding: '5px'
-    },
-    rightBlock: {
         display: 'flex',
         flexDirection: 'column',
+        backgroundColor: KnowitColors.ecaluptus
+    },
+    scaleRow: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         alignContent: 'center'
     },
-    heading: {
-        fontSize: 10,
-        fontWeight: "bold"
+    scaleTitle: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 2,
+        justifyContent: 'center',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        width: '10%'
     },
-    description: {
-        fontSize: 10
+    container: {
+        display: 'flex',
+        flex: 1,
+        flexGrow: 5,
+        flexDirection: 'column',
+        padding: 5
+    },
+    top: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 10,
+        paddingBottom: 20
+    },
+    bottom: {
+        display: 'flex'
+    },
+    iconArea: {
+        height: 30,
+        paddingRight: 5
     },
     icon: {
-        height: 28,
-        width: 28,
-        flexShrink: 0
+        height: "100%"
+    },
+    textBlock: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    heading: {
+        textAlign: 'left',
+        fontSize: 10,
+        fontWeight: 'bold'
+    },
+    text: {
+        textAlign: 'left',
+        fontSize: 10
     }
 });
 
