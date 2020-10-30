@@ -55,8 +55,8 @@ export default function Highlights(props: { data: AnswerData[] }) {
                 {motivationAboveCutoff
                     .map((el, i) =>
                         <div key={i} className={style.listitem}>
-                            <div key={i} className={style.icon}>{GetIcon(false, el.icon)}</div>
-                            <div key={i} className={style.topic}>{el.topic}</div>
+                            <div className={style.icon}>{GetIcon(false, el.icon)}</div>
+                            <div className={style.topic}>{el.topic}</div>
                         </div>
                     )
                 }
@@ -72,8 +72,8 @@ export default function Highlights(props: { data: AnswerData[] }) {
                 {knowledgeAboveCutoff
                     .map((el, i) =>
                         <div key={i} className={style.listitem}>
-                            <div key={i} className={style.icon}>{GetIcon(true, el.icon)}</div>
-                            <div key={i} className={style.topic}>
+                            <div className={style.icon}>{GetIcon(true, el.icon)}</div>
+                            <div className={style.topic}>
                                 <div>{el.topic}</div>
                             </div>
                         </div>
