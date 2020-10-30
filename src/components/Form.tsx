@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/core';
-import React, { Fragment, useState } from 'react'
+import { Button, makeStyles } from '@material-ui/core';
+import React, { Fragment } from 'react'
 import { KnowitColors } from '../styles';
 import { AnswerProps } from '../types';
 import { Category } from './Category';
@@ -15,7 +15,15 @@ const FormStyle = makeStyles({
         width: '100%',
         boxSizing: "border-box",
         borderRadius: 10
-    }
+    },
+    submitButton: {
+        width: '20%',
+        fontWeight: 'bold',
+        backgroundColor: KnowitColors.ecaluptus,
+        '&:hover': {
+            background: KnowitColors.lightGreen
+        }
+    },
 });
 
 export const Form = ({...props}: AnswerProps) => {
@@ -58,9 +66,25 @@ export const Form = ({...props}: AnswerProps) => {
         let questions = items.filter(item => item.question.category === props.activeCategory)
             .sort((a, b) => (a.question.category < b.question.category) ? -1 : 1);
         return (
-            <Category name={props.activeCategory} >
-                {getQuestionsForCategory(questions)}
-            </Category>
+            <Fragment>
+                {props.categories.length > 0
+                    ? <Button 
+                        onClick={props.createUserForm} 
+                        className={style.submitButton} 
+                        >Send Inn Svar</Button>
+                    : ""
+                }
+                <Category name={props.activeCategory} >
+                    {getQuestionsForCategory(questions)}
+                </Category>
+                {props.categories.length > 0
+                    ? <Button 
+                        onClick={props.createUserForm} 
+                        className={style.submitButton} 
+                        >Send Inn Svar</Button>
+                    : ""
+                }
+            </Fragment>
         );
     };
 
