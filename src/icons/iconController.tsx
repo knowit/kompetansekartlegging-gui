@@ -10,7 +10,8 @@ import { ReactComponent as M3 } from "../icons/M - ok.svg"
 import { ReactComponent as M2 } from "../icons/M - nja.svg"
 import { ReactComponent as M1 } from "../icons/M - egentlig ikke.svg"
 import { ReactComponent as M0 } from "../icons/M - Nei.svg"
-import React, { Fragment } from "react"
+import clsx from 'clsx';
+import React, { Fragment } from "react";
 
 export {K0, K1, K2, K3, K4, K5, M0, M1, M2, M3, M4, M5}
 
@@ -35,25 +36,26 @@ export const GetIcons = (knowledge: boolean, className?: string): JSX.Element[] 
     ];
 };
 
-export const GetIcon = (knowledge: boolean, level: number): JSX.Element => {
+export const GetIcon = (knowledge: boolean, level: number, className?: string): JSX.Element => {
     if(knowledge) {
         switch (level) {
-            case 0: return <K0/>
-            case 1: return <K1/>
-            case 2: return <K2/>
-            case 3: return <K3/>
-            case 4: return <K4/>
-            case 5: return <K5/>
+            case 0: return <K0 className={className} />
+            case 1: return <K1 className={className} />
+            case 2: return <K2 className={className} />
+            case 3: return <K3 className={className} />
+            case 4: return <K4 className={className} />
+            case 5: return <K5 className={className} />
+            default: return <Fragment />
+        };
+    } else {
+        switch (level) {
+            case 0: return <M0 className={className} />
+            case 1: return <M1 className={className} />
+            case 2: return <M2 className={className} />
+            case 3: return <M3 className={className} />
+            case 4: return <M4 className={className} />
+            case 5: return <M5 className={className} />
             default: return <Fragment />
         };
     }
-        switch (level) {
-            case 0: return <M0/>
-            case 1: return <M1/>
-            case 2: return <M2/>
-            case 3: return <M3/>
-            case 4: return <M4/>
-            case 5: return <M5/>
-            default: return <Fragment />
-        };
 };
