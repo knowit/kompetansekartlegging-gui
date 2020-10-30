@@ -29,6 +29,7 @@ const AnswersStyle = makeStyles({
         height: '100%'
     },
     categoryListInner: {
+        marginTop: 10,
         marginLeft: 10,
         textAlign: 'center'
     },
@@ -52,18 +53,9 @@ const AnswersStyle = makeStyles({
     categoryButtonActive: {
         backgroundColor: KnowitColors.white
     },
-    submitButton: {
-        width: '80%',
-        backgroundColor: KnowitColors.ecaluptus,
-        '&:hover': {
-            background: KnowitColors.flamingo
-        }
-    },
-
     cardHeader: {
         display: "flex"
     },
-
     closeButton: {
         marginTop: "3px",
         marginRight: "32px",
@@ -121,13 +113,6 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                 <div className={style.answerBox}>
                     <div className={style.categoryList}>
                         <div className={style.categoryListInner}>
-                            {props.categories.length > 0
-                                ? <Button 
-                                    onClick={props.createUserForm} 
-                                    className={clsx(style.buttonGeneral, style.submitButton)} 
-                                 >Send Inn Svar</Button>
-                                : ""
-                            }
                             {getCategoryButtons()}
                         </div>
                     </div>
