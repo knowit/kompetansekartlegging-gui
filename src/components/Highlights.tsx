@@ -4,7 +4,9 @@ import { HighlightsStyle } from '../styles';
 import * as Icon from '../icons/iconController'
 
 
-export default function Highlights(props: { data: AnswerData[], boolDraw: boolean }) {
+export default function Highlights(props: { data: AnswerData[] }) {
+
+    const style = HighlightsStyle();
 
     const [knowledgeAboveCutoff, setKnowledgeAboveCutoff] = useState<TopicScoreWithIcon[]>([]);
     const [motivationAboveCutoff, setMotivationAboveCutoff] = useState<TopicScoreWithIcon[]>([]);
@@ -41,10 +43,10 @@ export default function Highlights(props: { data: AnswerData[], boolDraw: boolea
         if(!motivationAboveCutoff) return <Fragment />;
         if(!motivationAboveCutoff[0]) return <Fragment />;
         return (
-            <div className='root'>
+            <div className={style.list}>
                 {motivationAboveCutoff
                     .map((el, i) =>
-                    <div key={i}>{(i+1) + ' ' + el.topic}</div>)
+                    <div key={i} className={style.listitem}>{(i+1) + ' ' + el.topic}</div>)
                 }
             </div>
         );
@@ -54,25 +56,37 @@ export default function Highlights(props: { data: AnswerData[], boolDraw: boolea
         if(!knowledgeAboveCutoff) return <Fragment />;
         if(!knowledgeAboveCutoff[0]) return <Fragment />;
         return (
-            <div className='root'>
+            <div className={style.list}>
                 {knowledgeAboveCutoff
                     .map((el, i) =>
-                    <div key={i}>{(i+1) + ' ' + el.topic}</div>)
+                    <div key={i} className={style.listitem}>{(i+1) + ' ' + el.topic}</div>)
                 }
             </div>
         );
     };
 
     return (
+        // <Fragment>
+        //     <div>
+        //         Strengths
+        //         {createKnowledgeHighlights()}
+        //     </div>
+        //     <div>
+        //         Aspirations
+        //         {createMotivationHighlights()}
+        //     </div>
+        // </Fragment>
         <Fragment>
-            <div>
-                Strengths
-                {createKnowledgeHighlights()}
+        <div className={style.root}>
+            <div className={style.col}>
+                <div className={style.heading}>Styrker</div>
+                    {createKnowledgeHighlights()}
             </div>
-            <div>
-                Aspirations
-                {createMotivationHighlights()}
+            <div className={style.col}>
+                <div className={style.heading}>Aspirasjoner</div>
+                    {createMotivationHighlights()}
             </div>
+        </div>
         </Fragment>
     );
 };

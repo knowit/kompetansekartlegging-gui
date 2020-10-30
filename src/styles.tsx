@@ -278,9 +278,24 @@ export const DescTableStyle = makeStyles({
 });
 
 export const HighlightsStyle = makeStyles({
-    root: {
-        width: "100%",
-        backgroundColor: KnowitColors.white
+    root: { 
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    col: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    heading: {
+        textAlign: 'center'
+    },
+    list: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    listitem: {
+        display: 'flex'
     }
 });
 
