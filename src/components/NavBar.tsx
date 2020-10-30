@@ -124,7 +124,7 @@ const NavBar = (user : any) => {
                     <Paper>
                         <ClickAwayListener onClickAway={handleClose}>
                         <MenuList autoFocusItem={avatarMenuOpen} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                            <MenuItem onClick={handleCloseSignout}>Sign out</MenuItem>
+                            <MenuItem onClick={handleCloseSignout}>Logg ut</MenuItem>
                         </MenuList>
                         </ClickAwayListener>
                     </Paper>
