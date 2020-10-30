@@ -10,7 +10,7 @@ import { ReactComponent as M3 } from "../icons/M - ok.svg"
 import { ReactComponent as M2 } from "../icons/M - nja.svg"
 import { ReactComponent as M1 } from "../icons/M - egentlig ikke.svg"
 import { ReactComponent as M0 } from "../icons/M - Nei.svg"
-import React from "react"
+import React, { Fragment } from "react"
 
 export {K0, K1, K2, K3, K4, K5, M0, M1, M2, M3, M4, M5}
 
@@ -44,7 +44,7 @@ export const GetIcon = (knowledge: boolean, level: number): JSX.Element => {
             case 3: return <K3/>
             case 4: return <K4/>
             case 5: return <K5/>
-            default: return <div></div>
+            default: return <Fragment />
         };
     }
         switch (level) {
@@ -54,6 +54,6 @@ export const GetIcon = (knowledge: boolean, level: number): JSX.Element => {
             case 3: return <M3/>
             case 4: return <M4/>
             case 5: return <M5/>
-            default: return <div></div>
+            default: return <Fragment />
         };
 };
