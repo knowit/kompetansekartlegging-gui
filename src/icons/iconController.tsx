@@ -34,3 +34,26 @@ export const GetIcons = (knowledge: boolean, className?: string): JSX.Element[] 
         <M5 key={5} className={className} />
     ];
 };
+
+export const GetIcon = (knowledge: boolean, level: number): JSX.Element => {
+    if(knowledge) {
+        switch (level) {
+            case 0: return <K0/>
+            case 1: return <K1/>
+            case 2: return <K2/>
+            case 3: return <K3/>
+            case 4: return <K4/>
+            case 5: return <K5/>
+            default: return <div></div>
+        };
+    }
+        switch (level) {
+            case 0: return <M0/>
+            case 1: return <M1/>
+            case 2: return <M2/>
+            case 3: return <M3/>
+            case 4: return <M4/>
+            case 5: return <M5/>
+            default: return <div></div>
+        };
+};

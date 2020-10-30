@@ -1,6 +1,6 @@
 import { useScrollTrigger } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { CardStyle, OverviewStyle } from '../../styles';
 import { OverviewProps } from '../../types';
 import RadarPlot from '../RadarPlot';

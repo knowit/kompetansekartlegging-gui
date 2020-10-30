@@ -127,11 +127,10 @@ export const OverviewStyle = makeStyles({
         backgroundColor: KnowitColors.white
     },
     radarPlot: {
-        paddingLeft: '5%',
         height: '100%',
-        width: '75%',
-        display: "flex",
-        flexDirection: 'row'
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center'
     },
     cardHeader: {
         display: "flex"
@@ -278,24 +277,47 @@ export const DescTableStyle = makeStyles({
 });
 
 export const HighlightsStyle = makeStyles({
-    root: { 
+    root: {
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        width: '30%',
+        flexDirection: 'column'
+    },
+    title: {    
+        textAlign: 'center',
+        fontWeight: 'bold',
+        paddingBottom: 20
+    },
+    container: { 
+        display: 'flex',
+        justifyContent: 'center'
     },
     col: {
         display: 'flex',
+        width: '40%',
         flexDirection: 'column'
     },
     heading: {
-        textAlign: 'center'
+        textAlign: 'left',
+        paddingBottom: 10
     },
     list: {
         display: 'flex',
         flexDirection: 'column'
     },
     listitem: {
-        display: 'flex'
+        display: 'flex',
+        justifyContent: 'space-between',
+        paddingBottom: 5
+    },
+    icon: {
+        width: '15%'
+    },
+    topic: {
+        width: '80%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        fontSize: 12
     }
 });
 

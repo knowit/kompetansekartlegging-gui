@@ -67,7 +67,7 @@ export type AnsweredQuestion = {
 export type TopicScoreWithIcon = {
     topic: string,
     score: number,
-    icon: JSX.Element
+    icon: number
 };
 
 // export interface FormDefinitionWithQuestions 
