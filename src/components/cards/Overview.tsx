@@ -42,11 +42,14 @@ export const Overview = ({...props}: OverviewProps) => {
                         />
                     ) : null}
             </div>
-            {props.commonCardProps.active ? 
+            <div className={props.commonCardProps.active ? style.radarPlot : style.empty}>
+                <ResultDiagram data={props.radarData} boolDraw={false} />
+            </div>
+            {/* {props.commonCardProps.active ? 
                 <div className={style.radarPlot}>
-                    <ResultDiagram data={props.radarData} boolDraw={drawGraph} />
+                    <ResultDiagram data={props.radarData} boolDraw={props.isAnswersSubmitted} />
                 </div>
-            : ""}
+            : ""} */}
         </div>
     );
 };

@@ -142,6 +142,9 @@ export const OverviewStyle = makeStyles({
         '&:hover': {
             color: KnowitColors.darkGreen
         }
+    },
+    empty: {
+        display: "none"
     }
 });
 

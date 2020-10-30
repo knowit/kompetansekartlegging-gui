@@ -14,11 +14,13 @@ const Content = () => {
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
     const [radarData, setRadarData] = useState<AnswerData[]>([]);
-    const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+    const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); // only first time
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
-    const [isSubmitted, setIsSubmittet] = useState<boolean>(false);
+    const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
+    const [loadDataFirstTime, setLoadDataFirstTime] = useState<boolean>(false);
+
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -51,6 +53,7 @@ const Content = () => {
     };
 
     const createRadarData = (): AnswerData[] => {
+
         if(!formDefinition) return [];
         let questionList = formDefinition.getFormDefinition.questions.items;
         if(!answers || !questionList) return [];
@@ -68,6 +71,9 @@ const Content = () => {
     };
     
     const createUserForm = async () => {
+        // todo: skal denne her?
+        setIsAnswersSubmitted(true)
+
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
         let fdid = formDefinition.getFormDefinition.id;
@@ -161,10 +167,6 @@ const Content = () => {
     // useEffect(() => {
     //     console.log(activeCategory);
     // }, [activeCategory]);
-
-    const updateRadarData = () => {
-        setRadarData(answers);
-    }
     
     useEffect(() => {
         fetchLastFormDefinition();
@@ -179,14 +181,29 @@ const Content = () => {
 
     useEffect(() => {
         setAnswers(createAnswers());
-
     }, [userAnswers]);
 
     useEffect(() => {
         if(radarData.length === 0) setRadarData(createRadarData());
-        else updateRadarData();
-    }, [answers, userAnswers]);
+        else if (isAnswersSubmitted) {
+            debugger
+            setRadarData(answers);
+            setIsAnswersSubmitted(false)
 
+        }
+    }, [userAnswers, isAnswersSubmitted]);
+
+    useEffect(() => {
+        setLoadDataFirstTime(true)
+    }, [radarData]);
+
+    useEffect(() => {
+        if(radarData.length > 0){
+            setIsAnswersSubmitted(true);
+        } else {
+            setLoadDataFirstTime(false)
+        }
+    }, [loadDataFirstTime]);
 
     //New States etc for new card functionality
     /*
@@ -219,6 +236,7 @@ const Content = () => {
                     index: 0
                 }}
                 radarData={radarData}
+                isAnswersSubmitted={isAnswersSubmitted}
             />
             <ScaleDescription 
                 commonCardProps={{
