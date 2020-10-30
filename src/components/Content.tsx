@@ -18,6 +18,7 @@ const Content = () => {
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
+    const [isSubmitted, setIsSubmittet] = useState<boolean>(false);
 
     const createCategories = () => {
         if(!formDefinition) return [];
