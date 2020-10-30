@@ -14,10 +14,10 @@ const Content = () => {
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
     const [radarData, setRadarData] = useState<AnswerData[]>([]);
-    const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+    const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
-    const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
+    const [activeCategory, setActiveCategory] = useState<string>("");
 
     const createCategories = () => {
         if(!formDefinition) return [];

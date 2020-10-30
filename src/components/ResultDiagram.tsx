@@ -143,7 +143,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                         labels: answerData.map(value => " "),
                         datasets: [
                             {
-                                label: 'Knowledge',
+                                label: 'Kunnskap',
                                 backgroundColor: KnowitColors.lightGreen,
                                 borderWidth: 1,
                                 data: answerData.map(value => value.averageKnowledge)
