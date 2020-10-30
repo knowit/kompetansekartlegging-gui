@@ -64,6 +64,12 @@ export type AnsweredQuestion = {
     motivation: number
 };
 
+export type TopicScoreWithIcon = {
+    topic: string,
+    score: number,
+    icon: number
+};
+
 // export interface FormDefinitionWithQuestions 
 //     extends Omit<Exclude<GetFormDefinitionWithQuestionsQuery["getFormDefinition"], null>, "__typename"> {}
 

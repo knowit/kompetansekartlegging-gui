@@ -5,6 +5,7 @@ import { KnowitColors } from '../styles';
 import { AnswerData, CalculationData, ResultData } from '../types'
 import { makeStyles } from '@material-ui/core/styles'
 import { GetIcons } from '../icons/iconController'
+import { isWidthDown } from '@material-ui/core';
 
 const graphStyle = makeStyles({
     chart: {
@@ -32,6 +33,10 @@ const graphStyle = makeStyles({
     },
     category: {
         fontSize: '0.95vw',
+    },
+    container: {
+        display: 'flex',
+        width: '60%'
     }
 });
 
@@ -132,7 +137,8 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
     };
 
     return (
-        <Fragment>
+        <div className={style.container}>
+            <Fragment>
             <div className={style.categoryList}>
                 {answerData.map((value, index) => <div key={index} className={style.category}>{value.category}</div>)}
             </div>
@@ -176,6 +182,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                     {GetIcons(false, style.icon)}
                 </div>
             </div>
-        </Fragment>
+            </Fragment>
+        </div>
     );
 };

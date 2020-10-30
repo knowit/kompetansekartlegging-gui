@@ -1,10 +1,11 @@
 import { useScrollTrigger } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { CardStyle, OverviewStyle } from '../../styles';
 import { OverviewProps } from '../../types';
 import RadarPlot from '../RadarPlot';
 import ResultDiagram from '../ResultDiagram';
+import Highlights from '../Highlights';
 import CloseIcon from '@material-ui/icons/Close';
 
 
@@ -45,6 +46,7 @@ export const Overview = ({...props}: OverviewProps) => {
             {props.commonCardProps.active ? 
                 <div className={style.radarPlot}>
                     <ResultDiagram data={props.radarData} boolDraw={drawGraph} />
+                    <Highlights data={props.radarData} />
                 </div>
             : ""}
         </div>
