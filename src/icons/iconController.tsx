@@ -47,7 +47,7 @@ export const GetIcon = (knowledge: boolean, level: number, className?: string): 
             case 5: return <K5 className={className} />
             default: return <Fragment />
         };
-    }
+    } else {
         switch (level) {
             case 0: return <M0 className={className} />
             case 1: return <M1 className={className} />
@@ -57,4 +57,5 @@ export const GetIcon = (knowledge: boolean, level: number, className?: string): 
             case 5: return <M5 className={className} />
             default: return <Fragment />
         };
+    }
 };
