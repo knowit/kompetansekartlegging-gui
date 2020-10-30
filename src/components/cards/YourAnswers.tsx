@@ -46,11 +46,11 @@ const AnswersStyle = makeStyles({
         borderBottomRightRadius: 0,
         backgroundColor: KnowitColors.greyGreen,
         '&:hover': {
-            background: KnowitColors.lightGreen
+            background: KnowitColors.white
         },
     },
     categoryButtonActive: {
-        backgroundColor: KnowitColors.lightGreen
+        backgroundColor: KnowitColors.white
     },
     submitButton: {
         width: '80%',

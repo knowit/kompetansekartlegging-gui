@@ -11,7 +11,7 @@ const FormStyle = makeStyles({
         paddingLeft: 10,
         paddingRight: 10,
         paddingTop: 5,
-        backgroundColor: KnowitColors.lightGreen,
+        backgroundColor: KnowitColors.white,
         width: '100%',
         boxSizing: "border-box",
         borderRadius: 10
