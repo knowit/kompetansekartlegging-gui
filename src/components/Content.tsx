@@ -26,6 +26,7 @@ const Content = () => {
         let formDef = formDefinition.getFormDefinition;
         if(!formDef?.questions.items) return [];
         return formDef.questions.items
+            .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1)
             .map(item => item.question.category)
             .filter((value, index, array) => array.indexOf(value) === index);
     };
