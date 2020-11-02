@@ -23,6 +23,8 @@ type Question
     id: ID!
     text: String!
     topic: String!
+    qid: String
+    index: Int
     category: String!
     formDefinitions: [QuestionFormDefinitionConnection] @connection(keyName: "connectedQuestion", fields: ["id"])
 }
