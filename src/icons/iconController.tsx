@@ -40,24 +40,24 @@ const CreateHover = (knowledge: boolean, level: number, className?: string, key?
     let element: JSX.Element = <Fragment />;
     if(knowledge){
         switch(level){
-            case 0: element = <K0 key={key ? key : null} className={className} />; break;
-            case 1: element = <K1 key={key ? key : null} className={className} />; break;
-            case 2: element = <K2 key={key ? key : null} className={className} />; break;
-            case 3: element = <K3 key={key ? key : null} className={className} />; break;
-            case 4: element = <K4 key={key ? key : null} className={className} />; break;
-            case 5: element = <K5 key={key ? key : null} className={className} />; break;
+            case 0: element = <K0 className={className} />; break;
+            case 1: element = <K1 className={className} />; break;
+            case 2: element = <K2 className={className} />; break;
+            case 3: element = <K3 className={className} />; break;
+            case 4: element = <K4 className={className} />; break;
+            case 5: element = <K5 className={className} />; break;
         }
     } else {
         switch(level){
-            case 0: element = <M0 key={key ? key : null} className={className} />; break;
-            case 1: element = <M1 key={key ? key : null} className={className} />; break;
-            case 2: element = <M2 key={key ? key : null} className={className} />; break;
-            case 3: element = <M3 key={key ? key : null} className={className} />; break;
-            case 4: element = <M4 key={key ? key : null} className={className} />; break;
-            case 5: element = <M5 key={key ? key : null} className={className} />; break;
+            case 0: element = <M0 className={className} />; break;
+            case 1: element = <M1 className={className} />; break;
+            case 2: element = <M2 className={className} />; break;
+            case 3: element = <M3 className={className} />; break;
+            case 4: element = <M4 className={className} />; break;
+            case 5: element = <M5 className={className} />; break;
         }
     }
-    return <Tooltip title={getIconDescription(knowledge, level)}>{element}</Tooltip>;
+    return <Tooltip key={key ? key : null} title={getIconDescription(knowledge, level)}>{element}</Tooltip>;
 };
 
 export {K0, K1, K2, K3, K4, K5, M0, M1, M2, M3, M4, M5}
