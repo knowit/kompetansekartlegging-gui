@@ -13,6 +13,9 @@ const AnswersStyle = makeStyles({
         width: "100%",
         backgroundColor: KnowitColors.greyGreen
     },
+    hidden: {
+        display: "none"
+    },
     answerBox: {
         display: 'flex',
         flexDirection: 'row',
@@ -109,7 +112,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         />
                     ) : null}
             </div>
-            {props.commonCardProps.active ?
+            <div className={props.commonCardProps.active ? "" : style.hidden}>
                 <div className={style.answerBox}>
                     <div className={style.categoryList}>
                         <div className={style.categoryListInner}>
@@ -120,7 +123,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         <Form {...props}/>
                     </div>
                 </div>
-            : ""}
+            </div>
         </div>
     );
 };
