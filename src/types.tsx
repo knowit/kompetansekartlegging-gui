@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 
 
 export type AnswerData = {
@@ -183,7 +184,8 @@ export type AnswerProps = {
     submitFeedback: string,
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
-    activeCategory: string
+    activeCategory: string,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void;
 };
 
 export type UserProps = {
@@ -213,7 +215,8 @@ export type QuestionProps = {
     text: string,
     questionId: string,
     knowledgeDefaultValue: number,
-    motivationDefaultValue: number
+    motivationDefaultValue: number,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void;
 };
 
 export type BatchCreatedQuestionAnswer = {

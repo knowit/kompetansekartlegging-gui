@@ -1,6 +1,6 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React from 'react'
+import React, { useState } from 'react'
 import { CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
@@ -68,6 +68,18 @@ const AnswersStyle = makeStyles({
 export const YourAnswers = ({...props}: YourAnswerProps) => {
     const style = AnswersStyle();
     const cardStyle = CardStyle();
+    const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
+
+    const saveBeforeChange = () => {
+        debugger;
+        if(!isCategorySubmitted) { // todo denne vil ikke ha noe å si
+            window.onbeforeunload = confirmExit; 
+        }
+        function confirmExit()
+        {
+            return "show message";
+        }
+    }
 
     const buttonClick = () => {
         //TODO: Find a way to replace hardcode int with a something like enum (enum dont work)
@@ -86,6 +98,8 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         props.activeCategory === cat ? style.categoryButtonActive : ""
                     )} 
                     onClick={() => props.changeActiveCategory(cat)}
+                    onChange={() => saveBeforeChange()}
+
                 >{cat}</Button>
             );
         });
@@ -117,10 +131,11 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         </div>
                     </div>
                     <div className={style.form}>
-                        <Form {...props}/>
+                        <Form {...props} setIsCategorySubmitted={setIsCategorySubmitted}/>
                     </div>
                 </div>
             : ""}
         </div>
     );
+
 };

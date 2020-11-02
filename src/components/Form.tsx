@@ -1,5 +1,5 @@
 import { Button, makeStyles } from '@material-ui/core';
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { KnowitColors } from '../styles';
 import { AnswerProps } from '../types';
 import { Category } from './Category';
@@ -52,11 +52,22 @@ export const Form = ({...props}: AnswerProps) => {
                     updateAnswer={props.updateAnswer}
                     knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
+                    setIsCategorySubmitted={props.setIsCategorySubmitted}
                 />
             );
         };
         return questions;
     };
+
+    useEffect(() => {
+        debugger;
+        window.onbeforeunload = confirmExit;
+        function confirmExit()
+        {
+            debugger;
+          return "show warning";
+        }
+    }, [])
 
     //TODO: Return only used category, not everyone
     const createQuestionCategory = (): JSX.Element => {

@@ -19,7 +19,6 @@ const Content = () => {
     const [categories, setCategories] = useState<string[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
-    const [loadDataFirstTime, setLoadDataFirstTime] = useState<boolean>(false);
 
     const createCategories = () => {
         if(!formDefinition) return [];
