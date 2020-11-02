@@ -26,7 +26,6 @@ const Content = () => {
         let formDef = formDefinition.getFormDefinition;
         if(!formDef?.questions.items) return [];
         return formDef.questions.items
-            .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1)
             .map(item => item.question.category)
             .filter((value, index, array) => array.indexOf(value) === index);
     };
@@ -126,7 +125,15 @@ const Content = () => {
         let formList = await helper.callGraphQL<ListedFormDefinition>(queries.listFormDefinitions);
         let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
         let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
-        if(currentForm.data) setFormDefinition(currentForm.data);
+        if(currentForm.data){
+
+            let sorted = currentForm.data.getFormDefinition.questions.items
+                .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1);
+
+            currentForm.data.getFormDefinition.questions.items = sorted;
+
+            setFormDefinition(currentForm.data);
+        } 
     };
 
     const getUserAnswers = async () => {
