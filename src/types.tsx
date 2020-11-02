@@ -104,6 +104,8 @@ export type FormDefinition = {
                         text: string,
                         topic: string,
                         category: string,
+                        qid: string,
+                        index: number
                     }
                 }
             ]
@@ -225,6 +227,8 @@ export type BatchCreatedQuestionAnswer = {
             id: string,
             text: string,
             topic: string,
+            qid: string,
+            index: number
         }
     }[]
 };
