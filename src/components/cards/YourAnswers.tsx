@@ -5,6 +5,7 @@ import { CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
+import AnswerDiagram from '../AnswerDiagram';
 
 const AnswersStyle = makeStyles({
     root: {
@@ -21,6 +22,15 @@ const AnswersStyle = makeStyles({
         flexDirection: 'row',
         overflow: 'auto',
         height: '100%'
+    },
+    answerView: {
+        width: '80%',
+        height: '100%',
+        paddingBottom: 20,
+        background: KnowitColors.white
+    },
+    answerViewContainer: {
+        display: 'flex'
     },
     form: {
         width: '80%',
@@ -119,7 +129,14 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                             {getCategoryButtons()}
                         </div>
                     </div>
-                    <div className={style.form}>
+                    <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
+                            <Button onClick={() => props.changeAnswerViewMode(false)}>Endre svar</Button>
+                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} />
+                        {/* <div>
+                        </div> */}
+                    </div>
+                    <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
+                        <Button onClick={() => props.changeAnswerViewMode(true)}>TEMP</Button>
                         <Form {...props}/>
                     </div>
                 </div>
