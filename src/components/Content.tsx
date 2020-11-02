@@ -186,24 +186,16 @@ const Content = () => {
     useEffect(() => {
         if(radarData.length === 0) setRadarData(createRadarData());
         else if (isAnswersSubmitted) {
-            debugger
             setRadarData(answers);
             setIsAnswersSubmitted(false)
-
         }
     }, [userAnswers, isAnswersSubmitted]);
 
     useEffect(() => {
-        setLoadDataFirstTime(true)
+        if(radarData.length > 0) {
+            setIsAnswersSubmitted(true)
+        } 
     }, [radarData]);
-
-    useEffect(() => {
-        if(radarData.length > 0){
-            setIsAnswersSubmitted(true);
-        } else {
-            setLoadDataFirstTime(false)
-        }
-    }, [loadDataFirstTime]);
 
     //New States etc for new card functionality
     /*

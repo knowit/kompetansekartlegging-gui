@@ -12,19 +12,12 @@ export const Overview = ({...props}: OverviewProps) => {
     const style = OverviewStyle();
     const cardStyle = CardStyle();
 
-    const [drawGraph, setDrawGraph] = useState<boolean>(true);
-
-    useEffect(() => {
-        setDrawGraph(props.commonCardProps.active);
-    }, [props.commonCardProps.active]);
-
     const buttonClick = () => {
         //TODO: Find a way to replace hadcode int with a something like enum (enum dont work)
         props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
     };
 
     
-
     return (
         <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.open : cardStyle.closed)}>
             <div className={style.cardHeader}>
