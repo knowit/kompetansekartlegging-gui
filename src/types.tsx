@@ -238,7 +238,8 @@ export type BatchCreatedQuestionAnswer = {
 
 export type OverviewProps = {
     commonCardProps: CommonCardProps,
-    radarData: AnswerData[]
+    radarData: AnswerData[],
+    isAnswersSubmitted: boolean
 };
 
 export type ScaleDescriptionProps = {
