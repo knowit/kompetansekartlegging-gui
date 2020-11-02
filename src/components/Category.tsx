@@ -1,15 +1,28 @@
-import React from 'react'
+import { makeStyles } from '@material-ui/core';
+import React, { Fragment } from 'react'
+import { KnowitColors } from '../styles'
 
 type CategoryProps = {
     name: string,
     children: JSX.Element[]
-}
+};
+
+const CategoryStyle = makeStyles({
+    categoryText: {
+        fontSize: 22,
+        fontWeight: 'bold'
+    }
+});
 
 export const Category = ({...props}: CategoryProps) => {
+    const style = CategoryStyle();
+
     return (
-        <div>
-            <h2>{props.name}</h2>
+        <Fragment>
+            <div className={style.categoryText}>
+                {props.name}
+            </div>
             {props.children}
-        </div>
+        </Fragment>
     )
 }

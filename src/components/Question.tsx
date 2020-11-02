@@ -1,66 +1,127 @@
-import React from 'react';
-import Selector from './Selector';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { Fragment, useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { QuestionProps } from '../types';
+import Slider from './Slider';
+import { makeStyles, SvgIcon } from '@material-ui/core';
+import { KnowitColors, IconPaths } from '../styles';
+import * as Icon from '../icons/iconController';
 
-const useStyles = makeStyles((theme) => ({
+const QuestionBlock = makeStyles({
     root: {
-        flexGrow: 1,
-        margin: 10,
-        backgroundColor: 'lightBlue'
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        paddingLeft: 10,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingRight: 5,
+        backgroundColor: KnowitColors.white,
+        borderRadius: 10
     },
-    motivation: {
-        marginTop: 20
+    topic: {
+        fontSize: 18,
+        fontWeight: "bold"
     },
-    selector: {
-        marginTop: 5
+    text: {
+        fontSize: 15,
+        paddingLeft: 10,
+        paddingTop: 5,
+        paddingBottom: 10
+    },
+    answerArea: {
+        display: 'flex',
+        flexWrap: "nowrap",
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    sliderArea: {
+        marginLeft: 30,
+        marginRight: 20,
+        width: '75%'
+    },
+    slider: {
+        marginRight: 15,
+        marginLeft: 15
+    },
+    iconArea: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 30
+    },
+    icon: {
+        height: '100%'
+    },
+    smallBold: {
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    largeBold: {
+        fontSize: 18,
+        fontWeight: "bold"
     }
-}));
+});
 
-type Props = {
-    updateAnswer: (listId: string, value: number, motivation: boolean) => void,
-    topic: string,
-    text: string,
-    questionId: string,
-    knowledgeChecked: number,
-    motivationChecked: number
-}
+const Question = ({...props}: QuestionProps) => {
+    
+    const [knowledgeValue, setKnowledgeValue] = useState<number>(props.knowledgeDefaultValue);
+    const [motivationValue, setMotivationValue] = useState<number>(props.motivationDefaultValue);
 
-const Question = ({...props}: Props) => {
+    const style = QuestionBlock();
 
-    const styles = useStyles();
+    const sliderChanged = (newValue: number, motivation: boolean) => {
+        if(motivation){
+            setMotivationValue(newValue);
+            props.updateAnswer(props.questionId, knowledgeValue, newValue);
+        } else {
+            setKnowledgeValue(newValue);
+            props.updateAnswer(props.questionId, newValue, motivationValue);
+        }
+    };
 
-    const radiobuttonClicked = (value: number, motivation: boolean) => {
-        props.updateAnswer(props.questionId, value, motivation);
-    }
+    useEffect(() => {
+        setKnowledgeValue(props.knowledgeDefaultValue);
+        setMotivationValue(props.motivationDefaultValue);
+    }, [props.knowledgeDefaultValue, props.motivationDefaultValue]);
 
     return (
-        <div className={styles.root}>
-            <div>
-                <div>{props.topic}</div>
-                <div>{props.text}</div>
-                <div className={styles.selector}>
-                    <Selector
-                        radiobuttonChanged={radiobuttonClicked} 
-                        motivation={false} 
-                        questionId={props.questionId} 
-                        checked={props.knowledgeChecked} 
-                    />
+        <div className={style.root}>
+            <div className={style.topic}>{props.topic}</div>
+            <div className={style.text}>{props.text}</div>
+            <div className={style.answerArea}>
+                <div className={clsx(style.largeBold)}>KOMPETANSE</div>
+                <div className={style.sliderArea}>
+                    <div className={style.iconArea}>
+                        {Icon.GetIcons(true, style.icon)}
+                    </div>
+                    <div className={style.slider}>
+                        <Slider
+                            value={knowledgeValue}
+                            motivation={false}
+                            sliderChanged={sliderChanged}
+                        />
+                    </div>
                 </div>
             </div>
-            <div className={styles.motivation}>
-                <div>{props.topic} motivasjon</div>
-                <div className={styles.selector}>
-                    <Selector 
-                        radiobuttonChanged={radiobuttonClicked} 
-                        motivation={true}
-                        questionId={props.questionId} 
-                        checked={props.motivationChecked} 
-                    />
+            <div className={style.answerArea}>
+                <div className={clsx(style.largeBold)}>MOTIVASJON</div>
+                <div className={style.sliderArea}>
+                    <div className={style.iconArea}>
+                        {Icon.GetIcons(false, style.icon)}
+                    </div>
+                    <div className={style.slider}>
+                        <Slider
+                            value={motivationValue}
+                            motivation={true}
+                            sliderChanged={sliderChanged}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
-    )
+    );
     
-}
+};
 
 export default Question;

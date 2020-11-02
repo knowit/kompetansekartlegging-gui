@@ -32,7 +32,7 @@ const splitArray = <T>(array: T[]): T[][] => {
 //For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
 const getEnvTableID = () => {
     if(process.env.REACT_APP_ENV_TABLE_ID) return process.env.REACT_APP_ENV_TABLE_ID;
-    else return "c6oprrghzvemrnzcmy5hb73lqu-agnostic";
+    else return "3hic5nngffevtfafcd62sdoece-dev";
 }
 
 export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]}, table:string): Promise<GraphQLResult<T>[]> => {
@@ -50,3 +50,15 @@ export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]},
     }
     return returnValue;
 };
+
+export const roundDecimals = (valueToRound: number, decimalCount: number): number => {
+    return Math.round(valueToRound * Math.pow(10, decimalCount)) / Math.pow(10, decimalCount);
+};
+
+export const clampNumber = (value: number, min: number, max?: number): number => {
+    let newValue = value < min ? min : value;
+    if(max) newValue = value > max ? max : value;
+    // console.log(`v:${value}, min:${min}, max:${max}, new:${newValue}`);
+    return newValue;
+};
+

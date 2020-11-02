@@ -66,6 +66,8 @@ export const getQuestionAnswer = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -95,6 +97,8 @@ export const listQuestionAnswers = /* GraphQL */ `
           id
           text
           topic
+          qid
+          index
           category
           createdAt
           updatedAt
@@ -115,6 +119,8 @@ export const getQuestion = /* GraphQL */ `
       id
       text
       topic
+      qid
+      index
       category
       formDefinitions {
         items {
@@ -142,6 +148,8 @@ export const listQuestions = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './App.css';
 import Amplify, {Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
@@ -9,41 +9,47 @@ import NavBar from './components/NavBar';
 import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
+import { AppStyle } from './styles';
+import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
+import Login from './components/Login';
+import userEvent from '@testing-library/user-event';
+
+awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
+awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 Amplify.configure(awsconfig);
 
 let formDef = require('./form2.json')
 
 const App = () => {
+    const style = AppStyle();
+
     const [user, setUser] = useState<any | null>(null);
+    const [customState, setCustomState] = useState<any | null>(null)
     
 
     useEffect(() => {
         Hub.listen('auth', ({ payload: { event, data } }) => {
             switch (event) {
-                case 'signIn':
-                case 'cognitoHostedUI':
-                    getUser().then(userData => setUser(userData));
+                case "signIn":
+                    setUser(data);
                     break;
-                case 'signOut':
+                case "signOut":
                     setUser(null);
                     break;
-                case 'signIn_failure':
-                case 'cognitoHostedUI_failure':
-                    console.log('Sign in failure', data);
-                    break;
+                case "customOAuthState":
+                    setCustomState(data);
             }
         });
-        getUser().then(userData => setUser(userData));
+
+        Auth.currentAuthenticatedUser()
+            .then(user => setUser(user))
+            .catch(() => console.log("Not signed in"));
     }, []);
 
-    
-
-    const getUser = () => {
-        return Auth.currentAuthenticatedUser()
-            .then(userData => userData)
-            .catch(() => console.log('Not signed in'));
-    }
+    useEffect(() => {
+        // console.log(user);
+    }, [user])
 
     async function sendFormDefinition() {
         /* 
@@ -61,20 +67,26 @@ const App = () => {
             qid = Date.now() + "_" + i;
             await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid} }));
             await API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
-            console.log(qid);
+            // console.log(qid);
         }
     }
 
     return (
-        <div>
+        <div className={style.root}>
             <BrowserRouter>
-                <NavBar/>
-                {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
-                <Content />
-                <Footer/>
+                {user ?
+                    <Fragment>
+                        <NavBar user={user}/>
+                        {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
+                        <Content />
+                        <Footer/>
+                    </Fragment>
+                :
+                <Login/>
+                }
             </BrowserRouter>
         </div>
     );
 }
 
-export default withAuthenticator(App);
+export default App;

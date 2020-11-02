@@ -7,18 +7,21 @@ export type AnswerData = {
     knowledge: number,
     motivation: number
 };
+
 export type Answers = {
     [key: string]: AnswerData
 };
+
 export type QuestionData = {
     id: string,
     text: string,
     topic: string,
     category: string
-}
+};
+
 export type Questions = {
     [key: string]: QuestionData
-}
+};
 
 export type AggregatedAnswer = {
     category: String,
@@ -30,10 +33,41 @@ export type AggregatedAnswer = {
     motivationAverage: number
 };
 
+export type CalculatedAnswer = {
+    category: string,
+    totalKnowledgeValue: number,
+    numberOfKnowledgeValues: number,
+    knowledgeAverage: number,
+    totalMotivationValue: number,
+    numberOfMotivationValues: number,
+    motivationAverage: number
+};
+
+export type CalculationData = {
+    questionIds: string[],
+    category: string,
+    knowledgeCount: number,
+    knowledgeTotal: number,
+    motivationCount: number,
+    motivationTotal: number
+};
+
+export type ResultData = {
+    category: string,
+    averageKnowledge: number,
+    averageMotivation: number
+};
+
 export type AnsweredQuestion = {
     question: QuestionData,
     answer: number,
     motivation: number
+};
+
+export type TopicScoreWithIcon = {
+    topic: string,
+    score: number,
+    icon: number
 };
 
 // export interface FormDefinitionWithQuestions 
@@ -70,6 +104,8 @@ export type FormDefinition = {
                         text: string,
                         topic: string,
                         category: string,
+                        qid: string,
+                        index: number
                     }
                 }
             ]
@@ -137,15 +173,17 @@ export type UserFormList = {
             }
         ]
     }
-}
+};
 
 export type AnswerProps = {
     createUserForm: () => void,
-    updateAnswer: (key: string, rating: number, motivation: boolean) => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
-    submitEnabled: boolean,
     answers: AnswerData[],
-    submitFeedback: string
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string
 };
 
 export type UserProps = {
@@ -163,6 +201,21 @@ export type FromAppProps = {
     userProps: UserProps
 }
 
+export type SliderProps = {
+    sliderChanged: (newValue: number, motivation: boolean) => void,
+    motivation: boolean,
+    value: number
+};
+
+export type QuestionProps = {
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    topic: string,
+    text: string,
+    questionId: string,
+    knowledgeDefaultValue: number,
+    motivationDefaultValue: number
+};
+
 export type BatchCreatedQuestionAnswer = {
     batchCreateQuestionAnswer: {
         answer: number,
@@ -174,8 +227,55 @@ export type BatchCreatedQuestionAnswer = {
             id: string,
             text: string,
             topic: string,
+            qid: string,
+            index: number
         }
     }[]
-}
+};
 
+//Types for new card functionality
+// export enum CardTypes {
+//     Overview = 0,
+//     ScaleDescription = 1,
+//     YourAnswer = 2
+// };
 
+export type OverviewProps = {
+    commonCardProps: CommonCardProps,
+    radarData: AnswerData[],
+    isAnswersSubmitted: boolean
+};
+
+export type ScaleDescriptionProps = {
+    commonCardProps: CommonCardProps
+};
+
+export type YourAnswerProps = {
+    commonCardProps: CommonCardProps,
+    createUserForm: () => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    formDefinition: FormDefinition | null,
+    answers: AnswerData[],
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string
+};
+
+type CommonCardProps = {
+    setActiveCard: (cardIndex: number, active: boolean) => void,
+    active: boolean,
+    index: number
+};
+
+// export type User = {
+//     Session: string,
+//     attributes: {
+//         email: string,
+//         email_verified: boolean,
+//         identities: string,
+//         name: string,
+//         picture: string,
+//         sub: string
+//     }
+// }

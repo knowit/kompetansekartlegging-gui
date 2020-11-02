@@ -14,6 +14,8 @@ export const batchCreateQuestionAnswer = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -140,6 +142,8 @@ export const createQuestionAnswer = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -167,6 +171,8 @@ export const updateQuestionAnswer = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -194,6 +200,8 @@ export const deleteQuestionAnswer = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -218,6 +226,8 @@ export const createQuestion = /* GraphQL */ `
       id
       text
       topic
+      qid
+      index
       category
       formDefinitions {
         items {
@@ -243,6 +253,8 @@ export const updateQuestion = /* GraphQL */ `
       id
       text
       topic
+      qid
+      index
       category
       formDefinitions {
         items {
@@ -268,6 +280,8 @@ export const deleteQuestion = /* GraphQL */ `
       id
       text
       topic
+      qid
+      index
       category
       formDefinitions {
         items {
@@ -366,6 +380,8 @@ export const createQuestionFormDefinitionConnection = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -402,6 +418,8 @@ export const updateQuestionFormDefinitionConnection = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -438,6 +456,8 @@ export const deleteQuestionFormDefinitionConnection = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
