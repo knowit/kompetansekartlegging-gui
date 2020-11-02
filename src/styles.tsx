@@ -122,16 +122,15 @@ export const CardStyle = makeStyles({
 
 export const OverviewStyle = makeStyles({
     root: {
-        maxHeight: '30%',
+        maxHeight: '35%',
         width: "100%",
         backgroundColor: KnowitColors.white
     },
     radarPlot: {
-        paddingLeft: '10%',
         height: '100%',
-        width: '75%',
-        display: "flex"
-
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center'
     },
     cardHeader: {
         display: "flex"
@@ -151,7 +150,7 @@ export const OverviewStyle = makeStyles({
 
 export const ScaleDescStyle = makeStyles({
     root: {
-        maxHeight: '40%',
+        maxHeight: '30%',
         width: "100%",
         backgroundColor: KnowitColors.ecaluptus
     },
@@ -164,16 +163,6 @@ export const ScaleDescStyle = makeStyles({
         '&:hover': {
             color: KnowitColors.darkGreen
         }
-    },
-    row: {
-        width: '80%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyItems: 'space-around',
-        alignContent: 'center'
-    },
-    col: {
-        width: '30%'
     }
 });
 
@@ -232,37 +221,108 @@ export const ScaleDescStyle = makeStyles({
 
 export const DescTableStyle = makeStyles({
     root: {
-        width: "100%",
-        backgroundColor: KnowitColors.ecaluptus
-    },
-    block: {
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'nowrap',
-        padding: '5px'
-    },
-    rightBlock: {
         display: 'flex',
         flexDirection: 'column',
+        backgroundColor: KnowitColors.ecaluptus
+    },
+    scaleRow: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         alignContent: 'center'
     },
-    heading: {
-        fontSize: 10,
-        fontWeight: "bold"
+    scaleTitle: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 2,
+        justifyContent: 'center',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        width: '10%'
     },
-    description: {
-        fontSize: 10
+    container: {
+        display: 'flex',
+        flex: 1,
+        flexGrow: 5,
+        flexDirection: 'column',
+        padding: 5
+    },
+    top: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 10,
+        paddingBottom: 20
+    },
+    bottom: {
+        display: 'flex'
+    },
+    iconArea: {
+        height: 30,
+        paddingRight: 5
     },
     icon: {
-        height: 28,
-        width: 28,
-        flexShrink: 0
+        height: "100%"
+    },
+    textBlock: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    heading: {
+        textAlign: 'left',
+        fontSize: 10,
+        fontWeight: 'bold'
+    },
+    text: {
+        textAlign: 'left',
+        fontSize: 10
     }
 });
 
-
+export const HighlightsStyle = makeStyles({
+    root: {
+        display: 'flex',
+        width: '30%',
+        flexDirection: 'column'
+    },
+    title: {    
+        textAlign: 'center',
+        fontWeight: 'bold',
+        paddingBottom: 20
+    },
+    container: { 
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    col: {
+        display: 'flex',
+        width: '40%',
+        flexDirection: 'column'
+    },
+    heading: {
+        textAlign: 'left',
+        paddingBottom: 10
+    },
+    list: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    listitem: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        paddingBottom: 5
+    },
+    icon: {
+        width: '15%'
+    },
+    topic: {
+        width: '80%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        fontSize: 12
+    }
+});
 
 
 

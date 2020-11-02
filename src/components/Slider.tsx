@@ -1,8 +1,8 @@
-import { makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { roundDecimals } from "../helperFunctions";
-import { ValueSlider } from '../styles'
+import { ValueSlider } from '../styles';
 import { SliderProps } from "../types";
+import * as helper from '../helperFunctions';
 
 const Slider = ({ ...props }: SliderProps) => {
     const [sliderValue, setSliderValue] = useState<number>(-1);
@@ -12,7 +12,8 @@ const Slider = ({ ...props }: SliderProps) => {
     };
 
     const sliderCommitted = () => {
-        props.sliderChanged(sliderValue, props.motivation);
+        setSliderValue(helper.roundDecimals(sliderValue, 1));
+        props.sliderChanged(helper.roundDecimals(sliderValue, 1), props.motivation);
     };
 
     useEffect(() => {

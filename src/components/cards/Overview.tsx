@@ -1,10 +1,11 @@
 import { useScrollTrigger } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { CardStyle, OverviewStyle } from '../../styles';
 import { OverviewProps } from '../../types';
 import RadarPlot from '../RadarPlot';
 import ResultDiagram from '../ResultDiagram';
+import Highlights from '../Highlights';
 import CloseIcon from '@material-ui/icons/Close';
 
 
@@ -25,7 +26,7 @@ export const Overview = ({...props}: OverviewProps) => {
                     onClick={buttonClick} 
                     className={clsx(cardStyle.cardButton)}
                 >
-                    OVERVIEW
+                    OVERSIKT
                 </button>
                 {props.commonCardProps.active ? (
                         <CloseIcon 
@@ -37,10 +38,12 @@ export const Overview = ({...props}: OverviewProps) => {
             </div>
             <div className={props.commonCardProps.active ? style.radarPlot : style.empty}>
                 <ResultDiagram data={props.radarData} boolDraw={false} />
+                <Highlights data={props.radarData} />
             </div>
             {/* {props.commonCardProps.active ? 
                 <div className={style.radarPlot}>
                     <ResultDiagram data={props.radarData} boolDraw={props.isAnswersSubmitted} />
+                    <Highlights data={props.radarData} />
                 </div>
             : ""} */}
         </div>

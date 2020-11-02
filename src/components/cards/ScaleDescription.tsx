@@ -24,7 +24,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                     onClick={buttonClick} 
                     className={clsx(cardStyle.cardButton)}
                 >
-                    SCALE DESCRIPTION 
+                    SKALA BESKRIVELSE 
                 </button>
                 {props.commonCardProps.active ? (
                         <CloseIcon 
@@ -35,10 +35,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                     ) : null}
             </div>
             {props.commonCardProps.active ?
-                <div className={style.row}>
-                    <div className={style.col}><DescriptionTable heading='BESKRIVELSE AV KOMPETANSESKALA'/></div>
-                    <div className={style.col}><DescriptionTable heading='BESKRIVELSE AV MOTIVASJONSSKALA'/></div>
-                </div>
+                <DescriptionTable/>
             : ""}
             
         </div>
