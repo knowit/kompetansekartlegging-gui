@@ -71,12 +71,13 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
     const cardStyle = CardStyle();
     const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
-
+    const [clickedCategory, setClickedCategory] = useState<string>(''); // used in the alertbox to choose what category to go to
 
     const saveBeforeChange = (cat : string) => {
         debugger;
         if(!isCategorySubmitted) {
             setAlertDialogOpen(true)
+            setClickedCategory(cat)
         } else {
             props.changeActiveCategory(cat)
         }
@@ -134,7 +135,12 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                     </div>
                 </div>
             : ""}
-            <AlertDialog setAlertDialogOpen={setAlertDialogOpen} alertDialogOpen={alertDialogOpen}/>
+            <AlertDialog 
+                setAlertDialogOpen={setAlertDialogOpen} 
+                alertDialogOpen={alertDialogOpen} 
+                changeActiveCategory={props.changeActiveCategory}
+                clickedCategory={clickedCategory}
+            />
         </div>
     );
 

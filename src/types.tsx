@@ -285,5 +285,7 @@ type CommonCardProps = {
 
 export type AlertDialogProps = {
     setAlertDialogOpen: (alertDialogOpen: boolean) => void;
-    alertDialogOpen: boolean
+    alertDialogOpen: boolean,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    clickedCategory: string
 };
