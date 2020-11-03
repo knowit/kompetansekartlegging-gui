@@ -27,6 +27,10 @@ const AnswersStyle = makeStyles({
         width: '80%',
         height: '100%',
         paddingBottom: 20,
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
         background: KnowitColors.white
     },
     answerViewContainer: {
