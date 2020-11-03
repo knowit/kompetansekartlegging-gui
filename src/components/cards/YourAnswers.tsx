@@ -140,6 +140,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                 alertDialogOpen={alertDialogOpen} 
                 changeActiveCategory={props.changeActiveCategory}
                 clickedCategory={clickedCategory}
+                setIsCategorySubmitted={setIsCategorySubmitted}
             />
         </div>
     );

@@ -288,4 +288,5 @@ export type AlertDialogProps = {
     alertDialogOpen: boolean,
     changeActiveCategory: (newCategoryIndex: string) => void,
     clickedCategory: string
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void
 };

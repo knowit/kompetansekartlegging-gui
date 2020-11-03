@@ -35,7 +35,8 @@ export const AlertDialog = ({...props} : AlertDialogProps) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => { handleClose(); props.changeActiveCategory(props.clickedCategory)}} color="primary">
+          <Button onClick={() => { handleClose(); props.changeActiveCategory(props.clickedCategory); props.setIsCategorySubmitted(true)}
+} color="primary">
             Forlat skjemaet
           </Button>
           <Button onClick={handleClose} color="primary" autoFocus>
