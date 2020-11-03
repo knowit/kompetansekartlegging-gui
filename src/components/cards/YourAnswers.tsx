@@ -5,6 +5,7 @@ import { CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
+import { AlertDialog } from '../AlertDialog';
 
 const AnswersStyle = makeStyles({
     root: {
@@ -69,15 +70,15 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
     const style = AnswersStyle();
     const cardStyle = CardStyle();
     const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
+    const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
 
-    const saveBeforeChange = () => {
+
+    const saveBeforeChange = (cat : string) => {
         debugger;
-        if(!isCategorySubmitted) { // todo denne vil ikke ha noe å si
-            window.onbeforeunload = confirmExit; 
-        }
-        function confirmExit()
-        {
-            return "show message";
+        if(!isCategorySubmitted) {
+            setAlertDialogOpen(true)
+        } else {
+            props.changeActiveCategory(cat)
         }
     }
 
@@ -97,9 +98,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         style.categoryButton, 
                         props.activeCategory === cat ? style.categoryButtonActive : ""
                     )} 
-                    onClick={() => props.changeActiveCategory(cat)}
-                    onChange={() => saveBeforeChange()}
-
+                    onClick={() => { saveBeforeChange(cat)}}
                 >{cat}</Button>
             );
         });
@@ -135,6 +134,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                     </div>
                 </div>
             : ""}
+            <AlertDialog setAlertDialogOpen={setAlertDialogOpen} alertDialogOpen={alertDialogOpen}/>
         </div>
     );
 

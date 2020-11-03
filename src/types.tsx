@@ -282,3 +282,8 @@ type CommonCardProps = {
 //         sub: string
 //     }
 // }
+
+export type AlertDialogProps = {
+    setAlertDialogOpen: (alertDialogOpen: boolean) => void;
+    alertDialogOpen: boolean
+};

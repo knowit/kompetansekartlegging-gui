@@ -5,16 +5,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { AlertDialogProps } from '../types';
 
-export const AlertDialog = () => {
-  const [open, setOpen] = React.useState(false);
+export const AlertDialog = ({...props} : AlertDialogProps) => {
 
   const handleClickOpen = () => {
-    setOpen(true);
+    props.setAlertDialogOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    props.setAlertDialogOpen(false);
   };
 
   return (
@@ -23,7 +23,7 @@ export const AlertDialog = () => {
         Open alert dialog
       </Button>
       <Dialog
-        open={open}
+        open={props.alertDialogOpen}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
