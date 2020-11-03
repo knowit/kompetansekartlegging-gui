@@ -5,6 +5,7 @@ import { CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
+import AnswerDiagram from '../AnswerDiagram';
 
 const AnswersStyle = makeStyles({
     root: {
@@ -13,11 +14,27 @@ const AnswersStyle = makeStyles({
         width: "100%",
         backgroundColor: KnowitColors.greyGreen
     },
+    hidden: {
+        display: "none"
+    },
     answerBox: {
         display: 'flex',
         flexDirection: 'row',
         overflow: 'auto',
         height: '100%'
+    },
+    answerView: {
+        width: '80%',
+        height: '100%',
+        paddingBottom: 20,
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        background: KnowitColors.white
+    },
+    answerViewContainer: {
+        display: 'flex'
     },
     form: {
         width: '80%',
@@ -109,18 +126,25 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         />
                     ) : null}
             </div>
-            {props.commonCardProps.active ?
+            <div className={props.commonCardProps.active ? "" : style.hidden}>
                 <div className={style.answerBox}>
                     <div className={style.categoryList}>
                         <div className={style.categoryListInner}>
                             {getCategoryButtons()}
                         </div>
                     </div>
-                    <div className={style.form}>
+                    <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
+                            <Button onClick={() => props.changeAnswerViewMode(false)}>Endre svar</Button>
+                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} />
+                        {/* <div>
+                        </div> */}
+                    </div>
+                    <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
+                        <Button onClick={() => props.changeAnswerViewMode(true)}>TEMP</Button>
                         <Form {...props}/>
                     </div>
                 </div>
-            : ""}
+            </div>
         </div>
     );
 };

@@ -71,8 +71,9 @@ const Content = () => {
     
     const createUserForm = async () => {
         // todo: skal denne her?
-        setIsAnswersSubmitted(true)
-
+        setIsAnswersSubmitted(true);
+        setAnswerViewMode(true);
+        
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
         let fdid = formDefinition.getFormDefinition.id;
@@ -213,8 +214,12 @@ const Content = () => {
      * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
     */
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
+    const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
     const style = CardStyle();
-
+    
+    const changeAnswerViewMode = (viewModeActive: boolean) => {
+        setAnswerViewMode(viewModeActive);
+    };
     
     const setActiveCard = (cardIndex: number, active: boolean) => {
         let newActiveCards = [...activeCards];
@@ -258,6 +263,8 @@ const Content = () => {
                 changeActiveCategory={changeActiveCategory}
                 categories={categories}
                 activeCategory={activeCategory}
+                changeAnswerViewMode={changeAnswerViewMode}
+                answerViewMode={answerViewMode}
             />
         </div>
     );

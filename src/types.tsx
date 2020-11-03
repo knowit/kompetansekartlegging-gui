@@ -259,7 +259,9 @@ export type YourAnswerProps = {
     submitFeedback: string,
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
-    activeCategory: string
+    activeCategory: string,
+    changeAnswerViewMode: (viewModeActive: boolean) => void,
+    answerViewMode: boolean
 };
 
 type CommonCardProps = {
