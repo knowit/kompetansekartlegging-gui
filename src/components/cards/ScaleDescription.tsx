@@ -24,7 +24,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                     onClick={buttonClick} 
                     className={clsx(cardStyle.cardButton)}
                 >
-                    SKALA BESKRIVELSE 
+                    SKALABESKRIVELSE 
                 </button>
                 {props.commonCardProps.active ? (
                         <CloseIcon 
