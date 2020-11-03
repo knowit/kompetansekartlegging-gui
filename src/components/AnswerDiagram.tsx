@@ -1,14 +1,21 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment } from 'react'
 import { HorizontalBar } from 'react-chartjs-2';
-import { roundDecimals } from '../helperFunctions';
+import { limitStringLength } from '../helperFunctions';
 import { KnowitColors } from '../styles';
 import { AnswerData} from '../types'
 import { makeStyles } from '@material-ui/core/styles'
 import { GetIcons } from '../icons/iconController'
+import clsx from 'clsx'
+
 
 const graphStyle = makeStyles({
-    chart: {
-        width: '40%',
+    chartK: {
+        width: '55%',
+        maxHeight: '80%',
+        marginRight: 20
+    },
+    chartM: {
+        width: '45%',
         maxHeight: '80%',
         marginRight: 20
     },
@@ -17,6 +24,9 @@ const graphStyle = makeStyles({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    iconBarK: {
+        marginLeft: '18%'
     },
     icon: {
         height: '100%'
@@ -36,7 +46,6 @@ const graphStyle = makeStyles({
     container: {
         display: 'flex',
         width: '100%',
-        // height: 400,
         height: '100%'
     }
 });
@@ -55,7 +64,10 @@ const graphOptions = {
             },
             ticks: {
                 fontColor: 'black',
-                fontSize: 1
+                callback: (value: string) => {
+                    if(value === " ") return " ";
+                    return limitStringLength(value, 25, false).padStart(30, " ");
+                }
             }
         }],
         xAxes: [{
@@ -140,16 +152,17 @@ export default function AnswerDiagram(props: { data: AnswerData[], activeCategor
     return (
         <div className={style.container}>
             <Fragment>
-            <div className={style.categoryList}>
+            {/* <div className={style.categoryList}>
                 {props.data.filter(answer => answer.category === props.activeCategory)
                     .map((answer, index) => <div key={index} className={style.category}>{answer.topic}</div>)
                 }
-            </div>
-            <div className={style.chart}>
+            </div> */}
+            <div className={style.chartK}>
                 <HorizontalBar
                     redraw={true}
                     data={{
-                        labels: props.data.filter(answer => answer.category === props.activeCategory).map(value => " "),
+                        labels: props.data.filter(answer => answer.category === props.activeCategory)
+                            .map(value => value.topic),
                         datasets: [
                             {
                                 label: 'Kunnskap',
@@ -162,11 +175,11 @@ export default function AnswerDiagram(props: { data: AnswerData[], activeCategor
                     }}
                     options={graphOptions}
                 />
-                <div className={style.iconBar}>
+                <div className={clsx(style.iconBar, style.iconBarK)}>
                     {GetIcons(true, style.icon)}
                 </div>
             </div>
-            <div className={style.chart}>
+            <div className={style.chartM}>
                 <HorizontalBar
                     redraw={true}
                     data={{
