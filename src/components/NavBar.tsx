@@ -48,22 +48,22 @@ const useStyles = makeStyles((theme) => ({
 // Inserted here temporarily: listUserForms & deleteUserData
 
 const deleteUserData = async () => {
-    let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
+    let allUserForms = await helper.listUserForms();
     let deleteResult = [];
-    if(userForms && userForms.listUserForms.items.length > 0){
-        for(let i = 0; i < userForms.listUserForms.items.length; i++) {
-            for(const answer of userForms.listUserForms.items[i].questionAnswers.items){
+    if(allUserForms.length > 0){
+        for(let i = 0; i < allUserForms.length; i++) {
+            for(const answer of allUserForms[i].questionAnswers.items){
                 deleteResult.push((await helper.callGraphQL(mutations.deleteQuestionAnswer, {input: {"id": answer.id}})));
             }
-            deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": userForms.listUserForms.items[i].id}})));
+            deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": allUserForms[i].id}})));
         }
         console.log(deleteResult);
     } else console.log("No Userforms active");
 };
 
 const listUserForms = async () => {
-    let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
-    console.log(userForms);
+    let allUserForms = await helper.listUserForms();
+    console.log(allUserForms);
 };
 
 const NavBar = (user : any) => {
