@@ -45,6 +45,19 @@ const graphOptions = {
     legend: {
         display: false
     },
+    tooltips: {
+        callbacks: {
+            label: function(tooltipItem: any, data: any) {
+                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                if (label) {
+                    label += ': ';
+                }
+                label += Math.round(tooltipItem.yLabel * 100) / 100;
+                return label;
+            }
+        }
+    },
     scales: {
         yAxes: [{
             gridLines: {
