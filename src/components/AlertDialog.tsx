@@ -9,22 +9,23 @@ import { AlertDialogProps } from '../types';
 
 export const AlertDialog = ({...props} : AlertDialogProps) => {
 
-  const handleClickOpen = () => {
-    props.setAlertDialogOpen(true);
-  };
-
-  const handleClose = () => {
+  const handleStayInForm = () => {
     props.setAlertDialogOpen(false);
   };
 
+  const handleLeaveForm = () => {
+    props.setAlertDialogOpen(false);
+    props.changeActiveCategory(props.clickedCategory); 
+    props.setIsCategorySubmitted(true)
+    //todo: reset data
+  }
+
+
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button>
       <Dialog
         open={props.alertDialogOpen}
-        onClose={handleClose}
+        onClose={handleStayInForm}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -35,11 +36,11 @@ export const AlertDialog = ({...props} : AlertDialogProps) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => { handleClose(); props.changeActiveCategory(props.clickedCategory); props.setIsCategorySubmitted(true)}
-} color="primary">
+          <Button onClick={handleLeaveForm}
+            color="primary">
             Forlat skjemaet
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleStayInForm} color="primary" autoFocus>
             Bli på skjemaet
           </Button>
         </DialogActions>
