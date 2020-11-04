@@ -166,6 +166,7 @@ const Content = () => {
     const changeActiveCategory = (newActiveCategory: string) => {
         // console.log("New category: " + newActiveCategory);
         setActiveCategory(newActiveCategory);
+        answerViewModeActive(true);
     };
 
     useEffect(() => {
@@ -217,7 +218,7 @@ const Content = () => {
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
     const style = CardStyle();
     
-    const changeAnswerViewMode = (viewModeActive: boolean) => {
+    const answerViewModeActive = (viewModeActive: boolean) => {
         setAnswerViewMode(viewModeActive);
     };
     
@@ -263,7 +264,7 @@ const Content = () => {
                 changeActiveCategory={changeActiveCategory}
                 categories={categories}
                 activeCategory={activeCategory}
-                changeAnswerViewMode={changeAnswerViewMode}
+                answerViewModeActive={answerViewModeActive}
                 answerViewMode={answerViewMode}
             />
         </div>

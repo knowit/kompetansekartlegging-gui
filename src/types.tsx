@@ -260,7 +260,7 @@ export type YourAnswerProps = {
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
-    changeAnswerViewMode: (viewModeActive: boolean) => void,
+    answerViewModeActive: (viewModeActive: boolean) => void,
     answerViewMode: boolean
 };
 
