@@ -5,6 +5,10 @@ import { Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react'
 import { useHistory } from "react-router-dom";
 import { KnowitColors } from '../styles';
+import { UserFormList } from '../types'
+import * as helper from '../helperFunctions'
+import * as mutations from '../graphql/mutations';
+import * as customQueries from '../graphql/custom-queries';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +44,27 @@ const useStyles = makeStyles((theme) => ({
         height: "44px",
     }
 }));
+
+// Inserted here temporarily: listUserForms & deleteUserData
+
+const deleteUserData = async () => {
+    let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
+    let deleteResult = [];
+    if(userForms && userForms.listUserForms.items.length > 0){
+        for(let i = 0; i < userForms.listUserForms.items.length; i++) {
+            for(const answer of userForms.listUserForms.items[i].questionAnswers.items){
+                deleteResult.push((await helper.callGraphQL(mutations.deleteQuestionAnswer, {input: {"id": answer.id}})));
+            }
+            deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": userForms.listUserForms.items[i].id}})));
+        }
+        console.log(deleteResult);
+    } else console.log("No Userforms active");
+};
+
+const listUserForms = async () => {
+    let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
+    console.log(userForms);
+};
 
 const NavBar = (user : any) => {
     const classes = useStyles();
@@ -99,14 +124,16 @@ const NavBar = (user : any) => {
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
           return;
         }
-        
+        deleteUserData();
         setDeleteAlertOpen(false);
     };
+
 
     const handleDisplayAnswers = (event: React.MouseEvent<EventTarget>) => {
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
           return;
         }
+        listUserForms();
         setAvatarMenuOpen(false);
     };
 
