@@ -140,7 +140,7 @@ const Content = () => {
     const getUserAnswers = async () => {
         let allAnswers = await helper.listUserForms();
         if(allAnswers.length === 0) return;
-        let lastUserAnswer = (await helper.getLastItem(allAnswers))?.questionAnswers.items;
+        let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
         if(lastUserAnswer) setUserAnswers(lastUserAnswer);
     };
 
