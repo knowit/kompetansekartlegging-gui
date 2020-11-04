@@ -23,11 +23,9 @@ export const listUserForms = async () => {
     let combinedUserForm: any[] = [];
     do {
         let userForms: UserFormList | undefined = (await callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers, {nextToken: nextToken})).data;
-        console.log(userForms);
-            if(userForms && userForms.listUserForms.items.length > 0){
-                combinedUserForm = combinedUserForm.concat(userForms.listUserForms.items);
-            }
-
+        if(userForms && userForms.listUserForms.items.length > 0){
+            combinedUserForm = combinedUserForm.concat(userForms.listUserForms.items);
+        }
         if(userForms) nextToken = userForms.listUserForms.nextToken;
     }while(nextToken);
     
