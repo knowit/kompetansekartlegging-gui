@@ -22,8 +22,8 @@ export const getFormDefinitionWithQuestions = /* GraphQL */ `
 `;
 
 export const listUserFormsWithAnswers = /* GraphQL */ `
-  query ListUserFormsWithAnswers {
-    listUserForms {
+  query ListUserFormsWithAnswers($limit: Int = 10, $nextToken: String) {
+    listUserForms(limit: $limit, nextToken: $nextToken) {
       items {
         id
         questionAnswers {
@@ -38,6 +38,7 @@ export const listUserFormsWithAnswers = /* GraphQL */ `
         }
         createdAt
       }
+      nextToken
     }
   }
 `;

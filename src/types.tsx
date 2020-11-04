@@ -171,7 +171,8 @@ export type UserFormList = {
                     ]
                 }
             }
-        ]
+        ],
+        nextToken: string | null
     }
 };
 
