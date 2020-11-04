@@ -62,8 +62,8 @@ const deleteUserData = async () => {
 };
 
 const listUserForms = async () => {
-    let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
-    console.log(userForms);
+    let allUserForms = await helper.listUserForms();
+    console.log(allUserForms);
 };
 
 const NavBar = (user : any) => {
