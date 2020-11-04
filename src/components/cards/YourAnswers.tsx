@@ -1,7 +1,7 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react'
-import { CardStyle, KnowitColors } from '../../styles';
+import { CardStyle, KnowitColors, cardCornerRadius } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
@@ -72,8 +72,8 @@ const AnswersStyle = makeStyles({
     },
     cardHeader: {
         display: "flex",
-        marginTop: 40,
-        height: 40
+        marginTop: cardCornerRadius,
+        height: cardCornerRadius
     },
     closeButton: {
         marginTop: "3px",
