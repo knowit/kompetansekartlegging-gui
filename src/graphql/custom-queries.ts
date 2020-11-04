@@ -22,7 +22,7 @@ export const getFormDefinitionWithQuestions = /* GraphQL */ `
 `;
 
 export const listUserFormsWithAnswers = /* GraphQL */ `
-  query ListUserFormsWithAnswers($limit: Int = 10, $nextToken: String) {
+  query ListUserFormsWithAnswers($limit: Int, $nextToken: String) {
     listUserForms(limit: $limit, nextToken: $nextToken) {
       items {
         id
