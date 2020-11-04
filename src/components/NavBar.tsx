@@ -95,6 +95,14 @@ const NavBar = (user : any) => {
         setDeleteAlertOpen(true);
     };
 
+    const handleConfirmDelete = (event: React.MouseEvent<EventTarget>) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+          return;
+        }
+        
+        setDeleteAlertOpen(false);
+    };
+
     const handleDisplayAnswers = (event: React.MouseEvent<EventTarget>) => {
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
           return;
@@ -136,7 +144,14 @@ const NavBar = (user : any) => {
                         <Avatar className={classes.userPicture} src={userPicture}
                      />
                     </Button>
-                <Popper open={avatarMenuOpen} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                <Popper
+                    open={avatarMenuOpen}
+                    anchorEl={anchorRef.current}
+                    placement={"bottom-end"}
+                    role={undefined}
+                    transition
+                    disablePortal
+                >
                 {({ TransitionProps, placement }) => (
                     <Grow
                     {...TransitionProps}
@@ -169,7 +184,7 @@ const NavBar = (user : any) => {
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                    <Button onClick={handleCloseAlert} color="primary">
+                    <Button onClick={handleConfirmDelete} color="primary">
                         Bekreft
                     </Button>
                     <Button onClick={handleCloseAlert} color="primary" autoFocus>
