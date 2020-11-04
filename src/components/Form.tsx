@@ -69,6 +69,11 @@ export const Form = ({...props}: AnswerProps) => {
         }
     }, [])
 
+    const handleClick = () => {
+        props.createUserForm(); 
+        props.setIsCategorySubmitted(true);
+    }
+
     //TODO: Return only used category, not everyone
     const createQuestionCategory = (): JSX.Element => {
         if(!props.formDefinition) return <Fragment />;
@@ -80,7 +85,7 @@ export const Form = ({...props}: AnswerProps) => {
             <Fragment>
                 {props.categories.length > 0
                     ? <Button 
-                        onClick={props.createUserForm} 
+                        onClick={handleClick} 
                         className={style.submitButton} 
                         >Send Inn Svar</Button>
                     : ""
@@ -90,7 +95,7 @@ export const Form = ({...props}: AnswerProps) => {
                 </Category>
                 {props.categories.length > 0
                     ? <Button 
-                        onClick={props.createUserForm} 
+                        onClick={handleClick} 
                         className={style.submitButton} 
                         >Send Inn Svar</Button>
                     : ""
