@@ -1,6 +1,6 @@
 import {API, graphqlOperation} from "aws-amplify";
 import {GraphQLResult} from "@aws-amplify/api";
-import { UserFormList } from "./types";
+import { UserFormList, UserFormWithAnswers } from "./types";
 import * as customQueries from './graphql/custom-queries';
 
 
@@ -20,14 +20,14 @@ export const getLastItem = <T extends SearchableItem>(itemsArray?:T[]) => {
 
 export const listUserForms = async () => {
     let nextToken: string | null = null;
-    let combinedUserForm: any[] = [];
+    let combinedUserForm: UserFormWithAnswers[] = [];
     do {
         let userForms: UserFormList | undefined = (await callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers, {nextToken: nextToken})).data;
         if(userForms && userForms.listUserForms.items.length > 0){
             combinedUserForm = combinedUserForm.concat(userForms.listUserForms.items);
         }
         if(userForms) nextToken = userForms.listUserForms.nextToken;
-    }while(nextToken);
+    }while(nextToken); 
     
     return combinedUserForm;
 };
