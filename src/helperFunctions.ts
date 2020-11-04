@@ -1,5 +1,8 @@
 import {API, graphqlOperation} from "aws-amplify";
 import {GraphQLResult} from "@aws-amplify/api";
+import { UserFormList } from "./types";
+import * as customQueries from './graphql/custom-queries';
+
 
 export const callGraphQL = async <T>(query: any, variables?: {} | undefined): Promise<GraphQLResult<T>> => {
     return (await API.graphql(graphqlOperation(query, variables))) as GraphQLResult<T>;
@@ -14,6 +17,22 @@ export const getLastItem = <T extends SearchableItem>(itemsArray?:T[]) => {
     let sortedArray = itemsArray.sort((a,b) => (Date.parse(a.createdAt) > Date.parse(b.createdAt)) ? -1 : 1);
     return sortedArray[0];
 }
+
+export const listUserForms = async () => {
+    let nextToken: string | null = null;
+    let combinedUserForm: any[] = [];
+    do {
+        let userForms: UserFormList | undefined = (await callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers, {nextToken: nextToken})).data;
+        console.log(userForms);
+            if(userForms && userForms.listUserForms.items.length > 0){
+                combinedUserForm = combinedUserForm.concat(userForms.listUserForms.items);
+            }
+
+        if(userForms) nextToken = userForms.listUserForms.nextToken;
+    }while(nextToken);
+    
+    return combinedUserForm;
+};
 
 const splitArray = <T>(array: T[]): T[][] => {
     if (array.length < 25) return [array];
@@ -32,7 +51,7 @@ const splitArray = <T>(array: T[]): T[][] => {
 //For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
 const getEnvTableID = () => {
     if(process.env.REACT_APP_ENV_TABLE_ID) return process.env.REACT_APP_ENV_TABLE_ID;
-    else return "3hic5nngffevtfafcd62sdoece-dev";
+    else return "ghzkefmugje2vc7dexthghed4u-betterlist";
 }
 
 export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]}, table:string): Promise<GraphQLResult<T>[]> => {
