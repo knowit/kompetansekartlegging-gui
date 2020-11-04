@@ -19,6 +19,7 @@ const Content = () => {
     const [categories, setCategories] = useState<string[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
+    const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -47,6 +48,7 @@ const Content = () => {
                 });
             }
         }
+        debugger;
         return as;
     };
 
@@ -178,6 +180,7 @@ const Content = () => {
     }, [formDefinition]);
 
     useEffect(() => {
+        debugger;
         setAnswers(createAnswers());
     }, [userAnswers]);
 
