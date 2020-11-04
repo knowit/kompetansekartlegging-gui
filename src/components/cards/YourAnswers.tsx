@@ -1,7 +1,7 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react'
-import { AnswersStyle, CardStyle, KnowitColors } from '../../styles';
+import { CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
