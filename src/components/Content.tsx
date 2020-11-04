@@ -196,7 +196,7 @@ const Content = () => {
      * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
     */
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
-    const style = CardStyle();
+    const style = CardStyle({zIndex: 0});
 
     
     const setActiveCard = (cardIndex: number, active: boolean) => {

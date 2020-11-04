@@ -9,6 +9,7 @@ import { KnowitColors } from '../styles';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        zIndex: 100
     },
     navigation: {
         flexGrow: 1,

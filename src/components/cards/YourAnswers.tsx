@@ -1,73 +1,15 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react'
-import { CardStyle, KnowitColors } from '../../styles';
+import { AnswersStyle, CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
 
-const AnswersStyle = makeStyles({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: "100%",
-        backgroundColor: KnowitColors.greyGreen
-    },
-    answerBox: {
-        display: 'flex',
-        flexDirection: 'row',
-        overflow: 'auto',
-        height: '100%'
-    },
-    form: {
-        width: '80%',
-        overflowY: 'auto',
-        height: '100%'
-    },
-    categoryList: {
-        width: '20%',
-        height: '100%'
-    },
-    categoryListInner: {
-        marginTop: 10,
-        marginLeft: 10,
-        textAlign: 'center'
-    },
-    buttonGeneral: {
-        overflow: 'wrap',
-        fontSize: 13,
-        fontWeight: 'bolder',
-        border: 'none'
-    },
-    categoryButton: {
-        width: '100%',
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-        backgroundColor: KnowitColors.greyGreen,
-        '&:hover': {
-            background: KnowitColors.white
-        },
-    },
-    categoryButtonActive: {
-        backgroundColor: KnowitColors.white
-    },
-    cardHeader: {
-        display: "flex"
-    },
-    closeButton: {
-        marginTop: "3px",
-        marginRight: "32px",
-        '&:hover': {
-            color: KnowitColors.darkGreen
-        }
-    }
-});
 
 export const YourAnswers = ({...props}: YourAnswerProps) => {
     const style = AnswersStyle();
-    const cardStyle = CardStyle();
+    const cardStyle = CardStyle({zIndex: 20});
 
     const buttonClick = () => {
         //TODO: Find a way to replace hardcode int with a something like enum (enum dont work)
