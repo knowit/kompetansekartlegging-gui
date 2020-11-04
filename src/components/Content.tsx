@@ -138,9 +138,9 @@ const Content = () => {
     };
 
     const getUserAnswers = async () => {
-        let allUserAnswers = (await helper.callGraphQL<UserFormWithAnswers>(customQueries.listUserFormsWithAnswers)).data;
-        if(!allUserAnswers) return;
-        let lastUserAnswer = (await helper.getLastItem(allUserAnswers.listUserForms.items))?.questionAnswers.items;
+        let allAnswers = await helper.listUserForms();
+        if(allAnswers.length === 0) return;
+        let lastUserAnswer = (await helper.getLastItem(allAnswers))?.questionAnswers.items;
         if(lastUserAnswer) setUserAnswers(lastUserAnswer);
     };
 
