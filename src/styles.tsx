@@ -1,6 +1,6 @@
 import { makeStyles, Slider, withStyles, Theme } from "@material-ui/core";
 
-const cornerRadius: number = 40;
+export const cardCornerRadius: number = 40;
 
 export const KnowitColors = {
     black: "#000000",
@@ -118,88 +118,27 @@ export const CardStyle = makeStyles<Theme, ZProps>((theme: Theme) =>
                 },
         closed: {
             position: 'relative',
-            marginTop: -cornerRadius,
+            marginTop: -cardCornerRadius,
             boxShadow: "0px 3px 2px grey",
-            borderBottomLeftRadius: cornerRadius,
-            borderBottomRightRadius: cornerRadius,
+            borderBottomLeftRadius: cardCornerRadius,
+            borderBottomRightRadius: cardCornerRadius,
             zIndex: ({ zIndex }) => zIndex
         },
         open: {
             position: 'relative',
-            marginTop: -cornerRadius,
+            marginTop: -cardCornerRadius,
             display: 'flex',
             flexDirection: 'column',
             overflowY: 'auto',
             // flexGrow: 1
             height: '100%',
             boxShadow: "0px 3px 2px grey",
-            borderBottomLeftRadius: cornerRadius,
-            borderBottomRightRadius: cornerRadius,
+            borderBottomLeftRadius: cardCornerRadius,
+            borderBottomRightRadius: cardCornerRadius,
             zIndex: ({ zIndex }) => zIndex
         }
     })
   );
-
-export const AnswersStyle = makeStyles({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: "100%",
-        backgroundColor: KnowitColors.greyGreen
-    },
-    answerBox: {
-        display: 'flex',
-        flexDirection: 'row',
-        overflow: 'auto',
-        height: '100%'
-    },
-    form: {
-        width: '80%',
-        overflowY: 'auto',
-        height: '100%'
-    },
-    categoryList: {
-        width: '20%',
-        height: '100%'
-    },
-    categoryListInner: {
-        marginTop: 10,
-        marginLeft: 10,
-        textAlign: 'center'
-    },
-    buttonGeneral: {
-        overflow: 'wrap',
-        fontSize: 13,
-        fontWeight: 'bolder',
-        border: 'none'
-    },
-    categoryButton: {
-        width: '100%',
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-        backgroundColor: KnowitColors.greyGreen,
-        '&:hover': {
-            background: KnowitColors.white
-        },
-    },
-    categoryButtonActive: {
-        backgroundColor: KnowitColors.white
-    },
-    cardHeader: {
-        display: "flex",
-        marginTop: cornerRadius,
-        height: cornerRadius
-    },
-    closeButton: {
-        marginTop: "3px",
-        marginRight: "32px",
-        '&:hover': {
-            color: KnowitColors.darkGreen
-        }
-    }
-});
 
 export const OverviewStyle = makeStyles({
     root: {
@@ -215,8 +154,8 @@ export const OverviewStyle = makeStyles({
     },
     cardHeader: {
         display: "flex",
-        marginTop: cornerRadius,
-        height: cornerRadius
+        marginTop: cardCornerRadius,
+        height: cardCornerRadius
     },
     closeButton: {
         marginTop: "3px",
@@ -239,8 +178,8 @@ export const ScaleDescStyle = makeStyles({
     },
     cardHeader: {
         display: "flex",
-        marginTop: cornerRadius,
-        height: cornerRadius
+        marginTop: cardCornerRadius,
+        height: cardCornerRadius
     },
     closeButton: {
         marginTop: "3px",
