@@ -214,8 +214,9 @@ const Content = () => {
      * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
     */
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
+
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
-    const style = CardStyle();
+    const style = CardStyle({zIndex: 0});
     
     const changeAnswerViewMode = (viewModeActive: boolean) => {
         setAnswerViewMode(viewModeActive);

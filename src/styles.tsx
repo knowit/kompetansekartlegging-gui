@@ -1,5 +1,6 @@
-import { makeStyles, Slider, withStyles } from "@material-ui/core";
+import { makeStyles, Slider, withStyles, Theme } from "@material-ui/core";
 
+const cornerRadius: number = 40;
 
 export const KnowitColors = {
     black: "#000000",
@@ -92,37 +93,117 @@ export const ValueSlider = withStyles({
     }
 })(Slider);
 
-export const CardStyle = makeStyles({
-    cardButton: {
-        fontWeight: "bold",
-        fontSize: 18,
-        padding: 10,
-        border: "none",
-        outline: "none",
-        backgroundColor: "transparent",
-        textAlign: "left",
-        width: "100%"
-    },
-    cardHolder: {
+type ZProps = {
+    zIndex: number;
+  };
+
+export const CardStyle = makeStyles<Theme, ZProps>((theme: Theme) =>
+    ({
+        cardButton: {
+            fontWeight: "bold",
+            fontSize: 18,
+            padding: 10,
+            border: "none",
+            outline: "none",
+            backgroundColor: "transparent",
+            textAlign: "left",
+            paddingLeft: 50,
+            width: "100%"
+        },
+        cardHolder: {
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            height: '100%'
+                },
+        closed: {
+            position: 'relative',
+            marginTop: -cornerRadius,
+            boxShadow: "0px 3px 2px grey",
+            borderBottomLeftRadius: cornerRadius,
+            borderBottomRightRadius: cornerRadius,
+            zIndex: ({ zIndex }) => zIndex
+        },
+        open: {
+            position: 'relative',
+            marginTop: -cornerRadius,
+            display: 'flex',
+            flexDirection: 'column',
+            overflowY: 'auto',
+            // flexGrow: 1
+            height: '100%',
+            boxShadow: "0px 3px 2px grey",
+            borderBottomLeftRadius: cornerRadius,
+            borderBottomRightRadius: cornerRadius,
+            zIndex: ({ zIndex }) => zIndex
+        }
+    })
+  );
+
+export const AnswersStyle = makeStyles({
+    root: {
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        width: "100%",
+        backgroundColor: KnowitColors.greyGreen
+    },
+    answerBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        overflow: 'auto',
         height: '100%'
     },
-    closed: {
-    },
-    open: {
-        display: 'flex',
-        flexDirection: 'column',
+    form: {
+        width: '80%',
         overflowY: 'auto',
-        // flexGrow: 1
         height: '100%'
+    },
+    categoryList: {
+        width: '20%',
+        height: '100%'
+    },
+    categoryListInner: {
+        marginTop: 10,
+        marginLeft: 10,
+        textAlign: 'center'
+    },
+    buttonGeneral: {
+        overflow: 'wrap',
+        fontSize: 13,
+        fontWeight: 'bolder',
+        border: 'none'
+    },
+    categoryButton: {
+        width: '100%',
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        backgroundColor: KnowitColors.greyGreen,
+        '&:hover': {
+            background: KnowitColors.white
+        },
+    },
+    categoryButtonActive: {
+        backgroundColor: KnowitColors.white
+    },
+    cardHeader: {
+        display: "flex",
+        marginTop: cornerRadius,
+        height: cornerRadius
+    },
+    closeButton: {
+        marginTop: "3px",
+        marginRight: "32px",
+        '&:hover': {
+            color: KnowitColors.darkGreen
+        }
     }
 });
 
 export const OverviewStyle = makeStyles({
     root: {
-        maxHeight: '35%',
+        maxHeight: '40%',
         width: "100%",
         backgroundColor: KnowitColors.white
     },
@@ -133,7 +214,9 @@ export const OverviewStyle = makeStyles({
         justifyContent: 'center'
     },
     cardHeader: {
-        display: "flex"
+        display: "flex",
+        marginTop: cornerRadius,
+        height: cornerRadius
     },
     closeButton: {
         marginTop: "3px",
@@ -150,12 +233,14 @@ export const OverviewStyle = makeStyles({
 
 export const ScaleDescStyle = makeStyles({
     root: {
-        maxHeight: '30%',
+        maxHeight: '32%',
         width: "100%",
         backgroundColor: KnowitColors.ecaluptus
     },
     cardHeader: {
-        display: "flex"
+        display: "flex",
+        marginTop: cornerRadius,
+        height: cornerRadius
     },
     closeButton: {
         marginTop: "3px",

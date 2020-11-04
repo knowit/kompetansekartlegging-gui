@@ -11,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 export const Overview = ({...props}: OverviewProps) => {
     const style = OverviewStyle();
-    const cardStyle = CardStyle();
+    const cardStyle = CardStyle({zIndex: 50});
 
     const buttonClick = () => {
         //TODO: Find a way to replace hadcode int with a something like enum (enum dont work)

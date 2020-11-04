@@ -71,7 +71,9 @@ const AnswersStyle = makeStyles({
         backgroundColor: KnowitColors.white
     },
     cardHeader: {
-        display: "flex"
+        display: "flex",
+        marginTop: 40,
+        height: 40
     },
     closeButton: {
         marginTop: "3px",
@@ -84,7 +86,7 @@ const AnswersStyle = makeStyles({
 
 export const YourAnswers = ({...props}: YourAnswerProps) => {
     const style = AnswersStyle();
-    const cardStyle = CardStyle();
+    const cardStyle = CardStyle({zIndex: 20});
 
     const buttonClick = () => {
         //TODO: Find a way to replace hardcode int with a something like enum (enum dont work)
