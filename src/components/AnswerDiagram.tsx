@@ -53,9 +53,7 @@ const graphStyle = makeStyles({
 const graphOptions = {
     maintainAspectRatio: false,
     legend: {
-        labels: {
-            fontColor: 'black'
-        }
+        display: false
     },
     scales: {
         yAxes: [{
@@ -165,7 +163,7 @@ export default function AnswerDiagram(props: { data: AnswerData[], activeCategor
                             .map(value => value.topic),
                         datasets: [
                             {
-                                label: 'Kunnskap',
+                                label: 'Kompetanse',
                                 backgroundColor: KnowitColors.lightGreen,
                                 borderWidth: 1,
                                 data: props.data.filter(answer => answer.category === props.activeCategory)
@@ -173,7 +171,15 @@ export default function AnswerDiagram(props: { data: AnswerData[], activeCategor
                             }
                         ]
                     }}
-                    options={graphOptions}
+                    options={{
+                        title: {
+                            display: true,
+                            text: 'KOMPETANSE',
+                            fontColor: KnowitColors.black,
+                            fontStyle: 'normal',
+                            fontSize: 15
+                        },
+                        ...graphOptions}}
                 />
                 <div className={clsx(style.iconBar, style.iconBarK)}>
                     {GetIcons(true, style.icon)}
@@ -194,7 +200,15 @@ export default function AnswerDiagram(props: { data: AnswerData[], activeCategor
                             }
                         ]
                     }}
-                    options={graphOptions}
+                    options={{
+                        title: {
+                            display: true,
+                            text: 'MOTIVASJON',
+                            fontColor: KnowitColors.black,
+                            fontStyle: 'normal',
+                            fontSize: 15
+                        },
+                        ...graphOptions}}
                 />
                 <div className={style.iconBar}>
                     {GetIcons(false, style.icon)}

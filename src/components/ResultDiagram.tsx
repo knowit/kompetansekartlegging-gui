@@ -43,9 +43,7 @@ const graphStyle = makeStyles({
 const graphOptions = {
     maintainAspectRatio: false,
     legend: {
-        labels: {
-            fontColor: 'black'
-        }
+        display: false
     },
     scales: {
         yAxes: [{
@@ -149,14 +147,22 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                         labels: answerData.map(value => " "),
                         datasets: [
                             {
-                                label: 'Kunnskap',
+                                label: 'Kompetanse',
                                 backgroundColor: KnowitColors.lightGreen,
                                 borderWidth: 1,
                                 data: answerData.map(value => value.averageKnowledge)
                             }
                         ]
                     }}
-                    options={graphOptions}
+                    options={{
+                        title: {
+                            display: true,
+                            text: 'KOMPETANSE',
+                            fontColor: KnowitColors.black,
+                            fontStyle: 'normal',
+                            fontSize: 15
+                        },
+                        ...graphOptions}}
                 />
                 <div className={style.iconBar}>
                     {GetIcons(true, style.icon)}
@@ -169,14 +175,22 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                         labels: answerData.map(value => " "),
                         datasets: [
                             {
-                                label: 'Motivation',
+                                label: 'Motivasjon',
                                 backgroundColor: KnowitColors.greyGreen,
                                 borderWidth: 1,
                                 data: answerData.map(value => value.averageMotivation)
                             }
                         ]
                     }}
-                    options={graphOptions}
+                    options={{
+                        title: {
+                            display: true,
+                            text: 'MOTIVASJON',
+                            fontColor: KnowitColors.black,
+                            fontStyle: 'normal',
+                            fontSize: 15
+                        },
+                        ...graphOptions}}
                 />
                 <div className={style.iconBar}>
                     {GetIcons(false, style.icon)}
