@@ -101,6 +101,8 @@ export const onCreateQuestionAnswer = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -125,6 +127,8 @@ export const onUpdateQuestionAnswer = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -149,6 +153,8 @@ export const onDeleteQuestionAnswer = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -170,6 +176,8 @@ export const onCreateQuestion = /* GraphQL */ `
       id
       text
       topic
+      qid
+      index
       category
       formDefinitions {
         items {
@@ -192,6 +200,8 @@ export const onUpdateQuestion = /* GraphQL */ `
       id
       text
       topic
+      qid
+      index
       category
       formDefinitions {
         items {
@@ -214,6 +224,8 @@ export const onDeleteQuestion = /* GraphQL */ `
       id
       text
       topic
+      qid
+      index
       category
       formDefinitions {
         items {
@@ -297,6 +309,8 @@ export const onCreateQuestionFormDefinitionConnection = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -327,6 +341,8 @@ export const onUpdateQuestionFormDefinitionConnection = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken
@@ -357,6 +373,8 @@ export const onDeleteQuestionFormDefinitionConnection = /* GraphQL */ `
         id
         text
         topic
+        qid
+        index
         category
         formDefinitions {
           nextToken

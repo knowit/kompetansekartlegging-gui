@@ -5,7 +5,84 @@ import { AnswersStyle, CardStyle, KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
+import AnswerDiagram from '../AnswerDiagram';
 
+const AnswersStyle = makeStyles({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: "100%",
+        backgroundColor: KnowitColors.greyGreen
+    },
+    hidden: {
+        display: "none"
+    },
+    answerBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        overflow: 'auto',
+        height: '100%'
+    },
+    answerView: {
+        width: '80%',
+        height: '100%',
+        paddingBottom: 20,
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        background: KnowitColors.white
+    },
+    answerViewContainer: {
+        display: 'flex'
+    },
+    form: {
+        width: '80%',
+        overflowY: 'auto',
+        height: '100%'
+    },
+    categoryList: {
+        width: '20%',
+        height: '100%'
+    },
+    categoryListInner: {
+        marginTop: 10,
+        marginLeft: 10,
+        textAlign: 'center'
+    },
+    buttonGeneral: {
+        overflow: 'wrap',
+        fontSize: 13,
+        fontWeight: 'bolder',
+        border: 'none'
+    },
+    categoryButton: {
+        width: '100%',
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        backgroundColor: KnowitColors.greyGreen,
+        '&:hover': {
+            background: KnowitColors.white
+        },
+    },
+    categoryButtonActive: {
+        backgroundColor: KnowitColors.white
+    },
+    cardHeader: {
+        display: "flex",
+        marginTop: 40,
+        height: 40
+    },
+    closeButton: {
+        marginTop: "3px",
+        marginRight: "32px",
+        '&:hover': {
+            color: KnowitColors.darkGreen
+        }
+    }
+});
 
 export const YourAnswers = ({...props}: YourAnswerProps) => {
     const style = AnswersStyle();
@@ -51,18 +128,25 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         />
                     ) : null}
             </div>
-            {props.commonCardProps.active ?
+            <div className={props.commonCardProps.active ? "" : style.hidden}>
                 <div className={style.answerBox}>
                     <div className={style.categoryList}>
                         <div className={style.categoryListInner}>
                             {getCategoryButtons()}
                         </div>
                     </div>
-                    <div className={style.form}>
+                    <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
+                            <Button onClick={() => props.changeAnswerViewMode(false)}>Endre svar</Button>
+                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} />
+                        {/* <div>
+                        </div> */}
+                    </div>
+                    <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
+                        <Button onClick={() => props.changeAnswerViewMode(true)}>TEMP</Button>
                         <Form {...props}/>
                     </div>
                 </div>
-            : ""}
+            </div>
         </div>
     );
 };

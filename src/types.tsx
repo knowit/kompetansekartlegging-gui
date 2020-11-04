@@ -104,6 +104,8 @@ export type FormDefinition = {
                         text: string,
                         topic: string,
                         category: string,
+                        qid: string,
+                        index: number
                     }
                 }
             ]
@@ -225,6 +227,8 @@ export type BatchCreatedQuestionAnswer = {
             id: string,
             text: string,
             topic: string,
+            qid: string,
+            index: number
         }
     }[]
 };
@@ -238,7 +242,8 @@ export type BatchCreatedQuestionAnswer = {
 
 export type OverviewProps = {
     commonCardProps: CommonCardProps,
-    radarData: AnswerData[]
+    radarData: AnswerData[],
+    isAnswersSubmitted: boolean
 };
 
 export type ScaleDescriptionProps = {
@@ -254,7 +259,9 @@ export type YourAnswerProps = {
     submitFeedback: string,
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
-    activeCategory: string
+    activeCategory: string,
+    changeAnswerViewMode: (viewModeActive: boolean) => void,
+    answerViewMode: boolean
 };
 
 type CommonCardProps = {

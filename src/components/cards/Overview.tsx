@@ -13,19 +13,12 @@ export const Overview = ({...props}: OverviewProps) => {
     const style = OverviewStyle();
     const cardStyle = CardStyle({zIndex: 50});
 
-    const [drawGraph, setDrawGraph] = useState<boolean>(true);
-
-    useEffect(() => {
-        setDrawGraph(props.commonCardProps.active);
-    }, [props.commonCardProps.active]);
-
     const buttonClick = () => {
         //TODO: Find a way to replace hadcode int with a something like enum (enum dont work)
         props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
     };
 
     
-
     return (
         <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.open : cardStyle.closed)}>
             <div className={style.cardHeader}>
@@ -43,12 +36,16 @@ export const Overview = ({...props}: OverviewProps) => {
                         />
                     ) : null}
             </div>
-            {props.commonCardProps.active ? 
+            <div className={props.commonCardProps.active ? style.radarPlot : style.empty}>
+                <ResultDiagram data={props.radarData} boolDraw={false} />
+                <Highlights data={props.radarData} />
+            </div>
+            {/* {props.commonCardProps.active ? 
                 <div className={style.radarPlot}>
-                    <ResultDiagram data={props.radarData} boolDraw={drawGraph} />
+                    <ResultDiagram data={props.radarData} boolDraw={props.isAnswersSubmitted} />
                     <Highlights data={props.radarData} />
                 </div>
-            : ""}
+            : ""} */}
         </div>
     );
 };

@@ -17,7 +17,9 @@ const Content = () => {
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
-    const [activeCategory, setActiveCategory] = useState<string>("");
+    const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
+    const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
+    const [loadDataFirstTime, setLoadDataFirstTime] = useState<boolean>(false);
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -50,6 +52,7 @@ const Content = () => {
     };
 
     const createRadarData = (): AnswerData[] => {
+
         if(!formDefinition) return [];
         let questionList = formDefinition.getFormDefinition.questions.items;
         if(!answers || !questionList) return [];
@@ -67,6 +70,10 @@ const Content = () => {
     };
     
     const createUserForm = async () => {
+        // todo: skal denne her?
+        setIsAnswersSubmitted(true);
+        setAnswerViewMode(true);
+        
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
         let fdid = formDefinition.getFormDefinition.id;
@@ -119,7 +126,15 @@ const Content = () => {
         let formList = await helper.callGraphQL<ListedFormDefinition>(queries.listFormDefinitions);
         let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
         let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
-        if(currentForm.data) setFormDefinition(currentForm.data);
+        if(currentForm.data){
+
+            let sorted = currentForm.data.getFormDefinition.questions.items
+                .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1);
+
+            currentForm.data.getFormDefinition.questions.items = sorted;
+
+            setFormDefinition(currentForm.data);
+        } 
     };
 
     const getUserAnswers = async () => {
@@ -160,10 +175,6 @@ const Content = () => {
     // useEffect(() => {
     //     console.log(activeCategory);
     // }, [activeCategory]);
-
-    const updateRadarData = () => {
-        setRadarData(answers);
-    }
     
     useEffect(() => {
         fetchLastFormDefinition();
@@ -178,14 +189,21 @@ const Content = () => {
 
     useEffect(() => {
         setAnswers(createAnswers());
-
     }, [userAnswers]);
 
     useEffect(() => {
         if(radarData.length === 0) setRadarData(createRadarData());
-        else updateRadarData();
-    }, [answers, userAnswers]);
+        else if (isAnswersSubmitted) {
+            setRadarData(answers);
+            setIsAnswersSubmitted(false)
+        }
+    }, [userAnswers, isAnswersSubmitted]);
 
+    useEffect(() => {
+        if(radarData.length > 0) {
+            setIsAnswersSubmitted(true)
+        } 
+    }, [radarData]);
 
     //New States etc for new card functionality
     /*
@@ -196,8 +214,13 @@ const Content = () => {
      * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
     */
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
-    const style = CardStyle({zIndex: 0});
 
+    const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
+    const style = CardStyle({zIndex: 0});
+    
+    const changeAnswerViewMode = (viewModeActive: boolean) => {
+        setAnswerViewMode(viewModeActive);
+    };
     
     const setActiveCard = (cardIndex: number, active: boolean) => {
         let newActiveCards = [...activeCards];
@@ -218,6 +241,7 @@ const Content = () => {
                     index: 0
                 }}
                 radarData={radarData}
+                isAnswersSubmitted={isAnswersSubmitted}
             />
             <ScaleDescription 
                 commonCardProps={{
@@ -240,6 +264,8 @@ const Content = () => {
                 changeActiveCategory={changeActiveCategory}
                 categories={categories}
                 activeCategory={activeCategory}
+                changeAnswerViewMode={changeAnswerViewMode}
+                answerViewMode={answerViewMode}
             />
         </div>
     );
