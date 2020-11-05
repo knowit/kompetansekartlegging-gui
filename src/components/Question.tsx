@@ -51,7 +51,8 @@ const QuestionBlock = makeStyles({
         height: 30
     },
     icon: {
-        height: '100%'
+        height: '100%',
+        fill: KnowitColors.darkGreen
     },
     smallBold: {
         fontSize: 14,

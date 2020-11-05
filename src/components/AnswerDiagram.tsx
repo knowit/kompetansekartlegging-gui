@@ -20,7 +20,7 @@ const graphStyle = makeStyles({
         marginRight: 20
     },
     iconBar: {
-        height: 30 ,
+        height: 24,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',

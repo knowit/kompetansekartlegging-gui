@@ -337,7 +337,8 @@ export const HighlightsStyle = makeStyles({
         paddingBottom: 5
     },
     icon: {
-        width: '15%'
+        width: '15%',
+        fill: KnowitColors.darkBrown
     },
     topic: {
         width: '80%',
