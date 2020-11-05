@@ -18,6 +18,7 @@ export const AlertDialog = ({...props} : AlertDialogProps) => {
     props.changeActiveCategory(props.clickedCategory); 
     props.setIsCategorySubmitted(true)
     //todo: reset data
+    props.resetAnswers()
   }
 
 

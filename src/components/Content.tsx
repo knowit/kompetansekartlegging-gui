@@ -160,6 +160,21 @@ const Content = () => {
         setActiveCategory(newActiveCategory);
     };
 
+
+    const resetAnswers = () => {
+        debugger
+        console.log(answers)
+
+        // setAnswers(answersBeforeSubmitted => {
+        //     let newAnswers: AnswerData[] = [...answersBeforeSubmitted];
+        //     return newAnswers
+        // });
+
+        setAnswers(answersBeforeSubmitted)
+
+        console.log(answers)
+    }
+
     useEffect(() => {
         changeActiveCategory(categories[0]);
     }, [categories]);
@@ -182,6 +197,7 @@ const Content = () => {
     useEffect(() => {
         debugger;
         setAnswers(createAnswers());
+        setAnswersBeforeSubmitted(answers);
     }, [userAnswers]);
 
     useEffect(() => {
@@ -252,6 +268,7 @@ const Content = () => {
                 changeActiveCategory={changeActiveCategory}
                 categories={categories}
                 activeCategory={activeCategory}
+                resetAnswers={resetAnswers}
             />
         </div>
     );

@@ -262,7 +262,8 @@ export type YourAnswerProps = {
     submitFeedback: string,
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
-    activeCategory: string
+    activeCategory: string,
+    resetAnswers: () => void,
 };
 
 type CommonCardProps = {
@@ -287,6 +288,7 @@ export type AlertDialogProps = {
     setAlertDialogOpen: (alertDialogOpen: boolean) => void;
     alertDialogOpen: boolean,
     changeActiveCategory: (newCategoryIndex: string) => void,
-    clickedCategory: string
-    setIsCategorySubmitted: (categorySubmitted: boolean) => void
+    clickedCategory: string,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    resetAnswers: () => void,
 };

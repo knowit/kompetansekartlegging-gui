@@ -141,6 +141,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                 changeActiveCategory={props.changeActiveCategory}
                 clickedCategory={clickedCategory}
                 setIsCategorySubmitted={setIsCategorySubmitted}
+                resetAnswers={props.resetAnswers}
             />
         </div>
     );

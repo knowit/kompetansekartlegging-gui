@@ -15,6 +15,7 @@ const Slider = ({ ...props }: SliderProps) => {
         setSliderValue(helper.roundDecimals(sliderValue, 1));
         props.sliderChanged(helper.roundDecimals(sliderValue, 1), props.motivation);
     };
+    
 
     useEffect(() => {
         setSliderValue(props.value);

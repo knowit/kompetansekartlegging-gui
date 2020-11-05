@@ -72,6 +72,9 @@ export const Form = ({...props}: AnswerProps) => {
     const handleClick = () => {
         props.createUserForm(); 
         props.setIsCategorySubmitted(true);
+
+        // todo: sett answersBeforeSubmitted til answers
+        
     }
 
     //TODO: Return only used category, not everyone
