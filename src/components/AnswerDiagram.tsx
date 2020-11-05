@@ -64,7 +64,7 @@ const graphOptions = {
                 fontColor: 'black',
                 callback: (value: string) => {
                     if(value === " ") return " ";
-                    return limitStringLength(value, 25, false).padStart(30, " ");
+                    return limitStringLength(value, 25, false)//.padStart(30, " ");
                 }
             }
         }],

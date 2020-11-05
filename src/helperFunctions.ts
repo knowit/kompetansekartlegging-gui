@@ -62,13 +62,20 @@ export const clampNumber = (value: number, min: number, max?: number): number =>
     return newValue;
 };
 
-export const limitStringLength = (str: string, length: number, overflow: boolean = false): string => {
-    if(length <= 0) return str;
-    if(overflow){
-        console.log(str.replace(/(.*?\s.*?\s)/g, '$1'+'\n'));
-        return str.replace(/(.*?\s.*?\s)/g, '$1'+'\n');
+export const limitStringLength = (str: string, length: number, overflow: boolean = false): string[] => {
+    if(length <= 0) return [str];
+    let strArr: string[] = [];
+    for(let i = 0; i < str.length; i+=30){
+        strArr.push(str.slice(i, i+30));
     }
-    return str.length > length ? str.substring(0, (length > 3 ? length - 3 : length)) + "..." : str;
+    if(overflow){
+        // console.log(str.replace(/(.*?\s.*?\s)/g, '$1'+'\n'));
+        // return str.replace(/(.*?\s.*?\s)/g, '$1'+'\n');
+    }
+    // return str.length > length ? str.substring(0, (length > 3 ? length - 3 : length)) + "..." : str;
+    console.log(str);
+    console.log(str.match(/(?:\s*)(.{1,length})(?:\s+|\s*$)/g));
+    return str.match(/(?:\s*)(.{1,length})(?:\s+|\s*$)/g) || [];
 };
 
 // export const fillStringToLimit = (str: string, limit: number, char: string = " "): string => {

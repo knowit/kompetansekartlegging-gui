@@ -50,12 +50,15 @@ const graphOptions = {
             label: function(tooltipItem: any, data: any) {
                 var label = data.datasets[tooltipItem.datasetIndex].label || '';
 
-                if (label) {
-                    label += ': ';
-                }
-                label += Math.round(tooltipItem.yLabel * 100) / 100;
+                // if (label) {
+                //     label += ': ';
+                // }
+                // label += Math.round(tooltipItem.xLabel * 100) / 100;
                 return label;
-            }
+            },
+            labelColor: function(tooltipItem: any, chart: any) {
+                return "";
+            },
         }
     },
     scales: {
