@@ -168,6 +168,10 @@ const Content = () => {
         console.log(answersBeforeSubmitted)
         setAnswers([...answersBeforeSubmitted])
         console.log("________")
+        // Correct
+        setAnswers((answersBeforeSubmitted) => (
+            [...answersBeforeSubmitted]
+        ))
     }
 
     useEffect(() => {
