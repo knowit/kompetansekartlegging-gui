@@ -20,6 +20,7 @@ const Content = () => {
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
+    const [updateSliderValues, setUpdateSliderValues] = useState<boolean>(true)
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -48,7 +49,7 @@ const Content = () => {
                 });
             }
         }
-        debugger;
+        // debugger;
         return as;
     };
 
@@ -162,17 +163,11 @@ const Content = () => {
 
 
     const resetAnswers = () => {
-        debugger
-        console.log(answers)
-
-        // setAnswers(answersBeforeSubmitted => {
-        //     let newAnswers: AnswerData[] = [...answersBeforeSubmitted];
-        //     return newAnswers
-        // });
-
-        setAnswers(answersBeforeSubmitted)
-
-        console.log(answers)
+        debugger;
+        console.log("RESET")
+        console.log(answersBeforeSubmitted)
+        setAnswers([...answersBeforeSubmitted])
+        console.log("________")
     }
 
     useEffect(() => {
@@ -195,9 +190,12 @@ const Content = () => {
     }, [formDefinition]);
 
     useEffect(() => {
-        debugger;
+        // debugger;
         setAnswers(createAnswers());
-        setAnswersBeforeSubmitted(answers);
+
+        setAnswersBeforeSubmitted([...answers]);
+        console.log("EQUAL??")
+        console.log(answers === answersBeforeSubmitted)
     }, [userAnswers]);
 
     useEffect(() => {
@@ -213,6 +211,22 @@ const Content = () => {
             setIsAnswersSubmitted(true)
         } 
     }, [radarData]);
+
+    // TODO REMOVE
+    useEffect(() => {
+        console.log("ANSWERSB CHANGED")
+        console.log(answersBeforeSubmitted)
+    }, [answersBeforeSubmitted]);    
+
+
+    useEffect(()=> {
+        console.log("answersb is:")
+        console.log(answersBeforeSubmitted)
+
+        console.log("answers updated")
+        console.log(answers)
+    }, [answers])
+
 
     //New States etc for new card functionality
     /*
@@ -269,6 +283,8 @@ const Content = () => {
                 categories={categories}
                 activeCategory={activeCategory}
                 resetAnswers={resetAnswers}
+                // updateSliderValues={updateSliderValues}
+                // setUpdateSliderValues={updateSliderValues}
             />
         </div>
     );
