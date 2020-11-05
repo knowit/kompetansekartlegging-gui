@@ -1,23 +1,29 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { HorizontalBar } from 'react-chartjs-2';
-import { roundDecimals } from '../helperFunctions';
+import { limitStringLength, roundDecimals } from '../helperFunctions';
 import { KnowitColors } from '../styles';
 import { AnswerData, CalculationData, ResultData } from '../types'
 import { makeStyles } from '@material-ui/core/styles'
 import { GetIcons } from '../icons/iconController'
-import { isWidthDown } from '@material-ui/core';
+import clsx from 'clsx'
 
 const graphStyle = makeStyles({
     chart: {
-        width: '40%',
+        width: '45%',
         maxHeight: '80%',
         marginRight: 20
+    },
+    charK: {
+        width: '60%'
     },
     iconBar: {
         height: 30 ,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    iconBarK: {
+        marginLeft: '30%'
     },
     icon: {
         height: '100%'
@@ -68,7 +74,10 @@ const graphOptions = {
             },
             ticks: {
                 fontColor: 'black',
-                fontSize: 1
+                callback: (value: string) => {
+                    if(value === " ") return " ";
+                    return limitStringLength(value, 30, true);
+                }
             }
         }],
         xAxes: [{
@@ -153,14 +162,14 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
     return (
         <div className={style.container}>
             <Fragment>
-            <div className={style.categoryList}>
+            {/* <div className={style.categoryList}>
                 {answerData.map((value, index) => <div key={index} className={style.category}>{value.category}</div>)}
-            </div>
-            <div className={style.chart}>
+            </div> */}
+            <div className={clsx(style.chart, style.charK)}>
                 <HorizontalBar
                     redraw={props.boolDraw}
                     data={{
-                        labels: answerData.map(value => " "),
+                        labels: answerData.map(value => value.category),
                         datasets: [
                             {
                                 label: 'Kompetanse',
@@ -180,7 +189,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                         },
                         ...graphOptions}}
                 />
-                <div className={style.iconBar}>
+                <div className={clsx(style.iconBar, style.iconBarK)}>
                     {GetIcons(true, style.icon)}
                 </div>
             </div>
