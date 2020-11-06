@@ -49,7 +49,6 @@ const Content = () => {
                 });
             }
         }
-        // debugger;
         return as;
     };
 
@@ -74,6 +73,7 @@ const Content = () => {
     const createUserForm = async () => {
         // todo: skal denne her?
         setIsAnswersSubmitted(true)
+        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
 
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
@@ -163,15 +163,7 @@ const Content = () => {
 
 
     const resetAnswers = () => {
-        debugger;
-        console.log("RESET")
-        console.log(answersBeforeSubmitted)
-        setAnswers([...answersBeforeSubmitted])
-        console.log("________")
-        // Correct
-        setAnswers((answersBeforeSubmitted) => (
-            [...answersBeforeSubmitted]
-        ))
+        setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
     }
 
     useEffect(() => {
@@ -194,10 +186,9 @@ const Content = () => {
     }, [formDefinition]);
 
     useEffect(() => {
-        // debugger;
         setAnswers(createAnswers());
 
-        setAnswersBeforeSubmitted([...answers]);
+        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
         console.log("EQUAL??")
         console.log(answers === answersBeforeSubmitted)
     }, [userAnswers]);
@@ -215,22 +206,6 @@ const Content = () => {
             setIsAnswersSubmitted(true)
         } 
     }, [radarData]);
-
-    // TODO REMOVE
-    useEffect(() => {
-        console.log("ANSWERSB CHANGED")
-        console.log(answersBeforeSubmitted)
-    }, [answersBeforeSubmitted]);    
-
-
-    useEffect(()=> {
-        console.log("answersb is:")
-        console.log(answersBeforeSubmitted)
-
-        console.log("answers updated")
-        console.log(answers)
-    }, [answers])
-
 
     //New States etc for new card functionality
     /*
