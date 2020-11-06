@@ -1,23 +1,29 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { HorizontalBar } from 'react-chartjs-2';
-import { roundDecimals } from '../helperFunctions';
+import { limitStringLength, roundDecimals } from '../helperFunctions';
 import { KnowitColors } from '../styles';
 import { AnswerData, CalculationData, ResultData } from '../types'
 import { makeStyles } from '@material-ui/core/styles'
 import { GetIcons } from '../icons/iconController'
-import { isWidthDown } from '@material-ui/core';
+import clsx from 'clsx'
 
 const graphStyle = makeStyles({
     chart: {
-        width: '40%',
+        width: '45%',
         maxHeight: '80%',
         marginRight: 20
+    },
+    charK: {
+        width: '60%'
     },
     iconBar: {
         height: 30 ,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    iconBarK: {
+        marginLeft: '30%'
     },
     icon: {
         height: '100%'
@@ -43,8 +49,22 @@ const graphStyle = makeStyles({
 const graphOptions = {
     maintainAspectRatio: false,
     legend: {
-        labels: {
-            fontColor: 'black'
+        display: false
+    },
+    tooltips: {
+        callbacks: {
+            label: function(tooltipItem: any, data: any) {
+                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                // if (label) {
+                //     label += ': ';
+                // }
+                // label += Math.round(tooltipItem.xLabel * 100) / 100;
+                return label;
+            },
+            labelColor: function(tooltipItem: any, chart: any) {
+                return "";
+            },
         }
     },
     scales: {
@@ -54,7 +74,10 @@ const graphOptions = {
             },
             ticks: {
                 fontColor: 'black',
-                fontSize: 1
+                callback: (value: string) => {
+                    if(value === " ") return " ";
+                    return limitStringLength(value, 30, true);
+                }
             }
         }],
         xAxes: [{
@@ -139,26 +162,34 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
     return (
         <div className={style.container}>
             <Fragment>
-            <div className={style.categoryList}>
+            {/* <div className={style.categoryList}>
                 {answerData.map((value, index) => <div key={index} className={style.category}>{value.category}</div>)}
-            </div>
-            <div className={style.chart}>
+            </div> */}
+            <div className={clsx(style.chart, style.charK)}>
                 <HorizontalBar
                     redraw={props.boolDraw}
                     data={{
-                        labels: answerData.map(value => " "),
+                        labels: answerData.map(value => value.category),
                         datasets: [
                             {
-                                label: 'Kunnskap',
+                                label: 'Kompetanse',
                                 backgroundColor: KnowitColors.lightGreen,
                                 borderWidth: 1,
                                 data: answerData.map(value => value.averageKnowledge)
                             }
                         ]
                     }}
-                    options={graphOptions}
+                    options={{
+                        title: {
+                            display: true,
+                            text: 'KOMPETANSE',
+                            fontColor: KnowitColors.black,
+                            fontStyle: 'normal',
+                            fontSize: 15
+                        },
+                        ...graphOptions}}
                 />
-                <div className={style.iconBar}>
+                <div className={clsx(style.iconBar, style.iconBarK)}>
                     {GetIcons(true, style.icon)}
                 </div>
             </div>
@@ -169,14 +200,22 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
                         labels: answerData.map(value => " "),
                         datasets: [
                             {
-                                label: 'Motivation',
+                                label: 'Motivasjon',
                                 backgroundColor: KnowitColors.greyGreen,
                                 borderWidth: 1,
                                 data: answerData.map(value => value.averageMotivation)
                             }
                         ]
                     }}
-                    options={graphOptions}
+                    options={{
+                        title: {
+                            display: true,
+                            text: 'MOTIVASJON',
+                            fontColor: KnowitColors.black,
+                            fontStyle: 'normal',
+                            fontSize: 15
+                        },
+                        ...graphOptions}}
                 />
                 <div className={style.iconBar}>
                     {GetIcons(false, style.icon)}

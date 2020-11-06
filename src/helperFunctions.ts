@@ -79,22 +79,13 @@ export const clampNumber = (value: number, min: number, max?: number): number =>
     return newValue;
 };
 
-export const limitStringLength = (str: string, length: number, overflow: boolean = false): string => {
-    if(length <= 0) return str;
-    if(overflow){
-        console.log(str.replace(/(.*?\s.*?\s)/g, '$1'+'\n'));
-        return str.replace(/(.*?\s.*?\s)/g, '$1'+'\n');
-    }
-    return str.length > length ? str.substring(0, (length > 3 ? length - 3 : length)) + "..." : str;
+export const limitStringLength = (str: string, length: number, overflow: boolean = false): string[] => {
+    if(length <= 0) return [str];
+    if(overflow) return str.match(new RegExp("(?:\\s*)(.{1,"+ length +"})(?:\\s+|\\s*$)", "g")) || [];
+    if(length <= 3) return ["..."]
+    return [str.substring(0, length - 3) + "..."];
 };
 
-// export const fillStringToLimit = (str: string, limit: number, char: string = " "): string => {
-//     if(str.length >= limit) return str;
-
-// };
-
-
-
-// String.prototype.trimEllip = function (length) {
-//     return this.length > length ? this.substring(0, length) + "..." : this;
-//   }
+export const addLeftPaddingToStringArray = (str: string[], padLength: number, padChar?: string): string[] => {
+    return str.map((value) => value.padStart(padLength, padChar))
+};
