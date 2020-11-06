@@ -142,7 +142,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         </div> */}
                     </div>
                     <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
-                        <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button>
+                        {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
                         <Form {...props}/>
                     </div>
                 </div>
