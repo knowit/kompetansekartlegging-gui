@@ -131,7 +131,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         </div>
                     </div>
                     <div className={style.form}>
-                        <Form {...props} setIsCategorySubmitted={setIsCategorySubmitted}/>
+                        <Form {...props} setIsCategorySubmitted={setIsCategorySubmitted} isCategorySubmitted={isCategorySubmitted}/>
                     </div>
                 </div>
             : ""}

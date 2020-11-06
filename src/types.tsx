@@ -185,7 +185,8 @@ export type AnswerProps = {
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
-    setIsCategorySubmitted: (categorySubmitted: boolean) => void;
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isCategorySubmitted: boolean
 };
 
 export type UserProps = {

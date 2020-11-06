@@ -60,14 +60,14 @@ export const Form = ({...props}: AnswerProps) => {
     };
 
     useEffect(() => {
-        debugger;
         window.onbeforeunload = confirmExit;
         function confirmExit()
         {
-            debugger;
-          return "show warning";
+            if (!props.isCategorySubmitted) {
+                return "show warning";
+            }
         }
-    }, [])
+    }, [props.isCategorySubmitted])
 
     const handleClick = () => {
         props.createUserForm(); 
