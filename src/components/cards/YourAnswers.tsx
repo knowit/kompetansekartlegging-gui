@@ -1,11 +1,13 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React from 'react'
+import React, { useState } from 'react'
 import { CardStyle, KnowitColors, cardCornerRadius } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
+import { AlertDialog } from '../AlertDialog';
 import AnswerDiagram from '../AnswerDiagram';
+import CloseIcon from '@material-ui/icons/Close';
 
 const AnswersStyle = makeStyles({
     root: {
@@ -112,7 +114,20 @@ const AnswersStyle = makeStyles({
 export const YourAnswers = ({...props}: YourAnswerProps) => {
     const style = AnswersStyle();
     const cardStyle = CardStyle({zIndex: 20});
+  
+    const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
+    const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
+    const [clickedCategory, setClickedCategory] = useState<string>(''); // used in the alertbox to choose what category to go to
 
+    const saveBeforeChange = (cat : string) => {
+        if(!isCategorySubmitted) {
+            setAlertDialogOpen(true)
+            setClickedCategory(cat)
+        } else {
+            props.changeActiveCategory(cat)
+        }
+    }
+    
     const buttonClick = () => {
         //TODO: Find a way to replace hardcode int with a something like enum (enum dont work)
         props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
@@ -129,7 +144,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         style.categoryButton, 
                         props.activeCategory === cat ? style.categoryButtonActive : ""
                     )} 
-                    onClick={() => props.changeActiveCategory(cat)}
+                    onClick={() => { saveBeforeChange(cat)}}
                 >{cat}</Button>
             );
         });
@@ -160,21 +175,30 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                             {getCategoryButtons()}
                         </div>
                     </div>
-                    <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
-                        <div className={style.catHeader}>
-                            <Button className={style.editButton} onClick={() => props.answerViewModeActive(false)}>Endre svar</Button>
-                            <div className={style.catText} >{props.activeCategory}</div>
-                        </div>
-                        <div className={style.graphHolder}>
-                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} />
-                        </div>
-                    </div>
+                <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
+                      <div className={style.catHeader}>
+                          <Button className={style.editButton} onClick={() => props.answerViewModeActive(false)}>Endre svar</Button>
+                          <div className={style.catText} >{props.activeCategory}</div>
+                      </div>
+                      <div className={style.graphHolder}>
+                          <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} />
+                      </div>
+                </div>
                     <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
                         {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
-                        <Form {...props}/>
+                        <Form {...props} setIsCategorySubmitted={setIsCategorySubmitted} isCategorySubmitted={isCategorySubmitted}/>
                     </div>
                 </div>
+                <AlertDialog 
+                    setAlertDialogOpen={setAlertDialogOpen} 
+                    alertDialogOpen={alertDialogOpen} 
+                    changeActiveCategory={props.changeActiveCategory}
+                    clickedCategory={clickedCategory}
+                    setIsCategorySubmitted={setIsCategorySubmitted}
+                    resetAnswers={props.resetAnswers}
+                />
             </div>
         </div>
     );
+
 };

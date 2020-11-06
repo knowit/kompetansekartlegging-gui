@@ -80,6 +80,7 @@ const Question = ({...props}: QuestionProps) => {
             setKnowledgeValue(newValue);
             props.updateAnswer(props.questionId, newValue, motivationValue);
         }
+        props.setIsCategorySubmitted(false)
     };
 
     useEffect(() => {

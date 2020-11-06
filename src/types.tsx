@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 
 
 export type AnswerData = {
@@ -169,7 +170,9 @@ export type AnswerProps = {
     submitFeedback: string,
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
-    activeCategory: string
+    activeCategory: string,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isCategorySubmitted: boolean
 };
 
 export type UserProps = {
@@ -199,7 +202,8 @@ export type QuestionProps = {
     text: string,
     questionId: string,
     knowledgeDefaultValue: number,
-    motivationDefaultValue: number
+    motivationDefaultValue: number,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void;
 };
 
 export type BatchCreatedQuestionAnswer = {
@@ -246,6 +250,7 @@ export type YourAnswerProps = {
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
+    resetAnswers: () => void,
     answerViewModeActive: (viewModeActive: boolean) => void,
     answerViewMode: boolean
 };
@@ -267,3 +272,12 @@ type CommonCardProps = {
 //         sub: string
 //     }
 // }
+
+export type AlertDialogProps = {
+    setAlertDialogOpen: (alertDialogOpen: boolean) => void;
+    alertDialogOpen: boolean,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    clickedCategory: string,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    resetAnswers: () => void,
+};

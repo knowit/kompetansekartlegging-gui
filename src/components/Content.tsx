@@ -19,7 +19,8 @@ const Content = () => {
     const [categories, setCategories] = useState<string[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
-    const [loadDataFirstTime, setLoadDataFirstTime] = useState<boolean>(false);
+    const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
+    const [updateSliderValues, setUpdateSliderValues] = useState<boolean>(true)
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -70,10 +71,9 @@ const Content = () => {
     };
     
     const createUserForm = async () => {
-        // todo: skal denne her?
-        setIsAnswersSubmitted(true);
-        setAnswerViewMode(true);
-        
+        setIsAnswersSubmitted(true)
+        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+      
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
         let fdid = formDefinition.getFormDefinition.id;
@@ -96,7 +96,6 @@ const Content = () => {
             setSubmitFeedback("Something went wrong when inserting data to server database..");
             return;
         }
-        console.log(result);
         setSubmitFeedback("Your answers has been saved!");
         //updateRadarData(result);
     }
@@ -150,6 +149,11 @@ const Content = () => {
         answerViewModeActive(true);
     };
 
+
+    const resetAnswers = () => {
+        setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
+    }
+
     useEffect(() => {
         changeActiveCategory(categories[0]);
     }, [categories]);
@@ -171,6 +175,8 @@ const Content = () => {
 
     useEffect(() => {
         setAnswers(createAnswers());
+
+        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
     }, [userAnswers]);
 
     useEffect(() => {
@@ -246,6 +252,9 @@ const Content = () => {
                 changeActiveCategory={changeActiveCategory}
                 categories={categories}
                 activeCategory={activeCategory}
+                resetAnswers={resetAnswers}
+                // updateSliderValues={updateSliderValues}
+                // setUpdateSliderValues={updateSliderValues}
                 answerViewModeActive={answerViewModeActive}
                 answerViewMode={answerViewMode}
             />
