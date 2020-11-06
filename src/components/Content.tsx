@@ -93,7 +93,7 @@ const Content = () => {
         
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
         let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
-        if(!result) {
+        if(!result || result.length === 0) {
             setSubmitFeedback("Something went wrong when inserting data to server database..");
             return;
         }
