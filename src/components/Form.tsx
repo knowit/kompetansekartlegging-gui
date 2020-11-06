@@ -17,11 +17,15 @@ const FormStyle = makeStyles({
         borderRadius: 10
     },
     submitButton: {
-        width: '20%',
+        margin: 5,
+        padding: 10,
+        borderRadius: 10,
         fontWeight: 'bold',
-        backgroundColor: KnowitColors.ecaluptus,
+        textTransform: "none",
+        color: KnowitColors.white,
+        backgroundColor: KnowitColors.darkGreen,
         '&:hover': {
-            background: KnowitColors.lightGreen
+            background: KnowitColors.darkGreen
         }
     },
 });
@@ -71,7 +75,7 @@ export const Form = ({...props}: AnswerProps) => {
                     ? <Button 
                         onClick={props.createUserForm} 
                         className={style.submitButton} 
-                        >Send Inn Svar</Button>
+                        >Send inn svar</Button>
                     : ""
                 }
                 <Category name={props.activeCategory} >
@@ -81,7 +85,7 @@ export const Form = ({...props}: AnswerProps) => {
                     ? <Button 
                         onClick={props.createUserForm} 
                         className={style.submitButton} 
-                        >Send Inn Svar</Button>
+                        >Send inn svar</Button>
                     : ""
                 }
             </Fragment>

@@ -88,8 +88,9 @@ const AnswersStyle = makeStyles({
         height: '80%',
     },
     editButton: {
-        padding: 5,
-        margin: 10,
+        margin: 5,
+        padding: 10,
+        borderRadius: 10,
         color: KnowitColors.white,
         background: KnowitColors.darkGreen,
         '&:hover': {
@@ -104,7 +105,7 @@ const AnswersStyle = makeStyles({
         alignItems: 'center',
         justifyContent: 'center',
         fontWeight: 'bold',
-        fontSize: 18
+        fontSize: 18,
     }
 });
 
