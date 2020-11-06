@@ -6,8 +6,28 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { AlertDialogProps } from '../types';
+import { makeStyles } from '@material-ui/core';
+
+
+// style
+const alertStyle = makeStyles({
+      stayButton: {
+        border: '3px solid',
+        background: '#C3DEC3',
+        borderradius: '19px',
+      },
+      leaveButton: {
+
+        border: '3px solid #F3C8BA',
+        boxsizing: 'border-box',
+        borderradius: '19px',
+  }
+});
+
+
 
 export const AlertDialog = ({ ...props }: AlertDialogProps) => {
+    const style = alertStyle();
 
     const handleStayInForm = () => {
         props.setAlertDialogOpen(false);
@@ -37,10 +57,11 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleLeaveForm}
+                        className={style.leaveButton}
                         color="primary">
                         Forlat skjemaet
                     </Button>
-                    <Button onClick={handleStayInForm} color="primary" autoFocus>
+                    <Button onClick={handleStayInForm} color="primary" autoFocus className={style.stayButton}> 
                         Bli på skjemaet
                     </Button>
                 </DialogActions>
