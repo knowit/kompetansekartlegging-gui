@@ -73,6 +73,7 @@ const Content = () => {
     const createUserForm = async () => {
         setIsAnswersSubmitted(true)
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+        answerViewModeActive(true);
       
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
