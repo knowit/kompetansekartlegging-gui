@@ -97,7 +97,6 @@ const Content = () => {
             setSubmitFeedback("Something went wrong when inserting data to server database..");
             return;
         }
-        console.log(result);
         setSubmitFeedback("Your answers has been saved!");
         //updateRadarData(result);
     }
@@ -189,8 +188,6 @@ const Content = () => {
         setAnswers(createAnswers());
 
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
-        console.log("EQUAL??")
-        console.log(answers === answersBeforeSubmitted)
     }, [userAnswers]);
 
     useEffect(() => {
