@@ -11,32 +11,33 @@ const QuestionBlock = makeStyles({
         marginTop: 10,
         marginLeft: 10,
         marginRight: 10,
-        paddingLeft: 10,
+        paddingLeft: 20,
         paddingTop: 5,
         paddingBottom: 5,
         paddingRight: 5,
         backgroundColor: KnowitColors.white,
-        borderRadius: 10
+        borderRadius: 10,
+        width: '90%'
     },
     topic: {
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: "bold"
     },
     text: {
-        fontSize: 15,
-        paddingLeft: 10,
+        fontSize: 12,
         paddingTop: 5,
         paddingBottom: 10
     },
     answerArea: {
         display: 'flex',
         flexWrap: "nowrap",
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     sliderArea: {
         marginLeft: 30,
         marginRight: 20,
+        padding: 20,
         width: '75%'
     },
     slider: {
@@ -51,14 +52,15 @@ const QuestionBlock = makeStyles({
         height: 30
     },
     icon: {
-        height: '100%'
+        height: '100%',
+        fill: KnowitColors.darkGreen
     },
     smallBold: {
         fontSize: 14,
         fontWeight: "bold"
     },
     largeBold: {
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: "bold"
     }
 });

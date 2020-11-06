@@ -114,23 +114,6 @@ export type FormDefinition = {
     }
 };
 
-export type UserFormWithAnswers = {
-    listUserForms: {
-        items: [
-            {
-                id: string,
-                createdAt: string,
-                questionAnswers: {
-                    items: [
-                        UserAnswer
-                    ]
-                }
-
-            }
-        ]
-    }
-};
-
 export type UserAnswer = {
     question: {
         id: string
@@ -160,19 +143,22 @@ export type UserFormCreated = {
     }
 }
 
+export type UserFormWithAnswers = {
+    id: string,
+    createdAt: string,
+    questionAnswers: {
+        items: [
+            UserAnswer
+        ]
+    }
+};
+
 export type UserFormList = {
     listUserForms: {
         items: [
-            {
-                id: string,
-                createdAt: string,
-                questionAnswers: {
-                    items: [
-                        UserAnswer
-                    ]
-                }
-            }
-        ]
+            UserFormWithAnswers
+        ],
+        nextToken: string | null
     }
 };
 
@@ -265,6 +251,8 @@ export type YourAnswerProps = {
     categories: string[],
     activeCategory: string,
     resetAnswers: () => void,
+    answerViewModeActive: (viewModeActive: boolean) => void,
+    answerViewMode: boolean
 };
 
 type CommonCardProps = {

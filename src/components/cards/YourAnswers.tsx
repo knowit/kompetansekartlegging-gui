@@ -1,11 +1,13 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useState } from 'react'
-import { CardStyle, KnowitColors } from '../../styles';
+import { CardStyle, KnowitColors, cardCornerRadius } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
 import { AlertDialog } from '../AlertDialog';
+import AnswerDiagram from '../AnswerDiagram';
+import CloseIcon from '@material-ui/icons/Close';
 
 const AnswersStyle = makeStyles({
     root: {
@@ -14,11 +16,24 @@ const AnswersStyle = makeStyles({
         width: "100%",
         backgroundColor: KnowitColors.greyGreen
     },
+    hidden: {
+        display: "none"
+    },
     answerBox: {
         display: 'flex',
         flexDirection: 'row',
         overflow: 'auto',
         height: '100%'
+    },
+    answerView: {
+        width: '80%',
+        height: '20vw',
+        overflowY: 'auto',
+        borderRadius: 10,
+        background: KnowitColors.white
+    },
+    answerViewContainer: {
+        display: 'flex'
     },
     form: {
         width: '80%',
@@ -55,7 +70,9 @@ const AnswersStyle = makeStyles({
         backgroundColor: KnowitColors.white
     },
     cardHeader: {
-        display: "flex"
+        display: "flex",
+        marginTop: cardCornerRadius,
+        height: cardCornerRadius
     },
     closeButton: {
         marginTop: "3px",
@@ -63,12 +80,41 @@ const AnswersStyle = makeStyles({
         '&:hover': {
             color: KnowitColors.darkGreen
         }
+    },
+    catHeader: {
+        display: 'flex',
+        flexDirection: 'row',
+        height: '10%'
+    },
+    graphHolder: {
+        height: '80%',
+    },
+    editButton: {
+        margin: 5,
+        padding: 10,
+        borderRadius: 10,
+        color: KnowitColors.white,
+        background: KnowitColors.darkGreen,
+        '&:hover': {
+            color: KnowitColors.darkGreen
+        },
+        textTransform: "none"
+    },
+    catText: {
+        width: '80%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 'bold',
+        fontSize: 18,
     }
 });
 
 export const YourAnswers = ({...props}: YourAnswerProps) => {
     const style = AnswersStyle();
-    const cardStyle = CardStyle();
+    const cardStyle = CardStyle({zIndex: 20});
+  
     const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
     const [clickedCategory, setClickedCategory] = useState<string>(''); // used in the alertbox to choose what category to go to
@@ -81,7 +127,7 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
             props.changeActiveCategory(cat)
         }
     }
-
+    
     const buttonClick = () => {
         //TODO: Find a way to replace hardcode int with a something like enum (enum dont work)
         props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
@@ -122,26 +168,36 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         />
                     ) : null}
             </div>
-            {props.commonCardProps.active ?
+            <div className={props.commonCardProps.active ? "" : style.hidden}>
                 <div className={style.answerBox}>
                     <div className={style.categoryList}>
                         <div className={style.categoryListInner}>
                             {getCategoryButtons()}
                         </div>
                     </div>
-                    <div className={style.form}>
+                <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
+                      <div className={style.catHeader}>
+                          <Button className={style.editButton} onClick={() => props.answerViewModeActive(false)}>Endre svar</Button>
+                          <div className={style.catText} >{props.activeCategory}</div>
+                      </div>
+                      <div className={style.graphHolder}>
+                          <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} />
+                      </div>
+                </div>
+                    <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
+                        {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
                         <Form {...props} setIsCategorySubmitted={setIsCategorySubmitted} isCategorySubmitted={isCategorySubmitted}/>
                     </div>
                 </div>
-            : ""}
-            <AlertDialog 
-                setAlertDialogOpen={setAlertDialogOpen} 
-                alertDialogOpen={alertDialogOpen} 
-                changeActiveCategory={props.changeActiveCategory}
-                clickedCategory={clickedCategory}
-                setIsCategorySubmitted={setIsCategorySubmitted}
-                resetAnswers={props.resetAnswers}
-            />
+                <AlertDialog 
+                    setAlertDialogOpen={setAlertDialogOpen} 
+                    alertDialogOpen={alertDialogOpen} 
+                    changeActiveCategory={props.changeActiveCategory}
+                    clickedCategory={clickedCategory}
+                    setIsCategorySubmitted={setIsCategorySubmitted}
+                    resetAnswers={props.resetAnswers}
+                />
+            </div>
         </div>
     );
 

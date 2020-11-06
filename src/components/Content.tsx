@@ -71,10 +71,9 @@ const Content = () => {
     };
     
     const createUserForm = async () => {
-        // todo: skal denne her?
         setIsAnswersSubmitted(true)
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
-
+      
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
         let fdid = formDefinition.getFormDefinition.id;
@@ -126,38 +125,28 @@ const Content = () => {
         let formList = await helper.callGraphQL<ListedFormDefinition>(queries.listFormDefinitions);
         let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
         let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
-        if(currentForm.data) setFormDefinition(currentForm.data);
+        if(currentForm.data){
+
+            let sorted = currentForm.data.getFormDefinition.questions.items
+                .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1);
+
+            currentForm.data.getFormDefinition.questions.items = sorted;
+
+            setFormDefinition(currentForm.data);
+        } 
     };
 
     const getUserAnswers = async () => {
-        let allUserAnswers = (await helper.callGraphQL<UserFormWithAnswers>(customQueries.listUserFormsWithAnswers)).data;
-        if(!allUserAnswers) return;
-        let lastUserAnswer = (await helper.getLastItem(allUserAnswers.listUserForms.items))?.questionAnswers.items;
+        let allAnswers = await helper.listUserForms();
+        if(allAnswers.length === 0) return;
+        let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
         if(lastUserAnswer) setUserAnswers(lastUserAnswer);
-    };
-
-    const deleteUserData = async () => {
-        let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
-        let deleteResult = [];
-        if(userForms && userForms.listUserForms.items.length > 0){
-            for(let i = 0; i < userForms.listUserForms.items.length; i++) {
-                for(const answer of userForms.listUserForms.items[i].questionAnswers.items){
-                    deleteResult.push((await helper.callGraphQL(mutations.deleteQuestionAnswer, {input: {"id": answer.id}})));
-                }
-                deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": userForms.listUserForms.items[i].id}})));
-            }
-            console.log(deleteResult);
-        } else console.log("No Userforms active");
-    };
-
-    const listUserForms = async () => {
-        let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
-        console.log(userForms);
     };
 
     const changeActiveCategory = (newActiveCategory: string) => {
         // console.log("New category: " + newActiveCategory);
         setActiveCategory(newActiveCategory);
+        answerViewModeActive(true);
     };
 
 
@@ -213,8 +202,13 @@ const Content = () => {
      * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
     */
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
-    const style = CardStyle();
 
+    const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
+    const style = CardStyle({zIndex: 0});
+    
+    const answerViewModeActive = (viewModeActive: boolean) => {
+        setAnswerViewMode(viewModeActive);
+    };
     
     const setActiveCard = (cardIndex: number, active: boolean) => {
         let newActiveCards = [...activeCards];
@@ -261,6 +255,8 @@ const Content = () => {
                 resetAnswers={resetAnswers}
                 // updateSliderValues={updateSliderValues}
                 // setUpdateSliderValues={updateSliderValues}
+                answerViewModeActive={answerViewModeActive}
+                answerViewMode={answerViewMode}
             />
         </div>
     );

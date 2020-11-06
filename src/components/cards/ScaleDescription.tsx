@@ -8,7 +8,7 @@ import DescriptionTable from '../DescriptionTable';
 
 export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
     const style = ScaleDescStyle();
-    const cardStyle = CardStyle();
+    const cardStyle = CardStyle({zIndex: 40});
 
     const buttonClick = () => {
         //TODO: Find a way to replace harcoded int with a something like enum (enum dont work)
@@ -24,7 +24,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                     onClick={buttonClick} 
                     className={clsx(cardStyle.cardButton)}
                 >
-                    SKALA BESKRIVELSE 
+                    SKALABESKRIVELSE 
                 </button>
                 {props.commonCardProps.active ? (
                         <CloseIcon 
