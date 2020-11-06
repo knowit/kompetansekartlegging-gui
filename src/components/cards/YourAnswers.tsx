@@ -25,12 +25,9 @@ const AnswersStyle = makeStyles({
     },
     answerView: {
         width: '80%',
-        height: '100%',
-        paddingBottom: 20,
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
+        height: '20vw',
+        overflowY: 'auto',
+        borderRadius: 10,
         background: KnowitColors.white
     },
     answerViewContainer: {
@@ -81,6 +78,34 @@ const AnswersStyle = makeStyles({
         '&:hover': {
             color: KnowitColors.darkGreen
         }
+    },
+    catHeader: {
+        display: 'flex',
+        flexDirection: 'row',
+        height: '10%'
+    },
+    graphHolder: {
+        height: '80%',
+    },
+    editButton: {
+        margin: 5,
+        padding: 10,
+        borderRadius: 10,
+        color: KnowitColors.white,
+        background: KnowitColors.darkGreen,
+        '&:hover': {
+            color: KnowitColors.darkGreen
+        },
+        textTransform: "none"
+    },
+    catText: {
+        width: '80%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 'bold',
+        fontSize: 18,
     }
 });
 
@@ -136,10 +161,13 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
                         </div>
                     </div>
                     <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
-                            <Button onClick={() => props.answerViewModeActive(false)}>Endre svar</Button>
+                        <div className={style.catHeader}>
+                            <Button className={style.editButton} onClick={() => props.answerViewModeActive(false)}>Endre svar</Button>
+                            <div className={style.catText} >{props.activeCategory}</div>
+                        </div>
+                        <div className={style.graphHolder}>
                             <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} />
-                        {/* <div>
-                        </div> */}
+                        </div>
                     </div>
                     <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
                         {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
