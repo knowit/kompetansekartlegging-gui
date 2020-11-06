@@ -19,7 +19,8 @@ const Content = () => {
     const [categories, setCategories] = useState<string[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
-    const [loadDataFirstTime, setLoadDataFirstTime] = useState<boolean>(false);
+    const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
+    const [updateSliderValues, setUpdateSliderValues] = useState<boolean>(true)
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -70,9 +71,10 @@ const Content = () => {
     };
     
     const createUserForm = async () => {
-        // todo: skal denne her?
         setIsAnswersSubmitted(true)
-
+        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+        answerViewModeActive(true);
+      
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
         let fdid = formDefinition.getFormDefinition.id;
@@ -91,11 +93,10 @@ const Content = () => {
         
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
         let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
-        if(!result) {
+        if(!result || result.length === 0) {
             setSubmitFeedback("Something went wrong when inserting data to server database..");
             return;
         }
-        console.log(result);
         setSubmitFeedback("Your answers has been saved!");
         //updateRadarData(result);
     }
@@ -137,35 +138,22 @@ const Content = () => {
     };
 
     const getUserAnswers = async () => {
-        let allUserAnswers = (await helper.callGraphQL<UserFormWithAnswers>(customQueries.listUserFormsWithAnswers)).data;
-        if(!allUserAnswers) return;
-        let lastUserAnswer = (await helper.getLastItem(allUserAnswers.listUserForms.items))?.questionAnswers.items;
+        let allAnswers = await helper.listUserForms();
+        if(allAnswers.length === 0) return;
+        let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
         if(lastUserAnswer) setUserAnswers(lastUserAnswer);
-    };
-
-    const deleteUserData = async () => {
-        let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
-        let deleteResult = [];
-        if(userForms && userForms.listUserForms.items.length > 0){
-            for(let i = 0; i < userForms.listUserForms.items.length; i++) {
-                for(const answer of userForms.listUserForms.items[i].questionAnswers.items){
-                    deleteResult.push((await helper.callGraphQL(mutations.deleteQuestionAnswer, {input: {"id": answer.id}})));
-                }
-                deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": userForms.listUserForms.items[i].id}})));
-            }
-            console.log(deleteResult);
-        } else console.log("No Userforms active");
-    };
-
-    const listUserForms = async () => {
-        let userForms = (await helper.callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers)).data;
-        console.log(userForms);
     };
 
     const changeActiveCategory = (newActiveCategory: string) => {
         // console.log("New category: " + newActiveCategory);
         setActiveCategory(newActiveCategory);
+        answerViewModeActive(true);
     };
+
+
+    const resetAnswers = () => {
+        setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
+    }
 
     useEffect(() => {
         changeActiveCategory(categories[0]);
@@ -188,6 +176,8 @@ const Content = () => {
 
     useEffect(() => {
         setAnswers(createAnswers());
+
+        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
     }, [userAnswers]);
 
     useEffect(() => {
@@ -213,8 +203,13 @@ const Content = () => {
      * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
     */
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
-    const style = CardStyle();
 
+    const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
+    const style = CardStyle({zIndex: 0});
+    
+    const answerViewModeActive = (viewModeActive: boolean) => {
+        setAnswerViewMode(viewModeActive);
+    };
     
     const setActiveCard = (cardIndex: number, active: boolean) => {
         let newActiveCards = [...activeCards];
@@ -258,6 +253,11 @@ const Content = () => {
                 changeActiveCategory={changeActiveCategory}
                 categories={categories}
                 activeCategory={activeCategory}
+                resetAnswers={resetAnswers}
+                // updateSliderValues={updateSliderValues}
+                // setUpdateSliderValues={updateSliderValues}
+                answerViewModeActive={answerViewModeActive}
+                answerViewMode={answerViewMode}
             />
         </div>
     );

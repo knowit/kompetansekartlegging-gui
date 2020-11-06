@@ -1,5 +1,6 @@
-import { makeStyles, Slider, withStyles } from "@material-ui/core";
+import { makeStyles, Slider, withStyles, Theme } from "@material-ui/core";
 
+export const cardCornerRadius: number = 40;
 
 export const KnowitColors = {
     black: "#000000",
@@ -92,37 +93,56 @@ export const ValueSlider = withStyles({
     }
 })(Slider);
 
-export const CardStyle = makeStyles({
-    cardButton: {
-        fontWeight: "bold",
-        fontSize: 18,
-        padding: 10,
-        border: "none",
-        outline: "none",
-        backgroundColor: "transparent",
-        textAlign: "left",
-        width: "100%"
-    },
-    cardHolder: {
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-        height: '100%'
-    },
-    closed: {
-    },
-    open: {
-        display: 'flex',
-        flexDirection: 'column',
-        overflowY: 'auto',
-        // flexGrow: 1
-        height: '100%'
-    }
-});
+type ZProps = {
+    zIndex: number;
+  };
+
+export const CardStyle = makeStyles<Theme, ZProps>((theme: Theme) =>
+    ({
+        cardButton: {
+            fontWeight: "bold",
+            fontSize: 18,
+            padding: 10,
+            border: "none",
+            outline: "none",
+            backgroundColor: "transparent",
+            textAlign: "left",
+            paddingLeft: 50,
+            width: "100%"
+        },
+        cardHolder: {
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            height: '100%'
+                },
+        closed: {
+            position: 'relative',
+            marginTop: -cardCornerRadius,
+            boxShadow: "0px 3px 2px grey",
+            borderBottomLeftRadius: cardCornerRadius,
+            borderBottomRightRadius: cardCornerRadius,
+            zIndex: ({ zIndex }) => zIndex
+        },
+        open: {
+            position: 'relative',
+            marginTop: -cardCornerRadius,
+            display: 'flex',
+            flexDirection: 'column',
+            overflowY: 'auto',
+            // flexGrow: 1
+            height: '100%',
+            boxShadow: "0px 3px 2px grey",
+            borderBottomLeftRadius: cardCornerRadius,
+            borderBottomRightRadius: cardCornerRadius,
+            zIndex: ({ zIndex }) => zIndex
+        }
+    })
+  );
 
 export const OverviewStyle = makeStyles({
     root: {
-        maxHeight: '35%',
+        maxHeight: '40%',
         width: "100%",
         backgroundColor: KnowitColors.white
     },
@@ -133,7 +153,9 @@ export const OverviewStyle = makeStyles({
         justifyContent: 'center'
     },
     cardHeader: {
-        display: "flex"
+        display: "flex",
+        marginTop: cardCornerRadius,
+        height: cardCornerRadius
     },
     closeButton: {
         marginTop: "3px",
@@ -150,12 +172,14 @@ export const OverviewStyle = makeStyles({
 
 export const ScaleDescStyle = makeStyles({
     root: {
-        maxHeight: '30%',
+        maxHeight: '32%',
         width: "100%",
         backgroundColor: KnowitColors.ecaluptus
     },
     cardHeader: {
-        display: "flex"
+        display: "flex",
+        marginTop: cardCornerRadius,
+        height: cardCornerRadius
     },
     closeButton: {
         marginTop: "3px",
@@ -313,7 +337,8 @@ export const HighlightsStyle = makeStyles({
         paddingBottom: 5
     },
     icon: {
-        width: '15%'
+        width: '15%',
+        fill: KnowitColors.darkBrown
     },
     topic: {
         width: '80%',

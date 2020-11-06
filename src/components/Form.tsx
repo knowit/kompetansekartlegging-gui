@@ -1,5 +1,5 @@
 import { Button, makeStyles } from '@material-ui/core';
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { KnowitColors } from '../styles';
 import { AnswerProps } from '../types';
 import { Category } from './Category';
@@ -17,11 +17,15 @@ const FormStyle = makeStyles({
         borderRadius: 10
     },
     submitButton: {
-        width: '20%',
+        margin: 5,
+        padding: 10,
+        borderRadius: 10,
         fontWeight: 'bold',
-        backgroundColor: KnowitColors.ecaluptus,
+        textTransform: "none",
+        color: KnowitColors.white,
+        backgroundColor: KnowitColors.darkGreen,
         '&:hover': {
-            background: KnowitColors.lightGreen
+            background: KnowitColors.darkGreen
         }
     },
 });
@@ -52,11 +56,27 @@ export const Form = ({...props}: AnswerProps) => {
                     updateAnswer={props.updateAnswer}
                     knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
+                    setIsCategorySubmitted={props.setIsCategorySubmitted}
                 />
             );
         };
         return questions;
     };
+
+    useEffect(() => {
+        window.onbeforeunload = confirmExit;
+        function confirmExit()
+        {
+            if (!props.isCategorySubmitted) {
+                return "show warning";
+            }
+        }
+    }, [props.isCategorySubmitted])
+
+    const handleClick = () => {
+        props.createUserForm(); 
+        props.setIsCategorySubmitted(true);        
+    }
 
     //TODO: Return only used category, not everyone
     const createQuestionCategory = (): JSX.Element => {
@@ -69,9 +89,9 @@ export const Form = ({...props}: AnswerProps) => {
             <Fragment>
                 {props.categories.length > 0
                     ? <Button 
-                        onClick={props.createUserForm} 
+                        onClick={handleClick} 
                         className={style.submitButton} 
-                        >Send Inn Svar</Button>
+                        >Send inn svar</Button>
                     : ""
                 }
                 <Category name={props.activeCategory} >
@@ -79,9 +99,9 @@ export const Form = ({...props}: AnswerProps) => {
                 </Category>
                 {props.categories.length > 0
                     ? <Button 
-                        onClick={props.createUserForm} 
+                        onClick={handleClick} 
                         className={style.submitButton} 
-                        >Send Inn Svar</Button>
+                        >Send inn svar</Button>
                     : ""
                 }
             </Fragment>
