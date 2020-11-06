@@ -10,14 +10,14 @@ import clsx from 'clsx'
 
 const graphStyle = makeStyles({
     chartK: {
-        width: '55vw',
+        width: '40vw',
         maxHeight: '80%',
         marginRight: 20,
         display: 'flex',
         flexDirection: 'column',
     },
     chartM: {
-        width: '45%',
+        width: '50%',
         maxHeight: '80%',
         marginRight: 20
     },
@@ -28,7 +28,7 @@ const graphStyle = makeStyles({
         justifyContent: 'space-between',
     },
     iconBarK: {
-        width: '84%',
+        width: '78%',
         alignSelf: 'flex-end'
     },
     icon: {

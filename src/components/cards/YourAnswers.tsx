@@ -30,7 +30,7 @@ const AnswersStyle = makeStyles({
         height: '20vw',
         overflowY: 'auto',
         borderRadius: 10,
-        background: KnowitColors.white
+        background: KnowitColors.white,
     },
     answerViewContainer: {
         display: 'flex'
@@ -87,6 +87,7 @@ const AnswersStyle = makeStyles({
         height: '10%'
     },
     graphHolder: {
+        width: '80%',
         height: '80%',
     },
     editButton: {
