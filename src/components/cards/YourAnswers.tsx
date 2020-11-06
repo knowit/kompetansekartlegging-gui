@@ -74,7 +74,6 @@ export const YourAnswers = ({...props}: YourAnswerProps) => {
     const [clickedCategory, setClickedCategory] = useState<string>(''); // used in the alertbox to choose what category to go to
 
     const saveBeforeChange = (cat : string) => {
-        debugger;
         if(!isCategorySubmitted) {
             setAlertDialogOpen(true)
             setClickedCategory(cat)
