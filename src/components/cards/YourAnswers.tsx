@@ -25,7 +25,7 @@ const AnswersStyle = makeStyles({
     },
     answerView: {
         width: '80%',
-        height: '100%',
+        height: '20vw',
         overflowY: 'auto',
         borderRadius: 10,
         background: KnowitColors.white
@@ -82,7 +82,7 @@ const AnswersStyle = makeStyles({
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
-        height: '20%'
+        height: '10%'
     },
     graphHolder: {
         height: '80%',
