@@ -271,6 +271,11 @@ export type GetFormDefinitionWithQuestionsQuery = {
   } | null,
 };
 
+export type ListUserFormsWithAnswersQueryVariables = {
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
 export type ListUserFormsWithAnswersQuery = {
   listUserForms:  {
     __typename: "ModelUserFormConnection",
@@ -292,6 +297,7 @@ export type ListUserFormsWithAnswersQuery = {
       } | null,
       createdAt: string,
     } | null > | null,
+    nextToken: string | null,
   } | null,
 };
 
