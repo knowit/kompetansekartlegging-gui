@@ -17,9 +17,6 @@ export const batchCreateQuestionAnswer = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -52,6 +49,7 @@ export const createUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -85,6 +83,7 @@ export const updateUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -118,6 +117,7 @@ export const deleteUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -145,9 +145,6 @@ export const createQuestionAnswer = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -174,9 +171,6 @@ export const updateQuestionAnswer = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -203,9 +197,6 @@ export const deleteQuestionAnswer = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -229,16 +220,6 @@ export const createQuestion = /* GraphQL */ `
       qid
       index
       category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -256,16 +237,6 @@ export const updateQuestion = /* GraphQL */ `
       qid
       index
       category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -283,16 +254,6 @@ export const deleteQuestion = /* GraphQL */ `
       qid
       index
       category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -305,6 +266,7 @@ export const createFormDefinition = /* GraphQL */ `
   ) {
     createFormDefinition(input: $input, condition: $condition) {
       id
+      formDefinitionID
       questions {
         items {
           id
@@ -327,6 +289,7 @@ export const updateFormDefinition = /* GraphQL */ `
   ) {
     updateFormDefinition(input: $input, condition: $condition) {
       id
+      formDefinitionID
       questions {
         items {
           id
@@ -349,6 +312,7 @@ export const deleteFormDefinition = /* GraphQL */ `
   ) {
     deleteFormDefinition(input: $input, condition: $condition) {
       id
+      formDefinitionID
       questions {
         items {
           id
@@ -383,14 +347,12 @@ export const createQuestionFormDefinitionConnection = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -421,14 +383,12 @@ export const updateQuestionFormDefinitionConnection = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -459,14 +419,12 @@ export const deleteQuestionFormDefinitionConnection = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }

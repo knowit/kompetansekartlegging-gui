@@ -20,6 +20,7 @@ export const onCreateUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -50,6 +51,7 @@ export const onUpdateUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -80,6 +82,7 @@ export const onDeleteUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -104,9 +107,6 @@ export const onCreateQuestionAnswer = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -130,9 +130,6 @@ export const onUpdateQuestionAnswer = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -156,9 +153,6 @@ export const onDeleteQuestionAnswer = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -179,16 +173,6 @@ export const onCreateQuestion = /* GraphQL */ `
       qid
       index
       category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -203,16 +187,6 @@ export const onUpdateQuestion = /* GraphQL */ `
       qid
       index
       category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -227,16 +201,6 @@ export const onDeleteQuestion = /* GraphQL */ `
       qid
       index
       category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -246,6 +210,7 @@ export const onCreateFormDefinition = /* GraphQL */ `
   subscription OnCreateFormDefinition {
     onCreateFormDefinition {
       id
+      formDefinitionID
       questions {
         items {
           id
@@ -265,6 +230,7 @@ export const onUpdateFormDefinition = /* GraphQL */ `
   subscription OnUpdateFormDefinition {
     onUpdateFormDefinition {
       id
+      formDefinitionID
       questions {
         items {
           id
@@ -284,6 +250,7 @@ export const onDeleteFormDefinition = /* GraphQL */ `
   subscription OnDeleteFormDefinition {
     onDeleteFormDefinition {
       id
+      formDefinitionID
       questions {
         items {
           id
@@ -312,14 +279,12 @@ export const onCreateQuestionFormDefinitionConnection = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -344,14 +309,12 @@ export const onUpdateQuestionFormDefinitionConnection = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }
@@ -376,14 +339,12 @@ export const onDeleteQuestionFormDefinitionConnection = /* GraphQL */ `
         qid
         index
         category
-        formDefinitions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       formDefinition {
         id
+        formDefinitionID
         questions {
           nextToken
         }

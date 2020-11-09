@@ -1,15 +1,12 @@
-type UserForm
-  @model 
-  @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  questionAnswers: [QuestionAnswer] @connection(keyName: "byUserForm", fields: ["id"])
-  formDefinition: FormDefinition! @connection
+type UserForm @model @auth(rules: [{ allow: owner }]) {
+    id: ID!
+    questionAnswers: [QuestionAnswer]
+        @connection(keyName: "byUserForm", fields: ["id"])
+    formDefinition: FormDefinition! @connection
 }
 
-type QuestionAnswer 
-  @model 
-  @auth(rules: [{ allow: owner }])  
-  @key(name: "byUserForm", fields: ["userFormID"]) {
+type QuestionAnswer @model @auth(rules: [{ allow: owner }])
+@key(name: "byUserForm", fields: ["userFormID"]) {
     id: ID!
     userFormID: ID!
     question: Question! @connection
@@ -17,47 +14,53 @@ type QuestionAnswer
     motivation: Float!
 }
 
-type Question
-  @model
-  {
+type Question @model {
     id: ID!
     text: String!
     topic: String!
     qid: String
     index: Int
     category: String!
-    formDefinitions: [QuestionFormDefinitionConnection] @connection(keyName: "connectedQuestion", fields: ["id"])
 }
 
-type FormDefinition
-  @model {
+type FormDefinition @model 
+@key(name: "formDef", fields: ["formDefinitionID"]) {
     id: ID!
-    questions: [QuestionFormDefinitionConnection] @connection(keyName: "connectedFormDefinition", fields: ["id"])
+    formDefinitionID: ID!
+    questions: [QuestionFormDefinitionConnection]
+        @connection(keyName: "connectedFormDefinition", fields: ["id"])
 }
 
-type QuestionFormDefinitionConnection
-  @model(queries: null) 
-  @key(name: "connectedFormDefinition", fields: ["formDefinitionID", "questionID"])
-  @key(name: "connectedQuestion", fields: ["questionID", "formDefinitionID"]) {
+type QuestionFormDefinitionConnection @model(queries: null)
+@key(
+    name: "connectedFormDefinition"
+    fields: ["formDefinitionID", "questionID"]
+)
+@key(name: "connectedQuestion", fields: ["questionID", "formDefinitionID"]) {
     id: ID!
     formDefinitionID: ID!
     questionID: ID!
-    question: Question! @connection(fields: ["questionID"])
-    formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
+    question: Question! 
+        @connection(fields: ["questionID"])
+    formDefinition: FormDefinition!
+        @connection(fields: ["formDefinitionID"])
 }
 
 input CreateQuestionAnswerInput {
-  id: ID
-  userFormID: ID!
-  knowledge: Float!
-  motivation: Float!
-  questionAnswerQuestionId: ID!
+    id: ID
+    userFormID: ID!
+    knowledge: Float!
+    motivation: Float!
+    questionAnswerQuestionId: ID!
 }
 
 input BatchTableEnvironmentInput {
-  envID: String!
+    envID: String!
 }
 
 type Mutation {
-  batchCreateQuestionAnswer(input: [CreateQuestionAnswerInput], env: BatchTableEnvironmentInput): [QuestionAnswer]
+    batchCreateQuestionAnswer(
+        input: [CreateQuestionAnswerInput]
+        env: BatchTableEnvironmentInput
+    ): [QuestionAnswer]
 }
