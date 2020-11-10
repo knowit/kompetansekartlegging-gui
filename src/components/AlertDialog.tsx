@@ -45,7 +45,27 @@ const alertStyle = makeStyles({
     },
     alertButtons: {
         justifyContent: 'space-evenly',
-    }
+    },
+    dialogTitle: {
+        
+    },
+    dialogTitleText: {
+
+    },
+    '.dialogTitle > h2': { 
+        display: 'flex',
+        flexDirection: 'row',
+        backgroundColor: 'red'
+    },
+    container: {
+        backgroundColor: 'blue'
+    },
+    '.container > h2': { 
+        display: 'flex',
+        flexDirection: 'row',
+        backgroundColor: 'red'
+    },
+
 });
 
 
@@ -73,9 +93,9 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
+                <DialogTitle id="alert-dialog-title" className={style.dialogTitle}>
                     <ErrorIcon fontSize='large' className={style.errorIcon}></ErrorIcon>
-                    <div>Obs! Svarene dine er ikke lagret.</div>
+                    <div className={style.dialogTitleText}>Obs! Svarene dine er ikke lagret.</div>
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description" className={style.alertText}>
@@ -93,6 +113,10 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                         <div className={style.buttonText}>Bli på skjemaet</div>
                     </Button>
                 </DialogActions>
+                <div className={style.container}>
+                    <p>hello</p>
+                    <h2>h2h2h2h2h2</h2>
+                </div>
             </Dialog>
         </div>
     );
