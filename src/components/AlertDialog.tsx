@@ -15,12 +15,21 @@ import { SignalWifi1BarLockSharp } from '@material-ui/icons';
 // style
 const alertStyle = makeStyles({
       stayButton: {
+        width: '162px',
+        height: '38px',
         border: '3px solid',
-        background: '#C3DEC3',
+        background: KnowitColors.lightGreen,
+        borderRadius: '19px',
+        borderColor: KnowitColors.lightGreen
       },
       leaveButton: {
-        border: '3px solid #F3C8BA',
+        width: '162px',
+        height: '38px',
+        border: '3px solid',
+        borderColor: KnowitColors.flamingo,
         boxsizing: 'border-box',
+        borderRadius: '19px'
+
     },
     buttonText: {
         fontWeight: 'bold',
@@ -64,8 +73,10 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title"><ErrorIcon className={style.errorIcon}></ErrorIcon>
-<b>Obs! Svarene dine er ikke lagret.</b></DialogTitle>
+                <DialogTitle id="alert-dialog-title">
+                    <ErrorIcon fontSize='large' className={style.errorIcon}></ErrorIcon>
+                    <div>Obs! Svarene dine er ikke lagret.</div>
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description" className={style.alertText}>
                             Hvis du forlater skjemaet nå vil ikke endringene du har gjort bli lagret.
@@ -78,7 +89,7 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                         <div className={style.buttonText}>Forlat skjemaet</div>
 
                     </Button>
-                    <Button onClick={handleStayInForm}  autoFocus className={style.stayButton}> 
+                    <Button onClick={handleStayInForm} autoFocus className={style.stayButton}> 
                         <div className={style.buttonText}>Bli på skjemaet</div>
                     </Button>
                 </DialogActions>
