@@ -44,6 +44,7 @@ const alertStyle = makeStyles({
     },
     alertButtons: {
         justifyContent: 'space-evenly',
+        marginBottom: '10px'
     },
     dialogTitle: {
         '& h2': {
