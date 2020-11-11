@@ -29,16 +29,15 @@ const alertStyle = makeStyles({
         borderColor: KnowitColors.flamingo,
         boxsizing: 'border-box',
         borderRadius: '19px'
-
     },
     buttonText: {
         fontWeight: 'bold',
         textTransform: 'none'
-
     },
     errorIcon: {
         fill: KnowitColors.fuchsia,
-        marginTop: '3px'
+        height: '38px',
+        width: '38px'
     },
     alertText: {
         color: 'black'
@@ -47,25 +46,15 @@ const alertStyle = makeStyles({
         justifyContent: 'space-evenly',
     },
     dialogTitle: {
-        
+        '& h2': {
+            display: 'flex',
+        }
     },
     dialogTitleText: {
-
-    },
-    '.dialogTitle > h2': { 
-        display: 'flex',
-        flexDirection: 'row',
-        backgroundColor: 'red'
-    },
-    container: {
-        backgroundColor: 'blue'
-    },
-    '.container > h2': { 
-        display: 'flex',
-        flexDirection: 'row',
-        backgroundColor: 'red'
-    },
-
+        fontWeight: 'bold',
+        marginTop: '4px',
+        marginLeft: '8px'
+    }
 });
 
 
@@ -113,10 +102,6 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                         <div className={style.buttonText}>Bli på skjemaet</div>
                     </Button>
                 </DialogActions>
-                <div className={style.container}>
-                    <p>hello</p>
-                    <h2>h2h2h2h2h2</h2>
-                </div>
             </Dialog>
         </div>
     );
