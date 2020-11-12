@@ -13,7 +13,7 @@ const AnswersStyle = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         width: "100%",
-        backgroundColor: KnowitColors.greyGreen
+        backgroundColor: KnowitColors.white,//KnowitColors.greyGreen
     },
     hidden: {
         display: "none"
@@ -41,7 +41,10 @@ const AnswersStyle = makeStyles({
     },
     categoryList: {
         width: '20%',
-        height: '100%'
+        height: '100%',
+        backgroundColor: KnowitColors.greyGreen,
+        borderRadius: '0px 0px 20px 20px',
+        paddingBottom: '20px'
     },
     categoryListInner: {
         marginTop: 10,
@@ -70,8 +73,10 @@ const AnswersStyle = makeStyles({
     },
     cardHeader: {
         display: "flex",
-        marginTop: cardCornerRadius,
-        height: cardCornerRadius
+        // marginTop: cardCornerRadius,
+        paddingTop: cardCornerRadius,
+        height: cardCornerRadius,
+        backgroundColor: KnowitColors.greyGreen
     },
     closeButton: {
         marginTop: "3px",
