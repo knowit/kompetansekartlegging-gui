@@ -9,10 +9,10 @@ import NavBar from './components/NavBar';
 import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
-import { AppStyle } from './styles';
 import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
-import Login from './components/Login';
 import userEvent from '@testing-library/user-event';
+import { AppStyle } from './styles';
+import Login from './components/Login';
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -82,7 +82,7 @@ const App = () => {
                         <Footer/>
                     </Fragment>
                 :
-                <Login/>
+                <Login />
                 }
             </BrowserRouter>
         </div>

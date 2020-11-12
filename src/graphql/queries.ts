@@ -2,14 +2,58 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getFormDefinition = /* GraphQL */ `
+  query GetFormDefinition($id: ID!) {
+    getFormDefinition(id: $id) {
+      id
+      questions {
+        items {
+          id
+          text
+          topic
+          qid
+          index
+          formDefinitionID
+          categoryID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listFormDefinitions = /* GraphQL */ `
+  query ListFormDefinitions(
+    $filter: ModelFormDefinitionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFormDefinitions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        questions {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getUserForm = /* GraphQL */ `
   query GetUserForm($id: ID!) {
     getUserForm(id: $id) {
       id
+      formDefinitionID
       questionAnswers {
         items {
           id
           userFormID
+          questionID
           knowledge
           motivation
           createdAt
@@ -20,7 +64,6 @@ export const getUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
-        formDefinitionID
         questions {
           nextToken
         }
@@ -42,12 +85,12 @@ export const listUserForms = /* GraphQL */ `
     listUserForms(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        formDefinitionID
         questionAnswers {
           nextToken
         }
         formDefinition {
           id
-          formDefinitionID
           createdAt
           updatedAt
         }
@@ -64,18 +107,26 @@ export const getQuestionAnswer = /* GraphQL */ `
     getQuestionAnswer(id: $id) {
       id
       userFormID
+      questionID
+      knowledge
+      motivation
       question {
         id
         text
         topic
         qid
         index
-        category
+        formDefinitionID
+        categoryID
+        category {
+          id
+          text
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
-      knowledge
-      motivation
       createdAt
       updatedAt
       owner
@@ -92,18 +143,20 @@ export const listQuestionAnswers = /* GraphQL */ `
       items {
         id
         userFormID
+        questionID
+        knowledge
+        motivation
         question {
           id
           text
           topic
           qid
           index
-          category
+          formDefinitionID
+          categoryID
           createdAt
           updatedAt
         }
-        knowledge
-        motivation
         createdAt
         updatedAt
         owner
@@ -120,7 +173,14 @@ export const getQuestion = /* GraphQL */ `
       topic
       qid
       index
-      category
+      formDefinitionID
+      categoryID
+      category {
+        id
+        text
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -139,7 +199,14 @@ export const listQuestions = /* GraphQL */ `
         topic
         qid
         index
-        category
+        formDefinitionID
+        categoryID
+        category {
+          id
+          text
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
@@ -147,39 +214,26 @@ export const listQuestions = /* GraphQL */ `
     }
   }
 `;
-export const getFormDefinition = /* GraphQL */ `
-  query GetFormDefinition($id: ID!) {
-    getFormDefinition(id: $id) {
+export const getCategory = /* GraphQL */ `
+  query GetCategory($id: ID!) {
+    getCategory(id: $id) {
       id
-      formDefinitionID
-      questions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      text
       createdAt
       updatedAt
     }
   }
 `;
-export const listFormDefinitions = /* GraphQL */ `
-  query ListFormDefinitions(
-    $filter: ModelFormDefinitionFilterInput
+export const listCategorys = /* GraphQL */ `
+  query ListCategorys(
+    $filter: ModelCategoryFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listFormDefinitions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listCategorys(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        formDefinitionID
-        questions {
-          nextToken
-        }
+        text
         createdAt
         updatedAt
       }

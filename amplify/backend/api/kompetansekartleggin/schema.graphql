@@ -1,57 +1,50 @@
+
+
+type FormDefinition @model {
+    id: ID!
+    questions: [Question] @connection(keyName: "byFormDefinition", fields: ["id"])
+}
+
 type UserForm @model @auth(rules: [{ allow: owner }]) {
     id: ID!
-    questionAnswers: [QuestionAnswer]
-        @connection(keyName: "byUserForm", fields: ["id"])
-    formDefinition: FormDefinition! @connection
+    formDefinitionID: ID!
+    questionAnswers: [QuestionAnswer] @connection(keyName: "byUserForm", fields: ["id"])
+    formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
 }
 
 type QuestionAnswer @model @auth(rules: [{ allow: owner }])
 @key(name: "byUserForm", fields: ["userFormID"]) {
     id: ID!
     userFormID: ID!
-    question: Question! @connection
+    questionID: ID!
     knowledge: Float!
     motivation: Float!
+    question: Question! @connection(fields: ["questionID"])
 }
 
-type Question @model {
+type Question @model 
+@key(name: "byFormDefinition", fields: ["formDefinitionID"]) {
     id: ID!
     text: String!
     topic: String!
     qid: String
     index: Int
-    category: String!
+    formDefinitionID: ID!
+    categoryID: ID!
+    category: Category! @connection(fields: ["categoryID"])
 }
 
-type FormDefinition @model 
-@key(name: "formDef", fields: ["formDefinitionID"]) {
+type Category @model {
     id: ID!
-    formDefinitionID: ID!
-    questions: [QuestionFormDefinitionConnection]
-        @connection(keyName: "connectedFormDefinition", fields: ["id"])
-}
-
-type QuestionFormDefinitionConnection @model(queries: null)
-@key(
-    name: "connectedFormDefinition"
-    fields: ["formDefinitionID", "questionID"]
-)
-@key(name: "connectedQuestion", fields: ["questionID", "formDefinitionID"]) {
-    id: ID!
-    formDefinitionID: ID!
-    questionID: ID!
-    question: Question! 
-        @connection(fields: ["questionID"])
-    formDefinition: FormDefinition!
-        @connection(fields: ["formDefinitionID"])
+    text: String!
 }
 
 input CreateQuestionAnswerInput {
     id: ID
     userFormID: ID!
+    questionID: ID!
     knowledge: Float!
     motivation: Float!
-    questionAnswerQuestionId: ID!
 }
 
 input BatchTableEnvironmentInput {

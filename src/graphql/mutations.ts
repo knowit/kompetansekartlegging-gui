@@ -10,21 +10,107 @@ export const batchCreateQuestionAnswer = /* GraphQL */ `
     batchCreateQuestionAnswer(input: $input, env: $env) {
       id
       userFormID
+      questionID
+      knowledge
+      motivation
       question {
         id
         text
         topic
         qid
         index
-        category
+        formDefinitionID
+        categoryID
+        category {
+          id
+          text
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
-      knowledge
-      motivation
       createdAt
       updatedAt
       owner
+    }
+  }
+`;
+export const createFormDefinition = /* GraphQL */ `
+  mutation CreateFormDefinition(
+    $input: CreateFormDefinitionInput!
+    $condition: ModelFormDefinitionConditionInput
+  ) {
+    createFormDefinition(input: $input, condition: $condition) {
+      id
+      questions {
+        items {
+          id
+          text
+          topic
+          qid
+          index
+          formDefinitionID
+          categoryID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFormDefinition = /* GraphQL */ `
+  mutation UpdateFormDefinition(
+    $input: UpdateFormDefinitionInput!
+    $condition: ModelFormDefinitionConditionInput
+  ) {
+    updateFormDefinition(input: $input, condition: $condition) {
+      id
+      questions {
+        items {
+          id
+          text
+          topic
+          qid
+          index
+          formDefinitionID
+          categoryID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFormDefinition = /* GraphQL */ `
+  mutation DeleteFormDefinition(
+    $input: DeleteFormDefinitionInput!
+    $condition: ModelFormDefinitionConditionInput
+  ) {
+    deleteFormDefinition(input: $input, condition: $condition) {
+      id
+      questions {
+        items {
+          id
+          text
+          topic
+          qid
+          index
+          formDefinitionID
+          categoryID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -35,10 +121,12 @@ export const createUserForm = /* GraphQL */ `
   ) {
     createUserForm(input: $input, condition: $condition) {
       id
+      formDefinitionID
       questionAnswers {
         items {
           id
           userFormID
+          questionID
           knowledge
           motivation
           createdAt
@@ -49,7 +137,6 @@ export const createUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
-        formDefinitionID
         questions {
           nextToken
         }
@@ -69,10 +156,12 @@ export const updateUserForm = /* GraphQL */ `
   ) {
     updateUserForm(input: $input, condition: $condition) {
       id
+      formDefinitionID
       questionAnswers {
         items {
           id
           userFormID
+          questionID
           knowledge
           motivation
           createdAt
@@ -83,7 +172,6 @@ export const updateUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
-        formDefinitionID
         questions {
           nextToken
         }
@@ -103,10 +191,12 @@ export const deleteUserForm = /* GraphQL */ `
   ) {
     deleteUserForm(input: $input, condition: $condition) {
       id
+      formDefinitionID
       questionAnswers {
         items {
           id
           userFormID
+          questionID
           knowledge
           motivation
           createdAt
@@ -117,7 +207,6 @@ export const deleteUserForm = /* GraphQL */ `
       }
       formDefinition {
         id
-        formDefinitionID
         questions {
           nextToken
         }
@@ -138,18 +227,26 @@ export const createQuestionAnswer = /* GraphQL */ `
     createQuestionAnswer(input: $input, condition: $condition) {
       id
       userFormID
+      questionID
+      knowledge
+      motivation
       question {
         id
         text
         topic
         qid
         index
-        category
+        formDefinitionID
+        categoryID
+        category {
+          id
+          text
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
-      knowledge
-      motivation
       createdAt
       updatedAt
       owner
@@ -164,18 +261,26 @@ export const updateQuestionAnswer = /* GraphQL */ `
     updateQuestionAnswer(input: $input, condition: $condition) {
       id
       userFormID
+      questionID
+      knowledge
+      motivation
       question {
         id
         text
         topic
         qid
         index
-        category
+        formDefinitionID
+        categoryID
+        category {
+          id
+          text
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
-      knowledge
-      motivation
       createdAt
       updatedAt
       owner
@@ -190,18 +295,26 @@ export const deleteQuestionAnswer = /* GraphQL */ `
     deleteQuestionAnswer(input: $input, condition: $condition) {
       id
       userFormID
+      questionID
+      knowledge
+      motivation
       question {
         id
         text
         topic
         qid
         index
-        category
+        formDefinitionID
+        categoryID
+        category {
+          id
+          text
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }
-      knowledge
-      motivation
       createdAt
       updatedAt
       owner
@@ -219,7 +332,14 @@ export const createQuestion = /* GraphQL */ `
       topic
       qid
       index
-      category
+      formDefinitionID
+      categoryID
+      category {
+        id
+        text
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -236,7 +356,14 @@ export const updateQuestion = /* GraphQL */ `
       topic
       qid
       index
-      category
+      formDefinitionID
+      categoryID
+      category {
+        id
+        text
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -253,109 +380,11 @@ export const deleteQuestion = /* GraphQL */ `
       topic
       qid
       index
-      category
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createFormDefinition = /* GraphQL */ `
-  mutation CreateFormDefinition(
-    $input: CreateFormDefinitionInput!
-    $condition: ModelFormDefinitionConditionInput
-  ) {
-    createFormDefinition(input: $input, condition: $condition) {
-      id
       formDefinitionID
-      questions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateFormDefinition = /* GraphQL */ `
-  mutation UpdateFormDefinition(
-    $input: UpdateFormDefinitionInput!
-    $condition: ModelFormDefinitionConditionInput
-  ) {
-    updateFormDefinition(input: $input, condition: $condition) {
-      id
-      formDefinitionID
-      questions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteFormDefinition = /* GraphQL */ `
-  mutation DeleteFormDefinition(
-    $input: DeleteFormDefinitionInput!
-    $condition: ModelFormDefinitionConditionInput
-  ) {
-    deleteFormDefinition(input: $input, condition: $condition) {
-      id
-      formDefinitionID
-      questions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createQuestionFormDefinitionConnection = /* GraphQL */ `
-  mutation CreateQuestionFormDefinitionConnection(
-    $input: CreateQuestionFormDefinitionConnectionInput!
-    $condition: ModelQuestionFormDefinitionConnectionConditionInput
-  ) {
-    createQuestionFormDefinitionConnection(
-      input: $input
-      condition: $condition
-    ) {
-      id
-      formDefinitionID
-      questionID
-      question {
+      categoryID
+      category {
         id
         text
-        topic
-        qid
-        index
-        category
-        createdAt
-        updatedAt
-      }
-      formDefinition {
-        id
-        formDefinitionID
-        questions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -364,73 +393,40 @@ export const createQuestionFormDefinitionConnection = /* GraphQL */ `
     }
   }
 `;
-export const updateQuestionFormDefinitionConnection = /* GraphQL */ `
-  mutation UpdateQuestionFormDefinitionConnection(
-    $input: UpdateQuestionFormDefinitionConnectionInput!
-    $condition: ModelQuestionFormDefinitionConnectionConditionInput
+export const createCategory = /* GraphQL */ `
+  mutation CreateCategory(
+    $input: CreateCategoryInput!
+    $condition: ModelCategoryConditionInput
   ) {
-    updateQuestionFormDefinitionConnection(
-      input: $input
-      condition: $condition
-    ) {
+    createCategory(input: $input, condition: $condition) {
       id
-      formDefinitionID
-      questionID
-      question {
-        id
-        text
-        topic
-        qid
-        index
-        category
-        createdAt
-        updatedAt
-      }
-      formDefinition {
-        id
-        formDefinitionID
-        questions {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      text
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteQuestionFormDefinitionConnection = /* GraphQL */ `
-  mutation DeleteQuestionFormDefinitionConnection(
-    $input: DeleteQuestionFormDefinitionConnectionInput!
-    $condition: ModelQuestionFormDefinitionConnectionConditionInput
+export const updateCategory = /* GraphQL */ `
+  mutation UpdateCategory(
+    $input: UpdateCategoryInput!
+    $condition: ModelCategoryConditionInput
   ) {
-    deleteQuestionFormDefinitionConnection(
-      input: $input
-      condition: $condition
-    ) {
+    updateCategory(input: $input, condition: $condition) {
       id
-      formDefinitionID
-      questionID
-      question {
-        id
-        text
-        topic
-        qid
-        index
-        category
-        createdAt
-        updatedAt
-      }
-      formDefinition {
-        id
-        formDefinitionID
-        questions {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      text
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteCategory = /* GraphQL */ `
+  mutation DeleteCategory(
+    $input: DeleteCategoryInput!
+    $condition: ModelCategoryConditionInput
+  ) {
+    deleteCategory(input: $input, condition: $condition) {
+      id
+      text
       createdAt
       updatedAt
     }
