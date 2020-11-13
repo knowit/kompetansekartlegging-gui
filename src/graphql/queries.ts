@@ -6,21 +6,11 @@ export const getFormDefinition = /* GraphQL */ `
   query GetFormDefinition($id: ID!) {
     getFormDefinition(id: $id) {
       id
+      createdAt
+      dummy
       questions {
-        items {
-          id
-          text
-          topic
-          qid
-          index
-          formDefinitionID
-          categoryID
-          createdAt
-          updatedAt
-        }
         nextToken
       }
-      createdAt
       updatedAt
     }
   }
@@ -34,10 +24,8 @@ export const listFormDefinitions = /* GraphQL */ `
     listFormDefinitions(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        dummy
         updatedAt
       }
       nextToken
@@ -50,24 +38,12 @@ export const getUserForm = /* GraphQL */ `
       id
       formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          questionID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        dummy
         updatedAt
       }
       createdAt
@@ -86,14 +62,6 @@ export const listUserForms = /* GraphQL */ `
       items {
         id
         formDefinitionID
-        questionAnswers {
-          nextToken
-        }
-        formDefinition {
-          id
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
         owner
@@ -118,12 +86,6 @@ export const getQuestionAnswer = /* GraphQL */ `
         index
         formDefinitionID
         categoryID
-        category {
-          id
-          text
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }
@@ -146,17 +108,6 @@ export const listQuestionAnswers = /* GraphQL */ `
         questionID
         knowledge
         motivation
-        question {
-          id
-          text
-          topic
-          qid
-          index
-          formDefinitionID
-          categoryID
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
         owner
@@ -201,12 +152,6 @@ export const listQuestions = /* GraphQL */ `
         index
         formDefinitionID
         categoryID
-        category {
-          id
-          text
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }

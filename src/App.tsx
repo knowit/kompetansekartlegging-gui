@@ -19,7 +19,7 @@ awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 Amplify.configure(awsconfig);
 
-let formDef = require('./form2.json')
+const formDef = require('./form3.json');
 
 const App = () => {
     const style = AppStyle();
@@ -56,6 +56,7 @@ const App = () => {
         Dirty function to upload form definition in the initial stages of the project.
         Should not be kept in the future.
         */
+       /*
         let i;
         let question;
         let qid:string;
@@ -66,9 +67,10 @@ const App = () => {
             question = formDef[i];
             qid = Date.now() + "_" + i;
             await API.graphql(graphqlOperation(mutations.createQuestion, { input: { ...question, "id": qid} }));
-            await API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
+            // await API.graphql(graphqlOperation(mutations.createQuestionFormDefinitionConnection, { input: { "formDefinitionID": fdid, "questionID": qid, "id": fdid + qid } }));
             // console.log(qid);
         }
+        */
     }
 
     return (

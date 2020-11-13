@@ -21,12 +21,6 @@ export const batchCreateQuestionAnswer = /* GraphQL */ `
         index
         formDefinitionID
         categoryID
-        category {
-          id
-          text
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }
@@ -43,21 +37,11 @@ export const createFormDefinition = /* GraphQL */ `
   ) {
     createFormDefinition(input: $input, condition: $condition) {
       id
+      createdAt
+      dummy
       questions {
-        items {
-          id
-          text
-          topic
-          qid
-          index
-          formDefinitionID
-          categoryID
-          createdAt
-          updatedAt
-        }
         nextToken
       }
-      createdAt
       updatedAt
     }
   }
@@ -69,21 +53,11 @@ export const updateFormDefinition = /* GraphQL */ `
   ) {
     updateFormDefinition(input: $input, condition: $condition) {
       id
+      createdAt
+      dummy
       questions {
-        items {
-          id
-          text
-          topic
-          qid
-          index
-          formDefinitionID
-          categoryID
-          createdAt
-          updatedAt
-        }
         nextToken
       }
-      createdAt
       updatedAt
     }
   }
@@ -95,21 +69,11 @@ export const deleteFormDefinition = /* GraphQL */ `
   ) {
     deleteFormDefinition(input: $input, condition: $condition) {
       id
+      createdAt
+      dummy
       questions {
-        items {
-          id
-          text
-          topic
-          qid
-          index
-          formDefinitionID
-          categoryID
-          createdAt
-          updatedAt
-        }
         nextToken
       }
-      createdAt
       updatedAt
     }
   }
@@ -123,24 +87,12 @@ export const createUserForm = /* GraphQL */ `
       id
       formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          questionID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        dummy
         updatedAt
       }
       createdAt
@@ -158,24 +110,12 @@ export const updateUserForm = /* GraphQL */ `
       id
       formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          questionID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        dummy
         updatedAt
       }
       createdAt
@@ -193,24 +133,12 @@ export const deleteUserForm = /* GraphQL */ `
       id
       formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          questionID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        dummy
         updatedAt
       }
       createdAt
@@ -238,12 +166,6 @@ export const createQuestionAnswer = /* GraphQL */ `
         index
         formDefinitionID
         categoryID
-        category {
-          id
-          text
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }
@@ -272,12 +194,6 @@ export const updateQuestionAnswer = /* GraphQL */ `
         index
         formDefinitionID
         categoryID
-        category {
-          id
-          text
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }
@@ -306,12 +222,6 @@ export const deleteQuestionAnswer = /* GraphQL */ `
         index
         formDefinitionID
         categoryID
-        category {
-          id
-          text
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }

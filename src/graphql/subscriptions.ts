@@ -6,21 +6,11 @@ export const onCreateFormDefinition = /* GraphQL */ `
   subscription OnCreateFormDefinition {
     onCreateFormDefinition {
       id
+      createdAt
+      dummy
       questions {
-        items {
-          id
-          text
-          topic
-          qid
-          index
-          formDefinitionID
-          categoryID
-          createdAt
-          updatedAt
-        }
         nextToken
       }
-      createdAt
       updatedAt
     }
   }
@@ -29,21 +19,11 @@ export const onUpdateFormDefinition = /* GraphQL */ `
   subscription OnUpdateFormDefinition {
     onUpdateFormDefinition {
       id
+      createdAt
+      dummy
       questions {
-        items {
-          id
-          text
-          topic
-          qid
-          index
-          formDefinitionID
-          categoryID
-          createdAt
-          updatedAt
-        }
         nextToken
       }
-      createdAt
       updatedAt
     }
   }
@@ -52,21 +32,11 @@ export const onDeleteFormDefinition = /* GraphQL */ `
   subscription OnDeleteFormDefinition {
     onDeleteFormDefinition {
       id
+      createdAt
+      dummy
       questions {
-        items {
-          id
-          text
-          topic
-          qid
-          index
-          formDefinitionID
-          categoryID
-          createdAt
-          updatedAt
-        }
         nextToken
       }
-      createdAt
       updatedAt
     }
   }
@@ -77,24 +47,12 @@ export const onCreateUserForm = /* GraphQL */ `
       id
       formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          questionID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        dummy
         updatedAt
       }
       createdAt
@@ -109,24 +67,12 @@ export const onUpdateUserForm = /* GraphQL */ `
       id
       formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          questionID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        dummy
         updatedAt
       }
       createdAt
@@ -141,24 +87,12 @@ export const onDeleteUserForm = /* GraphQL */ `
       id
       formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          questionID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        dummy
         updatedAt
       }
       createdAt
@@ -183,12 +117,6 @@ export const onCreateQuestionAnswer = /* GraphQL */ `
         index
         formDefinitionID
         categoryID
-        category {
-          id
-          text
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }
@@ -214,12 +142,6 @@ export const onUpdateQuestionAnswer = /* GraphQL */ `
         index
         formDefinitionID
         categoryID
-        category {
-          id
-          text
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }
@@ -245,12 +167,6 @@ export const onDeleteQuestionAnswer = /* GraphQL */ `
         index
         formDefinitionID
         categoryID
-        category {
-          id
-          text
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }

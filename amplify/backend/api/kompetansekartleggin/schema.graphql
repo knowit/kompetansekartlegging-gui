@@ -1,7 +1,10 @@
 
 
-type FormDefinition @model {
+type FormDefinition @model 
+@key(name: "byCreatedAt", fields: ["dummy", "createdAt"]) {
     id: ID!
+    createdAt: AWSDateTime!
+    dummy: String
     questions: [Question] @connection(keyName: "byFormDefinition", fields: ["id"])
 }
 
