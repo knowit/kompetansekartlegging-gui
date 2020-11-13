@@ -186,3 +186,30 @@ export const listCategorys = /* GraphQL */ `
     }
   }
 `;
+export const formByCreatedAt = /* GraphQL */ `
+  query FormByCreatedAt(
+    $dummy: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelFormDefinitionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    formByCreatedAt(
+      dummy: $dummy
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        dummy
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

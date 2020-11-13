@@ -267,6 +267,22 @@ export type ModelCategoryFilterInput = {
   not?: ModelCategoryFilterInput | null,
 };
 
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type BatchCreateQuestionAnswerMutationVariables = {
   input?: Array< CreateQuestionAnswerInput | null > | null,
   env?: BatchTableEnvironmentInput | null,
@@ -873,6 +889,29 @@ export type ListCategorysQuery = {
       id: string,
       text: string,
       createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type FormByCreatedAtQueryVariables = {
+  dummy?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelFormDefinitionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type FormByCreatedAtQuery = {
+  formByCreatedAt:  {
+    __typename: "ModelFormDefinitionConnection",
+    items:  Array< {
+      __typename: "FormDefinition",
+      id: string,
+      createdAt: string,
+      dummy: string | null,
       updatedAt: string,
     } | null > | null,
     nextToken: string | null,
