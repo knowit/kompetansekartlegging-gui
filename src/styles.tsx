@@ -138,13 +138,13 @@ export const CardStyle = makeStyles<Theme, ZProps>((theme: Theme) =>
             zIndex: ({ zIndex }) => zIndex
         },
         bottomCardClosed: {
-            position: 'relative',
+            // position: 'relative',
             //marginTop: cardCornerRadius,
-            boxShadow: "0px 3px 2px grey",
-            borderBottomLeftRadius: cardCornerRadius,
-            borderBottomRightRadius: cardCornerRadius,
+            // boxShadow: "0px 3px 2px grey",
+            // borderBottomLeftRadius: cardCornerRadius,
+            // borderBottomRightRadius: cardCornerRadius,
             zIndex: ({ zIndex }) => zIndex,
-            backgroundColor: KnowitColors.darkGreen
+            // backgroundColor: KnowitColors.darkGreen
         },
         bottomCardOpen: {
             position: 'relative',

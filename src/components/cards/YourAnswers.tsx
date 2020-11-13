@@ -8,10 +8,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import { AlertDialog } from '../AlertDialog';
 import AnswerDiagram from '../AnswerDiagram';
 
-const BottomCardStyle = makeStyles({
-    
-})
-
 const AnswersStyle = makeStyles({
     root: {
         display: 'flex',
@@ -83,6 +79,20 @@ const AnswersStyle = makeStyles({
         // marginTop: cardCornerRadius,
         paddingTop: cardCornerRadius,
         height: cardCornerRadius,
+        backgroundColor: KnowitColors.greyGreen
+    },
+    cardHeaderClosed: {
+        width: '20%',
+        display: "flex",
+        // marginTop: cardCornerRadius,
+        // paddingTop: cardCornerRadius,
+        // height: cardCornerRadius,
+        height: cardCornerRadius,
+        paddingTop: cardCornerRadius,
+        marginTop: -cardCornerRadius,
+        boxShadow: '0px 3px 2px gray',
+        borderRadius: '0px 0px 20px 20px',
+
         backgroundColor: KnowitColors.greyGreen
     },
     closeButton: {
@@ -165,7 +175,7 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
 
     return (
         <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.bottomCardOpen : cardStyle.bottomCardClosed)}>
-            <div className={props.commonCardProps.active ? style.cardHeaderOpen : cardStyle.cardHeaderClosed}>
+            <div className={props.commonCardProps.active ? style.cardHeaderOpen : style.cardHeaderClosed}>
                 <button
                     onClick={buttonClick}
                     className={clsx(cardStyle.cardButton)}
