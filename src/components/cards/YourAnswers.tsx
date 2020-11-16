@@ -41,7 +41,7 @@ const AnswersStyle = makeStyles({
     },
     categoryList: {
         width: '20%',
-        //height: '100%',
+        height: 'min-content',
         backgroundColor: KnowitColors.greyGreen,
         borderRadius: '0px 0px 20px 20px',
         paddingBottom: '20px',
@@ -69,6 +69,7 @@ const AnswersStyle = makeStyles({
         '&:hover': {
             background: KnowitColors.white
         },
+        justifyContent: 'left'
     },
     categoryButtonActive: {
         backgroundColor: KnowitColors.white
@@ -130,7 +131,12 @@ const AnswersStyle = makeStyles({
         justifyContent: 'center',
         fontWeight: 'bold',
         fontSize: 18,
-    }
+    },
+    buttonText: {
+        textTransform: 'none',
+        textAlign: 'left',
+        justifyContent: 'left'
+    },
 });
 
 export const YourAnswers = ({ ...props }: YourAnswerProps) => {
@@ -155,8 +161,9 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
         props.commonCardProps.setActiveCard(props.commonCardProps.index, !props.commonCardProps.active);
     };
 
-    const getCategoryButtons = () => {
+    const getCategoryButtons = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
+        let orderNumber: number = 1;
         props.categories.forEach(cat => {
             buttons.push(
                 <Button
@@ -167,11 +174,14 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
                         props.activeCategory === cat ? style.categoryButtonActive : ""
                     )}
                     onClick={() => { saveBeforeChange(cat) }}
-                >{cat}</Button>
+                    ><div className={style.buttonText}>{orderNumber}. {cat}</div></Button>
             );
+            orderNumber++;
         });
         return buttons;
     };
+
+    
 
     return (
         <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.bottomCardOpen : cardStyle.bottomCardClosed)}>
