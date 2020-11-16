@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
+import { AnswerData, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
@@ -24,26 +24,24 @@ const Content = () => {
 
     const createCategories = () => {
         if(!formDefinition) return [];
-        let formDef = formDefinition.getFormDefinition;
-        if(!formDef?.questions.items) return [];
-        return formDef.questions.items
-            .map(item => item.question.category)
+        if(!formDefinition?.questions.items) return [];
+        return formDefinition.questions.items
+            .map(item => item.category.text)
             .filter((value, index, array) => array.indexOf(value) === index);
     };
 
     const createAnswers = (): AnswerData[] => {
         if(!formDefinition) return [];
-        let formDef = formDefinition.getFormDefinition;
         let as: AnswerData[] = [];
-        if(formDef?.questions.items){
-            for (let i = 0; i < formDef.questions.items.length; i++) {
-                const element = formDef.questions.items[i];
-                if (!element) continue;
-                let preAnswer = userAnswers.find(answer => answer.question.id === element.question.id);
+        if(formDefinition?.questions.items){
+            for (let i = 0; i < formDefinition.questions.items.length; i++) {
+                const question = formDefinition.questions.items[i];
+                if (!question) continue;
+                let preAnswer = userAnswers.find(answer => answer.question.id === question.id);
                 as.push({
-                    questionId: element.question.id,
-                    topic: element.question.topic,
-                    category: element.question.category,
+                    questionId: question.id,
+                    topic: question.topic,
+                    category: question.category.text,
                     knowledge: preAnswer ? (preAnswer.knowledge ? preAnswer.knowledge : 0) : -1,
                     motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1
                 });
@@ -55,7 +53,7 @@ const Content = () => {
     const createRadarData = (): AnswerData[] => {
 
         if(!formDefinition) return [];
-        let questionList = formDefinition.getFormDefinition.questions.items;
+        let questionList = formDefinition.questions.items;
         if(!answers || !questionList) return [];
         let newRadarData: AnswerData[] = [];
         for (let i = 0; i < answers.length; i++) {
@@ -77,7 +75,7 @@ const Content = () => {
       
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
-        let fdid = formDefinition.getFormDefinition.id;
+        let fdid = formDefinition.id;
         let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"userFormFormDefinitionId": fdid}})).data;
         if(!answers) return;
         let questionAnswers = [];
@@ -123,17 +121,22 @@ const Content = () => {
     };
 
     const fetchLastFormDefinition = async () => {
-        let formList = await helper.callGraphQL<ListedFormDefinition>(queries.listFormDefinitions);
-        let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
-        let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
+        let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAt, customQueries.formByCreatedAtInputConsts);
+        // let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
+        // let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
+        console.log(currentForm);
         if(currentForm.data){
 
-            let sorted = currentForm.data.getFormDefinition.questions.items
-                .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1);
+            //TODO: Need to sort questions again, currently removed but can be implemented
 
-            currentForm.data.getFormDefinition.questions.items = sorted;
+            // currentForm.data.formByCreatedAt.items[0].questions
+            // let sorted = currentForm.data.formByCreatedAt.items[0].questions.items
+            //     .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1);
 
-            setFormDefinition(currentForm.data);
+            // currentForm.data.getFormDefinition.questions.items = sorted;
+
+
+            setFormDefinition(currentForm.data.formByCreatedAt.items[0]);
         } 
     };
 
