@@ -92,7 +92,7 @@ export default function Highlights(props: { data: AnswerData[] }) {
                     {createKnowledgeHighlights()}
             </div>
             <div className={style.col}>
-                <div className={style.heading}>ASPIRASJONER</div>
+                <div className={style.heading}>AMBISJONER</div>
                     {createMotivationHighlights()}
             </div>
             </div>
