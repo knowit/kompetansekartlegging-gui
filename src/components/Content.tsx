@@ -34,8 +34,10 @@ const Content = () => {
         if(!formDefinition) return [];
         let as: AnswerData[] = [];
         if(formDefinition?.questions.items){
+            console.log(userAnswers);
             for (let i = 0; i < formDefinition.questions.items.length; i++) {
                 const question = formDefinition.questions.items[i];
+                // console.log(question);
                 if (!question) continue;
                 let preAnswer = userAnswers.find(answer => answer.question.id === question.id);
                 as.push({
@@ -47,6 +49,7 @@ const Content = () => {
                 });
             }
         }
+        console.log(as);
         return as;
     };
 
@@ -76,16 +79,16 @@ const Content = () => {
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
         let fdid = formDefinition.id;
-        let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"userFormFormDefinitionId": fdid}})).data;
+        let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"formDefinitionID": fdid}})).data;
         if(!answers) return;
         let questionAnswers = [];
         for(let i = 0; i < answers.length; i++){
             if(answers[i].knowledge < 0 && answers[i].motivation < 0) continue;
             questionAnswers.push({
                 userFormID: userForm?.createUserForm.id,
+                questionID: answers[i].questionId,
                 knowledge: answers[i].knowledge,
-                motivation: answers[i].motivation,
-                questionAnswerQuestionId: answers[i].questionId
+                motivation: answers[i].motivation
             });
         }
         
@@ -124,7 +127,7 @@ const Content = () => {
         let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAt, customQueries.formByCreatedAtInputConsts);
         // let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
         // let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
-        console.log(currentForm);
+        // console.log(currentForm);
         if(currentForm.data){
 
             //TODO: Need to sort questions again, currently removed but can be implemented
@@ -142,6 +145,7 @@ const Content = () => {
 
     const getUserAnswers = async () => {
         let allAnswers = await helper.listUserForms();
+        console.log(allAnswers);
         if(allAnswers.length === 0) return;
         let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
         if(lastUserAnswer) setUserAnswers(lastUserAnswer);

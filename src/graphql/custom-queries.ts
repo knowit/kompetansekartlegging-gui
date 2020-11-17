@@ -71,6 +71,7 @@ export const listUserFormsWithAnswers = /* GraphQL */ `
           }
         }
       }
+      nextToken
     }
   }
 `;
