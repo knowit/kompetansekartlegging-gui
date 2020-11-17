@@ -3,6 +3,7 @@ import './App.css';
 import Amplify, {Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
 import * as mutations from './graphql/mutations';
+import * as helper from './helperFunctions'
 import {withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import Content from './components/Content';
 import NavBar from './components/NavBar';
@@ -13,6 +14,7 @@ import { AppStyle } from './styles';
 import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
 import Login from './components/Login';
 import userEvent from '@testing-library/user-event';
+import { UserFormWithAnswers } from './types';
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -26,6 +28,7 @@ const App = () => {
 
     const [user, setUser] = useState<any | null>(null);
     const [customState, setCustomState] = useState<any | null>(null)
+    const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     
 
     useEffect(() => {
@@ -71,14 +74,35 @@ const App = () => {
         }
     }
 
+    const deleteUserData = async () => {
+        let allUserForms = await helper.listUserForms();
+        let deleteResult = [];
+        if(allUserForms.length > 0){
+            for(let i = 0; i < allUserForms.length; i++) {
+                for(const answer of allUserForms[i].questionAnswers.items){
+                    deleteResult.push((await helper.callGraphQL(mutations.deleteQuestionAnswer, {input: {"id": answer.id}})));
+                }
+                deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": allUserForms[i].id}})));
+            }
+            console.log(deleteResult);
+        } else console.log("No Userforms active");
+    };
+
     return (
         <div className={style.root}>
             <BrowserRouter>
                 {user ?
                     <Fragment>
-                        <NavBar user={user}/>
+                        <NavBar
+                            user={user}
+                            callbackDelete={deleteUserData}
+                            setAnswerHistoryOpen={setAnswerHistoryOpen}
+                        />
                         {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
-                        <Content />
+                        <Content
+                            answerHistoryOpen={answerHistoryOpen}
+                            setHistoryViewOpen={setAnswerHistoryOpen}
+                        />
                         <Footer/>
                     </Fragment>
                 :

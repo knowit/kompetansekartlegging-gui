@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
+import { AnswerData, BatchCreatedQuestionAnswer, ContentProps, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
@@ -8,8 +8,9 @@ import { Overview } from './cards/Overview';
 import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
 import { CardStyle } from '../styles';
+import { AnswerHistory } from './AnswerHistory';
 
-const Content = () => {
+const Content = ({...props}: ContentProps) => {
     
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
@@ -21,6 +22,8 @@ const Content = () => {
     const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
     const [updateSliderValues, setUpdateSliderValues] = useState<boolean>(true)
+    const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
+    const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -150,6 +153,11 @@ const Content = () => {
         answerViewModeActive(true);
     };
 
+    const fetchUserFormsAndOpenView = async () => {
+        let allUserForms = await helper.listUserForms();
+        setAnswerLog(allUserForms);
+        setHistoryViewOpen(true);
+    };
 
     const resetAnswers = () => {
         setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
@@ -193,6 +201,14 @@ const Content = () => {
             setIsAnswersSubmitted(true)
         } 
     }, [radarData]);
+
+    useEffect(() => {
+        if (props.answerHistoryOpen) {
+            fetchUserFormsAndOpenView() 
+        } else {
+            setHistoryViewOpen(false);
+        }
+    }, [props.answerHistoryOpen]);
 
     //New States etc for new card functionality
     /*
@@ -258,6 +274,12 @@ const Content = () => {
                 // setUpdateSliderValues={updateSliderValues}
                 answerViewModeActive={answerViewModeActive}
                 answerViewMode={answerViewMode}
+            />
+            <AnswerHistory
+                setHistoryViewOpen={props.setHistoryViewOpen}
+                historyViewOpen={historyViewOpen}
+                history={answerLog}
+                formDefinition={formDefinition ?? undefined}
             />
         </div>
     );
