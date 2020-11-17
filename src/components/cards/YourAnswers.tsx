@@ -13,7 +13,7 @@ const AnswersStyle = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         width: "100%",
-        backgroundColor: KnowitColors.greyGreen
+        backgroundColor: KnowitColors.white,//KnowitColors.greyGreen
     },
     hidden: {
         display: "none"
@@ -41,7 +41,12 @@ const AnswersStyle = makeStyles({
     },
     categoryList: {
         width: '20%',
-        height: '100%'
+        height: 'min-content',
+        backgroundColor: KnowitColors.greyGreen,
+        borderRadius: '0px 0px 20px 20px',
+        paddingBottom: '20px',
+        boxShadow: "0px 3px 0px grey",
+        marginBottom: "8px",
     },
     categoryListInner: {
         marginTop: 10,
@@ -64,14 +69,32 @@ const AnswersStyle = makeStyles({
         '&:hover': {
             background: KnowitColors.white
         },
+        justifyContent: 'left'
     },
     categoryButtonActive: {
         backgroundColor: KnowitColors.white
     },
-    cardHeader: {
+    cardHeaderOpen: {
+        width: '20%',
         display: "flex",
-        marginTop: cardCornerRadius,
-        height: cardCornerRadius
+        // marginTop: cardCornerRadius,
+        paddingTop: cardCornerRadius,
+        height: cardCornerRadius,
+        backgroundColor: KnowitColors.greyGreen
+    },
+    cardHeaderClosed: {
+        width: '20%',
+        display: "flex",
+        // marginTop: cardCornerRadius,
+        // paddingTop: cardCornerRadius,
+        // height: cardCornerRadius,
+        height: cardCornerRadius,
+        paddingTop: cardCornerRadius,
+        marginTop: -cardCornerRadius,
+        boxShadow: '0px 3px 2px gray',
+        borderRadius: '0px 0px 20px 20px',
+
+        backgroundColor: KnowitColors.greyGreen
     },
     closeButton: {
         marginTop: "3px",
@@ -108,7 +131,12 @@ const AnswersStyle = makeStyles({
         justifyContent: 'center',
         fontWeight: 'bold',
         fontSize: 18,
-    }
+    },
+    buttonText: {
+        textTransform: 'none',
+        textAlign: 'left',
+        justifyContent: 'left'
+    },
 });
 
 export const YourAnswers = ({ ...props }: YourAnswerProps) => {
@@ -133,8 +161,9 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
         props.commonCardProps.setActiveCard(props.commonCardProps.index, !props.commonCardProps.active);
     };
 
-    const getCategoryButtons = () => {
+    const getCategoryButtons = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
+        let orderNumber: number = 1;
         props.categories.forEach(cat => {
             buttons.push(
                 <Button
@@ -145,15 +174,18 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
                         props.activeCategory === cat ? style.categoryButtonActive : ""
                     )}
                     onClick={() => { saveBeforeChange(cat) }}
-                >{cat}</Button>
+                    ><div className={style.buttonText}>{orderNumber}. {cat}</div></Button>
             );
+            orderNumber++;
         });
         return buttons;
     };
 
+    
+
     return (
-        <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.open : cardStyle.closed)}>
-            <div className={style.cardHeader}>
+        <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.bottomCardOpen : cardStyle.bottomCardClosed)}>
+            <div className={props.commonCardProps.active ? style.cardHeaderOpen : style.cardHeaderClosed}>
                 <button
                     onClick={buttonClick}
                     className={clsx(cardStyle.cardButton)}
