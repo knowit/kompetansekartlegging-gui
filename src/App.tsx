@@ -101,7 +101,7 @@ const App = () => {
                         {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
                         <Content
                             answerHistoryOpen={answerHistoryOpen}
-                            setHistoryViewOpen={setAnswerHistoryOpen}
+                            setAnswerHistoryOpen={setAnswerHistoryOpen}
                         />
                         <Footer/>
                     </Fragment>

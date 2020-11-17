@@ -276,7 +276,7 @@ const Content = ({...props}: ContentProps) => {
                 answerViewMode={answerViewMode}
             />
             <AnswerHistory
-                setHistoryViewOpen={props.setHistoryViewOpen}
+                setHistoryViewOpen={props.setAnswerHistoryOpen}
                 historyViewOpen={historyViewOpen}
                 history={answerLog}
                 formDefinition={formDefinition ?? undefined}

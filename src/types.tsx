@@ -300,6 +300,6 @@ export type HistoryTreeViewProps = {
 };
 
 export type ContentProps = {
-    setHistoryViewOpen: (historyViewOpen: boolean) => void,
+    setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
     answerHistoryOpen: boolean
 };
