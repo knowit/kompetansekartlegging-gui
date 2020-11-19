@@ -11,7 +11,8 @@ type FormDefinition @model
 type UserForm @model @auth(rules: [{ allow: owner }]) {
     id: ID!
     formDefinitionID: ID!
-    questionAnswers: [QuestionAnswer] @connection(keyName: "byUserForm", fields: ["id"])
+    questionAnswers: [QuestionAnswer]!
+        @connection(keyName: "byUserForm", fields: ["id"]) 
     formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
 }
 
@@ -57,6 +58,9 @@ input BatchTableEnvironmentInput {
 type Mutation {
     batchCreateQuestionAnswer(
         input: [CreateQuestionAnswerInput]
-        env: BatchTableEnvironmentInput
-    ): [QuestionAnswer]
+    ): [QuestionAnswer] @function(name: "createUserformBatchLambda")
+    # batchCreateQuestionAnswerOld(
+    #     input: [CreateQuestionAnswerInput]
+    #     env: BatchTableEnvironmentInput
+    # ): [QuestionAnswer] @function(name: "createUserformBatchLambda")
 }

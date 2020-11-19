@@ -82,8 +82,8 @@ export const formByCreatedAtInputConsts = {
   sortDirection: ModelSortDirection.DESC,
 };
 
-export const formByCreatedAt = /* GraphQL */ `
-  query FormByCreatedAt(
+export const formByCreatedAtt = /* GraphQL */ `
+  query FormByCreatedAtt(
     $dummy: String
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection

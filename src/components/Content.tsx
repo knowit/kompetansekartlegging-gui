@@ -80,6 +80,7 @@ const Content = () => {
         if(!formDefinition) return;
         let fdid = formDefinition.id;
         let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"formDefinitionID": fdid}})).data;
+        // console.log(userForm);
         if(!answers) return;
         let questionAnswers = [];
         for(let i = 0; i < answers.length; i++){
@@ -124,7 +125,7 @@ const Content = () => {
     };
 
     const fetchLastFormDefinition = async () => {
-        let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAt, customQueries.formByCreatedAtInputConsts);
+        let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAtt, customQueries.formByCreatedAtInputConsts);
         // let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
         // let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
         // console.log(currentForm);

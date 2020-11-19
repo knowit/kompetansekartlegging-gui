@@ -3,11 +3,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const batchCreateQuestionAnswer = /* GraphQL */ `
-  mutation BatchCreateQuestionAnswer(
-    $input: [CreateQuestionAnswerInput]
-    $env: BatchTableEnvironmentInput
-  ) {
-    batchCreateQuestionAnswer(input: $input, env: $env) {
+  mutation BatchCreateQuestionAnswer($input: [CreateQuestionAnswerInput]) {
+    batchCreateQuestionAnswer(input: $input) {
       id
       userFormID
       questionID
