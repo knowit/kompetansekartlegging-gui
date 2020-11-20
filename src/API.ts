@@ -97,6 +97,7 @@ export type CreateQuestionAnswerInput = {
   questionID: string,
   knowledge: number,
   motivation: number,
+  environmentID: string,
 };
 
 export type CreateFormDefinitionInput = {

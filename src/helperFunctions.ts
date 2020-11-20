@@ -47,7 +47,7 @@ const splitArray = <T>(array: T[]): T[][] => {
 
 
 //For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
-const getEnvTableID = () => {
+export const getEnvTableID = () => {
     if(process.env.REACT_APP_ENV_TABLE_ID) return process.env.REACT_APP_ENV_TABLE_ID;
     else return "y2rtdeehijf77oncwd6xtr4uou-testback";
 }

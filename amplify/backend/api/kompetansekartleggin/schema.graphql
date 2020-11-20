@@ -49,6 +49,7 @@ input CreateQuestionAnswerInput {
     questionID: ID!
     knowledge: Float!
     motivation: Float!
+    environmentID: String!
 }
 
 input BatchTableEnvironmentInput {
@@ -64,3 +65,4 @@ type Mutation {
     #     env: BatchTableEnvironmentInput
     # ): [QuestionAnswer] @function(name: "createUserformBatchLambda")
 }
+

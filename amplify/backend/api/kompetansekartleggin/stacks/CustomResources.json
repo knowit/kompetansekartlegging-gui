@@ -37,7 +37,7 @@
         "ApiId": {
           "Ref": "AppSyncApiId"
         },
-        "DataSourceName": "QuestionAnswerTable",
+        "DataSourceName": "CreateUserformBatchLambdaDS",
         "TypeName": "Mutation",
         "FieldName": "batchCreateQuestionAnswer",
         "RequestMappingTemplateS3Location": {

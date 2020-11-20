@@ -8,6 +8,7 @@ import { Overview } from './cards/Overview';
 import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
 import { CardStyle } from '../styles';
+import { CreateQuestionAnswerInput } from '../API';
 
 const Content = () => {
     
@@ -82,14 +83,15 @@ const Content = () => {
         let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"formDefinitionID": fdid}})).data;
         // console.log(userForm);
         if(!answers) return;
-        let questionAnswers = [];
+        let questionAnswers: CreateQuestionAnswerInput[] = [];
         for(let i = 0; i < answers.length; i++){
             if(answers[i].knowledge < 0 && answers[i].motivation < 0) continue;
             questionAnswers.push({
-                userFormID: userForm?.createUserForm.id,
+                userFormID: userForm?.createUserForm.id || "",
                 questionID: answers[i].questionId,
                 knowledge: answers[i].knowledge,
-                motivation: answers[i].motivation
+                motivation: answers[i].motivation,
+                environmentID: helper.getEnvTableID()
             });
         }
         

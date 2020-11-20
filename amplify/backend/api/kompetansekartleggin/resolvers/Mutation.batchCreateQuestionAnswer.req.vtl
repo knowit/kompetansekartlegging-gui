@@ -41,8 +41,6 @@
 #end
 {
   "version": "2018-05-29",
-  "operation": "BatchPutItem",
-  "tables": {
-      "$ctx.args.env.envID": $utils.toJson($questionAnswerData)
-  }
+  "operation": "BatchInvoke",
+  "payload": $utils.toJson($questionAnswerData)
 }
