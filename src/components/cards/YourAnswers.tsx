@@ -49,13 +49,11 @@ const AnswersStyle = makeStyles({
         paddingBottom: '20px',
         boxShadow: "0px 3px 0px grey",
         marginBottom: "8px",
-        marginTop: "-10px"
     },
     leftCard: {
         width: '20%'
     },
     categoryListInner: {
-        marginTop: 10,
         marginLeft: 10,
         textAlign: 'center'
     },
