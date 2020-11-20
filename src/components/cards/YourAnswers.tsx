@@ -83,8 +83,9 @@ const AnswersStyle = makeStyles({
         display: "flex",
         // marginTop: cardCornerRadius,
         paddingTop: cardCornerRadius,
-        height: cardCornerRadius,
-        backgroundColor: KnowitColors.greyGreen
+        // height: cardCornerRadius,
+        height: 'max-content',
+        backgroundColor: KnowitColors.greyGreen,
     },
     cardHeaderClosed: {
         // width: '20%',
@@ -92,7 +93,8 @@ const AnswersStyle = makeStyles({
         // marginTop: cardCornerRadius,
         // paddingTop: cardCornerRadius,
         // height: cardCornerRadius,
-        height: cardCornerRadius,
+        height: 'max-content',
+
         paddingTop: cardCornerRadius,
         marginTop: -cardCornerRadius,
         boxShadow: '0px 3px 2px gray',
