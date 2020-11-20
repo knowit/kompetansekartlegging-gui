@@ -1,23 +1,17 @@
 import React, { Fragment, ReactSVGElement, useEffect, useState } from 'react'
 import { HorizontalBar } from 'react-chartjs-2';
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { limitStringLength, roundDecimals } from '../helperFunctions';
 import { KnowitColors } from '../styles';
 import { AnswerData, CalculationData, ResultData } from '../types'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
-import { SvgIconComponent } from '@material-ui/icons';
 import { GetIcon, GetIcons } from '../icons/iconController';
 import { SvgIconTypeMap } from '@material-ui/core';
 
 const graphStyle = makeStyles({
-    leadingChart: {
-        width: '60%',
-        maxHeight: '100%',
-        paddingBottom: 10
-    },
     chart: {
-        width: '40%',
+        width: '100%',
         maxHeight: '100%',
         paddingBottom: 10
     },
@@ -164,48 +158,35 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
         });
     };
 
-    let knowledgeData: ChartData[] = answerData.map(
+    let chartData: ChartData[] = answerData.map(
         (answer) => ({
-            name: answer.category, value: answer.averageKnowledge
-        })
-    )
-
-    let motivationData: ChartData[] = answerData.map(
-        (answer) => ({
-            name: answer.category, value: answer.averageMotivation
+            name: answer.category,
+            valueKnowledge: [0, answer.averageKnowledge],
+            valueMotivation: [7, 7 + answer.averageMotivation],
         })
     )
 
     return (
         <div className={style.container}>
             <Fragment>
-            {/* <div className={style.categoryList}>
-                {answerData.map((value, index) => <div key={index} className={style.category}>{value.category}</div>)}
-            </div> */}
-            <div className={style.leadingChart}>
-            <ResponsiveContainer width='100%' height="100%">    
-                    <BarChart maxBarSize={20} layout="vertical" data={knowledgeData}>
-                    <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
-                        <XAxis dataKey="value" type="number" padding={{ left: 0, right: 20 }} domain={[0,5]} tickCount={6} tick={renderCustomAxisTicks(true)}/>
-                        <YAxis width={200} dataKey="name" type="category"/>
-                        <Tooltip />
-                        <Bar radius={[0, 10, 10, 0]} dataKey="value" fill={KnowitColors.lightGreen} label={renderCustomBarLabel} />
-                        <Legend layout="horizontal" verticalAlign="top" align="center" payload={[{ value: 'KOMPETANSE', type: 'line', id: 'ID01' }]}/>
-                    </BarChart>
-                </ResponsiveContainer>
-            </div>
-            <div className={style.chart}>
+                <div className={style.chart}>
                 <ResponsiveContainer width='100%' height="100%">    
-                    <BarChart maxBarSize={20} layout="vertical" data={motivationData}>
-                        <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
-                        <XAxis dataKey="value" type="number" padding={{ left: 0, right: 20 }} domain={[0,5]} tickCount={6} tick={renderCustomAxisTicks(false)}/>
-                        <YAxis width={10} dataKey="name" type="category" tick={false}/>
-                        <Tooltip />
-                        <Bar radius={[0, 10, 10, 0]} dataKey="value" fill={KnowitColors.greyGreen} label={renderCustomBarLabel}/>
-                        <Legend layout="horizontal" verticalAlign="top" align="left" payload={[{ value: 'MOTIVASJON', type: 'line', id: 'ID01' }]}/>
-                    </BarChart>
-                </ResponsiveContainer>
-            </div>
+                        <BarChart barGap={-24} barSize={24} maxBarSize={24} layout="vertical" data={chartData} margin={{top: 24, right: 0, bottom: 0, left: 0}}>
+                        <CartesianGrid horizontal={true} strokeDasharray="2 5"/>
+                            <XAxis dataKey="value" type="number" padding={{ left: 0, right: 20 }} domain={[0,12]} tickCount={13} tick={renderCustomAxisTicks()}/>
+                            <YAxis width={200} dataKey="name" type="category"/>
+                            <Tooltip />
+                            <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.lightGreen} label={renderCustomBarLabel} />
+                            <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.greyGreen} label={renderCustomBarLabel} />
+                            <ReferenceLine x={0} stroke="green">
+                                <Label position="top" >Kunnskap</Label>
+                            </ReferenceLine>
+                            <ReferenceLine x={7} stroke="green">
+                                <Label position="top" >Motivasjon</Label>
+                            </ReferenceLine>
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
             </Fragment>
         </div>
     );
@@ -217,11 +198,18 @@ const renderCustomBarLabel = ({...props}: BarLabelProps) => {
     return <text x={props.x + props.width - 24} y={props.y + props.height} dy={-4} fill={KnowitColors.darkGreen} textAnchor="middle">{Number(props.value).toFixed(1)}</text>;
   };
 
-const renderCustomAxisTicks = ( isKnowledge: boolean) => {
+const renderCustomAxisTicks = () => {
     return ( {...props}:TickProps ) => {
+        let isKnowledge = true;
+        let iconModifier = -7;
+        let iconNumber = props.payload.value;
+        if (props.payload.value >= 7) {
+            iconNumber += iconModifier;
+            isKnowledge = false;
+        }
         return (
             <svg x={props.x-12} y={props.y} width={24} height={24} viewBox="0 0 1024 1024" fill="#666">
-                {GetIcon(isKnowledge, Math.round(props.payload.value))};
+                {GetIcon(isKnowledge, Math.round(iconNumber))};
             </svg>
             
         );
@@ -247,12 +235,6 @@ type TickProps = {
 
 type ChartData = {
     name: string,
-    value: number
+    valueKnowledge: number[]
+    valueMotivation: number[]
 }
-
-const data = [
-    {
-      "name": "Skyteknologi",
-      "value": 3
-    }
-  ]
