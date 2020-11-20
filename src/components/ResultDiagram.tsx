@@ -1,20 +1,25 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, ReactSVGElement, useEffect, useState } from 'react'
 import { HorizontalBar } from 'react-chartjs-2';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { limitStringLength, roundDecimals } from '../helperFunctions';
 import { KnowitColors } from '../styles';
 import { AnswerData, CalculationData, ResultData } from '../types'
 import { makeStyles } from '@material-ui/core/styles'
-import { GetIcons } from '../icons/iconController'
 import clsx from 'clsx'
+import { SvgIconComponent } from '@material-ui/icons';
+import { GetIcon, GetIcons } from '../icons/iconController';
+import { SvgIconTypeMap } from '@material-ui/core';
 
 const graphStyle = makeStyles({
-    chart: {
-        width: '45%',
-        maxHeight: '80%',
-        marginRight: 20
+    leadingChart: {
+        width: '60%',
+        maxHeight: '100%',
+        paddingBottom: 10
     },
-    charK: {
-        width: '60%'
+    chart: {
+        width: '40%',
+        maxHeight: '100%',
+        paddingBottom: 10
     },
     iconBar: {
         height: 24 ,
@@ -159,69 +164,95 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
         });
     };
 
+    let knowledgeData: ChartData[] = answerData.map(
+        (answer) => ({
+            name: answer.category, value: answer.averageKnowledge
+        })
+    )
+
+    let motivationData: ChartData[] = answerData.map(
+        (answer) => ({
+            name: answer.category, value: answer.averageMotivation
+        })
+    )
+
     return (
         <div className={style.container}>
             <Fragment>
             {/* <div className={style.categoryList}>
                 {answerData.map((value, index) => <div key={index} className={style.category}>{value.category}</div>)}
             </div> */}
-            <div className={clsx(style.chart, style.charK)}>
-                <HorizontalBar
-                    redraw={props.boolDraw}
-                    data={{
-                        labels: answerData.map(value => value.category),
-                        datasets: [
-                            {
-                                label: 'Kompetanse',
-                                backgroundColor: KnowitColors.lightGreen,
-                                borderWidth: 1,
-                                data: answerData.map(value => value.averageKnowledge)
-                            }
-                        ]
-                    }}
-                    options={{
-                        title: {
-                            display: true,
-                            text: 'KOMPETANSE',
-                            fontColor: KnowitColors.black,
-                            fontStyle: 'normal',
-                            fontSize: 15
-                        },
-                        ...graphOptions}}
-                />
-                <div className={clsx(style.iconBar, style.iconBarK)}>
-                    {GetIcons(true, style.icon)}
-                </div>
+            <div className={style.leadingChart}>
+            <ResponsiveContainer width='100%' height="100%">    
+                    <BarChart maxBarSize={20} layout="vertical" data={knowledgeData}>
+                    <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
+                        <XAxis dataKey="value" type="number" padding={{ left: 0, right: 20 }} domain={[0,5]} tickCount={6} tick={renderCustomAxisTicks(true)}/>
+                        <YAxis width={200} dataKey="name" type="category"/>
+                        <Tooltip />
+                        <Bar radius={[0, 10, 10, 0]} dataKey="value" fill={KnowitColors.lightGreen} label={renderCustomBarLabel} />
+                        <Legend layout="horizontal" verticalAlign="top" align="center" payload={[{ value: 'KOMPETANSE', type: 'line', id: 'ID01' }]}/>
+                    </BarChart>
+                </ResponsiveContainer>
             </div>
             <div className={style.chart}>
-                <HorizontalBar
-                    redraw={props.boolDraw}
-                    data={{
-                        labels: answerData.map(value => " "),
-                        datasets: [
-                            {
-                                label: 'Motivasjon',
-                                backgroundColor: KnowitColors.greyGreen,
-                                borderWidth: 1,
-                                data: answerData.map(value => value.averageMotivation)
-                            }
-                        ]
-                    }}
-                    options={{
-                        title: {
-                            display: true,
-                            text: 'MOTIVASJON',
-                            fontColor: KnowitColors.black,
-                            fontStyle: 'normal',
-                            fontSize: 15
-                        },
-                        ...graphOptions}}
-                />
-                <div className={style.iconBar}>
-                    {GetIcons(false, style.icon)}
-                </div>
+                <ResponsiveContainer width='100%' height="100%">    
+                    <BarChart maxBarSize={20} layout="vertical" data={motivationData}>
+                        <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
+                        <XAxis dataKey="value" type="number" padding={{ left: 0, right: 20 }} domain={[0,5]} tickCount={6} tick={renderCustomAxisTicks(false)}/>
+                        <YAxis width={10} dataKey="name" type="category" tick={false}/>
+                        <Tooltip />
+                        <Bar radius={[0, 10, 10, 0]} dataKey="value" fill={KnowitColors.greyGreen} label={renderCustomBarLabel}/>
+                        <Legend layout="horizontal" verticalAlign="top" align="left" payload={[{ value: 'MOTIVASJON', type: 'line', id: 'ID01' }]}/>
+                    </BarChart>
+                </ResponsiveContainer>
             </div>
             </Fragment>
         </div>
     );
 };
+
+const renderCustomBarLabel = ({...props}: BarLabelProps) => {
+    console.log(props)
+    if (props.width && (Number(props.value) > 0.5))
+    return <text x={props.x + props.width - 24} y={props.y + props.height} dy={-4} fill={KnowitColors.darkGreen} textAnchor="middle">{Number(props.value).toFixed(1)}</text>;
+  };
+
+const renderCustomAxisTicks = ( isKnowledge: boolean) => {
+    return ( {...props}:TickProps ) => {
+        return (
+            <svg x={props.x-12} y={props.y} width={24} height={24} viewBox="0 0 1024 1024" fill="#666">
+                {GetIcon(isKnowledge, Math.round(props.payload.value))};
+            </svg>
+            
+        );
+    };
+}
+
+type BarLabelProps = {
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    value: string
+}
+
+type TickProps = {
+    knowledge: boolean,
+    x: number,
+    y: number,
+    payload: {
+        value: any
+    }
+}
+
+type ChartData = {
+    name: string,
+    value: number
+}
+
+const data = [
+    {
+      "name": "Skyteknologi",
+      "value": 3
+    }
+  ]
