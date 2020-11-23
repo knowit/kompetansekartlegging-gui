@@ -36,7 +36,7 @@ export const getLastItem = <T extends SearchableItem>(itemsArray?:T[]) => {
     Because graphql has a limit on how many items that can be querried at a time,
         the "nextToken" is used to redo the query again with a start offset on the index.
 */
-export const listUserForms = async (): UserFormWithAnswers[] => {
+export const listUserForms = async () => {
     let nextToken: string | null = null;
     let combinedUserForm: UserFormWithAnswers[] = [];
     do {
