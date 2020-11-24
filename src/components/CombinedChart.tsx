@@ -26,18 +26,23 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
     );
 };
 
+const chartSplitAt = 7;
+
 const renderCustomBarLabel = ({...props}: BarLabelProps) => {
-if (props.width && (Number(props.value) > 0.5))
-    return <text x={props.x + props.width - 24} y={props.y + props.height} dy={-2} fill={KnowitColors.darkGreen} textAnchor="middle">{Number(props.value).toFixed(1)}</text>;
+    let displayValue = Number(props.value);
+    if (displayValue >= 7) {
+        displayValue -= chartSplitAt;
+    }
+if (props.width && (displayValue) > 0.5)
+    return <text x={props.x + props.width - 24} y={props.y + props.height} dy={-2} fill={KnowitColors.darkGreen} textAnchor="middle">{displayValue.toFixed(1)}</text>;
 };
 
 const renderCustomAxisTicks = () => {
     return ( {...props}:TickProps ) => {
         let isKnowledge = true;
-        let iconModifier = -7;
         let iconNumber = props.payload.value;
-        if (props.payload.value >= 7) {
-            iconNumber += iconModifier;
+        if (props.payload.value >= chartSplitAt) {
+            iconNumber -= chartSplitAt;
             isKnowledge = false;
         }
         return (
