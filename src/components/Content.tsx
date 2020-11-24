@@ -148,7 +148,6 @@ const Content = ({...props}: ContentProps) => {
     };
 
     const changeActiveCategory = (newActiveCategory: string) => {
-        // console.log("New category: " + newActiveCategory);
         setActiveCategory(newActiveCategory);
         answerViewModeActive(true);
     };
@@ -166,10 +165,6 @@ const Content = ({...props}: ContentProps) => {
     useEffect(() => {
         changeActiveCategory(categories[0]);
     }, [categories]);
-
-    // useEffect(() => {
-    //     console.log(activeCategory);
-    // }, [activeCategory]);
     
     useEffect(() => {
         fetchLastFormDefinition();

@@ -17,7 +17,7 @@ const graphStyle = makeStyles({
     }
 });
 
-export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boolean }) {
+export default function ResultDiagram(props: { data: AnswerData[] }) {
     const style = graphStyle();
 
     const [answerData, setAnswerData] = useState<ResultData[]>([]);
@@ -41,7 +41,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
 
     useEffect(() => {
         createData();
-    }, [props.data, props.boolDraw]);
+    }, [props.data]);
 
     const createData = () => {
         let calcData: CalculationData[] = [];

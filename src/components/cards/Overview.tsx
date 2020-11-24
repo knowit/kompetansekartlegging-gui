@@ -104,15 +104,9 @@ export const Overview = ({...props}: OverviewProps) => {
                     ) : null}
             </div>
             <div className={props.commonCardProps.active ? style.radarPlot : style.empty}>
-                <ResultDiagram data={props.radarData} boolDraw={false} />
+                <ResultDiagram data={props.radarData} />
                 <Highlights data={props.radarData} />
             </div>
-            {/* {props.commonCardProps.active ? 
-                <div className={style.radarPlot}>
-                    <ResultDiagram data={props.radarData} boolDraw={props.isAnswersSubmitted} />
-                    <Highlights data={props.radarData} />
-                </div>
-            : ""} */}
         </div>
     );
 };
