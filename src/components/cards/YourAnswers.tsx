@@ -36,7 +36,7 @@ const AnswersStyle = makeStyles({
         display: 'flex'
     },
     form: {
-        // width: '80%',
+        width: '100%',
         overflowY: 'auto',
         height: '100%'
     },
