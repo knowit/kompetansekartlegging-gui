@@ -12,7 +12,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
 import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
 import Login from './components/Login';
-import userEvent from '@testing-library/user-event';
 import { UserFormWithAnswers } from './types';
 import { makeStyles } from '@material-ui/core';
 
