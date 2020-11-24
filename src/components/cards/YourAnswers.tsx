@@ -21,8 +21,7 @@ const AnswersStyle = makeStyles({
     answerBox: {
         display: 'flex',
         flexDirection: 'row',
-        overflow: 'auto',
-        height: '100%',
+        height: '80%',
         marginTop: '40px',
         width: '80%',
     },
@@ -30,7 +29,6 @@ const AnswersStyle = makeStyles({
         marginRight: 10,
         width: '95%',
         height: '100%',
-        overflowY: 'auto',
         borderRadius: 10,
         background: KnowitColors.white,
     },
