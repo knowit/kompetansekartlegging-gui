@@ -7,8 +7,21 @@ import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
 import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
-import { CardStyle } from '../styles';
 import { AnswerHistory } from './AnswerHistory';
+import { makeStyles } from '@material-ui/core';
+
+const cardCornerRadius: number = 40;
+const zIndex: number = 0;
+
+export const ContentStyle = makeStyles({
+    cardHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: '100%'
+    },
+})
+
 
 const Content = ({...props}: ContentProps) => {
     
@@ -215,7 +228,7 @@ const Content = ({...props}: ContentProps) => {
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
 
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
-    const style = CardStyle({zIndex: 0});
+    const style = ContentStyle();
     
     const answerViewModeActive = (viewModeActive: boolean) => {
         setAnswerViewMode(viewModeActive);

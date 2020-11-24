@@ -11,7 +11,7 @@ import AnswerDiagram from '../AnswerDiagram';
 const cardCornerRadius: number = 40;
 const zIndex: number = 20;
 
-const useStyle = makeStyles({
+const yourAnwersStyle = makeStyles({
     hidden: {
         display: "none"
     },
@@ -157,7 +157,7 @@ const useStyle = makeStyles({
 });
 
 export const YourAnswers = ({ ...props }: YourAnswerProps) => {
-    const classes = useStyle();
+    const style = yourAnwersStyle();
 
     const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
@@ -185,12 +185,12 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
                 <Button
                     key={cat}
                     className={clsx(
-                        classes.buttonGeneral,
-                        classes.categoryButton,
-                        props.activeCategory === cat ? classes.categoryButtonActive : ""
+                        style.buttonGeneral,
+                        style.categoryButton,
+                        props.activeCategory === cat ? style.categoryButtonActive : ""
                     )}
                     onClick={() => { saveBeforeChange(cat) }}
-                    ><div className={classes.buttonText}>{orderNumber}. {cat}</div></Button>
+                    ><div className={style.buttonText}>{orderNumber}. {cat}</div></Button>
             );
             orderNumber++;
         });
@@ -200,42 +200,42 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
     
 
     return (
-        <div className={clsx(props.commonCardProps.active ? classes.bottomCardOpen : classes.bottomCardClosed)}>
-            <div className={classes.leftCard}>
-                <div className={props.commonCardProps.active ? classes.cardHeaderOpen : classes.cardHeaderClosed}>
+        <div className={clsx(props.commonCardProps.active ? style.bottomCardOpen : style.bottomCardClosed)}>
+            <div className={style.leftCard}>
+                <div className={props.commonCardProps.active ? style.cardHeaderOpen : style.cardHeaderClosed}>
                     <button
                         onClick={buttonClick}
-                        className={clsx(classes.cardButton)}
+                        className={clsx(style.cardButton)}
                     >
                         DINE SVAR
                     </button>
                     {props.commonCardProps.active ? (
                         <CloseIcon
                             fontSize="large"
-                            className={classes.closeButton}
+                            className={style.closeButton}
                             onClick={buttonClick}
                         />
                     ) : null}
                     
 
                 </div>
-                <div className={props.commonCardProps.active ? classes.categoryList : classes.hidden}>
-                    <div className={classes.categoryListInner}>
+                <div className={props.commonCardProps.active ? style.categoryList : style.hidden}>
+                    <div className={style.categoryListInner}>
                         {getCategoryButtons()}
                     </div>
                 </div>
             </div>
-            <div className={props.commonCardProps.active ? classes.answerBox : classes.hidden}>                    
-                    <div className={clsx(props.answerViewMode ? "" : classes.hidden, classes.answerView)}>
-                        <div className={classes.catHeader}>
-                            <Button className={classes.editButton} onClick={() => props.answerViewModeActive(false)}>Endre svar</Button>
-                            <div className={classes.catText} >{props.activeCategory}</div>
+            <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>                    
+                    <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
+                        <div className={style.catHeader}>
+                            <Button className={style.editButton} onClick={() => props.answerViewModeActive(false)}>Endre svar</Button>
+                            <div className={style.catText} >{props.activeCategory}</div>
                         </div>
-                        <div className={classes.graphHolder}>
+                        <div className={style.graphHolder}>
                             <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} />
                         </div>
                     </div>
-                    <div className={clsx(props.answerViewMode ? classes.hidden : "", classes.form)}>
+                    <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
                         {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
                         <Form {...props} setIsCategorySubmitted={setIsCategorySubmitted} isCategorySubmitted={isCategorySubmitted} />
                     </div>

@@ -11,7 +11,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
+const answerHistoryStyles = makeStyles({
   historyView: {
     height: '100%',
     widht:  '100%'
@@ -40,7 +40,7 @@ const parseScore = (score: number) => {
 
 export const AnswerHistory = ({...props}: AnswerHistoryProps) => {
 
-  const style = useStyles();
+  const style = answerHistoryStyles();
 
   const handleClose = () => {
     props.setHistoryViewOpen(false);

@@ -7,7 +7,7 @@ type CategoryProps = {
     children: JSX.Element[]
 };
 
-const CategoryStyle = makeStyles({
+const categoryStyle = makeStyles({
     categoryText: {
         fontSize: 22,
         fontWeight: 'bold'
@@ -15,7 +15,7 @@ const CategoryStyle = makeStyles({
 });
 
 export const Category = ({...props}: CategoryProps) => {
-    const style = CategoryStyle();
+    const style = categoryStyle();
 
     return (
         <Fragment>

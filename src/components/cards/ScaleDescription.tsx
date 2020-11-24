@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core';
 const cardCornerRadius: number = 40;
 const zIndex: number = 40;
 
-const useStyles = makeStyles({
+const scaleDescriptionStyle = makeStyles({
     root: {
         maxHeight: '32%',
         width: "100%",
@@ -64,7 +64,7 @@ const useStyles = makeStyles({
 
 
 export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
-    const classes = useStyles();
+    const style = scaleDescriptionStyle();
 
     const buttonClick = () => {
         //TODO: Find a way to replace harcoded int with a something like enum (enum dont work)
@@ -73,18 +73,18 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
 
 
     return (
-        <div className={clsx(classes.root, props.commonCardProps.active ? classes.open : classes.closed)}>
-            <div className={classes.cardHeader}>
+        <div className={clsx(style.root, props.commonCardProps.active ? style.open : style.closed)}>
+            <div className={style.cardHeader}>
                 <button 
                     onClick={buttonClick} 
-                    className={clsx(classes.cardButton)}
+                    className={clsx(style.cardButton)}
                 >
                     SKALABESKRIVELSE 
                 </button>
                 {props.commonCardProps.active ? (
                         <CloseIcon 
                             fontSize="large" 
-                            className={classes.closeButton}
+                            className={style.closeButton}
                             onClick={buttonClick}    
                         />
                     ) : null}
