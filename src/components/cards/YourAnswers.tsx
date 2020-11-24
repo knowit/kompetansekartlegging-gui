@@ -26,7 +26,7 @@ const AnswersStyle = makeStyles({
     },
     answerView: {
         width: '80%',
-        height: '20vw',
+        height: '100%',
         overflowY: 'auto',
         borderRadius: 10,
         background: KnowitColors.white,
@@ -110,7 +110,7 @@ const AnswersStyle = makeStyles({
     },
     graphHolder: {
         width: '80%',
-        height: '80%',
+        height: '85%',
     },
     editButton: {
         margin: 5,

@@ -3,99 +3,19 @@ import { HorizontalBar } from 'react-chartjs-2';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { limitStringLength, roundDecimals } from '../helperFunctions';
 import { KnowitColors } from '../styles';
-import { AnswerData, CalculationData, ResultData } from '../types'
+import { AnswerData, CalculationData, ChartData, ResultData } from '../types'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import { GetIcon, GetIcons } from '../icons/iconController';
 import { SvgIconTypeMap } from '@material-ui/core';
+import { CombinedChart } from './CombinedChart';
 
 const graphStyle = makeStyles({
-    chart: {
-        width: '100%',
-        maxHeight: '100%',
-        paddingBottom: 10
-    },
-    iconBar: {
-        height: 24 ,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    iconBarK: {
-        marginLeft: '30%'
-    },
-    icon: {
-        height: '100%'
-    },
-    categoryList: {
-        marginTop: '2%',
-        marginBottom: '4.5%',
-        textAlign: 'right',
-        width: '30%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-evenly'
-    },
-    category: {
-        fontSize: '0.95vw',
-    },
     container: {
-        display: 'flex',
-        width: '60%'
+        width: '60%',
+        paddingBottom: 10
     }
 });
-
-const graphOptions = {
-    maintainAspectRatio: false,
-    legend: {
-        display: false
-    },
-    tooltips: {
-        callbacks: {
-            label: function(tooltipItem: any, data: any) {
-                var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-                // if (label) {
-                //     label += ': ';
-                // }
-                // label += Math.round(tooltipItem.xLabel * 100) / 100;
-                return label;
-            },
-            labelColor: function(tooltipItem: any, chart: any) {
-                return "";
-            },
-        }
-    },
-    scales: {
-        yAxes: [{
-            gridLines: {
-                color: '#E4E0DC'
-            },
-            ticks: {
-                fontColor: 'black',
-                callback: (value: string) => {
-                    if(value === " ") return " ";
-                    return limitStringLength(value, 30, true);
-                }
-            }
-        }],
-        xAxes: [{
-            gridLines: {
-                color: '#E4E0DC'
-            },
-            ticks: {
-                fontColor: 'black',
-                fontSize: 1,
-                beginAtZero: true,
-                max: 5,
-                stepSize: 1,
-                callback: (/*value, index, values*/) => {
-                    return " ";
-                }
-            }
-        }]
-    }
-};
 
 export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boolean }) {
     const style = graphStyle();
@@ -168,73 +88,7 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
 
     return (
         <div className={style.container}>
-            <Fragment>
-                <div className={style.chart}>
-                <ResponsiveContainer width='100%' height="100%">    
-                        <BarChart barGap={-24} barSize={24} maxBarSize={24} layout="vertical" data={chartData} margin={{top: 24, right: 0, bottom: 0, left: 0}}>
-                        <CartesianGrid horizontal={true} strokeDasharray="2 5"/>
-                            <XAxis dataKey="value" type="number" padding={{ left: 0, right: 20 }} domain={[0,12]} tickCount={13} tick={renderCustomAxisTicks()}/>
-                            <YAxis width={200} dataKey="name" type="category"/>
-                            <Tooltip />
-                            <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.lightGreen} label={renderCustomBarLabel} />
-                            <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.greyGreen} label={renderCustomBarLabel} />
-                            <ReferenceLine x={0} stroke="green">
-                                <Label position="top" >Kunnskap</Label>
-                            </ReferenceLine>
-                            <ReferenceLine x={7} stroke="green">
-                                <Label position="top" >Motivasjon</Label>
-                            </ReferenceLine>
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            </Fragment>
+            <CombinedChart chartData={chartData}/>
         </div>
     );
 };
-
-const renderCustomBarLabel = ({...props}: BarLabelProps) => {
-    console.log(props)
-    if (props.width && (Number(props.value) > 0.5))
-    return <text x={props.x + props.width - 24} y={props.y + props.height} dy={-4} fill={KnowitColors.darkGreen} textAnchor="middle">{Number(props.value).toFixed(1)}</text>;
-  };
-
-const renderCustomAxisTicks = () => {
-    return ( {...props}:TickProps ) => {
-        let isKnowledge = true;
-        let iconModifier = -7;
-        let iconNumber = props.payload.value;
-        if (props.payload.value >= 7) {
-            iconNumber += iconModifier;
-            isKnowledge = false;
-        }
-        return (
-            <svg x={props.x-12} y={props.y} width={24} height={24} viewBox="0 0 1024 1024" fill="#666">
-                {GetIcon(isKnowledge, Math.round(iconNumber))};
-            </svg>
-            
-        );
-    };
-}
-
-type BarLabelProps = {
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    value: string
-}
-
-type TickProps = {
-    knowledge: boolean,
-    x: number,
-    y: number,
-    payload: {
-        value: any
-    }
-}
-
-type ChartData = {
-    name: string,
-    valueKnowledge: number[]
-    valueMotivation: number[]
-}
