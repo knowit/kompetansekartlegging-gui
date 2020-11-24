@@ -303,3 +303,14 @@ export type ContentProps = {
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
     answerHistoryOpen: boolean
 };
+
+export type ChartData = {
+    name: string,
+    valueKnowledge: number[]
+    valueMotivation: number[]
+}
+
+export type CombinedChartProps = {
+    chartData: ChartData[],
+    className?: string
+}

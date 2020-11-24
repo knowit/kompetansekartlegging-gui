@@ -1,102 +1,21 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, ReactSVGElement, useEffect, useState } from 'react'
 import { HorizontalBar } from 'react-chartjs-2';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { limitStringLength, roundDecimals } from '../helperFunctions';
 import { KnowitColors } from '../styles';
-import { AnswerData, CalculationData, ResultData } from '../types'
+import { AnswerData, CalculationData, ChartData, ResultData } from '../types'
 import { makeStyles } from '@material-ui/core/styles'
-import { GetIcons } from '../icons/iconController'
 import clsx from 'clsx'
+import { GetIcon, GetIcons } from '../icons/iconController';
+import { SvgIconTypeMap } from '@material-ui/core';
+import { CombinedChart } from './CombinedChart';
 
 const graphStyle = makeStyles({
-    chart: {
-        width: '45%',
-        maxHeight: '80%',
-        marginRight: 20
-    },
-    charK: {
-        width: '60%'
-    },
-    iconBar: {
-        height: 24 ,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    iconBarK: {
-        marginLeft: '30%'
-    },
-    icon: {
-        height: '100%'
-    },
-    categoryList: {
-        marginTop: '2%',
-        marginBottom: '4.5%',
-        textAlign: 'right',
-        width: '30%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-evenly'
-    },
-    category: {
-        fontSize: '0.95vw',
-    },
     container: {
-        display: 'flex',
-        width: '60%'
+        width: '60%',
+        paddingBottom: 10
     }
 });
-
-const graphOptions = {
-    maintainAspectRatio: false,
-    legend: {
-        display: false
-    },
-    tooltips: {
-        callbacks: {
-            label: function(tooltipItem: any, data: any) {
-                var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-                // if (label) {
-                //     label += ': ';
-                // }
-                // label += Math.round(tooltipItem.xLabel * 100) / 100;
-                return label;
-            },
-            labelColor: function(tooltipItem: any, chart: any) {
-                return "";
-            },
-        }
-    },
-    scales: {
-        yAxes: [{
-            gridLines: {
-                color: '#E4E0DC'
-            },
-            ticks: {
-                fontColor: 'black',
-                callback: (value: string) => {
-                    if(value === " ") return " ";
-                    return limitStringLength(value, 30, true);
-                }
-            }
-        }],
-        xAxes: [{
-            gridLines: {
-                color: '#E4E0DC'
-            },
-            ticks: {
-                fontColor: 'black',
-                fontSize: 1,
-                beginAtZero: true,
-                max: 5,
-                stepSize: 1,
-                callback: (/*value, index, values*/) => {
-                    return " ";
-                }
-            }
-        }]
-    }
-};
 
 export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boolean }) {
     const style = graphStyle();
@@ -159,69 +78,17 @@ export default function ResultDiagram(props: { data: AnswerData[], boolDraw: boo
         });
     };
 
+    let chartData: ChartData[] = answerData.map(
+        (answer) => ({
+            name: answer.category,
+            valueKnowledge: [0, answer.averageKnowledge],
+            valueMotivation: [7, 7 + answer.averageMotivation],
+        })
+    )
+
     return (
         <div className={style.container}>
-            <Fragment>
-            {/* <div className={style.categoryList}>
-                {answerData.map((value, index) => <div key={index} className={style.category}>{value.category}</div>)}
-            </div> */}
-            <div className={clsx(style.chart, style.charK)}>
-                <HorizontalBar
-                    redraw={props.boolDraw}
-                    data={{
-                        labels: answerData.map(value => value.category),
-                        datasets: [
-                            {
-                                label: 'Kompetanse',
-                                backgroundColor: KnowitColors.lightGreen,
-                                borderWidth: 1,
-                                data: answerData.map(value => value.averageKnowledge)
-                            }
-                        ]
-                    }}
-                    options={{
-                        title: {
-                            display: true,
-                            text: 'KOMPETANSE',
-                            fontColor: KnowitColors.black,
-                            fontStyle: 'normal',
-                            fontSize: 15
-                        },
-                        ...graphOptions}}
-                />
-                <div className={clsx(style.iconBar, style.iconBarK)}>
-                    {GetIcons(true, style.icon)}
-                </div>
-            </div>
-            <div className={style.chart}>
-                <HorizontalBar
-                    redraw={props.boolDraw}
-                    data={{
-                        labels: answerData.map(value => " "),
-                        datasets: [
-                            {
-                                label: 'Motivasjon',
-                                backgroundColor: KnowitColors.greyGreen,
-                                borderWidth: 1,
-                                data: answerData.map(value => value.averageMotivation)
-                            }
-                        ]
-                    }}
-                    options={{
-                        title: {
-                            display: true,
-                            text: 'MOTIVASJON',
-                            fontColor: KnowitColors.black,
-                            fontStyle: 'normal',
-                            fontSize: 15
-                        },
-                        ...graphOptions}}
-                />
-                <div className={style.iconBar}>
-                    {GetIcons(false, style.icon)}
-                </div>
-            </div>
-            </Fragment>
+            <CombinedChart chartData={chartData}/>
         </div>
     );
 };
