@@ -11,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 const cardCornerRadius: number = 40;
 const zIndex: number = 50;
 
-const OverviewStyle = makeStyles({
+const useStyles = makeStyles({
     root: {
         maxHeight: '40%',
         width: "100%",
@@ -78,7 +78,7 @@ const OverviewStyle = makeStyles({
 
 
 export const Overview = ({...props}: OverviewProps) => {
-    const style = OverviewStyle();
+    const classes = useStyles();
 
     const buttonClick = () => {
         //TODO: Find a way to replace hadcode int with a something like enum (enum dont work)
@@ -87,23 +87,23 @@ export const Overview = ({...props}: OverviewProps) => {
 
     
     return (
-        <div className={clsx(style.root, props.commonCardProps.active ? style.open : style.closed)}>
-            <div className={style.cardHeader}>
+        <div className={clsx(classes.root, props.commonCardProps.active ? classes.open : classes.closed)}>
+            <div className={classes.cardHeader}>
                 <button 
                     onClick={buttonClick} 
-                    className={clsx(style.cardButton)}
+                    className={clsx(classes.cardButton)}
                 >
                     OVERSIKT
                 </button>
                 {props.commonCardProps.active ? (
                         <CloseIcon 
                             fontSize="large" 
-                            className={style.closeButton}
+                            className={classes.closeButton}
                             onClick={buttonClick}    
                         />
                     ) : null}
             </div>
-            <div className={props.commonCardProps.active ? style.radarPlot : style.empty}>
+            <div className={props.commonCardProps.active ? classes.radarPlot : classes.empty}>
                 <ResultDiagram data={props.radarData} />
                 <Highlights data={props.radarData} />
             </div>
