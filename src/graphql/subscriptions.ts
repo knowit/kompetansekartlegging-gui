@@ -45,6 +45,8 @@ export const onCreateUserForm = /* GraphQL */ `
   subscription OnCreateUserForm($owner: String!) {
     onCreateUserForm(owner: $owner) {
       id
+      createdAt
+      dummy
       formDefinitionID
       questionAnswers {
         nextToken
@@ -55,7 +57,6 @@ export const onCreateUserForm = /* GraphQL */ `
         dummy
         updatedAt
       }
-      createdAt
       updatedAt
       owner
     }
@@ -65,6 +66,8 @@ export const onUpdateUserForm = /* GraphQL */ `
   subscription OnUpdateUserForm($owner: String!) {
     onUpdateUserForm(owner: $owner) {
       id
+      createdAt
+      dummy
       formDefinitionID
       questionAnswers {
         nextToken
@@ -75,7 +78,6 @@ export const onUpdateUserForm = /* GraphQL */ `
         dummy
         updatedAt
       }
-      createdAt
       updatedAt
       owner
     }
@@ -85,6 +87,8 @@ export const onDeleteUserForm = /* GraphQL */ `
   subscription OnDeleteUserForm($owner: String!) {
     onDeleteUserForm(owner: $owner) {
       id
+      createdAt
+      dummy
       formDefinitionID
       questionAnswers {
         nextToken
@@ -95,7 +99,6 @@ export const onDeleteUserForm = /* GraphQL */ `
         dummy
         updatedAt
       }
-      createdAt
       updatedAt
       owner
     }
@@ -189,6 +192,7 @@ export const onCreateQuestion = /* GraphQL */ `
       category {
         id
         text
+        description
         createdAt
         updatedAt
       }
@@ -210,6 +214,7 @@ export const onUpdateQuestion = /* GraphQL */ `
       category {
         id
         text
+        description
         createdAt
         updatedAt
       }
@@ -231,6 +236,7 @@ export const onDeleteQuestion = /* GraphQL */ `
       category {
         id
         text
+        description
         createdAt
         updatedAt
       }
@@ -244,6 +250,7 @@ export const onCreateCategory = /* GraphQL */ `
     onCreateCategory {
       id
       text
+      description
       createdAt
       updatedAt
     }
@@ -254,6 +261,7 @@ export const onUpdateCategory = /* GraphQL */ `
     onUpdateCategory {
       id
       text
+      description
       createdAt
       updatedAt
     }
@@ -264,6 +272,7 @@ export const onDeleteCategory = /* GraphQL */ `
     onDeleteCategory {
       id
       text
+      description
       createdAt
       updatedAt
     }

@@ -82,6 +82,8 @@ export const createUserForm = /* GraphQL */ `
   ) {
     createUserForm(input: $input, condition: $condition) {
       id
+      createdAt
+      dummy
       formDefinitionID
       questionAnswers {
         nextToken
@@ -92,7 +94,6 @@ export const createUserForm = /* GraphQL */ `
         dummy
         updatedAt
       }
-      createdAt
       updatedAt
       owner
     }
@@ -105,6 +106,8 @@ export const updateUserForm = /* GraphQL */ `
   ) {
     updateUserForm(input: $input, condition: $condition) {
       id
+      createdAt
+      dummy
       formDefinitionID
       questionAnswers {
         nextToken
@@ -115,7 +118,6 @@ export const updateUserForm = /* GraphQL */ `
         dummy
         updatedAt
       }
-      createdAt
       updatedAt
       owner
     }
@@ -128,6 +130,8 @@ export const deleteUserForm = /* GraphQL */ `
   ) {
     deleteUserForm(input: $input, condition: $condition) {
       id
+      createdAt
+      dummy
       formDefinitionID
       questionAnswers {
         nextToken
@@ -138,7 +142,6 @@ export const deleteUserForm = /* GraphQL */ `
         dummy
         updatedAt
       }
-      createdAt
       updatedAt
       owner
     }
@@ -244,6 +247,7 @@ export const createQuestion = /* GraphQL */ `
       category {
         id
         text
+        description
         createdAt
         updatedAt
       }
@@ -268,6 +272,7 @@ export const updateQuestion = /* GraphQL */ `
       category {
         id
         text
+        description
         createdAt
         updatedAt
       }
@@ -292,6 +297,7 @@ export const deleteQuestion = /* GraphQL */ `
       category {
         id
         text
+        description
         createdAt
         updatedAt
       }
@@ -308,6 +314,7 @@ export const createCategory = /* GraphQL */ `
     createCategory(input: $input, condition: $condition) {
       id
       text
+      description
       createdAt
       updatedAt
     }
@@ -321,6 +328,7 @@ export const updateCategory = /* GraphQL */ `
     updateCategory(input: $input, condition: $condition) {
       id
       text
+      description
       createdAt
       updatedAt
     }
@@ -334,6 +342,7 @@ export const deleteCategory = /* GraphQL */ `
     deleteCategory(input: $input, condition: $condition) {
       id
       text
+      description
       createdAt
       updatedAt
     }

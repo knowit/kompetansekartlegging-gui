@@ -36,6 +36,8 @@ export const getUserForm = /* GraphQL */ `
   query GetUserForm($id: ID!) {
     getUserForm(id: $id) {
       id
+      createdAt
+      dummy
       formDefinitionID
       questionAnswers {
         nextToken
@@ -46,7 +48,6 @@ export const getUserForm = /* GraphQL */ `
         dummy
         updatedAt
       }
-      createdAt
       updatedAt
       owner
     }
@@ -61,8 +62,9 @@ export const listUserForms = /* GraphQL */ `
     listUserForms(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        formDefinitionID
         createdAt
+        dummy
+        formDefinitionID
         updatedAt
         owner
       }
@@ -129,6 +131,7 @@ export const getQuestion = /* GraphQL */ `
       category {
         id
         text
+        description
         createdAt
         updatedAt
       }
@@ -164,6 +167,7 @@ export const getCategory = /* GraphQL */ `
     getCategory(id: $id) {
       id
       text
+      description
       createdAt
       updatedAt
     }
@@ -179,6 +183,7 @@ export const listCategorys = /* GraphQL */ `
       items {
         id
         text
+        description
         createdAt
         updatedAt
       }
