@@ -8,7 +8,7 @@ import { KnowitColors } from '../styles';
 import { NavBarProps } from '../types'
 
 
-const useStyles = makeStyles((theme) => ({
+const navbarStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         zIndex: 100
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = ({...props}: NavBarProps) => {
-    const classes = useStyles();
+    const style = navbarStyles();
     const history = useHistory();
     const [userName, setUserName] = useState<string>('');
     const [userPicture, setUserPicture] = useState<string>('');
@@ -128,10 +128,10 @@ const NavBar = ({...props}: NavBarProps) => {
 
 
     return (
-        <div className={classes.root}>
+        <div className={style.root}>
             <AppBar position="static">
-                <Toolbar className={classes.header}>
-                    <div className={classes.userName}>{userName}</div>
+                <Toolbar className={style.header}>
+                    <div className={style.userName}>{userName}</div>
                     
                     
                     {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}
@@ -142,7 +142,7 @@ const NavBar = ({...props}: NavBarProps) => {
                             aria-haspopup="true"
                             onClick={handleToggle}
                         >
-                            <Avatar className={classes.userPicture} src={userPicture}
+                            <Avatar className={style.userPicture} src={userPicture}
                         />
                         </Button>
                         <Popper
