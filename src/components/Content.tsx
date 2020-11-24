@@ -277,28 +277,6 @@ const Content = ({...props}: ContentProps) => {
             />
         </div>
     );
-
-    // return(
-    //     <div>
-    //         <Router  
-    //             answerProps={{
-    //                 updateAnswer: updateAnswer,
-    //                 formDefinition: formDefinition,
-    //                 createUserForm: createUserForm,
-    //                 answers: answers,
-    //                 submitFeedback: submitFeedback
-    //             }}
-    //             statsProps={{
-    //                 data: radarData
-    //             }}
-    //             userProps={{
-    //                 deleteUserData: deleteUserData,
-    //                 listUserForms: listUserForms
-    //             }}
-    //         />
-    //     </div>
-    // );
-
 };
 
 export default Content;
