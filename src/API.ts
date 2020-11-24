@@ -4,6 +4,8 @@
 
 export type ModelUserFormFilterInput = {
   id?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  dummy?: ModelStringInput | null,
   formDefinitionID?: ModelIDInput | null,
   and?: Array< ModelUserFormFilterInput | null > | null,
   or?: Array< ModelUserFormFilterInput | null > | null,
@@ -50,6 +52,22 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelStringInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
 export type ModelStringKeyConditionInput = {
   eq?: string | null,
   le?: string | null,
@@ -73,22 +91,6 @@ export type ModelFormDefinitionFilterInput = {
   and?: Array< ModelFormDefinitionFilterInput | null > | null,
   or?: Array< ModelFormDefinitionFilterInput | null > | null,
   not?: ModelFormDefinitionFilterInput | null,
-};
-
-export type ModelStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
 };
 
 export type CreateQuestionAnswerInput = {
@@ -126,10 +128,14 @@ export type DeleteFormDefinitionInput = {
 
 export type CreateUserFormInput = {
   id?: string | null,
+  createdAt?: string | null,
+  dummy: string,
   formDefinitionID: string,
 };
 
 export type ModelUserFormConditionInput = {
+  createdAt?: ModelStringInput | null,
+  dummy?: ModelStringInput | null,
   formDefinitionID?: ModelIDInput | null,
   and?: Array< ModelUserFormConditionInput | null > | null,
   or?: Array< ModelUserFormConditionInput | null > | null,
@@ -138,6 +144,8 @@ export type ModelUserFormConditionInput = {
 
 export type UpdateUserFormInput = {
   id: string,
+  createdAt?: string | null,
+  dummy?: string | null,
   formDefinitionID?: string | null,
 };
 
@@ -230,10 +238,12 @@ export type DeleteQuestionInput = {
 export type CreateCategoryInput = {
   id?: string | null,
   text: string,
+  description?: string | null,
 };
 
 export type ModelCategoryConditionInput = {
   text?: ModelStringInput | null,
+  description?: ModelStringInput | null,
   and?: Array< ModelCategoryConditionInput | null > | null,
   or?: Array< ModelCategoryConditionInput | null > | null,
   not?: ModelCategoryConditionInput | null,
@@ -242,6 +252,7 @@ export type ModelCategoryConditionInput = {
 export type UpdateCategoryInput = {
   id: string,
   text?: string | null,
+  description?: string | null,
 };
 
 export type DeleteCategoryInput = {
@@ -275,6 +286,7 @@ export type ModelQuestionFilterInput = {
 export type ModelCategoryFilterInput = {
   id?: ModelIDInput | null,
   text?: ModelStringInput | null,
+  description?: ModelStringInput | null,
   and?: Array< ModelCategoryFilterInput | null > | null,
   or?: Array< ModelCategoryFilterInput | null > | null,
   not?: ModelCategoryFilterInput | null,
@@ -451,6 +463,8 @@ export type CreateUserFormMutation = {
   createUserForm:  {
     __typename: "UserForm",
     id: string,
+    createdAt: string,
+    dummy: string,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -463,7 +477,6 @@ export type CreateUserFormMutation = {
       dummy: string,
       updatedAt: string,
     },
-    createdAt: string,
     updatedAt: string,
     owner: string | null,
   } | null,
@@ -478,6 +491,8 @@ export type UpdateUserFormMutation = {
   updateUserForm:  {
     __typename: "UserForm",
     id: string,
+    createdAt: string,
+    dummy: string,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -490,7 +505,6 @@ export type UpdateUserFormMutation = {
       dummy: string,
       updatedAt: string,
     },
-    createdAt: string,
     updatedAt: string,
     owner: string | null,
   } | null,
@@ -505,6 +519,8 @@ export type DeleteUserFormMutation = {
   deleteUserForm:  {
     __typename: "UserForm",
     id: string,
+    createdAt: string,
+    dummy: string,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -517,7 +533,6 @@ export type DeleteUserFormMutation = {
       dummy: string,
       updatedAt: string,
     },
-    createdAt: string,
     updatedAt: string,
     owner: string | null,
   } | null,
@@ -635,6 +650,7 @@ export type CreateQuestionMutation = {
       __typename: "Category",
       id: string,
       text: string,
+      description: string | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -662,6 +678,7 @@ export type UpdateQuestionMutation = {
       __typename: "Category",
       id: string,
       text: string,
+      description: string | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -689,6 +706,7 @@ export type DeleteQuestionMutation = {
       __typename: "Category",
       id: string,
       text: string,
+      description: string | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -707,6 +725,7 @@ export type CreateCategoryMutation = {
     __typename: "Category",
     id: string,
     text: string,
+    description: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -722,6 +741,7 @@ export type UpdateCategoryMutation = {
     __typename: "Category",
     id: string,
     text: string,
+    description: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -737,6 +757,7 @@ export type DeleteCategoryMutation = {
     __typename: "Category",
     id: string,
     text: string,
+    description: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -788,6 +809,8 @@ export type GetUserFormQuery = {
   getUserForm:  {
     __typename: "UserForm",
     id: string,
+    createdAt: string,
+    dummy: string,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -800,7 +823,6 @@ export type GetUserFormQuery = {
       dummy: string,
       updatedAt: string,
     },
-    createdAt: string,
     updatedAt: string,
     owner: string | null,
   } | null,
@@ -818,8 +840,9 @@ export type ListUserFormsQuery = {
     items:  Array< {
       __typename: "UserForm",
       id: string,
-      formDefinitionID: string,
       createdAt: string,
+      dummy: string,
+      formDefinitionID: string,
       updatedAt: string,
       owner: string | null,
     } | null > | null,
@@ -899,6 +922,7 @@ export type GetQuestionQuery = {
       __typename: "Category",
       id: string,
       text: string,
+      description: string | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -941,6 +965,7 @@ export type GetCategoryQuery = {
     __typename: "Category",
     id: string,
     text: string,
+    description: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -959,6 +984,7 @@ export type ListCategorysQuery = {
       __typename: "Category",
       id: string,
       text: string,
+      description: string | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -1039,6 +1065,8 @@ export type OnCreateUserFormSubscription = {
   onCreateUserForm:  {
     __typename: "UserForm",
     id: string,
+    createdAt: string,
+    dummy: string,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -1051,7 +1079,6 @@ export type OnCreateUserFormSubscription = {
       dummy: string,
       updatedAt: string,
     },
-    createdAt: string,
     updatedAt: string,
     owner: string | null,
   } | null,
@@ -1065,6 +1092,8 @@ export type OnUpdateUserFormSubscription = {
   onUpdateUserForm:  {
     __typename: "UserForm",
     id: string,
+    createdAt: string,
+    dummy: string,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -1077,7 +1106,6 @@ export type OnUpdateUserFormSubscription = {
       dummy: string,
       updatedAt: string,
     },
-    createdAt: string,
     updatedAt: string,
     owner: string | null,
   } | null,
@@ -1091,6 +1119,8 @@ export type OnDeleteUserFormSubscription = {
   onDeleteUserForm:  {
     __typename: "UserForm",
     id: string,
+    createdAt: string,
+    dummy: string,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -1103,7 +1133,6 @@ export type OnDeleteUserFormSubscription = {
       dummy: string,
       updatedAt: string,
     },
-    createdAt: string,
     updatedAt: string,
     owner: string | null,
   } | null,
@@ -1213,6 +1242,7 @@ export type OnCreateQuestionSubscription = {
       __typename: "Category",
       id: string,
       text: string,
+      description: string | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1235,6 +1265,7 @@ export type OnUpdateQuestionSubscription = {
       __typename: "Category",
       id: string,
       text: string,
+      description: string | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1257,6 +1288,7 @@ export type OnDeleteQuestionSubscription = {
       __typename: "Category",
       id: string,
       text: string,
+      description: string | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1270,6 +1302,7 @@ export type OnCreateCategorySubscription = {
     __typename: "Category",
     id: string,
     text: string,
+    description: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1280,6 +1313,7 @@ export type OnUpdateCategorySubscription = {
     __typename: "Category",
     id: string,
     text: string,
+    description: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1290,6 +1324,7 @@ export type OnDeleteCategorySubscription = {
     __typename: "Category",
     id: string,
     text: string,
+    description: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
