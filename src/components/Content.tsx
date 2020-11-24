@@ -21,7 +21,6 @@ const Content = ({...props}: ContentProps) => {
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
-    const [updateSliderValues, setUpdateSliderValues] = useState<boolean>(true)
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
 
