@@ -173,6 +173,7 @@ export const OverviewStyle = makeStyles({
         height: '100%',
         width: '100%',
         display: 'flex',
+        overflowY: 'auto',
         justifyContent: 'center'
     },
     cardHeader: {
