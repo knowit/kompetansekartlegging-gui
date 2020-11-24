@@ -22,7 +22,9 @@ const AnswersStyle = makeStyles({
         display: 'flex',
         flexDirection: 'row',
         overflow: 'auto',
-        height: '100%'
+        height: '100%',
+        marginTop: '40px',
+        width: '80%',
     },
     answerView: {
         width: '80%',
@@ -35,12 +37,12 @@ const AnswersStyle = makeStyles({
         display: 'flex'
     },
     form: {
-        width: '80%',
+        // width: '80%',
         overflowY: 'auto',
         height: '100%'
     },
     categoryList: {
-        width: '20%',
+        // width: '20%',
         height: 'min-content',
         backgroundColor: KnowitColors.greyGreen,
         borderRadius: '0px 0px 20px 20px',
@@ -48,8 +50,10 @@ const AnswersStyle = makeStyles({
         boxShadow: "0px 3px 0px grey",
         marginBottom: "8px",
     },
+    leftCard: {
+        width: '20%'
+    },
     categoryListInner: {
-        marginTop: 10,
         marginLeft: 10,
         textAlign: 'center'
     },
@@ -75,20 +79,22 @@ const AnswersStyle = makeStyles({
         backgroundColor: KnowitColors.white
     },
     cardHeaderOpen: {
-        width: '20%',
+        // width: '20%',
         display: "flex",
         // marginTop: cardCornerRadius,
         paddingTop: cardCornerRadius,
-        height: cardCornerRadius,
-        backgroundColor: KnowitColors.greyGreen
+        // height: cardCornerRadius,
+        height: 'max-content',
+        backgroundColor: KnowitColors.greyGreen,
     },
     cardHeaderClosed: {
-        width: '20%',
+        // width: '20%',
         display: "flex",
         // marginTop: cardCornerRadius,
         // paddingTop: cardCornerRadius,
         // height: cardCornerRadius,
-        height: cardCornerRadius,
+        height: 'max-content',
+
         paddingTop: cardCornerRadius,
         marginTop: -cardCornerRadius,
         boxShadow: '0px 3px 2px gray',
@@ -96,6 +102,7 @@ const AnswersStyle = makeStyles({
 
         backgroundColor: KnowitColors.greyGreen
     },
+
     closeButton: {
         marginTop: "3px",
         marginRight: "32px",
@@ -106,7 +113,9 @@ const AnswersStyle = makeStyles({
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
-        height: '10%'
+        height: '10%',
+        margin: '10px'
+
     },
     graphHolder: {
         width: '80%',
@@ -184,29 +193,32 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
     
 
     return (
-        <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.bottomCardOpen : cardStyle.bottomCardClosed)}>
-            <div className={props.commonCardProps.active ? style.cardHeaderOpen : style.cardHeaderClosed}>
-                <button
-                    onClick={buttonClick}
-                    className={clsx(cardStyle.cardButton)}
-                >
-                    DINE SVAR
-                </button>
-                {props.commonCardProps.active ? (
-                    <CloseIcon
-                        fontSize="large"
-                        className={style.closeButton}
+        <div className={clsx(props.commonCardProps.active ? cardStyle.bottomCardOpen : cardStyle.bottomCardClosed)}>
+            <div className={style.leftCard}>
+                <div className={props.commonCardProps.active ? style.cardHeaderOpen : style.cardHeaderClosed}>
+                    <button
                         onClick={buttonClick}
-                    />
-                ) : null}
-            </div>
-            <div className={props.commonCardProps.active ? "" : style.hidden}>
-                <div className={style.answerBox}>
-                    <div className={style.categoryList}>
-                        <div className={style.categoryListInner}>
-                            {getCategoryButtons()}
-                        </div>
+                        className={clsx(cardStyle.cardButton)}
+                    >
+                        DINE SVAR
+                    </button>
+                    {props.commonCardProps.active ? (
+                        <CloseIcon
+                            fontSize="large"
+                            className={style.closeButton}
+                            onClick={buttonClick}
+                        />
+                    ) : null}
+                    
+
+                </div>
+                <div className={props.commonCardProps.active ? style.categoryList : style.hidden}>
+                    <div className={style.categoryListInner}>
+                        {getCategoryButtons()}
                     </div>
+                </div>
+            </div>
+            <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>                    
                     <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
                         <div className={style.catHeader}>
                             <Button className={style.editButton} onClick={() => props.answerViewModeActive(false)}>Endre svar</Button>
@@ -220,7 +232,6 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
                         {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
                         <Form {...props} setIsCategorySubmitted={setIsCategorySubmitted} isCategorySubmitted={isCategorySubmitted} />
                     </div>
-                </div>
                 <AlertDialog
                     setAlertDialogOpen={setAlertDialogOpen}
                     alertDialogOpen={alertDialogOpen}

@@ -150,7 +150,7 @@ export const CardStyle = makeStyles<Theme, ZProps>((theme: Theme) =>
             position: 'relative',
             marginTop: -cardCornerRadius,
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
             overflowY: 'auto',
             // flexGrow: 1
             height: '100%',
