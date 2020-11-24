@@ -12,17 +12,16 @@ import { KnowitColors } from '../styles';
 import { SignalWifi1BarLockSharp } from '@material-ui/icons';
 
 
-// style
-const alertStyle = makeStyles({
-      stayButton: {
+const useStyles = makeStyles({
+    stayButton: {
         width: '162px',
         height: '38px',
         border: '3px solid',
         background: KnowitColors.lightGreen,
         borderRadius: '19px',
         borderColor: KnowitColors.lightGreen
-      },
-      leaveButton: {
+    },
+    leaveButton: {
         width: '162px',
         height: '38px',
         border: '3px solid',
@@ -61,7 +60,7 @@ const alertStyle = makeStyles({
 
 
 export const AlertDialog = ({ ...props }: AlertDialogProps) => {
-    const style = alertStyle();
+    const classes = useStyles();
 
     const handleStayInForm = () => {
         props.setAlertDialogOpen(false);
@@ -83,24 +82,24 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title" className={style.dialogTitle}>
-                    <ErrorIcon fontSize='large' className={style.errorIcon}></ErrorIcon>
-                    <div className={style.dialogTitleText}>Obs! Svarene dine er ikke lagret.</div>
+                <DialogTitle id="alert-dialog-title" className={classes.dialogTitle}>
+                    <ErrorIcon fontSize='large' className={classes.errorIcon}></ErrorIcon>
+                    <div className={classes.dialogTitleText}>Obs! Svarene dine er ikke lagret.</div>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description" className={style.alertText}>
+                    <DialogContentText id="alert-dialog-description" className={classes.alertText}>
                             Hvis du forlater skjemaet nå vil ikke endringene du har gjort bli lagret.
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions className={style.alertButtons}>
+                <DialogActions className={classes.alertButtons}>
                     <Button onClick={handleLeaveForm}
-                        className={style.leaveButton}
+                        className={classes.leaveButton}
                         >
-                        <div className={style.buttonText}>Forlat skjemaet</div>
+                        <div className={classes.buttonText}>Forlat skjemaet</div>
 
                     </Button>
-                    <Button onClick={handleStayInForm} autoFocus className={style.stayButton}> 
-                        <div className={style.buttonText}>Bli på skjemaet</div>
+                    <Button onClick={handleStayInForm} autoFocus className={classes.stayButton}> 
+                        <div className={classes.buttonText}>Bli på skjemaet</div>
                     </Button>
                 </DialogActions>
             </Dialog>
