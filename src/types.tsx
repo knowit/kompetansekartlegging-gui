@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 
 
 export type AnswerData = {
@@ -18,7 +17,8 @@ export type QuestionData = {
     text: string,
     topic: string,
     category: {
-        text: string
+        text: string,
+        description: string | undefined
     }
 };
 
@@ -87,7 +87,11 @@ export type FormDefinitionWithQuestions = {
                             id: string,
                             text: string,
                             topic: string,
-                            category: string,
+                            category: {
+                                id: string,
+                                text: string,
+                                description: string
+                            }
                         }
                     }
                 ]
@@ -109,7 +113,8 @@ export type FormDefinition = {
                 topic: string,
                 category: {
                     id: string,
-                    text: string
+                    text: string,
+                    description: string
                 }
             }
         ]
