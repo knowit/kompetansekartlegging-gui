@@ -4,7 +4,7 @@ import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
 import { Auth } from 'aws-amplify'
 import { KnowitColors } from '../styles';
 
-const LoginStyle = makeStyles({
+const loginStyle = makeStyles({
     container: {
         height: '100vw',
         width: '100vw',
@@ -63,7 +63,7 @@ const LoginStyle = makeStyles({
 });
 
 const Login = () => {
-    const style = LoginStyle();
+    const style = loginStyle();
 
     return (
         <div className={style.container}>

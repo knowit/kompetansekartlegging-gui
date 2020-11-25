@@ -12,17 +12,16 @@ import { KnowitColors } from '../styles';
 import { SignalWifi1BarLockSharp } from '@material-ui/icons';
 
 
-// style
-const alertStyle = makeStyles({
-      stayButton: {
+const alertDialogStyles = makeStyles({
+    stayButton: {
         width: '162px',
         height: '38px',
         border: '3px solid',
         background: KnowitColors.lightGreen,
         borderRadius: '19px',
         borderColor: KnowitColors.lightGreen
-      },
-      leaveButton: {
+    },
+    leaveButton: {
         width: '162px',
         height: '38px',
         border: '3px solid',
@@ -61,7 +60,7 @@ const alertStyle = makeStyles({
 
 
 export const AlertDialog = ({ ...props }: AlertDialogProps) => {
-    const style = alertStyle();
+    const style = alertDialogStyles();
 
     const handleStayInForm = () => {
         props.setAlertDialogOpen(false);

@@ -1,20 +1,17 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useState } from 'react'
-import { CardStyle, KnowitColors, cardCornerRadius } from '../../styles';
+import { KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
 import { AlertDialog } from '../AlertDialog';
 import AnswerDiagram from '../AnswerDiagram';
 
-const AnswersStyle = makeStyles({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: "100%",
-        backgroundColor: KnowitColors.white,//KnowitColors.greyGreen
-    },
+const cardCornerRadius: number = 40;
+const zIndex: number = 20;
+
+const yourAnwersStyle = makeStyles({
     hidden: {
         display: "none"
     },
@@ -32,16 +29,12 @@ const AnswersStyle = makeStyles({
         borderRadius: 10,
         background: KnowitColors.white,
     },
-    answerViewContainer: {
-        display: 'flex'
-    },
     form: {
         width: '100%',
         overflowY: 'auto',
         height: '100%'
     },
     categoryList: {
-        // width: '20%',
         height: 'min-content',
         backgroundColor: KnowitColors.greyGreen,
         borderRadius: '0px 0px 20px 20px',
@@ -78,20 +71,13 @@ const AnswersStyle = makeStyles({
         backgroundColor: KnowitColors.white
     },
     cardHeaderOpen: {
-        // width: '20%',
         display: "flex",
-        // marginTop: cardCornerRadius,
         paddingTop: cardCornerRadius,
-        // height: cardCornerRadius,
         height: 'max-content',
         backgroundColor: KnowitColors.greyGreen,
     },
     cardHeaderClosed: {
-        // width: '20%',
         display: "flex",
-        // marginTop: cardCornerRadius,
-        // paddingTop: cardCornerRadius,
-        // height: cardCornerRadius,
         height: 'max-content',
 
         paddingTop: cardCornerRadius,
@@ -145,11 +131,33 @@ const AnswersStyle = makeStyles({
         textAlign: 'left',
         justifyContent: 'left'
     },
+    cardButton: {
+        fontWeight: "bold",
+        fontSize: 18,
+        padding: 10,
+        border: "none",
+        outline: "none",
+        backgroundColor: "transparent",
+        textAlign: "left",
+        paddingLeft: 50,
+        width: "100%"
+    },
+    bottomCardClosed: {
+        zIndex: zIndex
+    },
+    bottomCardOpen: {
+        position: 'relative',
+        marginTop: -cardCornerRadius,
+        display: 'flex',
+        flexDirection: 'row',
+        overflowY: 'auto',
+        height: '100%',
+        zIndex: zIndex
+    },
 });
 
 export const YourAnswers = ({ ...props }: YourAnswerProps) => {
-    const style = AnswersStyle();
-    const cardStyle = CardStyle({ zIndex: 20 });
+    const style = yourAnwersStyle();
 
     const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
@@ -192,12 +200,12 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
     
 
     return (
-        <div className={clsx(props.commonCardProps.active ? cardStyle.bottomCardOpen : cardStyle.bottomCardClosed)}>
+        <div className={clsx(props.commonCardProps.active ? style.bottomCardOpen : style.bottomCardClosed)}>
             <div className={style.leftCard}>
                 <div className={props.commonCardProps.active ? style.cardHeaderOpen : style.cardHeaderClosed}>
                     <button
                         onClick={buttonClick}
-                        className={clsx(cardStyle.cardButton)}
+                        className={clsx(style.cardButton)}
                     >
                         DINE SVAR
                     </button>

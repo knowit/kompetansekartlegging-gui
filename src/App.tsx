@@ -10,11 +10,10 @@ import NavBar from './components/NavBar';
 import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
-import { AppStyle } from './styles';
 import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
 import Login from './components/Login';
-import userEvent from '@testing-library/user-event';
 import { UserFormWithAnswers } from './types';
+import { makeStyles } from '@material-ui/core';
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -23,8 +22,21 @@ Amplify.configure(awsconfig);
 
 let formDef = require('./form2.json')
 
+
+const appStyle = makeStyles({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh'
+    },
+    content: {
+        height: '100%',
+        flexGrow: 1
+    }
+});
+
 const App = () => {
-    const style = AppStyle();
+    const style = appStyle();
 
     const [user, setUser] = useState<any | null>(null);
     const [customState, setCustomState] = useState<any | null>(null)

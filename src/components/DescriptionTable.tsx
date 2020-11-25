@@ -1,6 +1,67 @@
 import React from 'react'
-import { DescTableStyle } from '../styles';
 import * as Icon from '../icons/iconController';
+import { makeStyles } from '@material-ui/core';
+import { KnowitColors } from '../styles';
+
+const DescTableStyle = makeStyles({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: KnowitColors.ecaluptus
+    },
+    scaleRow: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignContent: 'center'
+    },
+    scaleTitle: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 2,
+        justifyContent: 'center',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        width: '10%'
+    },
+    container: {
+        display: 'flex',
+        flex: 1,
+        flexGrow: 5,
+        flexDirection: 'column',
+        padding: 5
+    },
+    top: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 10,
+        paddingBottom: 20
+    },
+    bottom: {
+        display: 'flex'
+    },
+    iconArea: {
+        height: 30,
+        paddingRight: 5
+    },
+    icon: {
+        height: "100%"
+    },
+    textBlock: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    heading: {
+        textAlign: 'left',
+        fontSize: 10,
+        fontWeight: 'bold'
+    },
+    text: {
+        textAlign: 'left',
+        fontSize: 10
+    }
+});
 
 export const DescriptionTable = () => {
     const style = DescTableStyle();

@@ -7,8 +7,21 @@ import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
 import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
-import { CardStyle } from '../styles';
 import { AnswerHistory } from './AnswerHistory';
+import { makeStyles } from '@material-ui/core';
+
+const cardCornerRadius: number = 40;
+const zIndex: number = 0;
+
+export const ContentStyle = makeStyles({
+    cardHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: '100%'
+    },
+})
+
 
 const Content = ({...props}: ContentProps) => {
     
@@ -21,7 +34,6 @@ const Content = ({...props}: ContentProps) => {
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
-    const [updateSliderValues, setUpdateSliderValues] = useState<boolean>(true)
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
 
@@ -148,7 +160,6 @@ const Content = ({...props}: ContentProps) => {
     };
 
     const changeActiveCategory = (newActiveCategory: string) => {
-        // console.log("New category: " + newActiveCategory);
         setActiveCategory(newActiveCategory);
         answerViewModeActive(true);
     };
@@ -166,10 +177,6 @@ const Content = ({...props}: ContentProps) => {
     useEffect(() => {
         changeActiveCategory(categories[0]);
     }, [categories]);
-
-    // useEffect(() => {
-    //     console.log(activeCategory);
-    // }, [activeCategory]);
     
     useEffect(() => {
         fetchLastFormDefinition();
@@ -221,7 +228,7 @@ const Content = ({...props}: ContentProps) => {
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
 
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
-    const style = CardStyle({zIndex: 0});
+    const style = ContentStyle();
     
     const answerViewModeActive = (viewModeActive: boolean) => {
         setAnswerViewMode(viewModeActive);
@@ -283,28 +290,6 @@ const Content = ({...props}: ContentProps) => {
             />
         </div>
     );
-
-    // return(
-    //     <div>
-    //         <Router  
-    //             answerProps={{
-    //                 updateAnswer: updateAnswer,
-    //                 formDefinition: formDefinition,
-    //                 createUserForm: createUserForm,
-    //                 answers: answers,
-    //                 submitFeedback: submitFeedback
-    //             }}
-    //             statsProps={{
-    //                 data: radarData
-    //             }}
-    //             userProps={{
-    //                 deleteUserData: deleteUserData,
-    //                 listUserForms: listUserForms
-    //             }}
-    //         />
-    //     </div>
-    // );
-
 };
 
 export default Content;
