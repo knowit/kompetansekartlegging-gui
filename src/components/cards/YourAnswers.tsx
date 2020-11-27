@@ -207,7 +207,7 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
                         onClick={buttonClick}
                         className={clsx(style.cardButton)}
                     >
-                        DINE SVAR
+                        MINE SVAR
                     </button>
                     {props.commonCardProps.active ? (
                         <CloseIcon
