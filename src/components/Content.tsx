@@ -98,7 +98,10 @@ const Content = () => {
         console.log(questionAnswers);
         
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
-        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
+        // let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
+        // let result = (await helper.callBatchGraphQL2(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
+        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(customQueries.batchCreateQuestionAnswer2, {input: questionAnswers}, "QuestionAnswer"));
+        console.log("Result: ", result);
         if(!result || result.length === 0) {
             setSubmitFeedback("Something went wrong when inserting data to server database..");
             return;
@@ -132,7 +135,7 @@ const Content = () => {
         let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAtt, customQueries.formByCreatedAtInputConsts);
         // let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
         // let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
-        // console.log(currentForm);
+        // console.log("Current form: ", currentForm);
         if(currentForm.data){
 
             //TODO: Need to sort questions again, currently removed but can be implemented
