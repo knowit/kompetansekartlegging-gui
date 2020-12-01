@@ -3,6 +3,7 @@ import './App.css';
 import Amplify, {Auth, Hub, API, graphqlOperation} from 'aws-amplify';
 import awsconfig from './aws-exports';
 import * as mutations from './graphql/mutations';
+import * as helper from './helperFunctions'
 import {withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import Content from './components/Content';
 import NavBar from './components/NavBar';
@@ -10,9 +11,9 @@ import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import { callGraphQL } from './helperFunctions';
 import {CognitoHostedUIIdentityProvider} from '@aws-amplify/auth/lib/types'
-import userEvent from '@testing-library/user-event';
-import { AppStyle } from './styles';
 import Login from './components/Login';
+import { UserFormWithAnswers } from './types';
+import { makeStyles } from '@material-ui/core';
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -21,11 +22,25 @@ Amplify.configure(awsconfig);
 
 const formDef = require('./form3.json');
 
+
+const appStyle = makeStyles({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh'
+    },
+    content: {
+        height: '100%',
+        flexGrow: 1
+    }
+});
+
 const App = () => {
-    const style = AppStyle();
+    const style = appStyle();
 
     const [user, setUser] = useState<any | null>(null);
     const [customState, setCustomState] = useState<any | null>(null)
+    const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     
 
     useEffect(() => {
@@ -73,14 +88,35 @@ const App = () => {
         */
     }
 
+    const deleteUserData = async () => {
+        let allUserForms = await helper.listUserForms();
+        let deleteResult = [];
+        if(allUserForms.length > 0){
+            for(let i = 0; i < allUserForms.length; i++) {
+                for(const answer of allUserForms[i].questionAnswers.items){
+                    deleteResult.push((await helper.callGraphQL(mutations.deleteQuestionAnswer, {input: {"id": answer.id}})));
+                }
+                deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": allUserForms[i].id}})));
+            }
+            console.log(deleteResult);
+        } else console.log("No Userforms active");
+    };
+
     return (
         <div className={style.root}>
             <BrowserRouter>
                 {user ?
                     <Fragment>
-                        <NavBar user={user}/>
+                        <NavBar
+                            user={user}
+                            callbackDelete={deleteUserData}
+                            setAnswerHistoryOpen={setAnswerHistoryOpen}
+                        />
                         {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
-                        <Content />
+                        <Content
+                            answerHistoryOpen={answerHistoryOpen}
+                            setAnswerHistoryOpen={setAnswerHistoryOpen}
+                        />
                         <Footer/>
                     </Fragment>
                 :

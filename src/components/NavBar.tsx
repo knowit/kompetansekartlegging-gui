@@ -5,13 +5,10 @@ import { Auth } from 'aws-amplify';
 import React, { useEffect, useState } from 'react'
 import { useHistory } from "react-router-dom";
 import { KnowitColors } from '../styles';
-import { UserFormList } from '../types'
-import * as helper from '../helperFunctions'
-import * as mutations from '../graphql/mutations';
-import * as customQueries from '../graphql/custom-queries';
+import { NavBarProps } from '../types'
 
 
-const useStyles = makeStyles((theme) => ({
+const navbarStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         zIndex: 100
@@ -45,29 +42,8 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-// Inserted here temporarily: listUserForms & deleteUserData
-
-const deleteUserData = async () => {
-    let allUserForms = await helper.listUserForms();
-    let deleteResult = [];
-    if(allUserForms.length > 0){
-        for(let i = 0; i < allUserForms.length; i++) {
-            for(const answer of allUserForms[i].questionAnswers.items){
-                deleteResult.push((await helper.callGraphQL(mutations.deleteQuestionAnswer, {input: {"id": answer.id}})));
-            }
-            deleteResult.push((await helper.callGraphQL(mutations.deleteUserForm, {input: {"id": allUserForms[i].id}})));
-        }
-        console.log(deleteResult);
-    } else console.log("No Userforms active");
-};
-
-const listUserForms = async () => {
-    let allUserForms = await helper.listUserForms();
-    console.log(allUserForms);
-};
-
-const NavBar = (user : any) => {
-    const classes = useStyles();
+const NavBar = ({...props}: NavBarProps) => {
+    const style = navbarStyles();
     const history = useHistory();
     const [userName, setUserName] = useState<string>('');
     const [userPicture, setUserPicture] = useState<string>('');
@@ -76,14 +52,13 @@ const NavBar = (user : any) => {
 
     const anchorRef = React.useRef<HTMLButtonElement>(null);
 
-
     useEffect(() => {
-        if (typeof user != "undefined" && user.user.hasOwnProperty("attributes")) {
-            let attributes = user.user.attributes
+        if (typeof props.user != "undefined" && props.user.hasOwnProperty("attributes")) {
+            let attributes = props.user.attributes
             setUserName(attributes.name)
             setUserPicture(attributes.picture)
         } 
-    }, [user]);
+    }, [props.user]);
 
     const handleToggle = () => {
         setAvatarMenuOpen((avatarMenuPrevOpen) => !avatarMenuPrevOpen);
@@ -124,16 +99,15 @@ const NavBar = (user : any) => {
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
           return;
         }
-        deleteUserData();
+        props.callbackDelete();
         setDeleteAlertOpen(false);
     };
-
 
     const handleDisplayAnswers = (event: React.MouseEvent<EventTarget>) => {
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
           return;
         }
-        listUserForms();
+        props.setAnswerHistoryOpen(true);
         setAvatarMenuOpen(false);
     };
 
@@ -154,71 +128,71 @@ const NavBar = (user : any) => {
 
 
     return (
-        <div className={classes.root}>
+        <div className={style.root}>
             <AppBar position="static">
-                <Toolbar className={classes.header}>
-                    <div className={classes.userName}>{userName}</div>
+                <Toolbar className={style.header}>
+                    <div className={style.userName}>{userName}</div>
                     
                     
                     {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}
                     <div>
-                    <Button
-                        ref={anchorRef}
-                        aria-controls={avatarMenuOpen ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleToggle}
-                    >
-                        <Avatar className={classes.userPicture} src={userPicture}
-                     />
-                    </Button>
-                <Popper
-                    open={avatarMenuOpen}
-                    anchorEl={anchorRef.current}
-                    placement={"bottom-end"}
-                    role={undefined}
-                    transition
-                    disablePortal
-                >
-                {({ TransitionProps, placement }) => (
-                    <Grow
-                    {...TransitionProps}
-                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                    >
-                    <Paper>
-                        <ClickAwayListener onClickAway={handleClose}>
-                        <MenuList autoFocusItem={avatarMenuOpen} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                            <MenuItem onClick={handleDisplayAnswers}>Vis alle lagrede svar</MenuItem>
-                            <MenuItem onClick={handleDeleteAnswers}>Slett alle svar</MenuItem>
-                            <MenuItem onClick={handleCloseSignout}>Logg ut</MenuItem>
-                        </MenuList>
-                        </ClickAwayListener>
-                    </Paper>
-                    </Grow>
-                )}
-                </Popper>
-                <Dialog
-                    open={deleteAlertOpen}
-                    onClose={handleCloseAlert}
-                    aria-labelledby="dialogtitle"
-                    aria-describedby="dialogdescription"
-                >
-                    <DialogTitle id="dialogtitle">
-                        {"Ønsker du å slette svarene dine?"}
-                    </DialogTitle>
-                    <DialogContent>
-                    <DialogContentText id="dialogdescription">
-                        OBS: Dette vil slette alle innsendte og lagrede svar!
-                    </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                    <Button onClick={handleConfirmDelete} color="primary">
-                        Bekreft
-                    </Button>
-                    <Button onClick={handleCloseAlert} color="primary" autoFocus>
-                        Avbryt
-                    </Button>
-                    </DialogActions>
-                </Dialog>
+                        <Button
+                            ref={anchorRef}
+                            aria-controls={avatarMenuOpen ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            onClick={handleToggle}
+                        >
+                            <Avatar className={style.userPicture} src={userPicture}
+                        />
+                        </Button>
+                        <Popper
+                            open={avatarMenuOpen}
+                            anchorEl={anchorRef.current}
+                            placement={"bottom-end"}
+                            role={undefined}
+                            transition
+                            disablePortal
+                        >
+                        {({ TransitionProps, placement }) => (
+                            <Grow
+                            {...TransitionProps}
+                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                            >
+                            <Paper>
+                                <ClickAwayListener onClickAway={handleClose}>
+                                <MenuList autoFocusItem={avatarMenuOpen} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                                    <MenuItem onClick={handleDisplayAnswers}>Vis alle lagrede svar</MenuItem>
+                                    <MenuItem onClick={handleDeleteAnswers}>Slett alle svar</MenuItem>
+                                    <MenuItem onClick={handleCloseSignout}>Logg ut</MenuItem>
+                                </MenuList>
+                                </ClickAwayListener>
+                            </Paper>
+                            </Grow>
+                        )}
+                        </Popper>
+                        <Dialog
+                            open={deleteAlertOpen}
+                            onClose={handleCloseAlert}
+                            aria-labelledby="dialogtitle"
+                            aria-describedby="dialogdescription"
+                        >
+                            <DialogTitle id="dialogtitle">
+                                {"Ønsker du å slette svarene dine?"}
+                            </DialogTitle>
+                            <DialogContent>
+                            <DialogContentText id="dialogdescription">
+                                OBS: Dette vil slette alle innsendte og lagrede svar!
+                            </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                            <Button onClick={handleConfirmDelete} color="primary">
+                                Bekreft
+                            </Button>
+                            <Button onClick={handleCloseAlert} color="primary" autoFocus>
+                                Avbryt
+                            </Button>
+                            </DialogActions>
+                        </Dialog>
                     </div>
                 </Toolbar>
             </AppBar>

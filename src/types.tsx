@@ -299,6 +299,12 @@ type CommonCardProps = {
 //     }
 // }
 
+export type NavBarProps = {
+    user: any,
+    callbackDelete: () => void,
+    setAnswerHistoryOpen: (answerHistoryOpen: boolean) => void
+};
+
 export type AlertDialogProps = {
     setAlertDialogOpen: (alertDialogOpen: boolean) => void;
     alertDialogOpen: boolean,
@@ -307,3 +313,30 @@ export type AlertDialogProps = {
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     resetAnswers: () => void,
 };
+
+export type AnswerHistoryProps = {
+    setHistoryViewOpen: (historyViewOpen: boolean) => void,
+    historyViewOpen: boolean,
+    history: UserFormWithAnswers[],
+    formDefinition?: FormDefinition,
+};
+
+export type HistoryTreeViewProps = {
+    data: UserFormWithAnswers[]
+};
+
+export type ContentProps = {
+    setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
+    answerHistoryOpen: boolean
+};
+
+export type ChartData = {
+    name: string,
+    valueKnowledge: number[]
+    valueMotivation: number[]
+}
+
+export type CombinedChartProps = {
+    chartData: ChartData[],
+    className?: string
+}

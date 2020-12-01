@@ -1,12 +1,61 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { AnswerData, TopicScoreWithIcon } from '../types'
-import { HighlightsStyle } from '../styles';
 import { GetIcon } from '../icons/iconController'
+import { makeStyles } from '@material-ui/core';
+import { KnowitColors } from '../styles';
+
+
+const highlightsStyle = makeStyles({
+    root: {
+        display: 'flex',
+        width: '30%',
+        flexDirection: 'column'
+    },
+    title: {    
+        textAlign: 'center',
+        fontWeight: 'bold',
+        paddingBottom: 20
+    },
+    container: { 
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    col: {
+        display: 'flex',
+        width: '40%',
+        flexDirection: 'column'
+    },
+    heading: {
+        textAlign: 'left',
+        paddingBottom: 10
+    },
+    list: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    listitem: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        paddingBottom: 5
+    },
+    icon: {
+        width: '15%',
+        fill: KnowitColors.darkBrown
+    },
+    topic: {
+        width: '80%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        fontSize: 12
+    }
+});
+
 
 
 export default function Highlights(props: { data: AnswerData[] }) {
 
-    const style = HighlightsStyle();
+    const style = highlightsStyle();
 
     const [knowledgeAboveCutoff, setKnowledgeAboveCutoff] = useState<TopicScoreWithIcon[]>([]);
     const [motivationAboveCutoff, setMotivationAboveCutoff] = useState<TopicScoreWithIcon[]>([]);
@@ -92,7 +141,7 @@ export default function Highlights(props: { data: AnswerData[] }) {
                     {createKnowledgeHighlights()}
             </div>
             <div className={style.col}>
-                <div className={style.heading}>ASPIRASJONER</div>
+                <div className={style.heading}>AMBISJONER</div>
                     {createMotivationHighlights()}
             </div>
             </div>

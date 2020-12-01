@@ -136,7 +136,30 @@ export const CardStyle = makeStyles<Theme, ZProps>((theme: Theme) =>
             borderBottomLeftRadius: cardCornerRadius,
             borderBottomRightRadius: cardCornerRadius,
             zIndex: ({ zIndex }) => zIndex
-        }
+        },
+        bottomCardClosed: {
+            // position: 'relative',
+            //marginTop: cardCornerRadius,
+            // boxShadow: "0px 3px 2px grey",
+            // borderBottomLeftRadius: cardCornerRadius,
+            // borderBottomRightRadius: cardCornerRadius,
+            zIndex: ({ zIndex }) => zIndex,
+            // backgroundColor: KnowitColors.darkGreen
+        },
+        bottomCardOpen: {
+            position: 'relative',
+            marginTop: -cardCornerRadius,
+            display: 'flex',
+            flexDirection: 'row',
+            overflowY: 'auto',
+            // flexGrow: 1
+            height: '100%',
+            // boxShadow: "0px 3px 2px grey",
+            // borderBottomLeftRadius: cardCornerRadius,
+            // borderBottomRightRadius: cardCornerRadius,
+            zIndex: ({ zIndex }) => zIndex
+        },
+
     })
   );
 
@@ -150,6 +173,7 @@ export const OverviewStyle = makeStyles({
         height: '100%',
         width: '100%',
         display: 'flex',
+        overflowY: 'auto',
         justifyContent: 'center'
     },
     cardHeader: {

@@ -1,50 +1,51 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useState } from 'react'
-import { CardStyle, KnowitColors, cardCornerRadius } from '../../styles';
+import { KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { Form } from '../Form';
 import CloseIcon from '@material-ui/icons/Close';
 import { AlertDialog } from '../AlertDialog';
 import AnswerDiagram from '../AnswerDiagram';
 
-const AnswersStyle = makeStyles({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: "100%",
-        backgroundColor: KnowitColors.greyGreen
-    },
+const cardCornerRadius: number = 40;
+const zIndex: number = 20;
+
+const yourAnwersStyle = makeStyles({
     hidden: {
         display: "none"
     },
     answerBox: {
         display: 'flex',
         flexDirection: 'row',
-        overflow: 'auto',
-        height: '100%'
+        height: '80%',
+        marginTop: '40px',
+        width: '80%',
     },
     answerView: {
-        width: '80%',
-        height: '20vw',
-        overflowY: 'auto',
+        marginRight: 10,
+        width: '95%',
+        height: '100%',
         borderRadius: 10,
         background: KnowitColors.white,
     },
-    answerViewContainer: {
-        display: 'flex'
-    },
     form: {
-        width: '80%',
+        width: '100%',
         overflowY: 'auto',
         height: '100%'
     },
     categoryList: {
-        width: '20%',
-        height: '100%'
+        height: 'min-content',
+        backgroundColor: KnowitColors.greyGreen,
+        borderRadius: '0px 0px 20px 20px',
+        paddingBottom: '20px',
+        boxShadow: "0px 3px 0px grey",
+        marginBottom: "8px",
+    },
+    leftCard: {
+        width: '20%'
     },
     categoryListInner: {
-        marginTop: 10,
         marginLeft: 10,
         textAlign: 'center'
     },
@@ -64,15 +65,29 @@ const AnswersStyle = makeStyles({
         '&:hover': {
             background: KnowitColors.white
         },
+        justifyContent: 'left'
     },
     categoryButtonActive: {
         backgroundColor: KnowitColors.white
     },
-    cardHeader: {
+    cardHeaderOpen: {
         display: "flex",
-        marginTop: cardCornerRadius,
-        height: cardCornerRadius
+        paddingTop: cardCornerRadius,
+        height: 'max-content',
+        backgroundColor: KnowitColors.greyGreen,
     },
+    cardHeaderClosed: {
+        display: "flex",
+        height: 'max-content',
+
+        paddingTop: cardCornerRadius,
+        marginTop: -cardCornerRadius,
+        boxShadow: '0px 3px 2px gray',
+        borderRadius: '0px 0px 20px 20px',
+
+        backgroundColor: KnowitColors.greyGreen
+    },
+
     closeButton: {
         marginTop: "3px",
         marginRight: "32px",
@@ -83,11 +98,13 @@ const AnswersStyle = makeStyles({
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
-        height: '10%'
+        height: '10%',
+        margin: '10px'
+
     },
     graphHolder: {
-        width: '80%',
-        height: '80%',
+        width: '100%',
+        height: '85%',
     },
     editButton: {
         margin: 5,
@@ -108,12 +125,39 @@ const AnswersStyle = makeStyles({
         justifyContent: 'center',
         fontWeight: 'bold',
         fontSize: 18,
-    }
+    },
+    buttonText: {
+        textTransform: 'none',
+        textAlign: 'left',
+        justifyContent: 'left'
+    },
+    cardButton: {
+        fontWeight: "bold",
+        fontSize: 18,
+        padding: 10,
+        border: "none",
+        outline: "none",
+        backgroundColor: "transparent",
+        textAlign: "left",
+        paddingLeft: 50,
+        width: "100%"
+    },
+    bottomCardClosed: {
+        zIndex: zIndex
+    },
+    bottomCardOpen: {
+        position: 'relative',
+        marginTop: -cardCornerRadius,
+        display: 'flex',
+        flexDirection: 'row',
+        overflowY: 'auto',
+        height: '100%',
+        zIndex: zIndex
+    },
 });
 
 export const YourAnswers = ({ ...props }: YourAnswerProps) => {
-    const style = AnswersStyle();
-    const cardStyle = CardStyle({ zIndex: 20 });
+    const style = yourAnwersStyle();
 
     const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
@@ -133,8 +177,9 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
         props.commonCardProps.setActiveCard(props.commonCardProps.index, !props.commonCardProps.active);
     };
 
-    const getCategoryButtons = () => {
+    const getCategoryButtons = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
+        let orderNumber: number = 1;
         props.categories.forEach(cat => {
             buttons.push(
                 <Button
@@ -145,36 +190,42 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
                         props.activeCategory === cat ? style.categoryButtonActive : ""
                     )}
                     onClick={() => { saveBeforeChange(cat) }}
-                >{cat}</Button>
+                    ><div className={style.buttonText}>{orderNumber}. {cat}</div></Button>
             );
+            orderNumber++;
         });
         return buttons;
     };
 
+    
+
     return (
-        <div className={clsx(style.root, props.commonCardProps.active ? cardStyle.open : cardStyle.closed)}>
-            <div className={style.cardHeader}>
-                <button
-                    onClick={buttonClick}
-                    className={clsx(cardStyle.cardButton)}
-                >
-                    DINE SVAR
-                </button>
-                {props.commonCardProps.active ? (
-                    <CloseIcon
-                        fontSize="large"
-                        className={style.closeButton}
+        <div className={clsx(props.commonCardProps.active ? style.bottomCardOpen : style.bottomCardClosed)}>
+            <div className={style.leftCard}>
+                <div className={props.commonCardProps.active ? style.cardHeaderOpen : style.cardHeaderClosed}>
+                    <button
                         onClick={buttonClick}
-                    />
-                ) : null}
-            </div>
-            <div className={props.commonCardProps.active ? "" : style.hidden}>
-                <div className={style.answerBox}>
-                    <div className={style.categoryList}>
-                        <div className={style.categoryListInner}>
-                            {getCategoryButtons()}
-                        </div>
+                        className={clsx(style.cardButton)}
+                    >
+                        MINE SVAR
+                    </button>
+                    {props.commonCardProps.active ? (
+                        <CloseIcon
+                            fontSize="large"
+                            className={style.closeButton}
+                            onClick={buttonClick}
+                        />
+                    ) : null}
+                    
+
+                </div>
+                <div className={props.commonCardProps.active ? style.categoryList : style.hidden}>
+                    <div className={style.categoryListInner}>
+                        {getCategoryButtons()}
                     </div>
+                </div>
+            </div>
+            <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>                    
                     <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
                         <div className={style.catHeader}>
                             <Button className={style.editButton} onClick={() => props.answerViewModeActive(false)}>Endre svar</Button>
@@ -188,7 +239,6 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
                         {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
                         <Form {...props} setIsCategorySubmitted={setIsCategorySubmitted} isCategorySubmitted={isCategorySubmitted} />
                     </div>
-                </div>
                 <AlertDialog
                     setAlertDialogOpen={setAlertDialogOpen}
                     alertDialogOpen={alertDialogOpen}

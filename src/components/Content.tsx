@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, BatchCreatedQuestionAnswer, FormDefinition, ListedFormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
+import { AnswerData, BatchCreatedQuestionAnswer, ContentProps, FormDefinition, ListedFormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
@@ -7,10 +7,24 @@ import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
 import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
-import { CardStyle } from '../styles';
 import { CreateQuestionAnswerInput } from '../API';
+import { AnswerHistory } from './AnswerHistory';
+import { makeStyles } from '@material-ui/core';
 
-const Content = () => {
+const cardCornerRadius: number = 40;
+const zIndex: number = 0;
+
+export const ContentStyle = makeStyles({
+    cardHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: '100%'
+    },
+})
+
+
+const Content = ({...props}: ContentProps) => {
     
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
@@ -21,7 +35,8 @@ const Content = () => {
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
-    const [updateSliderValues, setUpdateSliderValues] = useState<boolean>(true)
+    const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
+    const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -160,11 +175,15 @@ const Content = () => {
     };
 
     const changeActiveCategory = (newActiveCategory: string) => {
-        // console.log("New category: " + newActiveCategory);
         setActiveCategory(newActiveCategory);
         answerViewModeActive(true);
     };
 
+    const fetchUserFormsAndOpenView = async () => {
+        let allUserForms = await helper.listUserForms();
+        setAnswerLog(allUserForms);
+        setHistoryViewOpen(true);
+    };
 
     const resetAnswers = () => {
         setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
@@ -173,10 +192,6 @@ const Content = () => {
     useEffect(() => {
         changeActiveCategory(categories[0]);
     }, [categories]);
-
-    // useEffect(() => {
-    //     console.log(activeCategory);
-    // }, [activeCategory]);
     
     useEffect(() => {
         fetchLastFormDefinition();
@@ -209,6 +224,14 @@ const Content = () => {
         } 
     }, [radarData]);
 
+    useEffect(() => {
+        if (props.answerHistoryOpen) {
+            fetchUserFormsAndOpenView() 
+        } else {
+            setHistoryViewOpen(false);
+        }
+    }, [props.answerHistoryOpen]);
+
     //New States etc for new card functionality
     /*
      * Really cryptic, using array for storing if card is active or not, using hardcoded number
@@ -220,7 +243,7 @@ const Content = () => {
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
 
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
-    const style = CardStyle({zIndex: 0});
+    const style = ContentStyle();
     
     const answerViewModeActive = (viewModeActive: boolean) => {
         setAnswerViewMode(viewModeActive);
@@ -274,30 +297,14 @@ const Content = () => {
                 answerViewModeActive={answerViewModeActive}
                 answerViewMode={answerViewMode}
             />
+            <AnswerHistory
+                setHistoryViewOpen={props.setAnswerHistoryOpen}
+                historyViewOpen={historyViewOpen}
+                history={answerLog}
+                formDefinition={formDefinition ?? undefined}
+            />
         </div>
     );
-
-    // return(
-    //     <div>
-    //         <Router  
-    //             answerProps={{
-    //                 updateAnswer: updateAnswer,
-    //                 formDefinition: formDefinition,
-    //                 createUserForm: createUserForm,
-    //                 answers: answers,
-    //                 submitFeedback: submitFeedback
-    //             }}
-    //             statsProps={{
-    //                 data: radarData
-    //             }}
-    //             userProps={{
-    //                 deleteUserData: deleteUserData,
-    //                 listUserForms: listUserForms
-    //             }}
-    //         />
-    //     </div>
-    // );
-
 };
 
 export default Content;
