@@ -12,7 +12,7 @@ type UserForm @model @auth(rules: [{ allow: owner }])
 @key(name: "byCreatedAt", fields: ["dummy", "createdAt"]) {
     id: ID!
     createdAt: AWSDateTime!
-    dummy: String!
+    sortKeyConstant: String!
     formDefinitionID: ID!
     questionAnswers: [QuestionAnswer]!
         @connection(keyName: "byUserForm", fields: ["id"]) 
