@@ -4,7 +4,7 @@ type FormDefinition @model
 @key(name: "byCreatedAt", fields: ["dummy", "createdAt"], queryField: "formByCreatedAt") {
     id: ID!
     createdAt: AWSDateTime!
-    dummy: String!
+    sortKeyConstant: String!
     questions: [Question] @connection(keyName: "byFormDefinition", fields: ["id"])
 }
 
@@ -69,4 +69,3 @@ type Mutation {
     #     env: BatchTableEnvironmentInput
     # ): [QuestionAnswer] @function(name: "createUserformBatchLambda")
 }
-
