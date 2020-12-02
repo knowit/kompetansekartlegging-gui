@@ -7,10 +7,10 @@ export default function RadarPlot(props: { data: AnsweredQuestion[] }) {
 
     useEffect(() => {
         props.data.map(value => {
-            let category = categoryAnswers.find(cat => cat.category === value.question.category);
+            let category = categoryAnswers.find(cat => cat.category === value.question.category.text);
             if(!category) {
                 category = {
-                    category: value.question.category,
+                    category: value.question.category.text,
                     totalAnswerValue: 0,
                     numberOfAnswerValues: 0,
                     answerAverage: 0,

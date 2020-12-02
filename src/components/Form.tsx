@@ -33,11 +33,11 @@ const FormStyle = makeStyles({
 export const Form = ({...props}: AnswerProps) => {
 
     type Question = {
-        question: {
-            id: string,
-            text: string,
-            topic: string,
-            category: string
+        id: string,
+        text: string,
+        topic: string,
+        category: {
+            text: string
         }
     }
 
@@ -46,13 +46,13 @@ export const Form = ({...props}: AnswerProps) => {
     const getQuestionsForCategory = (items: Question[]): JSX.Element[] => {
         let questions: JSX.Element[] = [];
         for(const item of items){
-            const answer = props.answers.find(a => a.questionId === item.question.id);
+            const answer = props.answers.find(a => a.questionId === item.id);
             questions.push(
                 <Question 
-                    key={item.question.id} 
-                    questionId={item.question.id}
-                    topic={item.question.topic}
-                    text={item.question.text}
+                    key={item.id} 
+                    questionId={item.id}
+                    topic={item.topic}
+                    text={item.category.text}
                     updateAnswer={props.updateAnswer}
                     knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
@@ -81,10 +81,8 @@ export const Form = ({...props}: AnswerProps) => {
     //TODO: Return only used category, not everyone
     const createQuestionCategory = (): JSX.Element => {
         if(!props.formDefinition) return <Fragment />;
-        let items = props.formDefinition.getFormDefinition.questions.items;
-        if(!items) return <Fragment />;
-        let questions = items.filter(item => item.question.category === props.activeCategory)
-            .sort((a, b) => (a.question.category < b.question.category) ? -1 : 1);
+        let questions = props.formDefinition.questions.items.filter(item => item.category.text === props.activeCategory)
+            .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
             <Fragment>
                 {props.categories.length > 0

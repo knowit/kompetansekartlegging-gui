@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, BatchCreatedQuestionAnswer, ContentProps, FormDefinition, ListedFormDefinition, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
+import { AnswerData, BatchCreatedQuestionAnswer, ContentProps, FormDefinition, ListedFormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
@@ -7,6 +7,7 @@ import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
 import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
+import { CreateQuestionAnswerInput } from '../API';
 import { AnswerHistory } from './AnswerHistory';
 import { makeStyles } from '@material-ui/core';
 
@@ -39,38 +40,39 @@ const Content = ({...props}: ContentProps) => {
 
     const createCategories = () => {
         if(!formDefinition) return [];
-        let formDef = formDefinition.getFormDefinition;
-        if(!formDef?.questions.items) return [];
-        return formDef.questions.items
-            .map(item => item.question.category)
+        if(!formDefinition?.questions.items) return [];
+        return formDefinition.questions.items
+            .map(item => item.category.text)
             .filter((value, index, array) => array.indexOf(value) === index);
     };
 
     const createAnswers = (): AnswerData[] => {
         if(!formDefinition) return [];
-        let formDef = formDefinition.getFormDefinition;
         let as: AnswerData[] = [];
-        if(formDef?.questions.items){
-            for (let i = 0; i < formDef.questions.items.length; i++) {
-                const element = formDef.questions.items[i];
-                if (!element) continue;
-                let preAnswer = userAnswers.find(answer => answer.question.id === element.question.id);
+        if(formDefinition?.questions.items){
+            console.log(userAnswers);
+            for (let i = 0; i < formDefinition.questions.items.length; i++) {
+                const question = formDefinition.questions.items[i];
+                // console.log(question);
+                if (!question) continue;
+                let preAnswer = userAnswers.find(answer => answer.question.id === question.id);
                 as.push({
-                    questionId: element.question.id,
-                    topic: element.question.topic,
-                    category: element.question.category,
+                    questionId: question.id,
+                    topic: question.topic,
+                    category: question.category.text,
                     knowledge: preAnswer ? (preAnswer.knowledge ? preAnswer.knowledge : 0) : -1,
                     motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1
                 });
             }
         }
+        console.log(as);
         return as;
     };
 
     const createRadarData = (): AnswerData[] => {
 
         if(!formDefinition) return [];
-        let questionList = formDefinition.getFormDefinition.questions.items;
+        let questionList = formDefinition.questions.items;
         if(!answers || !questionList) return [];
         let newRadarData: AnswerData[] = [];
         for (let i = 0; i < answers.length; i++) {
@@ -92,22 +94,29 @@ const Content = ({...props}: ContentProps) => {
       
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
-        let fdid = formDefinition.getFormDefinition.id;
-        let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"userFormFormDefinitionId": fdid}})).data;
+        let fdid = formDefinition.id;
+        // let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"formDefinitionID": fdid}})).data;
+        // console.log(userForm);
         if(!answers) return;
-        let questionAnswers = [];
+        let questionAnswers: CreateQuestionAnswerInput[] = [];
         for(let i = 0; i < answers.length; i++){
             if(answers[i].knowledge < 0 && answers[i].motivation < 0) continue;
             questionAnswers.push({
-                userFormID: userForm?.createUserForm.id,
+                userFormID: "",
+                questionID: answers[i].questionId,
                 knowledge: answers[i].knowledge,
                 motivation: answers[i].motivation,
-                questionAnswerQuestionId: answers[i].questionId
+                environmentID: helper.getEnvTableID()
             });
         }
+
+        console.log(questionAnswers);
         
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
-        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
+        // let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
+        // let result = (await helper.callBatchGraphQL2(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
+        let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(customQueries.batchCreateQuestionAnswer2, {input: questionAnswers}, "QuestionAnswer"));
+        console.log("Result: ", result);
         if(!result || result.length === 0) {
             setSubmitFeedback("Something went wrong when inserting data to server database..");
             return;
@@ -138,22 +147,28 @@ const Content = ({...props}: ContentProps) => {
     };
 
     const fetchLastFormDefinition = async () => {
-        let formList = await helper.callGraphQL<ListedFormDefinition>(queries.listFormDefinitions);
-        let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
-        let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
+        let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAtt, customQueries.formByCreatedAtInputConsts);
+        // let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
+        // let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
+        // console.log("Current form: ", currentForm);
         if(currentForm.data){
 
-            let sorted = currentForm.data.getFormDefinition.questions.items
-                .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1);
+            //TODO: Need to sort questions again, currently removed but can be implemented
 
-            currentForm.data.getFormDefinition.questions.items = sorted;
+            // currentForm.data.formByCreatedAt.items[0].questions
+            // let sorted = currentForm.data.formByCreatedAt.items[0].questions.items
+            //     .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1);
 
-            setFormDefinition(currentForm.data);
+            // currentForm.data.getFormDefinition.questions.items = sorted;
+
+
+            setFormDefinition(currentForm.data.formByCreatedAt.items[0]);
         } 
     };
 
     const getUserAnswers = async () => {
         let allAnswers = await helper.listUserForms();
+        console.log(allAnswers);
         if(allAnswers.length === 0) return;
         let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
         if(lastUserAnswer) setUserAnswers(lastUserAnswer);

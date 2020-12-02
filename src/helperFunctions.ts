@@ -68,12 +68,8 @@ const splitArray = <T>(array: T[]): T[][] => {
 }
 
 
-// For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
-/* 
-    Will probably be hardcoded for abit longer (23/11-2020) 
-        because of missing support of grabbing a environment variable inside a lambda function on the backend
-*/
-const getEnvTableID = () => {
+//For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
+export const getEnvTableID = () => {
     if(process.env.REACT_APP_ENV_TABLE_ID) return process.env.REACT_APP_ENV_TABLE_ID;
     else return "3hic5nngffevtfafcd62sdoece-dev";
 }
@@ -85,7 +81,6 @@ const getEnvTableID = () => {
     This function will be changed in the future because of removing the env variable
 */
 export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]}, table:string): Promise<GraphQLResult<T>[]> => {
-
     if(variables.input.length === 0) {
         console.error("Array size must be more than 0 in a batch mutation");
         return [];

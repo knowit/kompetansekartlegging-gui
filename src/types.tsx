@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 
 
 export type AnswerData = {
@@ -17,7 +16,10 @@ export type QuestionData = {
     id: string,
     text: string,
     topic: string,
-    category: string
+    category: {
+        text: string,
+        description: string | undefined
+    }
 };
 
 export type Questions = {
@@ -85,7 +87,11 @@ export type FormDefinitionWithQuestions = {
                             id: string,
                             text: string,
                             topic: string,
-                            category: string,
+                            category: {
+                                id: string,
+                                text: string,
+                                description: string
+                            }
                         }
                     }
                 ]
@@ -95,24 +101,44 @@ export type FormDefinitionWithQuestions = {
 }
 
 export type FormDefinition = {
-    getFormDefinition: {
-        id: String,
-        questions: {
-            items: [
-                {
-                    question: {
-                        id: string,
-                        text: string,
-                        topic: string,
-                        category: string,
-                        qid: string,
-                        index: number
-                    }
+    id: String,
+    createdAt: string,
+    questions: {
+        items: [
+            {
+                id: string,
+                qid: string,
+                createdAt: string,
+                text: string,
+                topic: string,
+                category: {
+                    id: string,
+                    text: string,
+                    description: string
                 }
-            ]
-        }
+            }
+        ]
     }
 };
+// {
+//     question: {
+//         id: string,
+//         text: string,
+//         topic: string,
+//         category: string,
+//         qid: string,
+//         index: number
+//     }
+// }
+
+export type FormDefinitionByCreatedAt = {
+    formByCreatedAt: {
+        nextToken: string,
+        items: [
+            FormDefinition
+        ]
+    }
+}
 
 export type UserAnswer = {
     question: {
