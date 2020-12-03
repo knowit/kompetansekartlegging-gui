@@ -48,6 +48,7 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 src/API.ts
 !src/graphql/custom-*
+.eslintcache
 
 .gitsecret/keys/random_seed
 !*.secret
