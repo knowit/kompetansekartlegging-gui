@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, BatchCreatedQuestionAnswer, ContentProps, FormDefinition, ListedFormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
+import { AnswerData, BatchCreatedQuestionAnswer, ContentProps, FormDefinition, ListedFormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers, UserFormByCreatedAt, UserForm } from '../types'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
@@ -167,11 +167,14 @@ const Content = ({...props}: ContentProps) => {
     };
 
     const getUserAnswers = async () => {
-        let allAnswers = await helper.listUserForms();
-        console.log(allAnswers);
-        if(allAnswers.length === 0) return;
-        let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
-        if(lastUserAnswer) setUserAnswers(lastUserAnswer);
+        // let allAnswers = await helper.listUserForms();
+        // console.log(allAnswers);
+        // if(allAnswers.length === 0) return;
+        // let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
+        let lastUserForm: UserForm | undefined = (await helper.callGraphQL<UserFormByCreatedAt>
+            (customQueries.customUserFormByCreatedAt, customQueries.userFormByCreatedAtInputConsts)).data?.userFormByCreatedAt.items[0];
+        if(lastUserForm) setUserAnswers(lastUserForm.questionAnswers.items);
+        console.log("Last userform: ", lastUserForm);
     };
 
     const changeActiveCategory = (newActiveCategory: string) => {
