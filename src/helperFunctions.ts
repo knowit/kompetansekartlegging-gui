@@ -70,8 +70,7 @@ const splitArray = <T>(array: T[]): T[][] => {
 
 //For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
 export const getEnvTableID = () => {
-    if(process.env.REACT_APP_ENV_TABLE_ID) return process.env.REACT_APP_ENV_TABLE_ID;
-    else return "3hic5nngffevtfafcd62sdoece-dev";
+    return "3hic5nngffevtfafcd62sdoece-dev";
 }
 
 /*
@@ -144,3 +143,4 @@ export const limitStringLength = (str: string, length: number, overflow: boolean
 export const addLeftPaddingToStringArray = (str: string[], padLength: number, padChar?: string): string[] => {
     return str.map((value) => value.padStart(padLength, padChar))
 };
+
