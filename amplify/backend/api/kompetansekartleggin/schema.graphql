@@ -9,7 +9,7 @@ type FormDefinition @model
 }
 
 type UserForm @model @auth(rules: [{ allow: owner }]) 
-@key(name: "byCreatedAt", fields: ["sortKeyConstant", "createdAt"]) {
+@key(name: "byCreatedAt", fields: ["sortKeyConstant", "createdAt"], queryField: "userFormByCreatedAt") {
     id: ID!
     createdAt: AWSDateTime!
     sortKeyConstant: String!
