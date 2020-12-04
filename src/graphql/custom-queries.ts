@@ -142,7 +142,7 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
     $nextToken: String
   ) {
     userFormByCreatedAt(
-      owner: $sortKeyConstant
+      owner: $owner
       createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
