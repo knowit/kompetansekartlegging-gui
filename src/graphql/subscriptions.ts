@@ -46,7 +46,7 @@ export const onCreateUserForm = /* GraphQL */ `
     onCreateUserForm(owner: $owner) {
       id
       createdAt
-      sortKeyConstant
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -58,7 +58,6 @@ export const onCreateUserForm = /* GraphQL */ `
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;
@@ -67,7 +66,7 @@ export const onUpdateUserForm = /* GraphQL */ `
     onUpdateUserForm(owner: $owner) {
       id
       createdAt
-      sortKeyConstant
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -79,7 +78,6 @@ export const onUpdateUserForm = /* GraphQL */ `
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;
@@ -88,7 +86,7 @@ export const onDeleteUserForm = /* GraphQL */ `
     onDeleteUserForm(owner: $owner) {
       id
       createdAt
-      sortKeyConstant
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -100,7 +98,6 @@ export const onDeleteUserForm = /* GraphQL */ `
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;

@@ -37,7 +37,7 @@ export const getUserForm = /* GraphQL */ `
     getUserForm(id: $id) {
       id
       createdAt
-      sortKeyConstant
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -49,7 +49,6 @@ export const getUserForm = /* GraphQL */ `
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;
@@ -63,10 +62,9 @@ export const listUserForms = /* GraphQL */ `
       items {
         id
         createdAt
-        sortKeyConstant
+        owner
         formDefinitionID
         updatedAt
-        owner
       }
       nextToken
     }
@@ -220,7 +218,7 @@ export const formByCreatedAt = /* GraphQL */ `
 `;
 export const userFormByCreatedAt = /* GraphQL */ `
   query UserFormByCreatedAt(
-    $sortKeyConstant: String
+    $owner: String
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelUserFormFilterInput
@@ -228,7 +226,7 @@ export const userFormByCreatedAt = /* GraphQL */ `
     $nextToken: String
   ) {
     userFormByCreatedAt(
-      sortKeyConstant: $sortKeyConstant
+      owner: $owner
       createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
@@ -238,10 +236,9 @@ export const userFormByCreatedAt = /* GraphQL */ `
       items {
         id
         createdAt
-        sortKeyConstant
+        owner
         formDefinitionID
         updatedAt
-        owner
       }
       nextToken
     }

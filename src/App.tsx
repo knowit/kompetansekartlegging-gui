@@ -67,7 +67,8 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        // console.log(user);
+        // console.log("User: ", user);
+        // if(user) console.log("Username: ", user.username);
     }, [user])
 
     async function sendFormDefinition() {
@@ -149,6 +150,7 @@ const App = () => {
                         />
                         {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
                         <Content
+                            user={user}
                             answerHistoryOpen={answerHistoryOpen}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
                         />

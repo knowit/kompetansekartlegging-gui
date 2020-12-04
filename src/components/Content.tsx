@@ -171,8 +171,9 @@ const Content = ({...props}: ContentProps) => {
         // console.log(allAnswers);
         // if(allAnswers.length === 0) return;
         // let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
+        if(!props.user) return console.error("User not found when getting useranswers");
         let lastUserForm: UserForm | undefined = (await helper.callGraphQL<UserFormByCreatedAt>
-            (customQueries.customUserFormByCreatedAt, customQueries.userFormByCreatedAtInputConsts)).data?.userFormByCreatedAt.items[0];
+            (customQueries.customUserFormByCreatedAt, {...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username})).data?.userFormByCreatedAt.items[0];
         if(lastUserForm) setUserAnswers(lastUserForm.questionAnswers.items);
         console.log("Last userform: ", lastUserForm);
     };

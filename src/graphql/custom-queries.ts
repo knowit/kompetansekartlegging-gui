@@ -129,13 +129,12 @@ export const formByCreatedAtt = /* GraphQL */ `
 
 export const userFormByCreatedAtInputConsts = {
   limit: 1,
-  sortKeyConstant: "userFormConstant",
   sortDirection: ModelSortDirection.DESC,
 };
 
 export const customUserFormByCreatedAt = /* GraphQL */ `
   query CustomUserFormByCreatedAt(
-    $sortKeyConstant: String
+    $owner: String
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelUserFormFilterInput
@@ -143,7 +142,7 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
     $nextToken: String
   ) {
     userFormByCreatedAt(
-      sortKeyConstant: $sortKeyConstant
+      owner: $sortKeyConstant
       createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
