@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, BatchCreatedQuestionAnswer, ContentProps, FormDefinition, ListedFormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers } from '../types'
+import { AnswerData, BatchCreatedQuestionAnswer, ContentProps, FormDefinition, ListedFormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers, UserFormByCreatedAt, UserForm } from '../types'
 import * as helper from '../helperFunctions'
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
@@ -167,11 +167,15 @@ const Content = ({...props}: ContentProps) => {
     };
 
     const getUserAnswers = async () => {
-        let allAnswers = await helper.listUserForms();
-        console.log(allAnswers);
-        if(allAnswers.length === 0) return;
-        let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
-        if(lastUserAnswer) setUserAnswers(lastUserAnswer);
+        // let allAnswers = await helper.listUserForms();
+        // console.log(allAnswers);
+        // if(allAnswers.length === 0) return;
+        // let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
+        if(!props.user) return console.error("User not found when getting useranswers");
+        let lastUserForm: UserForm | undefined = (await helper.callGraphQL<UserFormByCreatedAt>
+            (customQueries.customUserFormByCreatedAt, {...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username})).data?.userFormByCreatedAt.items[0];
+        if(lastUserForm) setUserAnswers(lastUserForm.questionAnswers.items);
+        console.log("Last userform: ", lastUserForm);
     };
 
     const changeActiveCategory = (newActiveCategory: string) => {
@@ -260,6 +264,9 @@ const Content = ({...props}: ContentProps) => {
 
     
     return (
+        props.isMobile ? 
+            <div> This content is unavailable on mobile</div>
+        :
         <div className={style.cardHolder}>
             <Overview 
                 commonCardProps={{
@@ -269,6 +276,7 @@ const Content = ({...props}: ContentProps) => {
                 }}
                 radarData={radarData}
                 isAnswersSubmitted={isAnswersSubmitted}
+                isMobile={props.isMobile}
             />
             <ScaleDescription 
                 commonCardProps={{
@@ -276,6 +284,7 @@ const Content = ({...props}: ContentProps) => {
                     active: activeCards[1],
                     index: 1
                 }}
+                isMobile={props.isMobile}
             />
             <YourAnswers 
                 commonCardProps={{
@@ -296,12 +305,14 @@ const Content = ({...props}: ContentProps) => {
                 // setUpdateSliderValues={updateSliderValues}
                 answerViewModeActive={answerViewModeActive}
                 answerViewMode={answerViewMode}
+                isMobile={props.isMobile}
             />
             <AnswerHistory
                 setHistoryViewOpen={props.setAnswerHistoryOpen}
                 historyViewOpen={historyViewOpen}
                 history={answerLog}
                 formDefinition={formDefinition ?? undefined}
+                isMobile={props.isMobile}
             />
         </div>
     );

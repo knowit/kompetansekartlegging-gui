@@ -35,7 +35,7 @@ export const createFormDefinition = /* GraphQL */ `
     createFormDefinition(input: $input, condition: $condition) {
       id
       createdAt
-      dummy
+      sortKeyConstant
       questions {
         nextToken
       }
@@ -51,7 +51,7 @@ export const updateFormDefinition = /* GraphQL */ `
     updateFormDefinition(input: $input, condition: $condition) {
       id
       createdAt
-      dummy
+      sortKeyConstant
       questions {
         nextToken
       }
@@ -67,7 +67,7 @@ export const deleteFormDefinition = /* GraphQL */ `
     deleteFormDefinition(input: $input, condition: $condition) {
       id
       createdAt
-      dummy
+      sortKeyConstant
       questions {
         nextToken
       }
@@ -83,7 +83,7 @@ export const createUserForm = /* GraphQL */ `
     createUserForm(input: $input, condition: $condition) {
       id
       createdAt
-      dummy
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -91,11 +91,10 @@ export const createUserForm = /* GraphQL */ `
       formDefinition {
         id
         createdAt
-        dummy
+        sortKeyConstant
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;
@@ -107,7 +106,7 @@ export const updateUserForm = /* GraphQL */ `
     updateUserForm(input: $input, condition: $condition) {
       id
       createdAt
-      dummy
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -115,11 +114,10 @@ export const updateUserForm = /* GraphQL */ `
       formDefinition {
         id
         createdAt
-        dummy
+        sortKeyConstant
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;
@@ -131,7 +129,7 @@ export const deleteUserForm = /* GraphQL */ `
     deleteUserForm(input: $input, condition: $condition) {
       id
       createdAt
-      dummy
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -139,11 +137,10 @@ export const deleteUserForm = /* GraphQL */ `
       formDefinition {
         id
         createdAt
-        dummy
+        sortKeyConstant
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;

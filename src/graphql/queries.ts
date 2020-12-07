@@ -7,7 +7,7 @@ export const getFormDefinition = /* GraphQL */ `
     getFormDefinition(id: $id) {
       id
       createdAt
-      dummy
+      sortKeyConstant
       questions {
         nextToken
       }
@@ -25,7 +25,7 @@ export const listFormDefinitions = /* GraphQL */ `
       items {
         id
         createdAt
-        dummy
+        sortKeyConstant
         updatedAt
       }
       nextToken
@@ -37,7 +37,7 @@ export const getUserForm = /* GraphQL */ `
     getUserForm(id: $id) {
       id
       createdAt
-      dummy
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -45,11 +45,10 @@ export const getUserForm = /* GraphQL */ `
       formDefinition {
         id
         createdAt
-        dummy
+        sortKeyConstant
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;
@@ -63,10 +62,9 @@ export const listUserForms = /* GraphQL */ `
       items {
         id
         createdAt
-        dummy
+        owner
         formDefinitionID
         updatedAt
-        owner
       }
       nextToken
     }
@@ -193,7 +191,7 @@ export const listCategorys = /* GraphQL */ `
 `;
 export const formByCreatedAt = /* GraphQL */ `
   query FormByCreatedAt(
-    $dummy: String
+    $sortKeyConstant: String
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelFormDefinitionFilterInput
@@ -201,7 +199,7 @@ export const formByCreatedAt = /* GraphQL */ `
     $nextToken: String
   ) {
     formByCreatedAt(
-      dummy: $dummy
+      sortKeyConstant: $sortKeyConstant
       createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
@@ -211,7 +209,35 @@ export const formByCreatedAt = /* GraphQL */ `
       items {
         id
         createdAt
-        dummy
+        sortKeyConstant
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const userFormByCreatedAt = /* GraphQL */ `
+  query UserFormByCreatedAt(
+    $owner: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFormFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userFormByCreatedAt(
+      owner: $owner
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        owner
+        formDefinitionID
         updatedAt
       }
       nextToken

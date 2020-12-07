@@ -76,15 +76,21 @@ export const listUserFormsWithAnswers = /* GraphQL */ `
   }
 `;
 
+export const createFormDefinitionInputConsts = {
+  input: {
+    sortKeyConstant: "formDefinitionConstant"
+  }
+};
+
 export const formByCreatedAtInputConsts = {
   limit: 1,
-  dummy: "formDefinitionConstant",
+  sortKeyConstant: "formDefinitionConstant",
   sortDirection: ModelSortDirection.DESC,
 };
 
 export const formByCreatedAtt = /* GraphQL */ `
   query FormByCreatedAtt(
-    $dummy: String
+    $sortKeyConstant: String
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelFormDefinitionFilterInput
@@ -92,7 +98,7 @@ export const formByCreatedAtt = /* GraphQL */ `
     $nextToken: String
   ) {
     formByCreatedAt(
-      dummy: $dummy
+      sortKeyConstant: $sortKeyConstant
       createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
@@ -113,6 +119,54 @@ export const formByCreatedAtt = /* GraphQL */ `
             text
             topic
             qid
+          }
+        }
+      }
+      nextToken
+    }
+  }
+`;
+
+export const userFormByCreatedAtInputConsts = {
+  limit: 1,
+  sortDirection: ModelSortDirection.DESC,
+};
+
+export const customUserFormByCreatedAt = /* GraphQL */ `
+  query CustomUserFormByCreatedAt(
+    $owner: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFormFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userFormByCreatedAt(
+      owner: $owner
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        formDefinitionID
+        questionAnswers {
+          items {
+            id
+            knowledge
+            motivation
+            question {
+              id
+              text
+              topic
+              category {
+                id
+                text
+                description
+              }
+            }
           }
         }
       }

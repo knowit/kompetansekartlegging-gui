@@ -7,7 +7,7 @@ export const onCreateFormDefinition = /* GraphQL */ `
     onCreateFormDefinition {
       id
       createdAt
-      dummy
+      sortKeyConstant
       questions {
         nextToken
       }
@@ -20,7 +20,7 @@ export const onUpdateFormDefinition = /* GraphQL */ `
     onUpdateFormDefinition {
       id
       createdAt
-      dummy
+      sortKeyConstant
       questions {
         nextToken
       }
@@ -33,7 +33,7 @@ export const onDeleteFormDefinition = /* GraphQL */ `
     onDeleteFormDefinition {
       id
       createdAt
-      dummy
+      sortKeyConstant
       questions {
         nextToken
       }
@@ -46,7 +46,7 @@ export const onCreateUserForm = /* GraphQL */ `
     onCreateUserForm(owner: $owner) {
       id
       createdAt
-      dummy
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -54,11 +54,10 @@ export const onCreateUserForm = /* GraphQL */ `
       formDefinition {
         id
         createdAt
-        dummy
+        sortKeyConstant
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;
@@ -67,7 +66,7 @@ export const onUpdateUserForm = /* GraphQL */ `
     onUpdateUserForm(owner: $owner) {
       id
       createdAt
-      dummy
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -75,11 +74,10 @@ export const onUpdateUserForm = /* GraphQL */ `
       formDefinition {
         id
         createdAt
-        dummy
+        sortKeyConstant
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;
@@ -88,7 +86,7 @@ export const onDeleteUserForm = /* GraphQL */ `
     onDeleteUserForm(owner: $owner) {
       id
       createdAt
-      dummy
+      owner
       formDefinitionID
       questionAnswers {
         nextToken
@@ -96,11 +94,10 @@ export const onDeleteUserForm = /* GraphQL */ `
       formDefinition {
         id
         createdAt
-        dummy
+        sortKeyConstant
         updatedAt
       }
       updatedAt
-      owner
     }
   }
 `;

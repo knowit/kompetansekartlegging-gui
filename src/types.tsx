@@ -1,5 +1,3 @@
-
-
 export type AnswerData = {
     questionId: string,
     topic: string,
@@ -98,7 +96,15 @@ export type FormDefinitionWithQuestions = {
             }
         }
     }
-}
+};
+
+
+export type Category = {
+    id: String,
+    text: String,
+    description: String,
+    createdAt: String
+};
 
 export type FormDefinition = {
     id: String,
@@ -120,16 +126,6 @@ export type FormDefinition = {
         ]
     }
 };
-// {
-//     question: {
-//         id: string,
-//         text: string,
-//         topic: string,
-//         category: string,
-//         qid: string,
-//         index: number
-//     }
-// }
 
 export type FormDefinitionByCreatedAt = {
     formByCreatedAt: {
@@ -138,15 +134,42 @@ export type FormDefinitionByCreatedAt = {
             FormDefinition
         ]
     }
+};
+
+export type UserFormByCreatedAt = {
+    userFormByCreatedAt: {
+        nextToken: string,
+        items: [
+            UserForm
+        ]
+    }
+};
+
+export type UserForm = {
+    id: string,
+    formDefinitionID: string,
+    nextToken: string,
+    questionAnswers: {
+        items: [
+            UserAnswer
+        ]
+    }
 }
 
 export type UserAnswer = {
-    question: {
-        id: string
-    }
     id: string,
     knowledge: number,
-    motivation: number
+    motivation: number,
+    question: {
+        id: string,
+        text: string,
+        topic: string,
+        category: {
+            id: string,
+            text: string,
+            description: string
+        }
+    }
 }
 
 export type ListedFormDefinition = {
@@ -259,11 +282,13 @@ export type BatchCreatedQuestionAnswer = {
 export type OverviewProps = {
     commonCardProps: CommonCardProps,
     radarData: AnswerData[],
-    isAnswersSubmitted: boolean
+    isAnswersSubmitted: boolean,
+    isMobile: boolean,
 };
 
 export type ScaleDescriptionProps = {
-    commonCardProps: CommonCardProps
+    commonCardProps: CommonCardProps,
+    isMobile: boolean,
 };
 
 export type YourAnswerProps = {
@@ -278,7 +303,8 @@ export type YourAnswerProps = {
     activeCategory: string,
     resetAnswers: () => void,
     answerViewModeActive: (viewModeActive: boolean) => void,
-    answerViewMode: boolean
+    answerViewMode: boolean,
+    isMobile: boolean,
 };
 
 type CommonCardProps = {
@@ -287,22 +313,11 @@ type CommonCardProps = {
     index: number
 };
 
-// export type User = {
-//     Session: string,
-//     attributes: {
-//         email: string,
-//         email_verified: boolean,
-//         identities: string,
-//         name: string,
-//         picture: string,
-//         sub: string
-//     }
-// }
-
 export type NavBarProps = {
     user: any,
     callbackDelete: () => void,
-    setAnswerHistoryOpen: (answerHistoryOpen: boolean) => void
+    setAnswerHistoryOpen: (answerHistoryOpen: boolean) => void,
+    isMobile: boolean
 };
 
 export type AlertDialogProps = {
@@ -319,6 +334,7 @@ export type AnswerHistoryProps = {
     historyViewOpen: boolean,
     history: UserFormWithAnswers[],
     formDefinition?: FormDefinition,
+    isMobile: boolean,
 };
 
 export type HistoryTreeViewProps = {
@@ -326,8 +342,10 @@ export type HistoryTreeViewProps = {
 };
 
 export type ContentProps = {
+    user: any
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
-    answerHistoryOpen: boolean
+    answerHistoryOpen: boolean,
+    isMobile: boolean
 };
 
 export type ChartData = {
