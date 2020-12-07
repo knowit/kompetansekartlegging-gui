@@ -320,6 +320,22 @@ export type NavBarProps = {
     isMobile: boolean
 };
 
+export type NavBarPropsDesktop = {
+    handleDeleteAnswers: (event: React.MouseEvent<EventTarget>) => void,
+    handleConfirmDelete: (event: React.MouseEvent<EventTarget>) => void,
+    handleDisplayAnswers: (event: React.MouseEvent<EventTarget>) => void,
+    handleCloseAlert: () => void,
+    anchorRef: React.RefObject<HTMLButtonElement>,
+    userName: string,
+    userPicture: string,
+    deleteAlertOpen: boolean,
+}
+
+export type NavBarPropsMobile = {
+    
+}
+
+
 export type AlertDialogProps = {
     setAlertDialogOpen: (alertDialogOpen: boolean) => void;
     alertDialogOpen: boolean,
