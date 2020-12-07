@@ -264,6 +264,9 @@ const Content = ({...props}: ContentProps) => {
 
     
     return (
+        props.isMobile ? 
+            <div> This content is unavailable on mobile</div>
+        :
         <div className={style.cardHolder}>
             <Overview 
                 commonCardProps={{
