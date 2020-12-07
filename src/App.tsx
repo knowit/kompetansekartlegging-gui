@@ -13,6 +13,8 @@ import Login from './components/Login';
 import { makeStyles } from '@material-ui/core';
 import * as qustomQueries from './graphql/custom-queries'
 import { Category } from './types'
+import {isMobile} from 'react-device-detect';
+
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -147,12 +149,14 @@ const App = () => {
                             user={user}
                             callbackDelete={deleteUserData}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
+                            isMobile={isMobile}
                         />
                         {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
                         <Content
                             user={user}
                             answerHistoryOpen={answerHistoryOpen}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
+                            isMobile={isMobile}
                         />
                         <Footer/>
                     </Fragment>

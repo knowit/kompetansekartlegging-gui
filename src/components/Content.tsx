@@ -273,6 +273,7 @@ const Content = ({...props}: ContentProps) => {
                 }}
                 radarData={radarData}
                 isAnswersSubmitted={isAnswersSubmitted}
+                isMobile={props.isMobile}
             />
             <ScaleDescription 
                 commonCardProps={{
@@ -280,6 +281,7 @@ const Content = ({...props}: ContentProps) => {
                     active: activeCards[1],
                     index: 1
                 }}
+                isMobile={props.isMobile}
             />
             <YourAnswers 
                 commonCardProps={{
@@ -300,12 +302,14 @@ const Content = ({...props}: ContentProps) => {
                 // setUpdateSliderValues={updateSliderValues}
                 answerViewModeActive={answerViewModeActive}
                 answerViewMode={answerViewMode}
+                isMobile={props.isMobile}
             />
             <AnswerHistory
                 setHistoryViewOpen={props.setAnswerHistoryOpen}
                 historyViewOpen={historyViewOpen}
                 history={answerLog}
                 formDefinition={formDefinition ?? undefined}
+                isMobile={props.isMobile}
             />
         </div>
     );

@@ -1,5 +1,3 @@
-
-
 export type AnswerData = {
     questionId: string,
     topic: string,
@@ -284,11 +282,13 @@ export type BatchCreatedQuestionAnswer = {
 export type OverviewProps = {
     commonCardProps: CommonCardProps,
     radarData: AnswerData[],
-    isAnswersSubmitted: boolean
+    isAnswersSubmitted: boolean,
+    isMobile: boolean,
 };
 
 export type ScaleDescriptionProps = {
-    commonCardProps: CommonCardProps
+    commonCardProps: CommonCardProps,
+    isMobile: boolean,
 };
 
 export type YourAnswerProps = {
@@ -303,7 +303,8 @@ export type YourAnswerProps = {
     activeCategory: string,
     resetAnswers: () => void,
     answerViewModeActive: (viewModeActive: boolean) => void,
-    answerViewMode: boolean
+    answerViewMode: boolean,
+    isMobile: boolean,
 };
 
 type CommonCardProps = {
@@ -315,7 +316,8 @@ type CommonCardProps = {
 export type NavBarProps = {
     user: any,
     callbackDelete: () => void,
-    setAnswerHistoryOpen: (answerHistoryOpen: boolean) => void
+    setAnswerHistoryOpen: (answerHistoryOpen: boolean) => void,
+    isMobile: boolean
 };
 
 export type AlertDialogProps = {
@@ -332,6 +334,7 @@ export type AnswerHistoryProps = {
     historyViewOpen: boolean,
     history: UserFormWithAnswers[],
     formDefinition?: FormDefinition,
+    isMobile: boolean,
 };
 
 export type HistoryTreeViewProps = {
@@ -341,7 +344,8 @@ export type HistoryTreeViewProps = {
 export type ContentProps = {
     user: any
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
-    answerHistoryOpen: boolean
+    answerHistoryOpen: boolean,
+    isMobile: boolean
 };
 
 export type ChartData = {
