@@ -224,6 +224,8 @@ export type AnswerProps = {
     isCategorySubmitted: boolean
 };
 
+
+
 export type UserProps = {
     deleteUserData: () => void,
     listUserForms: () => void
@@ -302,10 +304,61 @@ export type YourAnswerProps = {
     categories: string[],
     activeCategory: string,
     resetAnswers: () => void,
-    answerViewModeActive: (viewModeActive: boolean) => void,
+    setAnswerViewModeActive: (viewModeActive: boolean) => void,
     answerViewMode: boolean,
     isMobile: boolean,
+    isOverViewOpen: boolean,
+    isScaleDescriptionOpen: boolean,
+    isYourAnswersOpen: boolean,
 };
+
+export type YourAnswerPropsDesktop = {
+    commonCardProps: CommonCardProps,
+    createUserForm: () => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    formDefinition: FormDefinition | null,
+    answers: AnswerData[],
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string,
+    resetAnswers: () => void,
+    setAnswerViewModeActive: (viewModeActive: boolean) => void,
+    answerViewMode: boolean,
+    // isMobile: boolean,
+    
+    toggleCard: () => void,
+    getCategoryButtons: () => JSX.Element[],
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isCategorySubmitted: boolean,
+    setAlertDialogOpen: (alertDialogOpen: boolean) => void,
+    alertDialogOpen: boolean,
+    clickedCategory: string
+};
+
+export type YourAnswerPropsMobile = {
+    // commonCardProps: CommonCardProps,
+    // createUserForm: () => void,
+    // updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    // formDefinition: FormDefinition | null,
+    // answers: AnswerData[],
+    // submitFeedback: string,
+    // changeActiveCategory: (newCategoryIndex: string) => void,
+    // categories: string[],
+    // activeCategory: string,
+    // resetAnswers: () => void,
+    // setAnswerViewModeActive: (viewModeActive: boolean) => void,
+    // answerViewMode: boolean,
+    // // isMobile: boolean,
+    // toggleCard: () => void,
+    // getCategoryButtons: () => JSX.Element[],
+    // setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    // isCategorySubmitted: boolean,
+    // setAlertDialogOpen: (alertDialogOpen: boolean) => void,
+    // alertDialogOpen: boolean,
+    // clickedCategory: string
+};
+
 
 type CommonCardProps = {
     setActiveCard: (cardIndex: number, active: boolean) => void,

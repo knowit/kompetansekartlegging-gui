@@ -155,12 +155,16 @@ const App = () => {
 
 
     const openOverview = () => {
+        console.log("OVERSIKT")
+
         setIsOverviewOpen(true)
         setIsScaleDescriptionOpen(false)
         setIsYourAnswersOpen(false)
         setCurrentSiteName("OVERSIKT")
     }
     const openScaleDescription = () => {
+        console.log("SKALABESKRIVELSE")
+
         setIsOverviewOpen(false)
         setIsScaleDescriptionOpen(true)
         setIsYourAnswersOpen(false)
@@ -168,6 +172,7 @@ const App = () => {
 
     }
     const openMyAnswers = () => {
+        console.log("MINE SVAR")
         setIsOverviewOpen(false)
         setIsScaleDescriptionOpen(false)
         setIsYourAnswersOpen(true)
