@@ -87,6 +87,8 @@ export const Overview = ({...props}: OverviewProps) => {
 
     
     return (
+        props.isMobile ? props.isOverViewOpen ? <div>Overview</div> : null
+        :
         <div className={clsx(styles.root, props.commonCardProps.active ? styles.open : styles.closed)}>
             <div className={styles.cardHeader}>
                 <button 

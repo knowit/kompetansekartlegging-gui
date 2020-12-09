@@ -274,6 +274,8 @@ const Content = ({...props}: ContentProps) => {
                 radarData={radarData}
                 isAnswersSubmitted={isAnswersSubmitted}
                 isMobile={props.isMobile}
+                isOverViewOpen={props.isOverViewOpen}
+
             />
             <ScaleDescription 
                 commonCardProps={{
@@ -282,6 +284,8 @@ const Content = ({...props}: ContentProps) => {
                     index: 1
                 }}
                 isMobile={props.isMobile}
+                isScaleDescriptionOpen={props.isScaleDescriptionOpen}
+
             />
             <YourAnswers 
                 commonCardProps={{

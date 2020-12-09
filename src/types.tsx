@@ -286,11 +286,14 @@ export type OverviewProps = {
     radarData: AnswerData[],
     isAnswersSubmitted: boolean,
     isMobile: boolean,
+    isOverViewOpen: boolean,
+
 };
 
 export type ScaleDescriptionProps = {
     commonCardProps: CommonCardProps,
     isMobile: boolean,
+    isScaleDescriptionOpen: boolean,
 };
 
 export type YourAnswerProps = {

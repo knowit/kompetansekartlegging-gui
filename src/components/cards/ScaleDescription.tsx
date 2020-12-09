@@ -73,6 +73,8 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
 
 
     return (
+        props.isMobile ? props.isScaleDescriptionOpen ? <div>ScaleDesc</div> : null
+        :
         <div className={clsx(style.root, props.commonCardProps.active ? style.open : style.closed)}>
             <div className={style.cardHeader}>
                 <button 
