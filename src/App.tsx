@@ -140,6 +140,39 @@ const App = () => {
         } else console.log("No Userforms active");
     };
 
+
+    // MOBILENAV
+
+    // mobile sites shows based on these
+    const [isOverViewOpen, setIsOverviewOpen] = useState<boolean>(true);
+    const [isScaleDescriptionOpen, setIsScaleDescriptionOpen] = useState<boolean>(false);
+    const [isYourAnswersOpen, setIsYourAnswersOpen] = useState<boolean>(false);
+    const [currentSiteName, setCurrentSiteName] = useState<string>("")
+
+    useEffect(() => {
+        openOverview()
+    }, [])
+
+
+    const openOverview = () => {
+        setIsOverviewOpen(true)
+        setIsScaleDescriptionOpen(false)
+        setIsYourAnswersOpen(false)
+        setCurrentSiteName("OVERSIKT")
+    }
+    const openScaleDescription = () => {
+        setIsOverviewOpen(false)
+        setIsScaleDescriptionOpen(true)
+        setIsYourAnswersOpen(false)
+        setCurrentSiteName("SKALABESKRIVELSE")
+
+    }
+    const openMyAnswers = () => {
+        setIsOverviewOpen(false)
+        setIsScaleDescriptionOpen(false)
+        setIsYourAnswersOpen(true)
+        setCurrentSiteName("MINE SVAR")
+    }
     return (
         <div className={style.root}>
             <BrowserRouter>
@@ -150,6 +183,11 @@ const App = () => {
                             callbackDelete={deleteUserData}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
                             isMobile={isMobile}
+                            openOverview={openOverview}
+                            openScaleDescription={openScaleDescription}
+                            openMyAnswers={openMyAnswers}
+                            currentSiteName={currentSiteName}
+
                         />
                         {/* <button onClick={() => sendFormDefinition()}>Send form definition to server</button> */}
                         <Content
@@ -157,6 +195,9 @@ const App = () => {
                             answerHistoryOpen={answerHistoryOpen}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
                             isMobile={isMobile}
+                            isOverViewOpen={isOverViewOpen}
+                            isScaleDescriptionOpen={isScaleDescriptionOpen}
+                            isYourAnswersOpen={isYourAnswersOpen}
                         />
                         <Footer/>
                     </Fragment>

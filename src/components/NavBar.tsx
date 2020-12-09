@@ -62,7 +62,21 @@ const NavBar = ({...props}: NavBarProps) => {
 
     return (
         props.isMobile ?
-            <NavBarMobile />
+            <NavBarMobile 
+                handleDeleteAnswers={handleDeleteAnswers}
+                handleConfirmDelete={handleConfirmDelete}
+                handleDisplayAnswers={handleDisplayAnswers}
+                handleCloseAlert={handleCloseAlert}
+                anchorRef={anchorRef}
+                userName={userName}
+                userPicture={userPicture}
+                deleteAlertOpen={deleteAlertOpen}
+                openOverview={props.openOverview}
+                openScaleDescription={props.openScaleDescription}
+                openMyAnswers={props.openMyAnswers}
+                currentSiteName={props.currentSiteName}
+            
+            />
         :
             <NavBarDesktop 
                 handleDeleteAnswers={handleDeleteAnswers}

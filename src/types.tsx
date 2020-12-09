@@ -318,6 +318,10 @@ export type NavBarProps = {
     callbackDelete: () => void,
     setAnswerHistoryOpen: (answerHistoryOpen: boolean) => void,
     isMobile: boolean
+    openOverview: () => void,
+    openScaleDescription: () => void,
+    openMyAnswers: () => void,
+    currentSiteName: string,
 };
 
 export type NavBarPropsDesktop = {
@@ -332,7 +336,18 @@ export type NavBarPropsDesktop = {
 }
 
 export type NavBarPropsMobile = {
-    
+    handleDeleteAnswers: (event: React.MouseEvent<EventTarget>) => void,
+    handleConfirmDelete: (event: React.MouseEvent<EventTarget>) => void,
+    handleDisplayAnswers: (event: React.MouseEvent<EventTarget>) => void,
+    handleCloseAlert: () => void,
+    anchorRef: React.RefObject<HTMLButtonElement>,
+    userName: string,
+    userPicture: string,
+    deleteAlertOpen: boolean,
+    openOverview: () => void,
+    openScaleDescription: () => void,
+    openMyAnswers: () => void,
+    currentSiteName: string,
 }
 
 
@@ -361,7 +376,10 @@ export type ContentProps = {
     user: any
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
     answerHistoryOpen: boolean,
-    isMobile: boolean
+    isMobile: boolean,
+    isOverViewOpen: boolean,
+    isScaleDescriptionOpen: boolean,
+    isYourAnswersOpen: boolean,
 };
 
 export type ChartData = {

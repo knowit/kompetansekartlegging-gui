@@ -301,8 +301,6 @@ const Content = ({...props}: ContentProps) => {
                 categories={categories}
                 activeCategory={activeCategory}
                 resetAnswers={resetAnswers}
-                // updateSliderValues={updateSliderValues}
-                // setUpdateSliderValues={updateSliderValues}
                 answerViewModeActive={answerViewModeActive}
                 answerViewMode={answerViewMode}
                 isMobile={props.isMobile}
