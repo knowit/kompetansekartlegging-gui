@@ -196,7 +196,12 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerPropsDesktop) => {
                         </div>
                     </div>
                     <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
-                        <Form {...props} setIsCategorySubmitted={props.setIsCategorySubmitted} isCategorySubmitted={props.isCategorySubmitted} />
+                        <Form 
+                            {...props} 
+                            setIsCategorySubmitted={props.setIsCategorySubmitted} 
+                            isCategorySubmitted={props.isCategorySubmitted}
+                            isMobile={false}
+                        />
                     </div>
                 <AlertDialog
                     setAlertDialogOpen={props.setAlertDialogOpen}

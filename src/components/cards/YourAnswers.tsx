@@ -206,9 +206,17 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
 
     return (
         props.isMobile ? 
-            <div className={props.isYourAnswersOpen ? "" :style.hidden}>
+            <div className={props.isYourAnswersOpen ? "yourAnswers" : style.hidden}>
                 <YourAnswersMobile 
-                    // todo: add props
+                     {...props} 
+                     toggleCard={toggleCard} 
+                     getCategoryButtons={getCategoryButtons} 
+                     alertDialogOpen={alertDialogOpen}
+                     setIsCategorySubmitted={setIsCategorySubmitted}
+                     isCategorySubmitted={isCategorySubmitted}
+                     clickedCategory={clickedCategory}
+                     setAlertDialogOpen={setAlertDialogOpen}
+                     isYourAnswersOpen={props.isYourAnswersOpen}
                 />
             </div>
             
