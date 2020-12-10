@@ -224,6 +224,8 @@ export type AnswerProps = {
     isCategorySubmitted: boolean
 };
 
+
+
 export type UserProps = {
     deleteUserData: () => void,
     listUserForms: () => void
@@ -284,11 +286,14 @@ export type OverviewProps = {
     radarData: AnswerData[],
     isAnswersSubmitted: boolean,
     isMobile: boolean,
+    isOverViewOpen: boolean,
+
 };
 
 export type ScaleDescriptionProps = {
     commonCardProps: CommonCardProps,
     isMobile: boolean,
+    isScaleDescriptionOpen: boolean,
 };
 
 export type YourAnswerProps = {
@@ -302,10 +307,61 @@ export type YourAnswerProps = {
     categories: string[],
     activeCategory: string,
     resetAnswers: () => void,
-    answerViewModeActive: (viewModeActive: boolean) => void,
+    setAnswerViewModeActive: (viewModeActive: boolean) => void,
     answerViewMode: boolean,
     isMobile: boolean,
+    isOverViewOpen: boolean,
+    isScaleDescriptionOpen: boolean,
+    isYourAnswersOpen: boolean,
 };
+
+export type YourAnswerPropsDesktop = {
+    commonCardProps: CommonCardProps,
+    createUserForm: () => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    formDefinition: FormDefinition | null,
+    answers: AnswerData[],
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string,
+    resetAnswers: () => void,
+    setAnswerViewModeActive: (viewModeActive: boolean) => void,
+    answerViewMode: boolean,
+    // isMobile: boolean,
+    
+    toggleCard: () => void,
+    getCategoryButtons: () => JSX.Element[],
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isCategorySubmitted: boolean,
+    setAlertDialogOpen: (alertDialogOpen: boolean) => void,
+    alertDialogOpen: boolean,
+    clickedCategory: string
+};
+
+export type YourAnswerPropsMobile = {
+    // commonCardProps: CommonCardProps,
+    // createUserForm: () => void,
+    // updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    // formDefinition: FormDefinition | null,
+    // answers: AnswerData[],
+    // submitFeedback: string,
+    // changeActiveCategory: (newCategoryIndex: string) => void,
+    // categories: string[],
+    // activeCategory: string,
+    // resetAnswers: () => void,
+    // setAnswerViewModeActive: (viewModeActive: boolean) => void,
+    // answerViewMode: boolean,
+    // // isMobile: boolean,
+    // toggleCard: () => void,
+    // getCategoryButtons: () => JSX.Element[],
+    // setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    // isCategorySubmitted: boolean,
+    // setAlertDialogOpen: (alertDialogOpen: boolean) => void,
+    // alertDialogOpen: boolean,
+    // clickedCategory: string
+};
+
 
 type CommonCardProps = {
     setActiveCard: (cardIndex: number, active: boolean) => void,
@@ -318,7 +374,38 @@ export type NavBarProps = {
     callbackDelete: () => void,
     setAnswerHistoryOpen: (answerHistoryOpen: boolean) => void,
     isMobile: boolean
+    openOverview: () => void,
+    openScaleDescription: () => void,
+    openMyAnswers: () => void,
+    currentSiteName: string,
 };
+
+export type NavBarPropsDesktop = {
+    handleDeleteAnswers: (event: React.MouseEvent<EventTarget>) => void,
+    handleConfirmDelete: (event: React.MouseEvent<EventTarget>) => void,
+    handleDisplayAnswers: (event: React.MouseEvent<EventTarget>) => void,
+    handleCloseAlert: () => void,
+    anchorRef: React.RefObject<HTMLButtonElement>,
+    userName: string,
+    userPicture: string,
+    deleteAlertOpen: boolean,
+}
+
+export type NavBarPropsMobile = {
+    handleDeleteAnswers: (event: React.MouseEvent<EventTarget>) => void,
+    handleConfirmDelete: (event: React.MouseEvent<EventTarget>) => void,
+    handleDisplayAnswers: (event: React.MouseEvent<EventTarget>) => void,
+    handleCloseAlert: () => void,
+    anchorRef: React.RefObject<HTMLButtonElement>,
+    userName: string,
+    userPicture: string,
+    deleteAlertOpen: boolean,
+    openOverview: () => void,
+    openScaleDescription: () => void,
+    openMyAnswers: () => void,
+    currentSiteName: string,
+}
+
 
 export type AlertDialogProps = {
     setAlertDialogOpen: (alertDialogOpen: boolean) => void;
@@ -345,7 +432,10 @@ export type ContentProps = {
     user: any
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
     answerHistoryOpen: boolean,
-    isMobile: boolean
+    isMobile: boolean,
+    isOverViewOpen: boolean,
+    isScaleDescriptionOpen: boolean,
+    isYourAnswersOpen: boolean,
 };
 
 export type ChartData = {

@@ -90,7 +90,7 @@ const Content = ({...props}: ContentProps) => {
     const createUserForm = async () => {
         setIsAnswersSubmitted(true)
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
-        answerViewModeActive(true);
+        setAnswerViewModeActive(true);
       
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
@@ -180,7 +180,7 @@ const Content = ({...props}: ContentProps) => {
 
     const changeActiveCategory = (newActiveCategory: string) => {
         setActiveCategory(newActiveCategory);
-        answerViewModeActive(true);
+        setAnswerViewModeActive(true);
     };
 
     const fetchUserFormsAndOpenView = async () => {
@@ -249,7 +249,7 @@ const Content = ({...props}: ContentProps) => {
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
     const style = ContentStyle();
     
-    const answerViewModeActive = (viewModeActive: boolean) => {
+    const setAnswerViewModeActive = (viewModeActive: boolean) => {
         setAnswerViewMode(viewModeActive);
     };
     
@@ -264,9 +264,6 @@ const Content = ({...props}: ContentProps) => {
 
     
     return (
-        props.isMobile ? 
-            <div> This content is unavailable on mobile</div>
-        :
         <div className={style.cardHolder}>
             <Overview 
                 commonCardProps={{
@@ -277,6 +274,8 @@ const Content = ({...props}: ContentProps) => {
                 radarData={radarData}
                 isAnswersSubmitted={isAnswersSubmitted}
                 isMobile={props.isMobile}
+                isOverViewOpen={props.isOverViewOpen}
+
             />
             <ScaleDescription 
                 commonCardProps={{
@@ -285,6 +284,8 @@ const Content = ({...props}: ContentProps) => {
                     index: 1
                 }}
                 isMobile={props.isMobile}
+                isScaleDescriptionOpen={props.isScaleDescriptionOpen}
+
             />
             <YourAnswers 
                 commonCardProps={{
@@ -301,12 +302,13 @@ const Content = ({...props}: ContentProps) => {
                 categories={categories}
                 activeCategory={activeCategory}
                 resetAnswers={resetAnswers}
-                // updateSliderValues={updateSliderValues}
-                // setUpdateSliderValues={updateSliderValues}
-                answerViewModeActive={answerViewModeActive}
+                setAnswerViewModeActive={setAnswerViewModeActive}
                 answerViewMode={answerViewMode}
                 isMobile={props.isMobile}
-            />
+                isOverViewOpen={props.isOverViewOpen}
+                isScaleDescriptionOpen={props.isScaleDescriptionOpen}
+                isYourAnswersOpen={props.isYourAnswersOpen}
+/>
             <AnswerHistory
                 setHistoryViewOpen={props.setAnswerHistoryOpen}
                 historyViewOpen={historyViewOpen}

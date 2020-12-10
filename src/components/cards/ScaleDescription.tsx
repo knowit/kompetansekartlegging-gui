@@ -27,6 +27,9 @@ const scaleDescriptionStyle = makeStyles({
             color: KnowitColors.darkGreen
         }
     },
+    hidden: {
+        display: "none"
+    },
 
     // card
     cardButton: {
@@ -73,6 +76,13 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
 
 
     return (
+        props.isMobile ? 
+            <div className={props.isScaleDescriptionOpen ? "" : style.hidden}>
+                ScaleDesc
+                {/* TODO ScaleDescMobileComponent here */}
+            </div> 
+        :
+        // TODO: Put this in a desktop component
         <div className={clsx(style.root, props.commonCardProps.active ? style.open : style.closed)}>
             <div className={style.cardHeader}>
                 <button 

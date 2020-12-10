@@ -1,14 +1,12 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react'
-import { KnowitColors } from '../../styles';
-import { YourAnswerProps } from '../../types';
-import { Form } from '../Form';
+import React, { useState } from 'react'
+import { KnowitColors } from '../styles';
+import { YourAnswerProps, YourAnswerPropsDesktop, YourAnswerPropsMobile } from '../types';
 import CloseIcon from '@material-ui/icons/Close';
-import { AlertDialog } from '../AlertDialog';
-import AnswerDiagram from '../AnswerDiagram';
-import { YourAnswersMobile } from '../YourAnswersMobile';
-import { YourAnswersDesktop } from '../YourAnswersDesktop';
+import { AlertDialog } from './AlertDialog';
+import AnswerDiagram from './AnswerDiagram';
+import { Form } from './Form';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 20;
@@ -158,72 +156,16 @@ const yourAnwersStyle = makeStyles({
     },
 });
 
-export const YourAnswers = ({ ...props }: YourAnswerProps) => {
+export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
     const style = yourAnwersStyle();
 
-    const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
-    const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
-    const [clickedCategory, setClickedCategory] = useState<string>(''); // used in the alertbox to choose what category to go to
-
-    const saveBeforeChange = (cat: string) => {
-        if (!isCategorySubmitted) {
-            setAlertDialogOpen(true)
-            setClickedCategory(cat)
-        } else {
-            props.changeActiveCategory(cat)
-        }
-    }
-
-    const toggleCard = () => {
-        //TODO: Find a way to replace hardcode int with a something like enum (enum dont work)
-        props.commonCardProps.setActiveCard(props.commonCardProps.index, !props.commonCardProps.active);
-    };
-
-    const getCategoryButtons = (): JSX.Element[] => {
-        let buttons: JSX.Element[] = [];
-        let orderNumber: number = 1;
-        props.categories.forEach(cat => {
-            buttons.push(
-                <Button
-                    key={cat}
-                    className={clsx(
-                        style.buttonGeneral,
-                        style.categoryButton,
-                        props.activeCategory === cat ? style.categoryButtonActive : ""
-                    )}
-                    onClick={() => { saveBeforeChange(cat) }}
-                    ><div className={style.buttonText}>{orderNumber}. {cat}</div></Button>
-            );
-            orderNumber++;
-        });
-        return buttons;
-    };
-
-    useEffect(() => {
-        console.log("HELLO")
-    }, [props.isYourAnswersOpen]);
-    
-
     return (
-        props.isMobile ? 
-            <div className={props.isYourAnswersOpen ? "" :style.hidden}>
-                <YourAnswersMobile 
-                    // todo: add props
-                />
-            </div>
-            
-
-        : <YourAnswersDesktop 
-            {...props}
-            toggleCard={toggleCard}
-            getCategoryButtons={getCategoryButtons}
-            setIsCategorySubmitted={setIsCategorySubmitted}
-            isCategorySubmitted={isCategorySubmitted}
-            setAlertDialogOpen={setAlertDialogOpen}
-            alertDialogOpen={alertDialogOpen}
-            clickedCategory={clickedCategory}
-        
-        />
+        <div>MOBILEANSWERS</div>
     );
 
 };
+
+
+
+
+

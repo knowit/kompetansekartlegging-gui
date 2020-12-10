@@ -72,6 +72,10 @@ const overviewStyle = makeStyles({
         borderBottomRightRadius: cardCornerRadius,
         zIndex: zIndex
     },
+
+    hidden: {
+        display: 'none'
+    }
 });
 
   
@@ -87,6 +91,13 @@ export const Overview = ({...props}: OverviewProps) => {
 
     
     return (
+        props.isMobile ? 
+                <div className={props.isOverViewOpen ? "" : styles.hidden}>
+                    Overview
+                    {/* TODO: OverviewMobileComponent here */}
+                </div> 
+        :
+        // TODO: Put this in a desktop component
         <div className={clsx(styles.root, props.commonCardProps.active ? styles.open : styles.closed)}>
             <div className={styles.cardHeader}>
                 <button 
