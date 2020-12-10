@@ -131,6 +131,39 @@ export const limitStringLength = (str: string, length: number, overflow: boolean
     return [str.substring(0, length - 3) + "..."];
 };
 
+/**
+ * Splits a long string into an array of shorter strings, with hyphens where "appropriate".
+ * 
+ * @param {string}  str          Input string.
+ * @param {number}  maxLength    Maximum length of result strings.  
+ */
+
+export const wrapString = (str: string, maxLength: number): string[] => {
+    let splitOnSpace = str.split(" ");
+    let resultArray: string[] = [];
+    for (let i = 0; i < splitOnSpace.length; i++ ) {
+        let s = splitOnSpace[i];
+        if (s.length > maxLength) {
+            let head = s.slice(0, s.length/2);
+            let tail = s.slice(s.length/2);
+            resultArray.push(head + "-");
+            resultArray.push(tail);
+        } else {
+            if (splitOnSpace.length > i + 1) {
+                if (s.length + splitOnSpace[i + 1].length <= maxLength - 1) {
+                    resultArray.push(s + " " + splitOnSpace[i + 1]);
+                    i++;
+                } else {
+                    resultArray.push(s); 
+                }
+            } else {
+                resultArray.push(s);
+            }
+        }
+    }
+    return resultArray;
+};
+
 /*
     Adds padding to all strings in the input array, used to make all strings a set length.
     - Str: Array with all strings to add padding to.
