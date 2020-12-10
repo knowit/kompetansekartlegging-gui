@@ -206,9 +206,12 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
 
     return (
         props.isMobile ? 
-            props.isYourAnswersOpen ?
-                <YourAnswersMobile />
-            : null
+            <div className={props.isYourAnswersOpen ? "" :style.hidden}>
+                <YourAnswersMobile 
+                    // todo: add props
+                />
+            </div>
+            
 
         : <YourAnswersDesktop 
             {...props}
