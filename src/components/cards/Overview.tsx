@@ -24,6 +24,15 @@ const overviewStyle = makeStyles({
         overflowY: 'auto',
         justifyContent: 'center'
     },
+    mobile: {
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        overflowY: 'auto',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     cardHeader: {
         display: "flex",
         marginTop: cardCornerRadius,
@@ -89,12 +98,12 @@ export const Overview = ({...props}: OverviewProps) => {
         props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
     };
 
-    
+
     return (
         props.isMobile ? 
-                <div className={props.isOverViewOpen ? "" : styles.hidden}>
-                    Overview
-                    {/* TODO: OverviewMobileComponent here */}
+                <div className={props.isOverViewOpen ? styles.mobile : styles.hidden}>
+                    <ResultDiagram isMobile={props.isMobile} data={props.radarData} />
+                    <Highlights isMobile={props.isMobile} data={props.radarData} />
                 </div> 
         :
         // TODO: Put this in a desktop component
@@ -115,8 +124,8 @@ export const Overview = ({...props}: OverviewProps) => {
                     ) : null}
             </div>
             <div className={props.commonCardProps.active ? styles.radarPlot : styles.empty}>
-                <ResultDiagram data={props.radarData} />
-                <Highlights data={props.radarData} />
+                <ResultDiagram isMobile={props.isMobile} data={props.radarData} />
+                <Highlights isMobile={props.isMobile} data={props.radarData} />
             </div>
         </div>
     );

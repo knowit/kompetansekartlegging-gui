@@ -9,15 +9,20 @@ import clsx from 'clsx'
 import { GetIcon, GetIcons } from '../icons/iconController';
 import { SvgIconTypeMap } from '@material-ui/core';
 import { CombinedChart } from './CombinedChart';
+import { CombinedChartMobile } from './CombinedChartMobile';
 
 const graphStyle = makeStyles({
     container: {
         width: '60%',
         paddingBottom: 10
+    },
+    mobile: {
+        height: '70%',
+        width: '90%'
     }
 });
 
-export default function ResultDiagram(props: { data: AnswerData[] }) {
+export default function ResultDiagram(props: { isMobile: boolean, data: AnswerData[] }) {
     const style = graphStyle();
 
     const [answerData, setAnswerData] = useState<ResultData[]>([]);
@@ -87,8 +92,13 @@ export default function ResultDiagram(props: { data: AnswerData[] }) {
     )
 
     return (
-        <div className={style.container}>
-            <CombinedChart chartData={chartData}/>
-        </div>
+        props.isMobile ?
+            <div className={style.mobile}>
+                <CombinedChartMobile chartData={chartData}/>
+            </div> 
+        :
+            <div className={style.container}>
+                <CombinedChart chartData={chartData}/>
+            </div>
     );
 };

@@ -11,6 +11,11 @@ const highlightsStyle = makeStyles({
         width: '30%',
         flexDirection: 'column'
     },
+    rootMobile: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column'
+    },
     title: {    
         textAlign: 'center',
         fontWeight: 'bold',
@@ -53,7 +58,7 @@ const highlightsStyle = makeStyles({
 
 
 
-export default function Highlights(props: { data: AnswerData[] }) {
+export default function Highlights(props: { isMobile: boolean, data: AnswerData[] }) {
 
     const style = highlightsStyle();
 
@@ -133,7 +138,7 @@ export default function Highlights(props: { data: AnswerData[] }) {
     };
 
     return (
-        <div className={style.root}>
+        <div className={props.isMobile ? style.rootMobile : style.root}>
             <div className={style.title}>MINE EGENSKAPER</div>
         <div className={style.container}>
             <div className={style.col}>

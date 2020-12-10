@@ -47,7 +47,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                 maxBarSize={10}
                 layout="horizontal"
                 data={props.chartData}
-                margin={{top: 30, right: 0, bottom: 6, left: 0}}>
+                margin={{top: 50, right: 20, bottom: 10, left: -30}}>
             <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
                 <YAxis
                     axisLine={false}
@@ -110,7 +110,7 @@ const renderCustomAxisTicks = () => {
 }
 
 const renderLabelTick = ({...props}: TickLabelProps) => {
-    let dy = (props.index % 2) ? "-1em" : "-5em";
+    let dy = (props.index % 2) ? "-1em" : "-6em";
     return (
         <g transform={`translate(${props.x},${props.y})`}>
             <text
