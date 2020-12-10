@@ -5,7 +5,7 @@ import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveC
 import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
 import { ChartData, CombinedChartProps } from '../types';
-import { limitStringLength } from '../helperFunctions'
+import { wrapString } from '../helperFunctions'
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;
@@ -47,7 +47,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                 maxBarSize={10}
                 layout="horizontal"
                 data={props.chartData}
-                margin={{top: 20, right: 0, bottom: 6, left: 0}}>
+                margin={{top: 30, right: 0, bottom: 6, left: 0}}>
             <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
                 <YAxis
                     axisLine={false}
@@ -81,7 +81,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                     <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>MOTIVASJON</Label>
                 </ReferenceLine>
                 <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
-                <Brush dataKey="name" height={15} stroke={KnowitColors.ecaluptus} startIndex={0} endIndex={5}>
+                <Brush dataKey="name" height={15} stroke={KnowitColors.darkBrown} startIndex={0} endIndex={5} tickFormatter={() => {}}>
                 <BarChart barGap={-5} barSize={5} maxBarSize={5}>
                     <Bar dataKey="valueKnowledge" fill={KnowitColors.lightGreen}/>
                     <Bar dataKey="valueMotivation" fill={KnowitColors.greyGreen}/>
@@ -110,7 +110,7 @@ const renderCustomAxisTicks = () => {
 }
 
 const renderLabelTick = ({...props}: TickLabelProps) => {
-    let dy = (props.index % 2) ? 0 : -30;
+    let dy = (props.index % 2) ? "-1em" : "-5em";
     return (
         <g transform={`translate(${props.x},${props.y})`}>
             <text
@@ -121,9 +121,8 @@ const renderLabelTick = ({...props}: TickLabelProps) => {
                 fontWeight="bold"
                 fill={KnowitColors.darkGreen}
             >
-                {/* <tspan x="0" dy="0">test</tspan> */}
-                {limitStringLength(props.payload.value, 12, true).map( (s: string, index: number) =>
-                    <tspan x="0" dy="1em">{s}</tspan> 
+                {wrapString(props.payload.value, 15).map( (s: string, index: number) =>
+                    <tspan key={index} x="0" dy="1em">{s}</tspan> 
                 )}
             </text>
         </g>
