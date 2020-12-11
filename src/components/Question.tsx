@@ -6,7 +6,7 @@ import { makeStyles, SvgIcon } from '@material-ui/core';
 import { KnowitColors, IconPaths } from '../styles';
 import * as Icon from '../icons/iconController';
 
-const QuestionBlock = makeStyles({
+const questionStyleDesktop = makeStyles({
     root: {
         marginTop: 10,
         marginLeft: 10,
@@ -65,12 +65,73 @@ const QuestionBlock = makeStyles({
     }
 });
 
+const questionStyleMobile = makeStyles({
+    root: {
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        paddingLeft: 20,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingRight: 5,
+        backgroundColor: KnowitColors.white,
+        borderRadius: 10,
+        width: '90%'
+    },
+    topic: {
+        fontSize: 15,
+        fontWeight: "bold"
+    },
+    text: {
+        fontSize: 12,
+        paddingTop: 5,
+        paddingBottom: 10
+    },
+    answerArea: {
+        display: 'flex',
+        flexWrap: "nowrap",
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    sliderArea: {
+        marginLeft: 30,
+        marginRight: 20,
+        padding: 20,
+        width: '75%'
+    },
+    slider: {
+        marginRight: 15,
+        marginLeft: 15
+    },
+    iconArea: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 30
+    },
+    icon: {
+        height: '100%',
+        fill: KnowitColors.darkGreen
+    },
+    smallBold: {
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    largeBold: {
+        fontSize: 15,
+        fontWeight: "bold"
+    }
+});
+
+
 const Question = ({...props}: QuestionProps) => {
     
     const [knowledgeValue, setKnowledgeValue] = useState<number>(props.knowledgeDefaultValue);
     const [motivationValue, setMotivationValue] = useState<number>(props.motivationDefaultValue);
 
-    const style = QuestionBlock();
+    const style = props.isMobile ? questionStyleMobile() : questionStyleDesktop();
+
 
     const sliderChanged = (newValue: number, motivation: boolean) => {
         if(motivation){

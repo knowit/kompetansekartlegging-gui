@@ -225,6 +225,12 @@ export type AnswerProps = {
     isMobile: boolean,
 };
 
+export type CategoryProps = {
+    name: string,
+    children: JSX.Element[],
+    isMobile: boolean,
+};
+
 
 
 export type UserProps = {
@@ -255,7 +261,8 @@ export type QuestionProps = {
     questionId: string,
     knowledgeDefaultValue: number,
     motivationDefaultValue: number,
-    setIsCategorySubmitted: (categorySubmitted: boolean) => void;
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isMobile: boolean,
 };
 
 export type BatchCreatedQuestionAnswer = {

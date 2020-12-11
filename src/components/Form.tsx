@@ -82,6 +82,7 @@ export const Form = ({...props}: AnswerProps) => {
                     knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                     setIsCategorySubmitted={props.setIsCategorySubmitted}
+                    isMobile={props.isMobile}
                 />
             );
         };
@@ -117,7 +118,7 @@ export const Form = ({...props}: AnswerProps) => {
                         >Send inn svar</Button>
                     : ""
                 }
-                <Category name={props.activeCategory} >
+                <Category name={props.activeCategory} isMobile={props.isMobile}>
                     {getQuestionsForCategory(questions)}
                 </Category>
                 {props.categories.length > 0
