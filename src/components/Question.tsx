@@ -68,15 +68,18 @@ const questionStyleDesktop = makeStyles({
 const questionStyleMobile = makeStyles({
     root: {
         marginTop: 10,
-        marginLeft: 10,
+        // marginLeft: 10,
         marginRight: 10,
         paddingLeft: 20,
         paddingTop: 5,
         paddingBottom: 5,
-        paddingRight: 5,
+        // paddingRight: 5,
         backgroundColor: KnowitColors.white,
         borderRadius: 10,
-        width: '90%'
+        width: '95%',
+        // position: 'absolute'
+        // zIndex: 10000
+
     },
     topic: {
         fontSize: 15,
@@ -88,16 +91,17 @@ const questionStyleMobile = makeStyles({
         paddingBottom: 10
     },
     answerArea: {
-        display: 'flex',
-        flexWrap: "nowrap",
+        // display: 'flex',
+        // flexWrap: "nowrap",
         justifyContent: 'center',
         alignItems: 'center'
     },
     sliderArea: {
-        marginLeft: 30,
-        marginRight: 20,
-        padding: 20,
-        width: '75%'
+        marginTop: 20,
+        // marginLeft: 30,
+        // marginRight: 20,
+        // padding: 20,
+        width: '90%'
     },
     slider: {
         marginRight: 15,

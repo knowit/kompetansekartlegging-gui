@@ -192,7 +192,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerPropsDesktop) => {
                             <div className={style.catText} >{props.activeCategory}</div>
                         </div>
                         <div className={style.graphHolder}>
-                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} />
+                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={false}/>
                         </div>
                     </div>
                     <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>

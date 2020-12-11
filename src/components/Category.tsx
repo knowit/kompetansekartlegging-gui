@@ -17,9 +17,14 @@ export const Category = ({...props}: CategoryProps) => {
 
     return (
         <Fragment>
-            <div className={style.categoryText}>
-                {props.name}
-            </div>
+            {
+                props.isMobile ? ""
+                : 
+                    <div className={style.categoryText}>
+                        {props.name}
+                    </div>
+            }
+            
             {props.children}
         </Fragment>
     )

@@ -11,7 +11,7 @@ import Slide from '@material-ui/core/Slide';
 
 
 const cardCornerRadius: number = 40;
-const zIndex: number = 20;
+// const zIndex: number = 10000;
 
 const yourAnswersStyleMobile = makeStyles({
     hidden: {
@@ -109,9 +109,8 @@ const yourAnswersStyleMobile = makeStyles({
     graphHolder: {
         width: '100%',
         height: '85%',
-        borderRadius: 10,
-        background: KnowitColors.creme,
-
+        // borderRadius: 10,
+        // background: KnowitColors.creme,
     },
     editButton: {
         margin: 5,
@@ -150,7 +149,7 @@ const yourAnswersStyleMobile = makeStyles({
         width: "100%"
     },
     bottomCardClosed: {
-        zIndex: zIndex
+        // zIndex: zIndex
     },
     myAnswersStyle: {
         position: 'relative',
@@ -159,7 +158,7 @@ const yourAnswersStyleMobile = makeStyles({
         // flexDirection: 'row',
         overflowY: 'auto',
         height: '100%',
-        zIndex: zIndex
+        // zIndex: zIndex
     },
 });
 
@@ -189,7 +188,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
                             {/* <div className={style.catText} >{props.activeCategory}</div> */}
                         </div>
                         <div className={style.graphHolder}>
-                            {/* <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} /> */}
+                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={true}/>
                         </div>
                     </div>
                     <div className={clsx(props.answerViewMode ? style.hidden : "box", style.form)}>
