@@ -395,6 +395,7 @@ export type NavBarPropsMobile = {
     handleDeleteAnswers: (event: React.MouseEvent<EventTarget>) => void,
     handleConfirmDelete: (event: React.MouseEvent<EventTarget>) => void,
     handleDisplayAnswers: (event: React.MouseEvent<EventTarget>) => void,
+    handleCloseSignout: (event: React.MouseEvent<EventTarget>) => void,
     handleCloseAlert: () => void,
     anchorRef: React.RefObject<HTMLButtonElement>,
     userName: string,
