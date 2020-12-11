@@ -120,10 +120,10 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
               <ListItem button key="Mine svar" onClick={() => props.openMyAnswers()}>
                 <ListItemText primary="Mine svar" />
               </ListItem>
-              <ListItem button key="Se alle lagrede svar" onClick={() => props.openMyAnswers()}>
+              <ListItem button key="Se alle lagrede svar" onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => props.handleDisplayAnswers(e)}>
                 <ListItemText primary="Se alle lagrede svar" />
               </ListItem>
-              <ListItem button key="Slett alle svar" onClick={() => props.openMyAnswers()}>
+              <ListItem button key="Slett alle svar" onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => props.handleDeleteAnswers(e)}>
                 <ListItemText primary="Slett alle svar" />
               </ListItem>
               <ListItem button key="logg ut">

@@ -5,6 +5,7 @@ import { ScaleDescriptionProps } from '../../types';
 import CloseIcon from '@material-ui/icons/Close';
 import DescriptionTable from '../DescriptionTable';
 import { makeStyles } from '@material-ui/core';
+import DescriptionTableMobile from '../DescriptionTableMobile';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 40;
@@ -29,6 +30,10 @@ const scaleDescriptionStyle = makeStyles({
     },
     hidden: {
         display: "none"
+    },
+    mobile: {
+        height: '100%',
+        width: '100%'
     },
 
     // card
@@ -77,9 +82,8 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
 
     return (
         props.isMobile ? 
-            <div className={props.isScaleDescriptionOpen ? "" : style.hidden}>
-                ScaleDesc
-                {/* TODO ScaleDescMobileComponent here */}
+            <div className={props.isScaleDescriptionOpen ? style.mobile : style.hidden}>
+                <DescriptionTableMobile/>
             </div> 
         :
         // TODO: Put this in a desktop component
