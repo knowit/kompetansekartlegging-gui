@@ -67,10 +67,15 @@ const splitArray = <T>(array: T[]): T[][] => {
     return splitArray;
 }
 
+const environmentIds = {
+    master: "lrpwndrpizhebpe24dpd2cugwq-master",
+    dev: "3hic5nngffevtfafcd62sdoece-dev",
+    testback: "zxk54jobi5cpxgf7jvdw53glsq-testback"
+}
 
 //For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
 export const getEnvTableID = () => {
-    return "3hic5nngffevtfafcd62sdoece-dev";
+    return environmentIds.testback;
 }
 
 /*

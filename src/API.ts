@@ -5,7 +5,7 @@
 export type ModelUserFormFilterInput = {
   id?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
-  sortKeyConstant?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
   formDefinitionID?: ModelIDInput | null,
   and?: Array< ModelUserFormFilterInput | null > | null,
   or?: Array< ModelUserFormFilterInput | null > | null,
@@ -129,13 +129,12 @@ export type DeleteFormDefinitionInput = {
 export type CreateUserFormInput = {
   id?: string | null,
   createdAt?: string | null,
-  sortKeyConstant: string,
+  owner?: string | null,
   formDefinitionID: string,
 };
 
 export type ModelUserFormConditionInput = {
   createdAt?: ModelStringInput | null,
-  sortKeyConstant?: ModelStringInput | null,
   formDefinitionID?: ModelIDInput | null,
   and?: Array< ModelUserFormConditionInput | null > | null,
   or?: Array< ModelUserFormConditionInput | null > | null,
@@ -145,7 +144,7 @@ export type ModelUserFormConditionInput = {
 export type UpdateUserFormInput = {
   id: string,
   createdAt?: string | null,
-  sortKeyConstant?: string | null,
+  owner?: string | null,
   formDefinitionID?: string | null,
 };
 
@@ -367,6 +366,48 @@ export type FormByCreatedAttQuery = {
   } | null,
 };
 
+export type CustomUserFormByCreatedAtQueryVariables = {
+  owner?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelUserFormFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type CustomUserFormByCreatedAtQuery = {
+  userFormByCreatedAt:  {
+    __typename: "ModelUserFormConnection",
+    items:  Array< {
+      __typename: "UserForm",
+      id: string,
+      formDefinitionID: string,
+      questionAnswers:  {
+        __typename: "ModelQuestionAnswerConnection",
+        items:  Array< {
+          __typename: "QuestionAnswer",
+          id: string,
+          knowledge: number,
+          motivation: number,
+          question:  {
+            __typename: "Question",
+            id: string,
+            text: string,
+            topic: string,
+            category:  {
+              __typename: "Category",
+              id: string,
+              text: string,
+              description: string | null,
+            },
+          },
+        } | null > | null,
+      } | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
 export type BatchCreateQuestionAnswer2MutationVariables = {
   input?: Array< CreateQuestionAnswerInput | null > | null,
 };
@@ -475,7 +516,7 @@ export type CreateUserFormMutation = {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    sortKeyConstant: string,
+    owner: string | null,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -489,7 +530,6 @@ export type CreateUserFormMutation = {
       updatedAt: string,
     },
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -503,7 +543,7 @@ export type UpdateUserFormMutation = {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    sortKeyConstant: string,
+    owner: string | null,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -517,7 +557,6 @@ export type UpdateUserFormMutation = {
       updatedAt: string,
     },
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -531,7 +570,7 @@ export type DeleteUserFormMutation = {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    sortKeyConstant: string,
+    owner: string | null,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -545,7 +584,6 @@ export type DeleteUserFormMutation = {
       updatedAt: string,
     },
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -821,7 +859,7 @@ export type GetUserFormQuery = {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    sortKeyConstant: string,
+    owner: string | null,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -835,7 +873,6 @@ export type GetUserFormQuery = {
       updatedAt: string,
     },
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -852,10 +889,9 @@ export type ListUserFormsQuery = {
       __typename: "UserForm",
       id: string,
       createdAt: string,
-      sortKeyConstant: string,
+      owner: string | null,
       formDefinitionID: string,
       updatedAt: string,
-      owner: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -1027,7 +1063,7 @@ export type FormByCreatedAtQuery = {
 };
 
 export type UserFormByCreatedAtQueryVariables = {
-  sortKeyConstant?: string | null,
+  owner?: string | null,
   createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelUserFormFilterInput | null,
@@ -1042,10 +1078,9 @@ export type UserFormByCreatedAtQuery = {
       __typename: "UserForm",
       id: string,
       createdAt: string,
-      sortKeyConstant: string,
+      owner: string | null,
       formDefinitionID: string,
       updatedAt: string,
-      owner: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -1102,7 +1137,7 @@ export type OnCreateUserFormSubscription = {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    sortKeyConstant: string,
+    owner: string | null,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -1116,7 +1151,6 @@ export type OnCreateUserFormSubscription = {
       updatedAt: string,
     },
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -1129,7 +1163,7 @@ export type OnUpdateUserFormSubscription = {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    sortKeyConstant: string,
+    owner: string | null,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -1143,7 +1177,6 @@ export type OnUpdateUserFormSubscription = {
       updatedAt: string,
     },
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
@@ -1156,7 +1189,7 @@ export type OnDeleteUserFormSubscription = {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    sortKeyConstant: string,
+    owner: string | null,
     formDefinitionID: string,
     questionAnswers:  {
       __typename: "ModelQuestionAnswerConnection",
@@ -1170,7 +1203,6 @@ export type OnDeleteUserFormSubscription = {
       updatedAt: string,
     },
     updatedAt: string,
-    owner: string | null,
   } | null,
 };
 
