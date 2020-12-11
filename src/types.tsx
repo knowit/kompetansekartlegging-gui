@@ -221,7 +221,14 @@ export type AnswerProps = {
     categories: string[],
     activeCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
-    isCategorySubmitted: boolean
+    isCategorySubmitted: boolean,
+    isMobile: boolean,
+};
+
+export type CategoryProps = {
+    name: string,
+    children: JSX.Element[],
+    isMobile: boolean,
 };
 
 
@@ -254,7 +261,8 @@ export type QuestionProps = {
     questionId: string,
     knowledgeDefaultValue: number,
     motivationDefaultValue: number,
-    setIsCategorySubmitted: (categorySubmitted: boolean) => void;
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isMobile: boolean,
 };
 
 export type BatchCreatedQuestionAnswer = {
@@ -360,6 +368,26 @@ export type YourAnswerPropsMobile = {
     // setAlertDialogOpen: (alertDialogOpen: boolean) => void,
     // alertDialogOpen: boolean,
     // clickedCategory: string
+    commonCardProps: CommonCardProps,
+    createUserForm: () => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    formDefinition: FormDefinition | null,
+    answers: AnswerData[],
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string,
+    resetAnswers: () => void,
+    setAnswerViewModeActive: (viewModeActive: boolean) => void,
+    answerViewMode: boolean,
+    toggleCard: () => void,
+    getCategoryButtons: (style : any) => JSX.Element[],
+    alertDialogOpen: boolean,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isCategorySubmitted: boolean,
+    clickedCategory: string,
+    setAlertDialogOpen: (alertDialogOpen: boolean) => void,
+    isYourAnswersOpen: boolean,
 };
 
 

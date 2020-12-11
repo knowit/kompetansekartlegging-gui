@@ -1,33 +1,37 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KnowitColors } from '../styles';
 import { YourAnswerProps, YourAnswerPropsDesktop, YourAnswerPropsMobile } from '../types';
 import CloseIcon from '@material-ui/icons/Close';
 import { AlertDialog } from './AlertDialog';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
+import Slide from '@material-ui/core/Slide';
+
 
 const cardCornerRadius: number = 40;
-const zIndex: number = 20;
+// const zIndex: number = 10000;
 
-const yourAnwersStyle = makeStyles({
+const yourAnswersStyleMobile = makeStyles({
     hidden: {
         display: "none"
     },
     answerBox: {
         display: 'flex',
-        flexDirection: 'row',
-        height: '80%',
-        marginTop: '40px',
-        width: '80%',
+        flexDirection: 'column',
+        // height: 'fit-content',
+        // marginTop: '40px',
+        width: '100%',
     },
     answerView: {
         marginRight: 10,
+        marginLeft: 10,
         width: '95%',
         height: '100%',
         borderRadius: 10,
         background: KnowitColors.white,
+        position: 'absolute'
     },
     form: {
         width: '100%',
@@ -37,13 +41,13 @@ const yourAnwersStyle = makeStyles({
     categoryList: {
         height: 'min-content',
         backgroundColor: KnowitColors.greyGreen,
-        borderRadius: '0px 0px 20px 20px',
-        paddingBottom: '20px',
+        borderRadius: '0px 0px 35px 35px',
+        paddingBottom: '25px',
         boxShadow: "0px 3px 0px grey",
         marginBottom: "8px",
     },
     leftCard: {
-        width: '20%'
+        width: '100%'
     },
     categoryListInner: {
         marginLeft: 10,
@@ -105,6 +109,8 @@ const yourAnwersStyle = makeStyles({
     graphHolder: {
         width: '100%',
         height: '85%',
+        // borderRadius: 10,
+        // background: KnowitColors.creme,
     },
     editButton: {
         margin: 5,
@@ -143,24 +149,67 @@ const yourAnwersStyle = makeStyles({
         width: "100%"
     },
     bottomCardClosed: {
-        zIndex: zIndex
+        // zIndex: zIndex
     },
-    bottomCardOpen: {
+    myAnswersStyle: {
         position: 'relative',
-        marginTop: -cardCornerRadius,
-        display: 'flex',
-        flexDirection: 'row',
+        // marginTop: -cardCornerRadius,
+        // display: 'flex',
+        // flexDirection: 'row',
         overflowY: 'auto',
         height: '100%',
-        zIndex: zIndex
+        // zIndex: zIndex
     },
 });
 
+
 export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
-    const style = yourAnwersStyle();
+    const style = yourAnswersStyleMobile();
+
+    useEffect(() => {
+        console.log("change view")
+        console.log(props.answerViewMode)
+    }, [props.answerViewMode]);
 
     return (
-        <div>MOBILEANSWERS</div>
+        <div>
+            <div className={style.leftCard}>
+                <div className={props.commonCardProps.active ? style.categoryList : style.hidden}>
+                    <div className={style.categoryListInner}>
+                        
+                        {props.getCategoryButtons(style)}
+                    </div>
+                </div>
+            </div>
+            <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>                    
+                    <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
+                        <div className={style.catHeader}>
+                            <Button className={style.editButton} onClick={() => props.setAnswerViewModeActive(false)}>Oppdater</Button>
+                            {/* <div className={style.catText} >{props.activeCategory}</div> */}
+                        </div>
+                        <div className={style.graphHolder}>
+                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={true}/>
+                        </div>
+                    </div>
+                    <div className={clsx(props.answerViewMode ? style.hidden : "box", style.form)}>
+                        {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
+                        <Form 
+                            {...props} 
+                            setIsCategorySubmitted={props.setIsCategorySubmitted} 
+                            isCategorySubmitted={props.isCategorySubmitted}
+                            isMobile={true}
+                        />
+                    </div>
+                <AlertDialog
+                    setAlertDialogOpen={props.setAlertDialogOpen}
+                    alertDialogOpen={props.alertDialogOpen}
+                    changeActiveCategory={props.changeActiveCategory}
+                    clickedCategory={props.clickedCategory}
+                    setIsCategorySubmitted={props.setIsCategorySubmitted}
+                    resetAnswers={props.resetAnswers}
+                />
+            </div>
+        </div>
     );
 
 };

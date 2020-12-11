@@ -2,6 +2,7 @@ import React from 'react'
 import { AnswerData, ChartData} from '../types'
 import { makeStyles } from '@material-ui/core/styles'
 import { CombinedChart } from './CombinedChart';
+import { CombinedChartMobile } from './CombinedChartMobile';
 
 
 const graphStyle = makeStyles({
@@ -13,7 +14,7 @@ const graphStyle = makeStyles({
 });
 
 
-export default function AnswerDiagram(props: { data: AnswerData[], activeCategory: string }) {
+export default function AnswerDiagram(props: { data: AnswerData[], activeCategory: string , isMobile: boolean}) {
     const style = graphStyle();
 
     let chartData: ChartData[] = props.data
@@ -27,6 +28,7 @@ export default function AnswerDiagram(props: { data: AnswerData[], activeCategor
         );
 
     return (
-        <CombinedChart chartData={chartData}/>
+        props.isMobile ? <CombinedChartMobile chartData={chartData}/>
+        : <CombinedChart chartData={chartData}/>
     );
 };

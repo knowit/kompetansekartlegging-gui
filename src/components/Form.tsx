@@ -5,7 +5,32 @@ import { AnswerProps } from '../types';
 import { Category } from './Category';
 import Question from './Question';
 
-const FormStyle = makeStyles({
+const FormStyleDesktop = makeStyles({
+    root: {
+        paddingBottom: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+        backgroundColor: KnowitColors.white,
+        width: '100%',
+        boxSizing: "border-box",
+        borderRadius: 10
+    },
+    submitButton: {
+        margin: 5,
+        padding: 10,
+        borderRadius: 10,
+        fontWeight: 'bold',
+        textTransform: "none",
+        color: KnowitColors.white,
+        backgroundColor: KnowitColors.darkGreen,
+        '&:hover': {
+            background: KnowitColors.darkGreen
+        }
+    },
+});
+
+const FormStyleMobile = makeStyles({
     root: {
         paddingBottom: 20,
         paddingLeft: 10,
@@ -41,7 +66,7 @@ export const Form = ({...props}: AnswerProps) => {
         }
     }
 
-    const style = FormStyle();
+    const style = props.isMobile ? FormStyleMobile() : FormStyleDesktop();
 
     const getQuestionsForCategory = (items: Question[]): JSX.Element[] => {
         let questions: JSX.Element[] = [];
@@ -57,6 +82,7 @@ export const Form = ({...props}: AnswerProps) => {
                     knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                     setIsCategorySubmitted={props.setIsCategorySubmitted}
+                    isMobile={props.isMobile}
                 />
             );
         };
@@ -92,7 +118,7 @@ export const Form = ({...props}: AnswerProps) => {
                         >Send inn svar</Button>
                     : ""
                 }
-                <Category name={props.activeCategory} >
+                <Category name={props.activeCategory} isMobile={props.isMobile}>
                     {getQuestionsForCategory(questions)}
                 </Category>
                 {props.categories.length > 0
