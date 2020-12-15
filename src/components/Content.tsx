@@ -14,11 +14,20 @@ import { makeStyles } from '@material-ui/core';
 const cardCornerRadius: number = 40;
 const zIndex: number = 0;
 
-export const ContentStyle = makeStyles({
+export const contentStyleDesktop = makeStyles({
     cardHolder: {
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
+        height: '100%'
+    },
+})
+
+export const contentStyleMobile = makeStyles({
+    cardHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'scroll',
         height: '100%'
     },
 })
@@ -248,7 +257,8 @@ const Content = ({...props}: ContentProps) => {
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
 
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
-    const style = ContentStyle();
+    const style = props.isMobile ? contentStyleMobile() : contentStyleDesktop();
+
     
     const setAnswerViewModeActive = (viewModeActive: boolean) => {
         setAnswerViewMode(viewModeActive);

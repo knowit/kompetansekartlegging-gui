@@ -27,7 +27,13 @@ const NavBar = ({...props}: NavBarProps) => {
         } 
     }, [props.user]);
 
-
+    const handleCloseSignout = (event: React.MouseEvent<EventTarget>) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+          return;
+        }
+        
+        Auth.signOut();
+    };
 
     const handleDeleteAnswers = (event: React.MouseEvent<EventTarget>) => {
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
@@ -67,6 +73,7 @@ const NavBar = ({...props}: NavBarProps) => {
                 handleConfirmDelete={handleConfirmDelete}
                 handleDisplayAnswers={handleDisplayAnswers}
                 handleCloseAlert={handleCloseAlert}
+                handleCloseSignout={handleCloseSignout}
                 anchorRef={anchorRef}
                 userName={userName}
                 userPicture={userPicture}
