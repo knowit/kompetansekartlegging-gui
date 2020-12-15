@@ -100,6 +100,7 @@ export type CreateQuestionAnswerInput = {
   knowledge: number,
   motivation: number,
   environmentID: string,
+  formDefinitionID: string,
 };
 
 export type CreateFormDefinitionInput = {

@@ -106,7 +106,8 @@ const Content = ({...props}: ContentProps) => {
                 questionID: answers[i].questionId,
                 knowledge: answers[i].knowledge,
                 motivation: answers[i].motivation,
-                environmentID: helper.getEnvTableID()
+                environmentID: helper.getEnvTableID(),
+                formDefinitionID: formDefinition.id.toString()
             });
         }
 

@@ -54,6 +54,7 @@ input CreateQuestionAnswerInput {
     knowledge: Float!
     motivation: Float!
     environmentID: String!
+    formDefinitionID: String!
 }
 
 input BatchTableEnvironmentInput {
@@ -64,8 +65,8 @@ type Mutation {
     batchCreateQuestionAnswer(
         input: [CreateQuestionAnswerInput]
     ): [QuestionAnswer] @function(name: "createUserformBatchLambda")
-    # batchCreateQuestionAnswerOld(
-    #     input: [CreateQuestionAnswerInput]
-    #     env: BatchTableEnvironmentInput
-    # ): [QuestionAnswer] @function(name: "createUserformBatchLambda")
 }
+# batchCreateQuestionAnswerOld(
+#     input: [CreateQuestionAnswerInput]
+#     env: BatchTableEnvironmentInput
+# ): [QuestionAnswer] @function(name: "createUserformBatchLambda")
