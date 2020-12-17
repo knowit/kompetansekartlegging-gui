@@ -92,7 +92,7 @@ export const AnswerHistory = ({...props}: AnswerHistoryProps) => {
     let question = props.formDefinition?.questions.items.find(
       q => q.id === questionId
     )
-    return (question ? question?.category + ": " + question?.topic : "Not defined");
+    return (question ? question?.category.text + ": " + question?.topic : "Not defined");
   }
 
   return (
