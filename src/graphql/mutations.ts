@@ -5,25 +5,16 @@
 export const batchCreateQuestionAnswer = /* GraphQL */ `
   mutation BatchCreateQuestionAnswer($input: [CreateQuestionAnswerInput]) {
     batchCreateQuestionAnswer(input: $input) {
-      id
-      userFormID
-      questionID
-      knowledge
-      motivation
-      question {
+      status
+      failedInputs {
         id
-        text
-        topic
-        qid
-        index
+        userFormID
+        questionID
+        knowledge
+        motivation
+        environmentID
         formDefinitionID
-        categoryID
-        createdAt
-        updatedAt
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;

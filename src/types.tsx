@@ -98,6 +98,21 @@ export type FormDefinitionWithQuestions = {
     }
 };
 
+export type CreateQuestionAnswerResult = {
+    batchCreateQuestionAnswer: {
+        status: string,
+        failedInputs: [{
+            id: string,
+            userFormID: string,
+            questionID: string,
+            knowledge: number,
+            motivation: number,
+            environmentID: string,
+            formDefinitionID: string
+        }]
+    }
+}
+
 
 export type Category = {
     id: String,

@@ -178,7 +178,16 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
 export const batchCreateQuestionAnswer2 = /* GraphQL */ `
   mutation BatchCreateQuestionAnswer2($input: [CreateQuestionAnswerInput]) {
     batchCreateQuestionAnswer(input: $input) {
-      owner
+      status
+      failedInputs {
+        id
+        userFormID
+        questionID
+        knowledge
+        motivation
+        environmentID
+        formDefinitionID
+      }
     }
   }
 `;

@@ -47,6 +47,21 @@ type Category @model {
     description: String
 }
 
+type CreateQuestionAnswerResult {
+    status: String!
+    failedInputs: [CreateQuestionAnswerFailedInput]
+}
+
+type CreateQuestionAnswerFailedInput {
+    id: ID
+    userFormID: ID!
+    questionID: ID!
+    knowledge: Float!
+    motivation: Float!
+    environmentID: String!
+    formDefinitionID: String!
+}
+
 input CreateQuestionAnswerInput {
     id: ID
     userFormID: ID!
@@ -64,7 +79,7 @@ input BatchTableEnvironmentInput {
 type Mutation {
     batchCreateQuestionAnswer(
         input: [CreateQuestionAnswerInput]
-    ): [QuestionAnswer] @function(name: "createUserformBatchLambda")
+    ): CreateQuestionAnswerResult @function(name: "createUserformBatchLambda")
 }
 # batchCreateQuestionAnswerOld(
 #     input: [CreateQuestionAnswerInput]

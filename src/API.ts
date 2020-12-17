@@ -414,10 +414,20 @@ export type BatchCreateQuestionAnswer2MutationVariables = {
 };
 
 export type BatchCreateQuestionAnswer2Mutation = {
-  batchCreateQuestionAnswer:  Array< {
-    __typename: "QuestionAnswer",
-    owner: string | null,
-  } | null > | null,
+  batchCreateQuestionAnswer:  {
+    __typename: "CreateQuestionAnswerResult",
+    status: string,
+    failedInputs:  Array< {
+      __typename: "CreateQuestionAnswerFailedInput",
+      id: string | null,
+      userFormID: string,
+      questionID: string,
+      knowledge: number,
+      motivation: number,
+      environmentID: string,
+      formDefinitionID: string,
+    } | null > | null,
+  } | null,
 };
 
 export type BatchCreateQuestionAnswerMutationVariables = {
@@ -425,29 +435,20 @@ export type BatchCreateQuestionAnswerMutationVariables = {
 };
 
 export type BatchCreateQuestionAnswerMutation = {
-  batchCreateQuestionAnswer:  Array< {
-    __typename: "QuestionAnswer",
-    id: string,
-    userFormID: string,
-    questionID: string,
-    knowledge: number,
-    motivation: number,
-    question:  {
-      __typename: "Question",
-      id: string,
-      text: string,
-      topic: string,
-      qid: string | null,
-      index: number | null,
+  batchCreateQuestionAnswer:  {
+    __typename: "CreateQuestionAnswerResult",
+    status: string,
+    failedInputs:  Array< {
+      __typename: "CreateQuestionAnswerFailedInput",
+      id: string | null,
+      userFormID: string,
+      questionID: string,
+      knowledge: number,
+      motivation: number,
+      environmentID: string,
       formDefinitionID: string,
-      categoryID: string,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-    owner: string | null,
-  } | null > | null,
+    } | null > | null,
+  } | null,
 };
 
 export type CreateFormDefinitionMutationVariables = {
