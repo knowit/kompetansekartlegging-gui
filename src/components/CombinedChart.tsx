@@ -40,7 +40,7 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
         <ResponsiveContainer width='100%' height="100%">     
             <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 24, right: 0, bottom: 6, left: 0}}>
             <CartesianGrid horizontal={true} strokeDasharray="2 5"/>
-                <XAxis dataKey="value" type="number" padding={{ left: 0, right: 20 }} domain={[0, chartSplitAt + numTicks]} tickCount={chartSplitAt + numTicks + 1} tick={renderCustomAxisTicks()}/>
+                <XAxis dataKey="value" type="number" padding={{ left: 0, right: 20 }} domain={[0, chartSplitAt + numTicks]} ticks={[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12]} tick={renderCustomAxisTicks()}/>
                 <YAxis width={200} dataKey="name" type="category" interval={0}/>
                 <Tooltip content={RenderCustomTooltip(classes)}/>
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.lightGreen} label={renderCustomBarLabel} />
