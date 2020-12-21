@@ -120,6 +120,9 @@ const Content = ({...props}: ContentProps) => {
             });
         }
 
+        // Ensures diagram data is updated on first submit
+        if (radarData.length === 0) setRadarData(createRadarData());
+
         console.log(questionAnswers);
         
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
