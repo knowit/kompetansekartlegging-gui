@@ -19,7 +19,9 @@ const DescTableStyle = makeStyles({
         padding: 20,
         flexDirection: 'column',
         justifyContent: 'space-around',
-        alignContent: 'center'
+        alignContent: 'center',
+        backgroundColor: KnowitColors.ecaluptus
+
     },
     scaleTitle: {
         display: 'flex',
