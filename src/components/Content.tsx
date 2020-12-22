@@ -26,8 +26,8 @@ export const contentStyleDesktop = makeStyles({
 export const contentStyleMobile = makeStyles({
     cardHolder: {
         display: 'flex',
-        flexDirection: 'column',
-        overflow: 'scroll',
+        // flexDirection: 'column',
+        // overflow: 'scroll',
         height: '100%'
     },
 })
