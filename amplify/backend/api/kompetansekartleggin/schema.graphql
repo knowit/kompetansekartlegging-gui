@@ -48,7 +48,8 @@ type Category @model {
 }
 
 type CreateQuestionAnswerResult {
-    status: String!
+    status: Int!
+    error: String
     failedInputs: [CreateQuestionAnswerFailedInput]
 }
 

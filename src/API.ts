@@ -416,7 +416,8 @@ export type BatchCreateQuestionAnswer2MutationVariables = {
 export type BatchCreateQuestionAnswer2Mutation = {
   batchCreateQuestionAnswer:  {
     __typename: "CreateQuestionAnswerResult",
-    status: string,
+    status: number,
+    error: string | null,
     failedInputs:  Array< {
       __typename: "CreateQuestionAnswerFailedInput",
       id: string | null,
@@ -437,7 +438,8 @@ export type BatchCreateQuestionAnswerMutationVariables = {
 export type BatchCreateQuestionAnswerMutation = {
   batchCreateQuestionAnswer:  {
     __typename: "CreateQuestionAnswerResult",
-    status: string,
+    status: number,
+    error: string | null,
     failedInputs:  Array< {
       __typename: "CreateQuestionAnswerFailedInput",
       id: string | null,

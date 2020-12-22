@@ -101,6 +101,7 @@ export type FormDefinitionWithQuestions = {
 export type CreateQuestionAnswerResult = {
     batchCreateQuestionAnswer: {
         status: string,
+        error: string,
         failedInputs: [{
             id: string,
             userFormID: string,

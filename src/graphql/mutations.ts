@@ -6,6 +6,7 @@ export const batchCreateQuestionAnswer = /* GraphQL */ `
   mutation BatchCreateQuestionAnswer($input: [CreateQuestionAnswerInput]) {
     batchCreateQuestionAnswer(input: $input) {
       status
+      error
       failedInputs {
         id
         userFormID
