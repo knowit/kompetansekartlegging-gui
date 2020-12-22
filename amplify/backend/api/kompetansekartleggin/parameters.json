@@ -1,11 +1,11 @@
 {
-    "AppSyncApiName": "kompetansekartleggin",
-    "DynamoDBBillingMode": "PAY_PER_REQUEST",
-    "DynamoDBEnableServerSideEncryption": false,
-    "AuthCognitoUserPoolId": {
-        "Fn::GetAtt": [
-            "authkompetansekartleggind11d7cce",
-            "Outputs.UserPoolId"
-        ]
-    }
+  "AppSyncApiName": "kompetansekartleggin",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authkompetansekartleggind11d7cce",
+      "Outputs.UserPoolId"
+    ]
+  }
 }

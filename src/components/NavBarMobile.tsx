@@ -123,9 +123,6 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
               <ListItem button key="Se alle lagrede svar" onClick={(e: React.MouseEvent<EventTarget>) => props.handleDisplayAnswers(e)}>
                 <ListItemText primary="Se alle lagrede svar" />
               </ListItem>
-              <ListItem button key="Slett alle svar" onClick={(e: React.MouseEvent<EventTarget>) => props.handleDeleteAnswers(e)}>
-                <ListItemText primary="Slett alle svar" />
-              </ListItem>
               <ListItem button key="logg ut" onClick={(e: React.MouseEvent<EventTarget>) => props.handleCloseSignout(e)}>
                 <ListItemText primary="Logg ut" />
               </ListItem>

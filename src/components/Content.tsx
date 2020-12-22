@@ -26,8 +26,8 @@ export const contentStyleDesktop = makeStyles({
 export const contentStyleMobile = makeStyles({
     cardHolder: {
         display: 'flex',
-        flexDirection: 'column',
-        overflow: 'scroll',
+        // flexDirection: 'column',
+        // overflow: 'scroll',
         height: '100%'
     },
 })
@@ -119,6 +119,9 @@ const Content = ({...props}: ContentProps) => {
                 formDefinitionID: formDefinition.id.toString()
             });
         }
+
+        // Ensures diagram data is updated on first submit
+        if (radarData.length === 0) setRadarData(createRadarData());
 
         console.log(questionAnswers);
         
