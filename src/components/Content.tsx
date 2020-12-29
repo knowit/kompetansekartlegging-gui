@@ -24,6 +24,7 @@ export enum MenuButton {
 export enum Panel {
     Overview,
     MyAnswers,
+    ScaleDescription,
     None
 };
 
@@ -322,7 +323,7 @@ const Content = ({...props}: ContentProps) => {
      * Indexes is mapped to Cards like this:
      * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
     */
-    const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
+    // const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
 
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
     const style = contentStyle();
@@ -333,16 +334,18 @@ const Content = ({...props}: ContentProps) => {
         setAnswerViewMode(viewModeActive);
     };
     
-    const setActiveCard = (cardIndex: number, active: boolean) => {
-        let newActiveCards = [...activeCards];
-        if(cardIndex === 0 && newActiveCards[1]) newActiveCards[2] = false;
-        if(cardIndex === 2 && newActiveCards[1]) newActiveCards[0] = false;
-        if(cardIndex === 1 && newActiveCards[0] && newActiveCards[2]) newActiveCards[0] = false;
-        newActiveCards[cardIndex] = active;
-        setActiveCards(newActiveCards);
-    };
+    // const setActiveCard = (cardIndex: number, active: boolean) => {
+    //     let newActiveCards = [...activeCards];
+    //     if(cardIndex === 0 && newActiveCards[1]) newActiveCards[2] = false;
+    //     if(cardIndex === 2 && newActiveCards[1]) newActiveCards[0] = false;
+    //     if(cardIndex === 1 && newActiveCards[0] && newActiveCards[2]) newActiveCards[0] = false;
+    //     newActiveCards[cardIndex] = active;
+    //     setActiveCards(newActiveCards);
+    // };
     
     const checkIfCategoryIsSubmitted = (buttonType: MenuButton, category?: string) => {
+        menuButtonClick(buttonType, category);
+        return;
         if (!isCategorySubmitted) {
             setAlertDialogOpen(true);
         } else {
@@ -420,9 +423,10 @@ const Content = ({...props}: ContentProps) => {
                 return(
                     <Overview
                         commonCardProps={{
-                            setActiveCard: setActiveCard,
-                            active: activeCards[0],
-                            index: 0
+                            activePanel: activePanel
+                            // setActiveCard: setActiveCard,
+                            // active: activeCards[0],
+                            // index: 0
                         }}
                         radarData={radarData}
                         isMobile={props.isMobile}
@@ -433,9 +437,10 @@ const Content = ({...props}: ContentProps) => {
                 return(
                     <YourAnswers
                         commonCardProps={{
-                            setActiveCard: setActiveCard,
-                            active: activeCards[2],
-                            index: 2
+                            activePanel: activePanel
+                            // setActiveCard: setActiveCard,
+                            // active: activeCards[2],
+                            // index: 2
                         }}
                         createUserForm={createUserForm}
                         updateAnswer={updateAnswer}
@@ -478,9 +483,10 @@ const Content = ({...props}: ContentProps) => {
             <div className={mobileStyle.cardHolder}>
                 <Overview 
                     commonCardProps={{
-                        setActiveCard: setActiveCard,
-                        active: activeCards[0],
-                        index: 0
+                        activePanel: activePanel
+                        // setActiveCard: setActiveCard,
+                        // active: activeCards[0],
+                        // index: 0
                     }}
                     radarData={radarData}
                     isMobile={props.isMobile}
@@ -489,9 +495,10 @@ const Content = ({...props}: ContentProps) => {
                 />
                 <ScaleDescription 
                     commonCardProps={{
-                        setActiveCard: setActiveCard,
-                        active: activeCards[1],
-                        index: 1
+                        activePanel: activePanel
+                        // setActiveCard: setActiveCard,
+                        // active: activeCards[1],
+                        // index: 1
                     }}
                     isMobile={props.isMobile}
                     isScaleDescriptionOpen={props.isScaleDescriptionOpen}
@@ -499,9 +506,10 @@ const Content = ({...props}: ContentProps) => {
                 />
                 <YourAnswers 
                     commonCardProps={{
-                        setActiveCard: setActiveCard,
-                        active: activeCards[2],
-                        index: 2
+                        activePanel: activePanel
+                        // setActiveCard: setActiveCard,
+                        // active: activeCards[2],
+                        // index: 2
                     }}
                     createUserForm={createUserForm}
                     updateAnswer={updateAnswer}

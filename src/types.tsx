@@ -1,4 +1,4 @@
-import { MenuButton } from "./components/Content";
+import { MenuButton, Panel } from "./components/Content";
 
 export type AnswerData = {
     questionId: string,
@@ -407,9 +407,10 @@ export type YourAnswerPropsMobile = {
 
 
 type CommonCardProps = {
-    setActiveCard: (cardIndex: number, active: boolean) => void,
-    active: boolean,
-    index: number
+    activePanel: Panel
+    // setActiveCard: (cardIndex: number, active: boolean) => void,
+    // active: boolean,
+    // index: number
 };
 
 export type NavBarProps = {

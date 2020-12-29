@@ -176,7 +176,7 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
 
     const toggleCard = () => {
         //TODO: Find a way to replace hardcode int with a something like enum (enum dont work)
-        props.commonCardProps.setActiveCard(props.commonCardProps.index, !props.commonCardProps.active);
+        // props.commonCardProps.setActiveCard(props.commonCardProps.index, !props.commonCardProps.active);
     };
 
     const getCategoryButtons = (): JSX.Element[] => {

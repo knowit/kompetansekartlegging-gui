@@ -5,6 +5,7 @@ import { KnowitColors } from '../styles';
 import { YourAnswerProps, YourAnswerPropsDesktop } from '../types';
 import { AlertDialog } from './AlertDialog';
 import AnswerDiagram from './AnswerDiagram';
+import { Panel } from './Content';
 import { Form } from './Form';
 
 const cardCornerRadius: number = 40;
@@ -118,8 +119,10 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerPropsDesktop) => {
     const style = yourAnwersStyle();
 
     return (
-        <div className={clsx(props.commonCardProps.active ? style.bottomCardOpen : style.bottomCardClosed)}>
-            <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>                    
+        // <div className={clsx(props.commonCardProps.active ? style.bottomCardOpen : style.bottomCardClosed)}>
+        //     <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>   
+        <div className={clsx(props.commonCardProps.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
+            <div className={props.commonCardProps.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                     <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
                         <div className={style.catHeader}>
                             <Button className={style.editButton} onClick={() => props.setAnswerViewModeActive(false)}>Endre svar</Button>

@@ -7,6 +7,7 @@ import RadarPlot from '../RadarPlot';
 import ResultDiagram from '../ResultDiagram';
 import Highlights from '../Highlights';
 import CloseIcon from '@material-ui/icons/Close';
+import { Panel } from '../Content';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 50;
@@ -84,7 +85,7 @@ export const Overview = ({...props}: OverviewProps) => {
 
     const buttonClick = () => {
         //TODO: Find a way to replace hadcode int with a something like enum (enum dont work)
-        props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
+        // props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
     };
 
 
@@ -96,8 +97,10 @@ export const Overview = ({...props}: OverviewProps) => {
                 </div> 
         :
         // TODO: Put this in a desktop component
-        <div className={clsx(styles.root, props.commonCardProps.active ? styles.open : styles.closed)}>
-            <div className={props.commonCardProps.active ? styles.radarPlot : styles.empty}>
+        // <div className={clsx(styles.root, props.commonCardProps.active ? styles.open : styles.closed)}>
+        //     <div className={props.commonCardProps.active ? styles.radarPlot : styles.empty}>
+        <div className={clsx(styles.root, props.commonCardProps.activePanel === Panel.Overview ? styles.open : styles.closed)}>
+            <div className={props.commonCardProps.activePanel === Panel.Overview ? styles.radarPlot : styles.empty}>
                 <ResultDiagram isMobile={props.isMobile} data={props.radarData} />
                 <Highlights isMobile={props.isMobile} data={props.radarData} />
             </div>
