@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import { AnswerData, BatchCreatedQuestionAnswer, ContentProps, FormDefinition, ListedFormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormCreated, UserFormList, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult } from '../types'
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult } from '../types'
 import * as helper from '../helperFunctions'
-import * as mutations from '../graphql/mutations';
-import * as queries from '../graphql/queries';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
 import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
 import { CreateQuestionAnswerInput } from '../API';
 import { AnswerHistory } from './AnswerHistory';
-import { makeStyles } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
+import clsx from 'clsx';
+import { KnowitColors } from '../styles';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 0;
+
+enum MenuButton {
+    Overview,
+    MyAnswers,
+    Category
+}
+
+export enum Panel {
+    Overview,
+    MyAnswers,
+    None
+};
 
 export const contentStyleDesktop = makeStyles({
     cardHolder: {
@@ -30,8 +42,43 @@ export const contentStyleMobile = makeStyles({
         // overflow: 'scroll',
         height: '100%'
     },
-})
+});
 
+const contentStyle = makeStyles({
+    root: {
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        overflow: 'hidden'
+    },
+    menu: {
+        background: KnowitColors.beige,
+        width: '15%',
+        paddingLeft: 10,
+        paddingTop: 10,
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    menuButton: {
+        borderTopLeftRadius: cardCornerRadius,
+        borderBottomLeftRadius: cardCornerRadius,
+        '&:hover': {
+            background: KnowitColors.white
+        },
+    },
+    menuButtonActive: {
+        background: KnowitColors.white,
+    },
+    hideCategoryButtons: {
+        display: 'none'  
+    },
+    panel: {
+        background: KnowitColors.white,
+        height: '100%',
+        width: '85%'
+    },
+});
 
 const Content = ({...props}: ContentProps) => {
     
@@ -46,6 +93,7 @@ const Content = ({...props}: ContentProps) => {
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
+    const [activePanel, setActivePanel] = useState<Panel>(Panel.Overview);
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -260,7 +308,8 @@ const Content = ({...props}: ContentProps) => {
     const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
 
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
-    const style = props.isMobile ? contentStyleMobile() : contentStyleDesktop();
+    const style = contentStyle();
+    const mobileStyle = contentStyleMobile();
 
     
     const setAnswerViewModeActive = (viewModeActive: boolean) => {
@@ -275,62 +324,170 @@ const Content = ({...props}: ContentProps) => {
         newActiveCards[cardIndex] = active;
         setActiveCards(newActiveCards);
     };
-
+    
+    const saveBeforeChange = (cat: string) => {
+        // if (!isCategorySubmitted) {
+        //     setAlertDialogOpen(true)
+        //     setClickedCategory(cat)
+        // } else {
+        //     props.changeActiveCategory(cat)
+        // }
+    };
+    
+    
+    
+    const menuButtonClick = (buttonType: MenuButton, category?: string) => {
+        // console.log("Button clicked ", buttonType, category);
+        switch(buttonType){
+            case MenuButton.Overview:
+                setActivePanel(Panel.Overview);
+                break;
+            case MenuButton.MyAnswers:
+                setActivePanel(Panel.MyAnswers);
+                break;
+            case MenuButton.Category:
+                setActiveCategory(category || "");
+                break;
+        }
+    };
+    
+    const setupMenu = (): JSX.Element[] => {
+        let buttons: JSX.Element[] = [];
+        buttons.push(
+            <Button
+                key={"oversikt"}
+                className={clsx(style.menuButton, activePanel === Panel.Overview ? style.menuButtonActive : "")}
+                onClick={() => {menuButtonClick(MenuButton.Overview)}}><div className={""}>OVERSIKT</div>
+            </Button>
+        );
+        buttons.push(
+            <Button
+                key={"minesvar"}
+                className={clsx(style.menuButton, activePanel === Panel.MyAnswers ? style.menuButtonActive : "")}
+                onClick={() => {menuButtonClick(MenuButton.MyAnswers)}}>
+            <div>MINE SVAR</div>
+            </Button>
+        );
+        let orderNumber: number = 1;
+        categories.forEach(cat => {
+            buttons.push(
+                <Button
+                    key={cat}
+                    className={clsx(style.menuButton, activeCategory === cat ? style.menuButtonActive : "",
+                        activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
+                    onClick={() => {menuButtonClick(MenuButton.Category, cat)}}>
+                <div>{orderNumber}. {cat}</div>
+                </Button>
+            );
+            orderNumber++;
+        });
+        return buttons;
+    };
+    
+    //TODO: Remove commonCardProps from desktop version (keep for mobile for now)
+    const setupPanel = (): JSX.Element => {
+        switch (activePanel) {
+            case Panel.Overview:
+                return(
+                    <Overview
+                        commonCardProps={{
+                            setActiveCard: setActiveCard,
+                            active: activeCards[0],
+                            index: 0
+                        }}
+                        radarData={radarData}
+                        isMobile={props.isMobile}
+                        isOverViewOpen={props.isOverViewOpen}
+                    />
+                );
+            case Panel.MyAnswers:
+                return(
+                    <YourAnswers
+                        commonCardProps={{
+                            setActiveCard: setActiveCard,
+                            active: activeCards[2],
+                            index: 2
+                        }}
+                        createUserForm={createUserForm}
+                        updateAnswer={updateAnswer}
+                        formDefinition={formDefinition}
+                        answers={answers}
+                        submitFeedback={submitFeedback}
+                        changeActiveCategory={changeActiveCategory}
+                        categories={categories}
+                        activeCategory={activeCategory}
+                        resetAnswers={resetAnswers}
+                        setAnswerViewModeActive={setAnswerViewModeActive}
+                        answerViewMode={answerViewMode}
+                        isMobile={props.isMobile}
+                        isOverViewOpen={props.isOverViewOpen}
+                        isScaleDescriptionOpen={props.isScaleDescriptionOpen}
+                        isYourAnswersOpen={props.isYourAnswersOpen}
+                    />
+                );
+        }
+        return <div></div>;
+    };
     
     return (
-        <div className={style.cardHolder}>
-            <Overview 
-                commonCardProps={{
-                    setActiveCard: setActiveCard,
-                    active: activeCards[0],
-                    index: 0
-                }}
-                radarData={radarData}
-                isAnswersSubmitted={isAnswersSubmitted}
-                isMobile={props.isMobile}
-                isOverViewOpen={props.isOverViewOpen}
+        !props.isMobile ?
+            <div className={style.root}>
+                <div className={style.menu}>{setupMenu()}</div>
+                <div className={style.panel}>{setupPanel()}</div>
+            </div>
+        :
+            <div className={mobileStyle.cardHolder}>
+                <Overview 
+                    commonCardProps={{
+                        setActiveCard: setActiveCard,
+                        active: activeCards[0],
+                        index: 0
+                    }}
+                    radarData={radarData}
+                    isMobile={props.isMobile}
+                    isOverViewOpen={props.isOverViewOpen}
 
-            />
-            <ScaleDescription 
-                commonCardProps={{
-                    setActiveCard: setActiveCard,
-                    active: activeCards[1],
-                    index: 1
-                }}
-                isMobile={props.isMobile}
-                isScaleDescriptionOpen={props.isScaleDescriptionOpen}
+                />
+                <ScaleDescription 
+                    commonCardProps={{
+                        setActiveCard: setActiveCard,
+                        active: activeCards[1],
+                        index: 1
+                    }}
+                    isMobile={props.isMobile}
+                    isScaleDescriptionOpen={props.isScaleDescriptionOpen}
 
-            />
-            <YourAnswers 
-                commonCardProps={{
-                    setActiveCard: setActiveCard,
-                    active: activeCards[2],
-                    index: 2
-                }}
-                createUserForm={createUserForm}
-                updateAnswer={updateAnswer}
-                formDefinition={formDefinition}
-                answers={answers}
-                submitFeedback={submitFeedback}
-                changeActiveCategory={changeActiveCategory}
-                categories={categories}
-                activeCategory={activeCategory}
-                resetAnswers={resetAnswers}
-                setAnswerViewModeActive={setAnswerViewModeActive}
-                answerViewMode={answerViewMode}
-                isMobile={props.isMobile}
-                isOverViewOpen={props.isOverViewOpen}
-                isScaleDescriptionOpen={props.isScaleDescriptionOpen}
-                isYourAnswersOpen={props.isYourAnswersOpen}
-/>
-            <AnswerHistory
-                setHistoryViewOpen={props.setAnswerHistoryOpen}
-                historyViewOpen={historyViewOpen}
-                history={answerLog}
-                formDefinition={formDefinition ?? undefined}
-                isMobile={props.isMobile}
-            />
-        </div>
+                />
+                <YourAnswers 
+                    commonCardProps={{
+                        setActiveCard: setActiveCard,
+                        active: activeCards[2],
+                        index: 2
+                    }}
+                    createUserForm={createUserForm}
+                    updateAnswer={updateAnswer}
+                    formDefinition={formDefinition}
+                    answers={answers}
+                    submitFeedback={submitFeedback}
+                    changeActiveCategory={changeActiveCategory}
+                    categories={categories}
+                    activeCategory={activeCategory}
+                    resetAnswers={resetAnswers}
+                    setAnswerViewModeActive={setAnswerViewModeActive}
+                    answerViewMode={answerViewMode}
+                    isMobile={props.isMobile}
+                    isOverViewOpen={props.isOverViewOpen}
+                    isScaleDescriptionOpen={props.isScaleDescriptionOpen}
+                    isYourAnswersOpen={props.isYourAnswersOpen}
+                />
+                <AnswerHistory
+                    setHistoryViewOpen={props.setAnswerHistoryOpen}
+                    historyViewOpen={historyViewOpen}
+                    history={answerLog}
+                    formDefinition={formDefinition ?? undefined}
+                    isMobile={props.isMobile}
+                />
+            </div>
     );
 };
 
