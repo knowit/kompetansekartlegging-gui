@@ -186,36 +186,36 @@ export const addLeftPaddingToStringArray = (str: string[], padLength: number, pa
 /*
     
 */
-let activePanels = {
-    Overview: true,
-    MyAnswers: false
-};
+// let activePanels = {
+//     Overview: true,
+//     MyAnswers: false
+// };
 
-export const enum Panel {
-    Overview,
-    MyAnswers,
-    None
-};
+// export enum Panel {
+//     Overview,
+//     MyAnswers,
+//     None
+// };
 
-export const getActivePanel = (): Panel => {
-    if(activePanels.Overview) return Panel.Overview;
-    if(activePanels.MyAnswers) return Panel.MyAnswers;
-    return Panel.None;
-};
+// export const getActivePanel = (): Panel => {
+//     if(activePanels.Overview) return Panel.Overview;
+//     if(activePanels.MyAnswers) return Panel.MyAnswers;
+//     return Panel.None;
+// };
 
-export const setActivePanel = (panel: Panel): Panel => {
-    if(panel === Panel.Overview) {
-        activePanels.Overview = true;
-        activePanels.MyAnswers = false;
-    } else if(panel === Panel.MyAnswers){
-        activePanels.Overview = false;
-        activePanels.MyAnswers = true;
-    } else if(panel === Panel.None){
-        activePanels.Overview = false;
-        activePanels.MyAnswers = false;
-    }
-    return getActivePanel();
-};
+// export const setActivePanel = (panel: Panel): Panel => {
+//     if(panel === Panel.Overview) {
+//         activePanels.Overview = true;
+//         activePanels.MyAnswers = false;
+//     } else if(panel === Panel.MyAnswers){
+//         activePanels.Overview = false;
+//         activePanels.MyAnswers = true;
+//     } else if(panel === Panel.None){
+//         activePanels.Overview = false;
+//         activePanels.MyAnswers = false;
+//     }
+//     return getActivePanel();
+// };
 
 
 
