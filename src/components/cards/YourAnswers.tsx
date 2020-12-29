@@ -224,7 +224,6 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
         : <YourAnswersDesktop 
             {...props}
             toggleCard={toggleCard}
-            getCategoryButtons={getCategoryButtons}
             setIsCategorySubmitted={setIsCategorySubmitted}
             isCategorySubmitted={isCategorySubmitted}
             setAlertDialogOpen={setAlertDialogOpen}

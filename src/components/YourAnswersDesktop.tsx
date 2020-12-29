@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import React, { useState } from 'react'
 import { KnowitColors } from '../styles';
 import { YourAnswerProps, YourAnswerPropsDesktop } from '../types';
-import CloseIcon from '@material-ui/icons/Close';
 import { AlertDialog } from './AlertDialog';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
@@ -18,9 +17,8 @@ const yourAnwersStyle = makeStyles({
     answerBox: {
         display: 'flex',
         flexDirection: 'row',
-        height: '80%',
-        marginTop: '40px',
-        width: '80%',
+        height: '100%',
+        width: '100%',
     },
     answerView: {
         marginRight: 10,
@@ -34,41 +32,12 @@ const yourAnwersStyle = makeStyles({
         overflowY: 'auto',
         height: '100%'
     },
-    categoryList: {
-        height: 'min-content',
-        backgroundColor: KnowitColors.greyGreen,
-        borderRadius: '0px 0px 20px 20px',
-        paddingBottom: '20px',
-        boxShadow: "0px 3px 0px grey",
-        marginBottom: "8px",
-    },
     leftCard: {
         width: '20%'
     },
     categoryListInner: {
         marginLeft: 10,
         textAlign: 'center'
-    },
-    buttonGeneral: {
-        overflow: 'wrap',
-        fontSize: 13,
-        fontWeight: 'bolder',
-        border: 'none'
-    },
-    categoryButton: {
-        width: '100%',
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-        backgroundColor: KnowitColors.greyGreen,
-        '&:hover': {
-            background: KnowitColors.white
-        },
-        justifyContent: 'left'
-    },
-    categoryButtonActive: {
-        backgroundColor: KnowitColors.white
     },
     cardHeaderOpen: {
         display: "flex",
@@ -86,14 +55,6 @@ const yourAnwersStyle = makeStyles({
         borderRadius: '0px 0px 20px 20px',
 
         backgroundColor: KnowitColors.greyGreen
-    },
-
-    closeButton: {
-        marginTop: "3px",
-        marginRight: "32px",
-        '&:hover': {
-            color: KnowitColors.darkGreen
-        }
     },
     catHeader: {
         display: 'flex',
@@ -146,13 +107,10 @@ const yourAnwersStyle = makeStyles({
         zIndex: zIndex
     },
     bottomCardOpen: {
-        position: 'relative',
-        marginTop: -cardCornerRadius,
         display: 'flex',
         flexDirection: 'row',
-        overflowY: 'auto',
-        height: '100%',
-        zIndex: zIndex
+        overflowY: 'hidden',
+        height: '100%'
     },
 });
 
@@ -161,30 +119,6 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerPropsDesktop) => {
 
     return (
         <div className={clsx(props.commonCardProps.active ? style.bottomCardOpen : style.bottomCardClosed)}>
-            <div className={style.leftCard}>
-                <div className={props.commonCardProps.active ? style.cardHeaderOpen : style.cardHeaderClosed}>
-                    <button
-                        onClick={props.toggleCard}
-                        className={clsx(style.cardButton)}
-                    >
-                        MINE SVAR
-                    </button>
-                    {props.commonCardProps.active ? (
-                        <CloseIcon
-                            fontSize="large"
-                            className={style.closeButton}
-                            onClick={props.toggleCard}
-                        />
-                    ) : null}
-                    
-
-                </div>
-                <div className={props.commonCardProps.active ? style.categoryList : style.hidden}>
-                    <div className={style.categoryListInner}>
-                        {props.getCategoryButtons()}
-                    </div>
-                </div>
-            </div>
             <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>                    
                     <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
                         <div className={style.catHeader}>

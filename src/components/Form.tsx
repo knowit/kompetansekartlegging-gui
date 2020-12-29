@@ -77,7 +77,7 @@ export const Form = ({...props}: AnswerProps) => {
                     key={item.id} 
                     questionId={item.id}
                     topic={item.topic}
-                    text={item.category.text}
+                    text={item.text}
                     updateAnswer={props.updateAnswer}
                     knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
