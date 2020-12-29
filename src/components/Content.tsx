@@ -396,19 +396,16 @@ const Content = ({...props}: ContentProps) => {
         //     <div className={clsx(style.menuButtonText)}>MINE SVAR</div>
         //     </Button>
         // );
-        let orderNumber: number = 1;
-        categories.forEach(cat => {
-            buttons.push(
-                <Button
-                    key={cat}
-                    className={clsx(style.menuButton, activeCategory === cat ? style.menuButtonActive : "",
-                        activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
-                    onClick={() => {menuButtonClick(MenuButton.Category, cat)}}>
-                <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{orderNumber}. {cat}</div>
-                </Button>
-            );
-            orderNumber++;
+        let categoryButtons: JSX.Element[] = categories.map((category, index) => {
+            return <Button
+                key={category}
+                className={clsx(style.menuButton, activeCategory === category ? style.menuButtonActive : "",
+                    activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
+                onClick={() => { menuButtonClick(MenuButton.Category, category) }}>
+                <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {category}</div>
+            </Button>
         });
+        buttons.splice(2, 0, ...categoryButtons);
         return buttons;
     };
     
