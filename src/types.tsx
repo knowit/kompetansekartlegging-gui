@@ -308,10 +308,8 @@ export type BatchCreatedQuestionAnswer = {
 export type OverviewProps = {
     commonCardProps: CommonCardProps,
     radarData: AnswerData[],
-    isAnswersSubmitted: boolean,
     isMobile: boolean,
-    isOverViewOpen: boolean,
-
+    isOverViewOpen: boolean
 };
 
 export type ScaleDescriptionProps = {
