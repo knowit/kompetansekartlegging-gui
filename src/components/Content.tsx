@@ -362,24 +362,36 @@ const Content = ({...props}: ContentProps) => {
         }
     };
     
+    const displayActivePanel = (buttonType: MenuButton): string => {
+        switch(buttonType){
+            case MenuButton.Overview:
+                return activePanel === Panel.Overview ? style.menuButtonActive : "";
+            case MenuButton.MyAnswers:
+                return activePanel === Panel.MyAnswers ? style.menuButtonActive : "";
+        };
+        return "";
+    };
+    
     const setupMenu = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
-        buttons.push(
-            <Button
-                key={"oversikt"}
-                className={clsx(style.menuButton, activePanel === Panel.Overview ? style.menuButtonActive : "")}
-                onClick={() => {menuButtonClick(MenuButton.Overview)}}>
-            <div className={clsx(style.menuButtonText)}>OVERSIKT</div>
-            </Button>
-        );
-        buttons.push(
-            <Button
-                key={"minesvar"}
-                className={clsx(style.menuButton, activePanel === Panel.MyAnswers ? style.menuButtonActive : "")}
-                onClick={() => {menuButtonClick(MenuButton.MyAnswers)}}>
-            <div className={clsx(style.menuButtonText)}>MINE SVAR</div>
-            </Button>
-        );
+        ["OVERSIKT", "MINE SVAR", "JIB!", "Dummy", "Test :D", "Fancy array magic"].forEach((text, index) => {
+            buttons.push(
+                <Button
+                    key={text.toLocaleLowerCase()}
+                    className={clsx(style.menuButton, displayActivePanel(index))}
+                    onClick={() => {menuButtonClick(index)}}>
+                    <div className={clsx(style.menuButtonText)}>{text}</div>
+                </Button>
+            );
+        });
+        // buttons.push(
+        //     <Button
+        //         key={"minesvar"}
+        //         className={clsx(style.menuButton, activePanel === Panel.MyAnswers ? style.menuButtonActive : "")}
+        //         onClick={() => {menuButtonClick(MenuButton.MyAnswers)}}>
+        //     <div className={clsx(style.menuButtonText)}>MINE SVAR</div>
+        //     </Button>
+        // );
         let orderNumber: number = 1;
         categories.forEach(cat => {
             buttons.push(
