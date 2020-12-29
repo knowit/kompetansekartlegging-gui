@@ -73,6 +73,9 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
         props.resetAnswers()
     };
 
+    const handleLeaveIfDesktop = () => {
+        // if(props.menuButtonClick) props.menuButtonClick(props ,props.clickedCategory);
+    }
 
     return (
         <div>
@@ -92,7 +95,7 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions className={style.alertButtons}>
-                    <Button onClick={handleLeaveForm}
+                    <Button onClick={props.isMobile ? handleLeaveForm : handleLeaveIfDesktop}
                         className={style.leaveButton}
                         >
                         <div className={style.buttonText}>Forlat skjemaet</div>

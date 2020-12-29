@@ -10,11 +10,12 @@ import { AnswerHistory } from './AnswerHistory';
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { KnowitColors } from '../styles';
+import { AlertDialog } from './AlertDialog';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 0;
 
-enum MenuButton {
+export enum MenuButton {
     Overview,
     MyAnswers,
     Category
@@ -100,11 +101,12 @@ const Content = ({...props}: ContentProps) => {
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
-    const [isAnswersSubmitted, setIsAnswersSubmitted] = useState<boolean>(false);
+    const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(false);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
     const [activePanel, setActivePanel] = useState<Panel>(Panel.Overview);
+    const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -156,7 +158,7 @@ const Content = ({...props}: ContentProps) => {
     };
     
     const createUserForm = async () => {
-        setIsAnswersSubmitted(true)
+        setIsCategorySubmitted(true)
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
         setAnswerViewModeActive(true);
       
@@ -288,15 +290,15 @@ const Content = ({...props}: ContentProps) => {
 
     useEffect(() => {
         if(radarData.length === 0) setRadarData(createRadarData());
-        else if (isAnswersSubmitted) {
+        else if (isCategorySubmitted) {
             setRadarData(answers);
-            setIsAnswersSubmitted(false)
+            setIsCategorySubmitted(false)
         }
-    }, [userAnswers, isAnswersSubmitted]);
+    }, [userAnswers, isCategorySubmitted]);
 
     useEffect(() => {
         if(radarData.length > 0) {
-            setIsAnswersSubmitted(true)
+            setIsCategorySubmitted(true)
         } 
     }, [radarData]);
 
@@ -336,16 +338,18 @@ const Content = ({...props}: ContentProps) => {
         setActiveCards(newActiveCards);
     };
     
-    const saveBeforeChange = (cat: string) => {
-        // if (!isCategorySubmitted) {
-        //     setAlertDialogOpen(true)
-        //     setClickedCategory(cat)
-        // } else {
-        //     props.changeActiveCategory(cat)
-        // }
+    const checkIfCategoryIsSubmitted = (buttonType: MenuButton, category?: string) => {
+        if (!isCategorySubmitted) {
+            setAlertDialogOpen(true);
+        } else {
+            menuButtonClick(buttonType, category);
+        }
     };
     
-    
+    //TODO: Remove this function when refactor is done. Needed to not change mobile too much for now
+    const dummyFunctionForRefactor = () => {
+        return;
+    };
     
     const menuButtonClick = (buttonType: MenuButton, category?: string) => {
         // console.log("Button clicked ", buttonType, category);
@@ -379,7 +383,7 @@ const Content = ({...props}: ContentProps) => {
                 <Button
                     key={text.toLocaleLowerCase()}
                     className={clsx(style.menuButton, displayActivePanel(index))}
-                    onClick={() => {menuButtonClick(index)}}>
+                    onClick={() => { checkIfCategoryIsSubmitted(index)}}>
                     <div className={clsx(style.menuButtonText)}>{text}</div>
                 </Button>
             );
@@ -397,7 +401,7 @@ const Content = ({...props}: ContentProps) => {
                 key={category}
                 className={clsx(style.menuButton, activeCategory === category ? style.menuButtonActive : "",
                     activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
-                onClick={() => { menuButtonClick(MenuButton.Category, category) }}>
+                onClick={() => { checkIfCategoryIsSubmitted(MenuButton.Category, category) }}>
                 <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {category}</div>
             </Button>
         });
@@ -455,6 +459,16 @@ const Content = ({...props}: ContentProps) => {
             <div className={style.root}>
                 <div className={style.menu}>{setupMenu()}</div>
                 <div className={style.panel}>{setupPanel()}</div>
+                <AlertDialog
+                    setAlertDialogOpen={setAlertDialogOpen}
+                    alertDialogOpen={alertDialogOpen}
+                    changeActiveCategory={dummyFunctionForRefactor}//setActiveCategory}
+                    clickedCategory={activeCategory}
+                    setIsCategorySubmitted={setIsCategorySubmitted}
+                    resetAnswers={resetAnswers}
+                    menuButtonClick={menuButtonClick} //Temp added here, replace changeActiveCategory
+                    isMobile={props.isMobile}
+                />
             </div>
         :
             <div className={mobileStyle.cardHolder}>

@@ -1,3 +1,5 @@
+import { MenuButton } from "./components/Content";
+
 export type AnswerData = {
     questionId: string,
     topic: string,
@@ -350,8 +352,7 @@ export type YourAnswerPropsDesktop = {
     resetAnswers: () => void,
     setAnswerViewModeActive: (viewModeActive: boolean) => void,
     answerViewMode: boolean,
-    // isMobile: boolean,
-    
+    isMobile: boolean,
     toggleCard: () => void,
     getCategoryButtons: () => JSX.Element[],
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
@@ -402,6 +403,7 @@ export type YourAnswerPropsMobile = {
     clickedCategory: string,
     setAlertDialogOpen: (alertDialogOpen: boolean) => void,
     isYourAnswersOpen: boolean,
+    isMobile: boolean
 };
 
 
@@ -457,6 +459,8 @@ export type AlertDialogProps = {
     clickedCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     resetAnswers: () => void,
+    isMobile: boolean,
+    menuButtonClick?: (buttonType: MenuButton, category?: string) => void
 };
 
 export type AnswerHistoryProps = {

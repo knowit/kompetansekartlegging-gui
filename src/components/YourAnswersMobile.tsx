@@ -207,6 +207,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
                     clickedCategory={props.clickedCategory}
                     setIsCategorySubmitted={props.setIsCategorySubmitted}
                     resetAnswers={props.resetAnswers}
+                    isMobile={props.isMobile}
                 />
             </div>
         </div>
