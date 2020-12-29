@@ -13,8 +13,9 @@ import { CombinedChartMobile } from './CombinedChartMobile';
 
 const graphStyle = makeStyles({
     container: {
-        width: '60%',
-        paddingBottom: 10
+        width: '80%',
+        height: '50%',
+        padding: 30
     },
     mobile: {
         height: '70%',

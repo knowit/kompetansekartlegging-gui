@@ -354,7 +354,6 @@ export type YourAnswerPropsDesktop = {
     answerViewMode: boolean,
     isMobile: boolean,
     toggleCard: () => void,
-    getCategoryButtons: () => JSX.Element[],
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     isCategorySubmitted: boolean,
     setAlertDialogOpen: (alertDialogOpen: boolean) => void,

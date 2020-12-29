@@ -56,10 +56,14 @@ const contentStyle = makeStyles({
     menu: {
         background: KnowitColors.beige,
         width: '20%',
+        height: 'max-content',
         paddingLeft: 10,
         paddingTop: 10,
+        paddingBottom: 20,
         display: 'flex',
         flexDirection: 'column',
+        borderRadius: '0px 0px 30px 0px',
+        boxShadow: "0px 4px 4px 2px lightgrey",
     },
     menuButton: {
         borderTopLeftRadius: cardCornerRadius,

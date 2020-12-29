@@ -13,7 +13,7 @@ const zIndex: number = 50;
 
 const overviewStyle = makeStyles({
     root: {
-        maxHeight: '40%',
+        height: '100%',
         width: "100%",
         backgroundColor: KnowitColors.white
     },
@@ -21,8 +21,8 @@ const overviewStyle = makeStyles({
         height: '100%',
         width: '100%',
         display: 'flex',
-        overflowY: 'auto',
-        justifyContent: 'center'
+        flexDirection: 'column',
+        alignItems: 'center'
     },
     mobile: {
         height: '100%',
@@ -62,24 +62,13 @@ const overviewStyle = makeStyles({
         width: "100%"
     },
     closed: {
-        position: 'relative',
-        marginTop: -cardCornerRadius,
-        boxShadow: "0px 3px 2px grey",
-        borderBottomLeftRadius: cardCornerRadius,
-        borderBottomRightRadius: cardCornerRadius,
-        zIndex: zIndex
     },
     open: {
         position: 'relative',
-        marginTop: -cardCornerRadius,
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'auto',
         height: '100%',
-        boxShadow: "0px 3px 2px grey",
-        borderBottomLeftRadius: cardCornerRadius,
-        borderBottomRightRadius: cardCornerRadius,
-        zIndex: zIndex
     },
 
     hidden: {
@@ -108,21 +97,6 @@ export const Overview = ({...props}: OverviewProps) => {
         :
         // TODO: Put this in a desktop component
         <div className={clsx(styles.root, props.commonCardProps.active ? styles.open : styles.closed)}>
-            <div className={styles.cardHeader}>
-                <button 
-                    onClick={buttonClick} 
-                    className={clsx(styles.cardButton)}
-                >
-                    OVERSIKT
-                </button>
-                {props.commonCardProps.active ? (
-                        <CloseIcon 
-                            fontSize="large" 
-                            className={styles.closeButton}
-                            onClick={buttonClick}    
-                        />
-                    ) : null}
-            </div>
             <div className={props.commonCardProps.active ? styles.radarPlot : styles.empty}>
                 <ResultDiagram isMobile={props.isMobile} data={props.radarData} />
                 <Highlights isMobile={props.isMobile} data={props.radarData} />
