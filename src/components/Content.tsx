@@ -33,7 +33,7 @@ export const contentStyleDesktop = makeStyles({
         overflow: 'hidden',
         height: '100%'
     },
-})
+});
 
 export const contentStyleMobile = makeStyles({
     cardHolder: {
@@ -54,7 +54,7 @@ const contentStyle = makeStyles({
     },
     menu: {
         background: KnowitColors.beige,
-        width: '15%',
+        width: '20%',
         paddingLeft: 10,
         paddingTop: 10,
         display: 'flex',
@@ -70,14 +70,25 @@ const contentStyle = makeStyles({
     menuButtonActive: {
         background: KnowitColors.white,
     },
+    menuButtonText: {
+        fontSize: 15,
+        textAlign: 'left',
+        width: '100%',
+        marginLeft: 10,
+        fontWeight: 'bold'
+    },
+    menuButtonCategoryText: {
+        fontSize: 12,
+        marginLeft: 20
+    },
     hideCategoryButtons: {
         display: 'none'  
     },
     panel: {
         background: KnowitColors.white,
         height: '100%',
-        width: '85%'
-    },
+        width: '80%'
+    }
 });
 
 const Content = ({...props}: ContentProps) => {
@@ -357,7 +368,8 @@ const Content = ({...props}: ContentProps) => {
             <Button
                 key={"oversikt"}
                 className={clsx(style.menuButton, activePanel === Panel.Overview ? style.menuButtonActive : "")}
-                onClick={() => {menuButtonClick(MenuButton.Overview)}}><div className={""}>OVERSIKT</div>
+                onClick={() => {menuButtonClick(MenuButton.Overview)}}>
+            <div className={clsx(style.menuButtonText)}>OVERSIKT</div>
             </Button>
         );
         buttons.push(
@@ -365,7 +377,7 @@ const Content = ({...props}: ContentProps) => {
                 key={"minesvar"}
                 className={clsx(style.menuButton, activePanel === Panel.MyAnswers ? style.menuButtonActive : "")}
                 onClick={() => {menuButtonClick(MenuButton.MyAnswers)}}>
-            <div>MINE SVAR</div>
+            <div className={clsx(style.menuButtonText)}>MINE SVAR</div>
             </Button>
         );
         let orderNumber: number = 1;
@@ -376,7 +388,7 @@ const Content = ({...props}: ContentProps) => {
                     className={clsx(style.menuButton, activeCategory === cat ? style.menuButtonActive : "",
                         activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
                     onClick={() => {menuButtonClick(MenuButton.Category, cat)}}>
-                <div>{orderNumber}. {cat}</div>
+                <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{orderNumber}. {cat}</div>
                 </Button>
             );
             orderNumber++;
