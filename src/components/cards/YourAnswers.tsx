@@ -1,12 +1,8 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
-import { Form } from '../Form';
-import CloseIcon from '@material-ui/icons/Close';
-import { AlertDialog } from '../AlertDialog';
-import AnswerDiagram from '../AnswerDiagram';
 import { YourAnswersMobile } from '../YourAnswersMobile';
 import { YourAnswersDesktop } from '../YourAnswersDesktop';
 

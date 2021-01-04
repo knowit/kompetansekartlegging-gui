@@ -9,7 +9,6 @@ import { AlertDialogProps } from '../types';
 import { makeStyles } from '@material-ui/core';
 import ErrorIcon from '@material-ui/icons/Error';
 import { KnowitColors } from '../styles';
-import { SignalWifi1BarLockSharp } from '@material-ui/icons';
 
 
 const alertDialogStyles = makeStyles({

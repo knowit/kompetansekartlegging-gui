@@ -1,8 +1,8 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useState } from 'react'
+import React from 'react';
 import { KnowitColors } from '../styles';
-import { YourAnswerProps, YourAnswerPropsDesktop } from '../types';
+import { YourAnswerPropsDesktop } from '../types';
 import { AlertDialog } from './AlertDialog';
 import AnswerDiagram from './AnswerDiagram';
 import { Panel } from './Content';

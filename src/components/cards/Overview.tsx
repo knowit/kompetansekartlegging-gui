@@ -1,16 +1,13 @@
-import { makeStyles, Theme, useScrollTrigger } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { Fragment, useEffect, useState } from 'react'
+import React from 'react';
 import { KnowitColors } from '../../styles';
 import { OverviewProps } from '../../types';
-import RadarPlot from '../RadarPlot';
 import ResultDiagram from '../ResultDiagram';
 import Highlights from '../Highlights';
-import CloseIcon from '@material-ui/icons/Close';
 import { Panel } from '../Content';
 
 const cardCornerRadius: number = 40;
-const zIndex: number = 50;
 
 const overviewStyle = makeStyles({
     root: {
@@ -83,10 +80,10 @@ const overviewStyle = makeStyles({
 export const Overview = ({...props}: OverviewProps) => {
     const styles = overviewStyle();
 
-    const buttonClick = () => {
-        //TODO: Find a way to replace hadcode int with a something like enum (enum dont work)
-        // props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
-    };
+    // const buttonClick = () => {
+    //     //TODO: Find a way to replace hadcode int with a something like enum (enum dont work)
+    //     // props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
+    // };
 
 
     return (

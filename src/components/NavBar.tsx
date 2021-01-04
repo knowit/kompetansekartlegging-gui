@@ -1,10 +1,6 @@
-import { AppBar, Button, Toolbar, Avatar, Menu, MenuItem, ClickAwayListener, Popper, Grow, Paper, MenuList } from '@material-ui/core'
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import { Auth } from 'aws-amplify';
-import React, { useEffect, useState } from 'react'
-import { useHistory } from "react-router-dom";
-import { KnowitColors } from '../styles';
+import React, { useEffect, useState } from 'react';
+// import { useHistory } from "react-router-dom";
 import { NavBarProps } from '../types'
 import NavBarDesktop from './NavBarDesktop';
 import NavBarMobile from './NavBarMobile';
@@ -12,7 +8,7 @@ import NavBarMobile from './NavBarMobile';
 
 
 const NavBar = ({...props}: NavBarProps) => {
-    const history = useHistory();
+    // const history = useHistory();
     const [userName, setUserName] = useState<string>('');
     const [userPicture, setUserPicture] = useState<string>('');
     const [deleteAlertOpen, setDeleteAlertOpen] = useState<boolean>(false);

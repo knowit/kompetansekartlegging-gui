@@ -1,13 +1,7 @@
-import React, { Fragment, ReactSVGElement, useEffect, useState } from 'react'
-import { HorizontalBar } from 'react-chartjs-2';
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine } from 'recharts';
-import { limitStringLength, roundDecimals } from '../helperFunctions';
-import { KnowitColors } from '../styles';
-import { AnswerData, CalculationData, ChartData, ResultData } from '../types'
-import { makeStyles } from '@material-ui/core/styles'
-import clsx from 'clsx'
-import { GetIcon, GetIcons } from '../icons/iconController';
-import { SvgIconTypeMap } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { roundDecimals } from '../helperFunctions';
+import { AnswerData, CalculationData, ChartData, ResultData } from '../types';
+import { makeStyles } from '@material-ui/core/styles';
 import { CombinedChart } from './CombinedChart';
 import { CombinedChartMobile } from './CombinedChartMobile';
 

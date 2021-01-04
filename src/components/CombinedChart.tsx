@@ -3,7 +3,7 @@ import React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
-import { ChartData, CombinedChartProps } from '../types';
+import { CombinedChartProps } from '../types';
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;

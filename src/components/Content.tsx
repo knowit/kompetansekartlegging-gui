@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult } from '../types'
-import * as helper from '../helperFunctions'
+import React, { useEffect, useState } from 'react';
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult } from '../types';
+import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
 import { ScaleDescription } from './cards/ScaleDescription';
@@ -13,7 +13,6 @@ import { KnowitColors } from '../styles';
 import { AlertDialog } from './AlertDialog';
 
 const cardCornerRadius: number = 40;
-const zIndex: number = 0;
 
 export enum MenuButton {
     Overview,
@@ -169,7 +168,6 @@ const Content = ({...props}: ContentProps) => {
       
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
-        let fdid = formDefinition.id;
         // let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"formDefinitionID": fdid}})).data;
         // console.log(userForm);
         if(!answers) return;

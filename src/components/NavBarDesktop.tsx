@@ -1,13 +1,12 @@
 
-import { AppBar, Button, Toolbar, Avatar, Menu, MenuItem, ClickAwayListener, Popper, Grow, Paper, MenuList } from '@material-ui/core'
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { AppBar, Button, Toolbar, Avatar, MenuItem, ClickAwayListener, Popper, Grow, Paper, MenuList } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { Auth } from 'aws-amplify';
-import React, { useEffect, useState } from 'react'
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
 import { KnowitColors } from '../styles';
-import { NavBarProps, NavBarPropsDesktop } from '../types'
-import { ReactComponent as KnowitLogo } from "../Logotype-Knowit-Digital-white 1.svg"
+import { NavBarPropsDesktop } from '../types';
+import { ReactComponent as KnowitLogo } from '../Logotype-Knowit-Digital-white 1.svg';
 
 
 const navbarStyles = makeStyles((theme) => ({

@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import React, { Fragment } from 'react'
-import { KnowitColors } from '../styles'
+import React, { Fragment } from 'react';
 import { CategoryProps } from '../types';
 
 

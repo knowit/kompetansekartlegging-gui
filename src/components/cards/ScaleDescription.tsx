@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import { KnowitColors, ScaleDescStyle } from '../../styles';
+import { KnowitColors } from '../../styles';
 import { ScaleDescriptionProps } from '../../types';
 import CloseIcon from '@material-ui/icons/Close';
 import DescriptionTable from '../DescriptionTable';
