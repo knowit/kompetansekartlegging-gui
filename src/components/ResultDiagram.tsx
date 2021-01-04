@@ -41,15 +41,11 @@ export default function ResultDiagram(props: { isMobile: boolean, data: AnswerDa
                     });
                 }
             });
-            setAnswerData(result);
+            createData(result);
         }
     }, [props.data]);
 
-    useEffect(() => {
-        createData();
-    }, [props.data]);
-
-    const createData = () => {
+    const createData = (data: ResultData[]) => {
         let calcData: CalculationData[] = [];
         props.data.forEach(dat => {
             if (dat.knowledge < 0 && dat.motivation < 0) return;
@@ -75,7 +71,7 @@ export default function ResultDiagram(props: { isMobile: boolean, data: AnswerDa
             }
         });
         calcData.forEach(dat => {
-            let answers = [...answerData];
+            let answers = [...data];
             let resIndex = answers.findIndex(ans => ans.category === dat.category);
             if (resIndex === -1) return;
             answers[resIndex].averageKnowledge = roundDecimals(dat.knowledgeTotal / dat.knowledgeCount || 0, 1);
