@@ -298,7 +298,7 @@ const Content = ({...props}: ContentProps) => {
                 buttonType: buttonType,
                 category: category
             });
-            console.log(lastButtonClicked);
+            // console.log(lastButtonClicked);
             setAlertDialogOpen(true);
         }
     };
