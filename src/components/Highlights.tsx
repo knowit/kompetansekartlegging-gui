@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
 import { limitStringLength, wrapString } from '../helperFunctions';
 
+const barIconSize = 24;
 
 const highlightsStyle = makeStyles({
     root: {
@@ -77,11 +78,11 @@ const highlightsStyle = makeStyles({
         paddingBottom: 5
     },
     iconKnowledge: {
-        width: 24,
+        width: barIconSize,
         fill: KnowitColors.white
     },
     iconMotivation: {
-        width: 24,
+        width: barIconSize,
         fill: KnowitColors.darkBrown
     },
     topic: {
@@ -97,18 +98,18 @@ const highlightsStyle = makeStyles({
     },
     bulletKnowledge: {
         display: 'flex',
-        width: 48,
-        height: 48,
-        borderRadius: 24,
+        width: barIconSize * 2,
+        height: barIconSize * 2,
+        borderRadius: barIconSize,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: KnowitColors.darkGreen
     },
     bulletMotivation: {
         display: 'flex',
-        width: 48,
-        height: 48,
-        borderRadius: 24,
+        width: barIconSize * 2,
+        height: barIconSize * 2,
+        borderRadius: barIconSize,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: KnowitColors.lightGreen
@@ -117,18 +118,18 @@ const highlightsStyle = makeStyles({
         position: 'absolute',
         zIndex: 0,
         width: '30%',
-        height: 24,
-        borderRadius: 12,
-        marginTop: 12,
+        height: barIconSize,
+        borderRadius: barIconSize / 2,
+        marginTop: barIconSize / 2,
         backgroundColor: KnowitColors.beige
     },
     barMobile: {
         position: 'absolute',
         zIndex: 0,
         width: '80%',
-        height: 24,
-        borderRadius: 12,
-        marginTop: 12,
+        height: barIconSize,
+        borderRadius: barIconSize / 2,
+        marginTop: barIconSize / 22,
         backgroundColor: KnowitColors.beige
     },
     hidden: {
