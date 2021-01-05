@@ -1,23 +1,18 @@
-import React, { Fragment, ReactSVGElement, useEffect, useState } from 'react'
-import { HorizontalBar } from 'react-chartjs-2';
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine } from 'recharts';
-import { limitStringLength, roundDecimals } from '../helperFunctions';
-import { KnowitColors } from '../styles';
-import { AnswerData, CalculationData, ChartData, ResultData } from '../types'
-import { makeStyles } from '@material-ui/core/styles'
-import clsx from 'clsx'
-import { GetIcon, GetIcons } from '../icons/iconController';
-import { SvgIconTypeMap } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { roundDecimals } from '../helperFunctions';
+import { AnswerData, CalculationData, ChartData, ResultData } from '../types';
+import { makeStyles } from '@material-ui/core/styles';
 import { CombinedChart } from './CombinedChart';
 import { CombinedChartMobile } from './CombinedChartMobile';
 
 const graphStyle = makeStyles({
     container: {
-        width: '60%',
-        paddingBottom: 10
+        width: '80%',
+        height: '50%',
+        padding: 30
     },
     mobile: {
-        height: '70%',
+        height: '60%',
         width: '90%'
     }
 });
@@ -40,15 +35,11 @@ export default function ResultDiagram(props: { isMobile: boolean, data: AnswerDa
                     });
                 }
             });
-            setAnswerData(result);
+            createData(result);
         }
     }, [props.data]);
 
-    useEffect(() => {
-        createData();
-    }, [props.data]);
-
-    const createData = () => {
+    const createData = (data: ResultData[]) => {
         let calcData: CalculationData[] = [];
         props.data.forEach(dat => {
             if (dat.knowledge < 0 && dat.motivation < 0) return;
@@ -74,7 +65,7 @@ export default function ResultDiagram(props: { isMobile: boolean, data: AnswerDa
             }
         });
         calcData.forEach(dat => {
-            let answers = [...answerData];
+            let answers = [...data];
             let resIndex = answers.findIndex(ans => ans.category === dat.category);
             if (resIndex === -1) return;
             answers[resIndex].averageKnowledge = roundDecimals(dat.knowledgeTotal / dat.knowledgeCount || 0, 1);

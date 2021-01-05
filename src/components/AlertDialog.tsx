@@ -1,15 +1,8 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { makeStyles, Dialog, Button, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@material-ui/core';
 import { AlertDialogProps } from '../types';
-import { makeStyles } from '@material-ui/core';
 import ErrorIcon from '@material-ui/icons/Error';
 import { KnowitColors } from '../styles';
-import { SignalWifi1BarLockSharp } from '@material-ui/icons';
 
 
 const alertDialogStyles = makeStyles({
@@ -73,6 +66,9 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
         props.resetAnswers()
     };
 
+    const handleLeaveIfDesktop = () => {
+        if (props.leaveFormButtonClicked) props.leaveFormButtonClicked();
+    }
 
     return (
         <div>
@@ -92,7 +88,7 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions className={style.alertButtons}>
-                    <Button onClick={handleLeaveForm}
+                    <Button onClick={props.isMobile ? handleLeaveForm : handleLeaveIfDesktop}
                         className={style.leaveButton}
                         >
                         <div className={style.buttonText}>Forlat skjemaet</div>

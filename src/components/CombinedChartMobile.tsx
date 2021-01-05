@@ -1,11 +1,10 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { wrap } from 'module';
 import React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine, Brush } from 'recharts';
 import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
-import { ChartData, CombinedChartProps } from '../types';
-import { wrapString } from '../helperFunctions'
+import { CombinedChartProps } from '../types';
+import { wrapString } from '../helperFunctions';
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;

@@ -1,13 +1,12 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react';
 import { KnowitColors } from '../styles';
-import { YourAnswerProps, YourAnswerPropsDesktop, YourAnswerPropsMobile } from '../types';
-import CloseIcon from '@material-ui/icons/Close';
+import { YourAnswerPropsMobile } from '../types';
 import { AlertDialog } from './AlertDialog';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
-import Slide from '@material-ui/core/Slide';
+import { Panel } from './Content';
 
 
 const cardCornerRadius: number = 40;
@@ -174,14 +173,16 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
     return (
         <div>
             <div className={style.leftCard}>
-                <div className={props.commonCardProps.active ? style.categoryList : style.hidden}>
+                {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
+                <div className={props.commonCardProps.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
                     <div className={style.categoryListInner}>
                         
                         {props.getCategoryButtons(style)}
                     </div>
                 </div>
             </div>
-            <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>                    
+            {/* <div className={props.commonCardProps.active ? style.answerBox : style.hidden}> */}
+            <div className={props.commonCardProps.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                     
                     <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
                         <div className={style.catHeader}>
                             <Button className={style.editButton} onClick={() => props.setAnswerViewModeActive(false)}>Oppdater</Button>
@@ -207,6 +208,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
                     clickedCategory={props.clickedCategory}
                     setIsCategorySubmitted={props.setIsCategorySubmitted}
                     resetAnswers={props.resetAnswers}
+                    isMobile={props.isMobile}
                 />
             </div>
         </div>

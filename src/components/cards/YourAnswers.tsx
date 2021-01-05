@@ -1,12 +1,8 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
-import { Form } from '../Form';
-import CloseIcon from '@material-ui/icons/Close';
-import { AlertDialog } from '../AlertDialog';
-import AnswerDiagram from '../AnswerDiagram';
 import { YourAnswersMobile } from '../YourAnswersMobile';
 import { YourAnswersDesktop } from '../YourAnswersDesktop';
 
@@ -176,7 +172,7 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
 
     const toggleCard = () => {
         //TODO: Find a way to replace hardcode int with a something like enum (enum dont work)
-        props.commonCardProps.setActiveCard(props.commonCardProps.index, !props.commonCardProps.active);
+        // props.commonCardProps.setActiveCard(props.commonCardProps.index, !props.commonCardProps.active);
     };
 
     const getCategoryButtons = (): JSX.Element[] => {
@@ -224,7 +220,6 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
         : <YourAnswersDesktop 
             {...props}
             toggleCard={toggleCard}
-            getCategoryButtons={getCategoryButtons}
             setIsCategorySubmitted={setIsCategorySubmitted}
             isCategorySubmitted={isCategorySubmitted}
             setAlertDialogOpen={setAlertDialogOpen}

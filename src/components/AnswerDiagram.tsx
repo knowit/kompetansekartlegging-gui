@@ -1,21 +1,21 @@
-import React from 'react'
-import { AnswerData, ChartData} from '../types'
-import { makeStyles } from '@material-ui/core/styles'
+import React from 'react';
+import { AnswerData, ChartData} from '../types';
+// import { makeStyles } from '@material-ui/core/styles';
 import { CombinedChart } from './CombinedChart';
 import { CombinedChartMobile } from './CombinedChartMobile';
 
 
-const graphStyle = makeStyles({
-    root: {
-        width: '100%',
-        maxHeight: '100%',
-        paddingBottom: 10
-    }
-});
+// const graphStyle = makeStyles({
+//     root: {
+//         width: '100%',
+//         maxHeight: '100%',
+//         paddingBottom: 10
+//     }
+// });
 
 
 export default function AnswerDiagram(props: { data: AnswerData[], activeCategory: string , isMobile: boolean}) {
-    const style = graphStyle();
+    // const style = graphStyle();
 
     let chartData: ChartData[] = props.data
         .filter(answer => answer.category === props.activeCategory)

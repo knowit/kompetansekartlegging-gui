@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { QuestionProps } from '../types';
 import Slider from './Slider';
-import { makeStyles, SvgIcon } from '@material-ui/core';
-import { KnowitColors, IconPaths } from '../styles';
+import { makeStyles } from '@material-ui/core';
+import { KnowitColors } from '../styles';
 import * as Icon from '../icons/iconController';
 
 const questionStyleDesktop = makeStyles({

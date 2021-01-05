@@ -3,7 +3,7 @@ import React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
-import { ChartData, CombinedChartProps } from '../types';
+import { CombinedChartProps } from '../types';
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;
@@ -22,7 +22,10 @@ const useStyles = makeStyles({
     },
     label: {
         color: KnowitColors.darkBrown,
+        fontFamily: "Arial",
+        fontSize: "20px",
         fontWeight: "bold",
+        textAnchor: "start"
     },
     knowledge: {
         color: KnowitColors.greyGreen
@@ -38,18 +41,28 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
 
     return (
         <ResponsiveContainer width='100%' height="100%">     
-            <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 24, right: 0, bottom: 6, left: 0}}>
-            <CartesianGrid horizontal={true} strokeDasharray="2 5"/>
-                <XAxis dataKey="value" type="number" padding={{ left: 0, right: 20 }} domain={[0, chartSplitAt + numTicks]} ticks={[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12]} tick={renderCustomAxisTicks()}/>
+            <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 50, right: 0, bottom: 6, left: 0}}>
+            <CartesianGrid horizontal={true} vertical={false} strokeDasharray="2 5"/>
+                <XAxis
+                    tickLine={false}
+                    axisLine={false}
+                    orientation="top"
+                    dataKey="value"
+                    type="number"
+                    padding={{ left: 0, right: 20 }}
+                    domain={[0, chartSplitAt + numTicks]}
+                    ticks={[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12]}
+                    tick={renderCustomAxisTicks()}
+                />
                 <YAxis width={200} dataKey="name" type="category" interval={0}/>
                 <Tooltip content={RenderCustomTooltip(classes)}/>
-                <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.lightGreen} label={renderCustomBarLabel} />
-                <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.greyGreen} label={renderCustomBarLabel} />
+                <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen} label={renderCustomBarLabel} />
+                <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen} label={renderCustomBarLabel} />
                 <ReferenceLine x={0} stroke="green">
-                    <Label position="top" >Kunnskap</Label>
+                    <Label className={classes.label} position="top" offset={50} >KOMPETANSE</Label>
                 </ReferenceLine>
                 <ReferenceLine x={chartSplitAt} stroke="green">
-                    <Label position="top" >Motivasjon</Label>
+                    <Label className={classes.label} position="top" offset={50} >MOTIVASJON</Label>
                 </ReferenceLine>
             </BarChart>
         </ResponsiveContainer>
@@ -74,7 +87,7 @@ const renderCustomAxisTicks = () => {
             isKnowledge = false;
         }
         return (
-            <svg x={props.x-12} y={props.y} width={24} height={24} fill={KnowitColors.darkGreen}>
+            <svg x={props.x-12} y={props.y-24} width={24} height={24} fill={KnowitColors.darkGreen}>
                 {GetIcon(isKnowledge, Math.round(iconNumber))};
             </svg>
             

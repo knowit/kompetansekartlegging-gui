@@ -1,17 +1,11 @@
 
-import { AppBar, Button, Toolbar, Avatar, Menu, MenuItem, ClickAwayListener, Popper, Grow, Paper, MenuList, IconButton, Typography, Hidden, Drawer, Divider, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { Auth } from 'aws-amplify';
-import React, { useEffect, useState } from 'react'
-import { useHistory } from "react-router-dom";
+import { AppBar, Toolbar, IconButton, Typography, List, ListItem, ListItemText } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import { KnowitColors } from '../styles';
-import { NavBarProps, NavBarPropsMobile } from '../types'
+import { NavBarPropsMobile } from '../types';
 import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import clsx from 'clsx';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import {isIOS} from 'react-device-detect';
 
 

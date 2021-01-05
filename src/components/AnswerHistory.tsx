@@ -1,11 +1,11 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
-import Dialog, { DialogProps } from '@material-ui/core/Dialog';
+import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TreeView from '@material-ui/lab/TreeView';
-import { AnswerHistoryProps, HistoryTreeViewProps, UserAnswer, UserFormWithAnswers } from '../types'
+import { AnswerHistoryProps, HistoryTreeViewProps, UserAnswer, UserFormWithAnswers } from '../types';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';

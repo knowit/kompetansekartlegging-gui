@@ -1,3 +1,5 @@
+import { MenuButton, Panel } from "./components/Content";
+
 export type AnswerData = {
     questionId: string,
     topic: string,
@@ -308,10 +310,8 @@ export type BatchCreatedQuestionAnswer = {
 export type OverviewProps = {
     commonCardProps: CommonCardProps,
     radarData: AnswerData[],
-    isAnswersSubmitted: boolean,
     isMobile: boolean,
-    isOverViewOpen: boolean,
-
+    isOverViewOpen: boolean
 };
 
 export type ScaleDescriptionProps = {
@@ -352,10 +352,8 @@ export type YourAnswerPropsDesktop = {
     resetAnswers: () => void,
     setAnswerViewModeActive: (viewModeActive: boolean) => void,
     answerViewMode: boolean,
-    // isMobile: boolean,
-    
+    isMobile: boolean,
     toggleCard: () => void,
-    getCategoryButtons: () => JSX.Element[],
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     isCategorySubmitted: boolean,
     setAlertDialogOpen: (alertDialogOpen: boolean) => void,
@@ -404,13 +402,15 @@ export type YourAnswerPropsMobile = {
     clickedCategory: string,
     setAlertDialogOpen: (alertDialogOpen: boolean) => void,
     isYourAnswersOpen: boolean,
+    isMobile: boolean
 };
 
 
 type CommonCardProps = {
-    setActiveCard: (cardIndex: number, active: boolean) => void,
-    active: boolean,
-    index: number
+    activePanel: Panel
+    // setActiveCard: (cardIndex: number, active: boolean) => void,
+    // active: boolean,
+    // index: number
 };
 
 export type NavBarProps = {
@@ -459,6 +459,8 @@ export type AlertDialogProps = {
     clickedCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     resetAnswers: () => void,
+    isMobile: boolean,
+    leaveFormButtonClicked?: () => void
 };
 
 export type AnswerHistoryProps = {

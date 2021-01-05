@@ -1,13 +1,12 @@
 
-import { AppBar, Button, Toolbar, Avatar, Menu, MenuItem, ClickAwayListener, Popper, Grow, Paper, MenuList } from '@material-ui/core'
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { AppBar, Button, Toolbar, Avatar, MenuItem, ClickAwayListener, Popper, Grow, Paper, MenuList } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { Auth } from 'aws-amplify';
-import React, { useEffect, useState } from 'react'
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
 import { KnowitColors } from '../styles';
-import { NavBarProps, NavBarPropsDesktop } from '../types'
-
+import { NavBarPropsDesktop } from '../types';
+import { ReactComponent as KnowitLogo } from '../Logotype-Knowit-Digital-white 1.svg';
 
 
 const navbarStyles = makeStyles((theme) => ({
@@ -25,7 +24,7 @@ const navbarStyles = makeStyles((theme) => ({
         width: "100px"
     },
     header: {
-        backgroundColor: KnowitColors.darkGreen
+        backgroundColor: KnowitColors.darkBrown
     },
     userName: {
         margin: "5px",
@@ -41,6 +40,16 @@ const navbarStyles = makeStyles((theme) => ({
         margin: "5px",
         width: "44px",
         height: "44px",
+    },
+    logo: {
+
+    },
+    title: {
+        fontFamily: "Arial",
+        fontSize: "25px",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        paddingLeft: 20
     }
 }));
 
@@ -93,6 +102,8 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
             <div className={style.root}>
                 <AppBar position="static">
                     <Toolbar className={style.header}>
+                        <div className={style.logo}><KnowitLogo/></div>
+                        <div className={style.title}>Kompetansekartlegging</div>
                         <div className={style.userName}>{props.userName}</div>
 
                         {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}

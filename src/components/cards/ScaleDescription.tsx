@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import React from 'react';
-import { KnowitColors, ScaleDescStyle } from '../../styles';
+import { KnowitColors } from '../../styles';
 import { ScaleDescriptionProps } from '../../types';
 import CloseIcon from '@material-ui/icons/Close';
 import DescriptionTable from '../DescriptionTable';
 import { makeStyles } from '@material-ui/core';
 import DescriptionTableMobile from '../DescriptionTableMobile';
+import { Panel } from '../Content';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 40;
@@ -76,7 +77,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
 
     const buttonClick = () => {
         //TODO: Find a way to replace harcoded int with a something like enum (enum dont work)
-        props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
+        // props.commonCardProps.setActiveCard(props.commonCardProps.index,  !props.commonCardProps.active);
     };
 
 
@@ -87,7 +88,8 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
             </div> 
         :
         // TODO: Put this in a desktop component
-        <div className={clsx(style.root, props.commonCardProps.active ? style.open : style.closed)}>
+        // <div className={clsx(style.root, props.commonCardProps.active ? style.open : style.closed)}>
+        <div className={clsx(style.root, props.commonCardProps.activePanel === Panel.ScaleDescription ? style.open : style.closed)}>
             <div className={style.cardHeader}>
                 <button 
                     onClick={buttonClick} 
@@ -95,7 +97,8 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                 >
                     SKALABESKRIVELSE 
                 </button>
-                {props.commonCardProps.active ? (
+                {/* {props.commonCardProps.active ? ( */}
+                {props.commonCardProps.activePanel === Panel.ScaleDescription ? (
                         <CloseIcon 
                             fontSize="large" 
                             className={style.closeButton}
@@ -103,7 +106,8 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                         />
                     ) : null}
             </div>
-            {props.commonCardProps.active ?
+            {/* {props.commonCardProps.active ? */}
+            {props.commonCardProps.activePanel === Panel.ScaleDescription ?
                 <DescriptionTable/>
             : ""}
             
