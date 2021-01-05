@@ -100,7 +100,6 @@ const Content = ({...props}: ContentProps) => {
     
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
-    const [radarData, setRadarData] = useState<AnswerData[]>([]);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
@@ -142,24 +141,6 @@ const Content = ({...props}: ContentProps) => {
         console.log(as);
         return as;
     };
-
-    const createRadarData = (): AnswerData[] => {
-
-        if(!formDefinition) return [];
-        let questionList = formDefinition.questions.items;
-        if(!answers || !questionList) return [];
-        let newRadarData: AnswerData[] = [];
-        for (let i = 0; i < answers.length; i++) {
-            newRadarData.push({
-                questionId: answers[i].questionId,
-                category: answers[i].category,
-                topic: answers[i].topic,
-                knowledge: answers[i].knowledge,
-                motivation: answers[i].motivation
-            });
-        }
-        return newRadarData;
-    };
     
     const createUserForm = async () => {
         setIsCategorySubmitted(true)
@@ -184,9 +165,6 @@ const Content = ({...props}: ContentProps) => {
             });
         }
 
-        // Ensures diagram data is updated on first submit
-        if (radarData.length === 0) setRadarData(createRadarData());
-
         console.log(questionAnswers);
         
         //TODO: Use result to update: Remember that result is now an array, which must be looped.
@@ -199,18 +177,7 @@ const Content = ({...props}: ContentProps) => {
             return;
         }
         setSubmitFeedback("Your answers has been saved!");
-        //updateRadarData(result);
     }
-
-    // const updateRadarData = (batchData: BatchCreatedQuestionAnswer): void => {
-    //     let data = batchData.batchCreateQuestionAnswer;
-    //     let newRadarData: AnsweredQuestion[] = [...radarData];
-    //     for(let i = 0; i < data.length; i++){
-    //         let rData = newRadarData.find(d => d.question.id === data[i].question.id);
-    //         if(rData) rData.answer = data[i].answer;
-    //     }
-    //     setRadarData(newRadarData);
-    // }
 
     const updateAnswer = (questionId: string, knowledgeValue: number, motivationValue: number): void => {
         setAnswers(prevAnswers => {
@@ -292,18 +259,10 @@ const Content = ({...props}: ContentProps) => {
     }, [userAnswers]);
 
     useEffect(() => {
-        if(radarData.length === 0) setRadarData(createRadarData());
-        else if (isCategorySubmitted) {
-            setRadarData(answers);
+        if (isCategorySubmitted) {
             setIsCategorySubmitted(false)
         }
     }, [isCategorySubmitted]);
-
-    useEffect(() => {
-        if(radarData.length > 0) {
-            setIsCategorySubmitted(true)
-        } 
-    }, [radarData]);
 
     useEffect(() => {
         if (props.answerHistoryOpen) {
@@ -417,7 +376,7 @@ const Content = ({...props}: ContentProps) => {
                             // active: activeCards[0],
                             // index: 0
                         }}
-                        radarData={radarData}
+                        answers={answers}
                         isMobile={props.isMobile}
                         isOverViewOpen={props.isOverViewOpen}
                     />
@@ -477,7 +436,7 @@ const Content = ({...props}: ContentProps) => {
                         // active: activeCards[0],
                         // index: 0
                     }}
-                    radarData={radarData}
+                    answers={answers}
                     isMobile={props.isMobile}
                     isOverViewOpen={props.isOverViewOpen}
 
