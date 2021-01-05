@@ -129,7 +129,7 @@ const highlightsStyle = makeStyles({
         width: '80%',
         height: barIconSize,
         borderRadius: barIconSize / 2,
-        marginTop: barIconSize / 22,
+        marginTop: barIconSize / 2,
         backgroundColor: KnowitColors.beige
     },
     hidden: {
