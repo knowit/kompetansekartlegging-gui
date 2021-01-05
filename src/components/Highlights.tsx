@@ -3,56 +3,136 @@ import { AnswerData, TopicScoreWithIcon } from '../types'
 import { GetIcon } from '../icons/iconController'
 import { makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
+import { limitStringLength, wrapString } from '../helperFunctions';
 
 
 const highlightsStyle = makeStyles({
     root: {
         display: 'flex',
-        width: '30%',
-        flexDirection: 'column'
-    },
-    rootMobile: {
-        display: 'flex',
-        width: '100%',
+        width: '80%',
         flexDirection: 'column'
     },
     title: {    
-        textAlign: 'center',
+        textAlign: 'left',
         fontWeight: 'bold',
-        paddingBottom: 20
+        paddingBottom: 20,
+        paddingLeft: 30,
+        fontFamily: "Arial",
+        fontSize: "20px"
     },
     container: { 
         display: 'flex',
-        justifyContent: 'center'
+        width: '100%',
+        justifyContent: 'space-between'
     },
-    col: {
+    containerMobile: { 
         display: 'flex',
-        width: '40%',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        width: '100%',
+        justifyContent: 'space-between'
+    },
+    block: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column',
     },
     heading: {
         textAlign: 'left',
-        paddingBottom: 10
+        fontWeight: 'bold',
+        paddingBottom: 10,
+        paddingLeft: 30,
+        fontFamily: 'Arial',
+        fontSize: 16
+    },
+    headingMobile: {
+        textAlign: 'left',
+        fontWeight: 'bold',
+        paddingBottom: 10,
+        paddingLeft: 30,
+        fontFamily: 'Arial',
+        fontSize: 14
     },
     list: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'flex-start',
+        height: '100%',
+        width: '80%'
+    },
+    listMobile: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'flex-start',
+        height: '100%',
+        width: '100%'
     },
     listitem: {
+        zIndex: 1,
         display: 'flex',
-        justifyContent: 'space-between',
+        width: '25%',
+        flexDirection: 'column',
+        alignItems: 'center',
         paddingBottom: 5
     },
-    icon: {
-        width: '15%',
+    iconKnowledge: {
+        width: 24,
+        fill: KnowitColors.white
+    },
+    iconMotivation: {
+        width: 24,
         fill: KnowitColors.darkBrown
     },
     topic: {
-        width: '80%',
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        fontSize: 12
+        alignItems: 'center',
+        textAlign: 'center',
+        fontFamily: 'Arial',
+        fontSize: 12,
+        wordWrap: 'break-word'
+    },
+    bulletKnowledge: {
+        display: 'flex',
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: KnowitColors.darkGreen
+    },
+    bulletMotivation: {
+        display: 'flex',
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: KnowitColors.lightGreen
+    },
+    bar: {
+        position: 'absolute',
+        zIndex: 0,
+        width: '25%',
+        height: 24,
+        borderRadius: 12,
+        marginTop: 12,
+        backgroundColor: KnowitColors.beige
+    },
+    barMobile: {
+        position: 'absolute',
+        zIndex: 0,
+        width: '80%',
+        height: 24,
+        borderRadius: 12,
+        marginTop: 12,
+        backgroundColor: KnowitColors.beige
+    },
+    hidden: {
+        display: "none"
     }
 });
 
@@ -105,12 +185,15 @@ export default function Highlights(props: { isMobile: boolean, data: AnswerData[
         if(!motivationAboveCutoff) return <Fragment />;
         if(!motivationAboveCutoff[0]) return <Fragment />;
         return (
-            <div className={style.list}>
+            <div className={props.isMobile ? style.listMobile : style.list}>
+                <div className={props.isMobile ? style.barMobile : style.bar}/>
                 {motivationAboveCutoff
                     .map((el, i) =>
                         <div key={i} className={style.listitem}>
-                            <div className={style.icon}>{GetIcon(false, el.icon)}</div>
-                            <div className={style.topic}>{el.topic}</div>
+                            <div className={style.bulletMotivation}>
+                                <div className={style.iconMotivation}>{GetIcon(false, el.icon)}</div>
+                            </div>
+                            <div className={style.topic}>{wrapString(el.topic, 15).join('\n')}</div>
                         </div>
                     )
                 }
@@ -122,14 +205,15 @@ export default function Highlights(props: { isMobile: boolean, data: AnswerData[
         if(!knowledgeAboveCutoff) return <Fragment />;
         if(!knowledgeAboveCutoff[0]) return <Fragment />;
         return (
-            <div className={style.list}>
+            <div className={props.isMobile ? style.listMobile : style.list}>
+                <div className={props.isMobile ? style.barMobile : style.bar}/>
                 {knowledgeAboveCutoff
                     .map((el, i) =>
                         <div key={i} className={style.listitem}>
-                            <div className={style.icon}>{GetIcon(true, el.icon)}</div>
-                            <div className={style.topic}>
-                                <div>{el.topic}</div>
+                            <div className={style.bulletKnowledge}>
+                                <div className={style.iconKnowledge}>{GetIcon(true, el.icon)}</div>
                             </div>
+                            <div className={style.topic}>{wrapString(el.topic, 15).join('\n')}</div>
                         </div>
                     )
                 }
@@ -137,16 +221,32 @@ export default function Highlights(props: { isMobile: boolean, data: AnswerData[
         );
     };
 
+    // return (
+    //     <div className={props.isMobile ? style.rootMobile : style.root}>
+    //         <div className={style.title}>MINE EGENSKAPER</div>
+    //     <div className={style.container}>
+    //         <div className={style.col}>
+    //             <div className={style.heading}>STYRKER</div>
+    //                 {createKnowledgeHighlights()}
+    //         </div>
+    //         <div className={style.col}>
+    //             <div className={style.heading}>AMBISJONER</div>
+    //                 {createMotivationHighlights()}
+    //         </div>
+    //         </div>
+    //     </div>
+    // );
+
     return (
-        <div className={props.isMobile ? style.rootMobile : style.root}>
-            <div className={style.title}>MINE EGENSKAPER</div>
-        <div className={style.container}>
-            <div className={style.col}>
-                <div className={style.heading}>STYRKER</div>
+        <div className={style.root}>
+            <div className={props.isMobile ? style.hidden : style.title}>FOKUSOMRÅDER</div>
+        <div className={props.isMobile ? style.containerMobile : style.container}>
+            <div className={style.block}>
+                <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP STYRKER</div>
                     {createKnowledgeHighlights()}
             </div>
-            <div className={style.col}>
-                <div className={style.heading}>AMBISJONER</div>
+            <div className={style.block}>
+                <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP AMBISJONER</div>
                     {createMotivationHighlights()}
             </div>
             </div>

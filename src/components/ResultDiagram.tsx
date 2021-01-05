@@ -12,7 +12,7 @@ const graphStyle = makeStyles({
         padding: 30
     },
     mobile: {
-        height: '70%',
+        height: '60%',
         width: '90%'
     }
 });
