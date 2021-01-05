@@ -460,7 +460,7 @@ export type AlertDialogProps = {
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     resetAnswers: () => void,
     isMobile: boolean,
-    menuButtonClick?: (buttonType: MenuButton, category?: string) => void
+    leaveFormButtonClicked?: () => void
 };
 
 export type AnswerHistoryProps = {

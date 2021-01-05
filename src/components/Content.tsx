@@ -313,43 +313,42 @@ const Content = ({...props}: ContentProps) => {
         }
     }, [props.answerHistoryOpen]);
 
-    //New States etc for new card functionality
-    /*
-     * Really cryptic, using array for storing if card is active or not, using hardcoded number
-     *  for index. this rly need another look and a fix to make it readable
-     *
-     * Indexes is mapped to Cards like this:
-     * 0 = Overview, 1 = ScaleDescription, 2 = YourAnswers
-    */
-    // const [activeCards, setActiveCards] = useState<boolean[]>([true, false, true]);
+    
+    
+    
+    
+    
 
     const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
+    const [lastButtonClicked, setLastButtonClicked] = useState<{ buttonType: MenuButton, category?: string }>({ //Custom type might better be moved to type variable
+        buttonType: MenuButton.Overview,
+        category: undefined
+    });
     const style = contentStyle();
     const mobileStyle = contentStyleMobile();
-
     
     const setAnswerViewModeActive = (viewModeActive: boolean) => {
         setAnswerViewMode(viewModeActive);
     };
     
-    // const setActiveCard = (cardIndex: number, active: boolean) => {
-    //     let newActiveCards = [...activeCards];
-    //     if(cardIndex === 0 && newActiveCards[1]) newActiveCards[2] = false;
-    //     if(cardIndex === 2 && newActiveCards[1]) newActiveCards[0] = false;
-    //     if(cardIndex === 1 && newActiveCards[0] && newActiveCards[2]) newActiveCards[0] = false;
-    //     newActiveCards[cardIndex] = active;
-    //     setActiveCards(newActiveCards);
-    // };
-    
     const checkIfCategoryIsSubmitted = (buttonType: MenuButton, category?: string) => {
-        menuButtonClick(buttonType, category);
-        return;
-        if (!isCategorySubmitted) {
-            setAlertDialogOpen(true);
-        } else {
+        if (isCategorySubmitted) {
             menuButtonClick(buttonType, category);
+        } else {
+            setLastButtonClicked({
+                buttonType: buttonType,
+                category: category
+            });
+            console.log(lastButtonClicked);
+            setAlertDialogOpen(true);
         }
     };
+    
+    const leaveFormButtonClicked = () => {
+        console.log("Leave button clicked", lastButtonClicked);
+        setAlertDialogOpen(false);
+        menuButtonClick(lastButtonClicked.buttonType, lastButtonClicked.category);
+    }
     
     //TODO: Remove this function when refactor is done. Needed to not change mobile too much for now
     const dummyFunctionForRefactor = () => {
@@ -473,7 +472,7 @@ const Content = ({...props}: ContentProps) => {
                     clickedCategory={activeCategory}
                     setIsCategorySubmitted={setIsCategorySubmitted}
                     resetAnswers={resetAnswers}
-                    menuButtonClick={menuButtonClick} //Temp added here, replace changeActiveCategory
+                    leaveFormButtonClicked={leaveFormButtonClicked} //Temp added here, replace changeActiveCategory
                     isMobile={props.isMobile}
                 />
             </div>
