@@ -3,7 +3,7 @@ import { AnswerData, TopicScoreWithIcon } from '../types'
 import { GetIcon } from '../icons/iconController'
 import { makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
-import { limitStringLength, wrapString } from '../helperFunctions';
+import { wrapString } from '../helperFunctions';
 
 const barIconSize = 24;
 
