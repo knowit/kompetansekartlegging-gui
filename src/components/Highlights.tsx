@@ -116,7 +116,7 @@ const highlightsStyle = makeStyles({
     bar: {
         position: 'absolute',
         zIndex: 0,
-        width: '25%',
+        width: '30%',
         height: 24,
         borderRadius: 12,
         marginTop: 12,
