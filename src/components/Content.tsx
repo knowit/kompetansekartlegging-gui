@@ -105,7 +105,7 @@ const Content = ({...props}: ContentProps) => {
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
-    const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(false);
+    const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
@@ -297,7 +297,7 @@ const Content = ({...props}: ContentProps) => {
             setRadarData(answers);
             setIsCategorySubmitted(false)
         }
-    }, [userAnswers, isCategorySubmitted]);
+    }, [isCategorySubmitted]);
 
     useEffect(() => {
         if(radarData.length > 0) {
@@ -345,7 +345,7 @@ const Content = ({...props}: ContentProps) => {
     };
     
     const leaveFormButtonClicked = () => {
-        console.log("Leave button clicked", lastButtonClicked);
+        // console.log("Leave button clicked", lastButtonClicked);
         setAlertDialogOpen(false);
         menuButtonClick(lastButtonClicked.buttonType, lastButtonClicked.category);
     }
@@ -382,7 +382,7 @@ const Content = ({...props}: ContentProps) => {
     
     const setupMenu = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
-        ["OVERSIKT", "MINE SVAR", "JIB!", "Dummy", "Test :D", "Fancy array magic"].forEach((text, index) => {
+        ["OVERSIKT", "MINE SVAR", "JIB!", "Sleep", "Test :D", "Fancy array magic"].forEach((text, index) => {
             buttons.push(
                 <Button
                     key={text.toLocaleLowerCase()}
@@ -392,14 +392,6 @@ const Content = ({...props}: ContentProps) => {
                 </Button>
             );
         });
-        // buttons.push(
-        //     <Button
-        //         key={"minesvar"}
-        //         className={clsx(style.menuButton, activePanel === Panel.MyAnswers ? style.menuButtonActive : "")}
-        //         onClick={() => {menuButtonClick(MenuButton.MyAnswers)}}>
-        //     <div className={clsx(style.menuButtonText)}>MINE SVAR</div>
-        //     </Button>
-        // );
         let categoryButtons: JSX.Element[] = categories.map((category, index) => {
             return <Button
                 key={category}
