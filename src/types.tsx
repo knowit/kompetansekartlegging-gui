@@ -310,6 +310,7 @@ export type BatchCreatedQuestionAnswer = {
 export type OverviewProps = {
     commonCardProps: CommonCardProps,
     answers: AnswerData[],
+    categories: string[],
     isMobile: boolean,
     isOverViewOpen: boolean
 };
@@ -405,6 +406,16 @@ export type YourAnswerPropsMobile = {
     isMobile: boolean
 };
 
+export type HighlightsProps = {
+    isMobile: boolean,
+    answers: AnswerData[]  
+};
+
+export type ResultDiagramProps = {
+    isMobile: boolean,
+    answers: AnswerData[],
+    categories: string[]
+};
 
 type CommonCardProps = {
     activePanel: Panel

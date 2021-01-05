@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { AnswerData, TopicScoreWithIcon } from '../types'
+import { HighlightsProps, TopicScoreWithIcon } from '../types'
 import { GetIcon } from '../icons/iconController'
 import { makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
@@ -139,7 +139,7 @@ const highlightsStyle = makeStyles({
 
 
 
-export default function Highlights(props: { isMobile: boolean, data: AnswerData[] }) {
+export default function Highlights({...props }: HighlightsProps) {
 
     const style = highlightsStyle();
 
@@ -151,24 +151,24 @@ export default function Highlights(props: { isMobile: boolean, data: AnswerData[
 
     useEffect(() => {
         generateShortlist();
-    }, [props.data]);
+    }, [props.answers]);
 
     const generateShortlist = () => {
         let shortlistMotivation: TopicScoreWithIcon[] = [];
         let shortlistKnowledge: TopicScoreWithIcon[] = [];
-        props.data.forEach(dat => {
-            if (dat.knowledge > shortlistCutoff) {
+        props.answers.forEach(ans => {
+            if (ans.knowledge > shortlistCutoff) {
                 shortlistKnowledge.push({
-                    topic: dat.topic,
-                    score: dat.knowledge,
-                    icon: Math.floor(dat.knowledge)
+                    topic: ans.topic,
+                    score: ans.knowledge,
+                    icon: Math.floor(ans.knowledge)
                 });
             }
-            if (dat.motivation > shortlistCutoff) {
+            if (ans.motivation > shortlistCutoff) {
                 shortlistMotivation.push({
-                    topic: dat.topic,
-                    score: dat.motivation,
-                    icon: Math.floor(dat.motivation)
+                    topic: ans.topic,
+                    score: ans.motivation,
+                    icon: Math.floor(ans.motivation)
                 });
             }
         });

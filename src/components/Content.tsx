@@ -377,6 +377,7 @@ const Content = ({...props}: ContentProps) => {
                             // index: 0
                         }}
                         answers={answers}
+                        categories={categories}
                         isMobile={props.isMobile}
                         isOverViewOpen={props.isOverViewOpen}
                     />
@@ -437,6 +438,7 @@ const Content = ({...props}: ContentProps) => {
                         // index: 0
                     }}
                     answers={answers}
+                    categories={categories}
                     isMobile={props.isMobile}
                     isOverViewOpen={props.isOverViewOpen}
 
