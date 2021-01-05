@@ -93,7 +93,7 @@ const highlightsStyle = makeStyles({
         textAlign: 'center',
         fontFamily: 'Arial',
         fontSize: 12,
-        wordWrap: 'break-word'
+        whiteSpace: 'pre-wrap'
     },
     bulletKnowledge: {
         display: 'flex',
