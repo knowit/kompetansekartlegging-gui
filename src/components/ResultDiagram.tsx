@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { roundDecimals } from '../helperFunctions';
-import { AnswerData, CalculationData, ChartData, ResultData, ResultDiagramProps } from '../types';
+import { ChartData, ResultData, ResultDiagramProps } from '../types';
 import { makeStyles } from '@material-ui/core/styles';
 import { CombinedChart } from './CombinedChart';
 import { CombinedChartMobile } from './CombinedChartMobile';
-import { isForOfStatement } from 'typescript';
 
 const graphStyle = makeStyles({
     container: {
@@ -22,23 +21,6 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
     const style = graphStyle();
 
     const [answerData, setAnswerData] = useState<ResultData[]>([]);
-    
-    // useEffect(() => {
-    //     if (answerData.length === 0) {
-    //         let result: ResultData[] = [];
-    //         props.answers.forEach(ans => {
-    //             let cat = result.find(res => res.category === ans.category);
-    //             if (!cat) {
-    //                 result.push({
-    //                     category: ans.category,
-    //                     averageKnowledge: 0,
-    //                     averageMotivation: 0
-    //                 });
-    //             }
-    //         });
-    //         createData(result);
-    //     }
-    // }, [props.answers]);
     
     useEffect(() => {
         setAnswerData(createData());
@@ -85,38 +67,6 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
         });
         console.log(result);
         return result;
-        // let calcData: CalculationData[] = [];
-        // props.answers.map(ans => {
-        //     if (ans.knowledge < 0 && ans.motivation < 0) return;
-        //     let catIndex = calcData.findIndex(calc => calc.category === ans.category);
-        //     if (catIndex === -1) {
-        //         catIndex = calcData.length;
-        //         calcData.push({
-        //             category: ans.category,
-        //             knowledgeCount: 0,
-        //             knowledgeTotal: 0,
-        //             motivationCount: 0,
-        //             motivationTotal: 0,
-        //             questionIds: []
-        //         });
-        //     }
-        //     if (ans.knowledge >= 0) {
-        //         calcData[catIndex].knowledgeCount += 1;
-        //         calcData[catIndex].knowledgeTotal += ans.knowledge;
-        //     }
-        //     if (ans.motivation >= 0) {
-        //         calcData[catIndex].motivationCount += 1;
-        //         calcData[catIndex].motivationTotal += ans.motivation;
-        //     }
-        // });
-        // calcData.forEach(ans => {
-        //     let answers: any = []// [...data];
-        //     let resIndex = answers.findIndex((ans: any) => ans.category === ans.category);
-        //     if (resIndex === -1) return;
-        //     answers[resIndex].averageKnowledge = roundDecimals(ans.knowledgeTotal / ans.knowledgeCount || 0, 1);
-        //     answers[resIndex].averageMotivation = roundDecimals(ans.motivationTotal / ans.motivationCount || 0, 1);
-        //     setAnswerData(answers);
-        // });
     };
     
 
