@@ -11,7 +11,10 @@ const DescTableStyle = makeStyles({
         maxHeight: '100%',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: KnowitColors.ecaluptus
+        borderRadius: '50px 50px 0px 50px',
+        backgroundColor: KnowitColors.beige,
+        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
+
     },
     scaleRow: {
         height: '50%',
@@ -20,7 +23,7 @@ const DescTableStyle = makeStyles({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignContent: 'center',
-        backgroundColor: KnowitColors.ecaluptus
+        // backgroundColor: KnowitColors.ecaluptus
 
     },
     scaleTitle: {
