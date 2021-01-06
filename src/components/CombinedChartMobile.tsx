@@ -13,7 +13,7 @@ const iconSize = 18;
 const pageEntryLimit = 3;
 
 const useStyles = makeStyles({
-    root: {
+    tooltip: {
         backgroundColor: KnowitColors.white,
         padding: 5,
         paddingLeft: 10,
@@ -34,12 +34,37 @@ const useStyles = makeStyles({
     motivation: {
         color: KnowitColors.darkGreen
     },
-    container: {
+    chartContainer: {
         width: '100%',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    bulletRoot: {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: -10
+    },
+    pageBullet: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginLeft: 4,
+        marginRight: 4,
+        backgroundColor: KnowitColors.lightGreen 
+    },
+    pageBulletCurrent: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginLeft: 4,
+        marginRight: 4,
+        backgroundColor: KnowitColors.darkGreen 
     }
   });
 
@@ -54,6 +79,10 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
         setChartPages(createPagedData());
     }, [props.chartData]);
 
+    // useEffect(() => {
+
+    // }, [currentPage]);
+
     const createPagedData = (): ChartData[][] => {
         let pagedData: ChartData[][] = [];
         let items = props.chartData.length;
@@ -66,52 +95,68 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
         return pagedData;
     }
 
+    const createPager = (): JSX.Element => {
+         return (
+             <div className={classes.bulletRoot}>
+                {chartPages
+                    .map((_, index) => 
+                        (index === currentPage ?
+                            <div key={index} className={classes.pageBulletCurrent}/>
+                            :
+                            <div key={index} className={classes.pageBullet}/>
+                        )
+                    )
+                }
+            </div>
+        )
+    }
+
     return (
-        <div className={classes.container}>
-        <ResponsiveContainer width='100%' height="100%">     
-            <BarChart
-                barGap={-10}
-                barSize={10}
-                maxBarSize={10}
-                layout="horizontal"
-                data={chartPages[currentPage]}
-                margin={{top: 50, right: 20, bottom: 10, left: -30}}>
-            <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
-                <YAxis
-                    axisLine={false}
-                    dataKey="value"
-                    type="number"
-                    padding={{ top: 20, bottom: 20 }}
-                    domain={[0, chartSplitAt + numTicks]}
-                    ticks={[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12]}
-                    tickLine={false}
-                    tick={renderCustomAxisTicks()} 
-                    minTickGap={-5}
-                />
-                <XAxis
-                    orientation="top"
-                    axisLine={false}
-                    dataKey="name"
-                    type="category"
-                    interval={0}
-                    tickLine={false}
-                    tick={renderLabelTick}
-                />
-                <Tooltip content={renderCustomTooltip(classes)}/>
-                <Bar radius={[10, 10, 0, 0]} dataKey="valueKnowledge" fill={KnowitColors.lightGreen}/>
-                <Bar radius={[10, 10, 0, 0]} dataKey="valueMotivation" fill={KnowitColors.greyGreen}/>
-                <ReferenceLine y={0} stroke="green" >
-                    <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>KOMPETANSE</Label>
-                </ReferenceLine>
-                <ReferenceLine y={0.1} stroke={KnowitColors.darkGreen} strokeWidth={1}></ReferenceLine>
-                <ReferenceLine y={0} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
-                <ReferenceLine y={chartSplitAt} stroke="green" >
-                    <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>MOTIVASJON</Label>
-                </ReferenceLine>
-                <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
-            </BarChart>
-        </ResponsiveContainer>
-        <div>Test</div>
+        <div className={classes.chartContainer}>
+            <ResponsiveContainer width='100%' height="100%">     
+                <BarChart
+                    barGap={-10}
+                    barSize={10}
+                    maxBarSize={10}
+                    layout="horizontal"
+                    data={chartPages[currentPage]}
+                    margin={{top: 50, right: 20, bottom: 10, left: -30}}>
+                <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
+                    <YAxis
+                        axisLine={false}
+                        dataKey="value"
+                        type="number"
+                        padding={{ top: 20, bottom: 20 }}
+                        domain={[0, chartSplitAt + numTicks]}
+                        ticks={[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12]}
+                        tickLine={false}
+                        tick={renderCustomAxisTicks()} 
+                        minTickGap={-5}
+                    />
+                    <XAxis
+                        orientation="top"
+                        axisLine={false}
+                        dataKey="name"
+                        type="category"
+                        interval={0}
+                        tickLine={false}
+                        tick={renderLabelTick}
+                    />
+                    <Tooltip content={renderCustomTooltip(classes)}/>
+                    <Bar radius={[10, 10, 0, 0]} dataKey="valueKnowledge" fill={KnowitColors.lightGreen}/>
+                    <Bar radius={[10, 10, 0, 0]} dataKey="valueMotivation" fill={KnowitColors.greyGreen}/>
+                    <ReferenceLine y={0} stroke="green" >
+                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>KOMPETANSE</Label>
+                    </ReferenceLine>
+                    <ReferenceLine y={0.1} stroke={KnowitColors.darkGreen} strokeWidth={1}></ReferenceLine>
+                    <ReferenceLine y={0} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
+                    <ReferenceLine y={chartSplitAt} stroke="green" >
+                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>MOTIVASJON</Label>
+                    </ReferenceLine>
+                    <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
+                </BarChart>
+            </ResponsiveContainer>
+            <div>{createPager()}</div>
         </div>
     );
 };
@@ -159,7 +204,7 @@ const renderCustomTooltip = (classes: any) => {
             let knowledgeValue = props.payload[0]?.payload.valueKnowledge[1].toFixed(1);
             let motivationValue = (props.payload[1]?.payload.valueMotivation[1] - chartSplitAt).toFixed(1);
             return (
-                <div className={classes.root}>
+                <div className={classes.tooltip}>
                     <p className={classes.label}>{props.label}</p>
                     <p className={classes.knowledge}>
                         {`Kompetanse: ${knowledgeValue}`}
