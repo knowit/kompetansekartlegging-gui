@@ -11,6 +11,7 @@ import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { KnowitColors } from '../styles';
 import { AlertDialog } from './AlertDialog';
+import { AlertNotification, AlertType } from './AlertNotification';
 
 const cardCornerRadius: number = 40;
 
@@ -362,6 +363,7 @@ const Content = ({...props}: ContentProps) => {
     
     const setupMenu = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
+<<<<<<< HEAD
         /**
          *  Setup for the button array structure:
          * 
@@ -406,6 +408,27 @@ const Content = ({...props}: ContentProps) => {
                     </Button>);
                 });
             }
+=======
+        ["OVERSIKT", "MINE SVAR", "JIB!", "Sleep", "Test :D", "Fancy array magic"].forEach((text, index) => {
+            buttons.push(
+                <Button
+                    key={text.toLocaleLowerCase()}
+                    className={clsx(style.menuButton, displayActivePanel(index))}
+                    onClick={() => { checkIfCategoryIsSubmitted(index)}}>
+                    <div className={clsx(style.menuButtonText)}>{text}</div>
+                    <AlertNotification type={AlertType.Multiple} message="Test!" size={1}/>
+                </Button>
+            );
+        });
+        let categoryButtons: JSX.Element[] = categories.map((category, index) => {
+            return <Button
+                key={category}
+                className={clsx(style.menuButton, activeCategory === category ? style.menuButtonActive : "",
+                    activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
+                onClick={() => { checkIfCategoryIsSubmitted(MenuButton.Category, category) }}>
+                <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {category}</div>
+            </Button>
+>>>>>>> Notification component created
         });
         
         return buttons;
