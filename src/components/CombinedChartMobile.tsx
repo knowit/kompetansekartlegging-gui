@@ -11,7 +11,7 @@ const numTicks = 5;
 const chartSplitAt = numTicks + 2;
 const iconSize = 18;
 
-const pageEntryLimit = 2;
+const pageEntryLimit = 3;
 
 const useStyles = makeStyles({
     tooltip: {
@@ -92,8 +92,8 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
     }
 
     const createPager = (): JSX.Element => {
-         return (
-             <div className={classes.bulletRoot}>
+        return (
+            <div className={classes.bulletRoot}>
                 {chartPages
                     .map((_, index) => 
                         (index === currentPage ?
@@ -186,7 +186,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                     <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
                 </BarChart>
             </ResponsiveContainer>
-            <div onClick={handleChangePageClick} >{createPager()}</div>
+            {(pageEntryLimit < props.chartData.length) ? <div onClick={handleChangePageClick} >{createPager()}</div> : ""}
         </div>
     );
 };
