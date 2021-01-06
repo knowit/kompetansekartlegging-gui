@@ -264,8 +264,9 @@ const Content = ({...props}: ContentProps) => {
     }, [userAnswers]);
 
     useEffect(() => {
+        console.log("CategoryIsSubmitted: ", isCategorySubmitted);
         if (isCategorySubmitted) {
-            setIsCategorySubmitted(false)
+            // setIsCategorySubmitted(false);
         }
     }, [isCategorySubmitted]);
 
@@ -311,6 +312,8 @@ const Content = ({...props}: ContentProps) => {
     const leaveFormButtonClicked = () => {
         // console.log("Leave button clicked", lastButtonClicked);
         setAlertDialogOpen(false);
+        setIsCategorySubmitted(true);
+        resetAnswers();
         menuButtonClick(lastButtonClicked.buttonType, lastButtonClicked.category);
     }
     
@@ -331,6 +334,7 @@ const Content = ({...props}: ContentProps) => {
                 break;
             case MenuButton.Category:
                 setActiveCategory(category || "");
+                setAnswerViewMode(true);
                 break;
             case MenuButton.GroupLeader:
                 setActivePanel(Panel.GroupLeader);
@@ -458,6 +462,7 @@ const Content = ({...props}: ContentProps) => {
                             // active: activeCards[2],
                             // index: 2
                         }}
+                        setIsCategorySubmitted={setIsCategorySubmitted}
                         createUserForm={createUserForm}
                         updateAnswer={updateAnswer}
                         formDefinition={formDefinition}
@@ -528,6 +533,7 @@ const Content = ({...props}: ContentProps) => {
                         // active: activeCards[2],
                         // index: 2
                     }}
+                    setIsCategorySubmitted={setIsCategorySubmitted}
                     createUserForm={createUserForm}
                     updateAnswer={updateAnswer}
                     formDefinition={formDefinition}

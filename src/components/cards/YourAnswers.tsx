@@ -220,7 +220,7 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
         : <YourAnswersDesktop 
             {...props}
             toggleCard={toggleCard}
-            setIsCategorySubmitted={setIsCategorySubmitted}
+            setIsCategorySubmitted={props.setIsCategorySubmitted}
             isCategorySubmitted={isCategorySubmitted}
             setAlertDialogOpen={setAlertDialogOpen}
             alertDialogOpen={alertDialogOpen}

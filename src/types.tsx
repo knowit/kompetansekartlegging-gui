@@ -323,6 +323,7 @@ export type ScaleDescriptionProps = {
 
 export type YourAnswerProps = {
     commonCardProps: CommonCardProps,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     createUserForm: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
