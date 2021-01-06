@@ -206,8 +206,7 @@ const App = () => {
                             isScaleDescriptionOpen={isScaleDescriptionOpen}
                             isYourAnswersOpen={isYourAnswersOpen}
                         />
-                        <FloatingScaleDescButton />
-                        <Footer/>
+                        <FloatingScaleDescButton isMobile={isMobile}/>
                     </Fragment>
                 :
                 <Login />

@@ -43,7 +43,7 @@ const navbarStyles = makeStyles((theme) => ({
         width: "100px"
     },
     header: {
-        backgroundColor: KnowitColors.greyGreen,
+        backgroundColor: KnowitColors.beige,
         boxShadow: 'none',
         color: KnowitColors.darkBrown
     },

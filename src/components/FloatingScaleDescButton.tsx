@@ -6,9 +6,7 @@ import { KnowitColors } from '../styles';
 import { wrapString } from '../helperFunctions';
 import DescriptionTableMobile from './DescriptionTableMobile';
 
-const barIconSize = 24;
-
-const highlightsStyle = makeStyles({
+const floatingScaleDescButtonStyleDesktop = makeStyles({
     fab: {
         alignSelf: 'flex-end',
         width: 'fit-content',
@@ -33,18 +31,53 @@ const highlightsStyle = makeStyles({
         bottom: '55px',
         right: '0px',
         borderRadius: '50px 50px 0px 50px',
-        width: '400px',
-        maxHeight: '100%',
-        maxWidth: '100%'
+        backgroundColor: KnowitColors.beige,
 
+        width: '400px',
+    }
+});
+
+const floatingScaleDescButtonStyleMobile = makeStyles({
+    fab: {
+        alignSelf: 'flex-end',
+        width: 'fit-content',
+        marginRight: '20px',
+        marginBottom: '20px',
+        backgroundColor: KnowitColors.beige,
+        position: 'absolute',
+        bottom: '0px',
+        right: '0px',
+        fontFamily: 'Arial',
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        fontSize: '11px',
+        lineHeight: '13px',
+        height: '35px'
+    },
+    fabMenu: {
+        position: 'absolute',
+        bottom: '0px',
+        right: '0px',
+        width: '100%',
+        height: '100%',
+        zIndex: 101,
+        borderRadius: '50px 50px 0px 0px',
+        backgroundColor: KnowitColors.beige,
+        boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.25)'
     }
 });
 
 
 
-export default function FloatingScaleDescButton() {
 
-    const style = highlightsStyle();
+type FloatingScaleDescButtonProps = {
+    isMobile: boolean
+}
+
+
+const FloatingScaleDescButton = ({ isMobile } : FloatingScaleDescButtonProps) => {
+
+    const style = isMobile ? floatingScaleDescButtonStyleMobile() : floatingScaleDescButtonStyleDesktop();
 
     const [scaleDescOpen, setScaleDescOpen] = useState(false)
 
@@ -66,3 +99,5 @@ export default function FloatingScaleDescButton() {
         </>
     );
 };
+
+export default FloatingScaleDescButton
