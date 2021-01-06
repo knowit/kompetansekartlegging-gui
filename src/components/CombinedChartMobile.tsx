@@ -5,12 +5,13 @@ import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
 import { ChartData, CombinedChartProps } from '../types';
 import { wrapString } from '../helperFunctions';
+import { useSwipeable } from "react-swipeable";
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;
 const iconSize = 18;
 
-const pageEntryLimit = 3;
+const pageEntryLimit = 2;
 
 const useStyles = makeStyles({
     tooltip: {
@@ -47,8 +48,7 @@ const useStyles = makeStyles({
         height: '100%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: -10
+        justifyContent: 'center'
     },
     pageBullet: {
         width: 8,
@@ -79,10 +79,6 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
         setChartPages(createPagedData());
     }, [props.chartData]);
 
-    // useEffect(() => {
-
-    // }, [currentPage]);
-
     const createPagedData = (): ChartData[][] => {
         let pagedData: ChartData[][] = [];
         let items = props.chartData.length;
@@ -111,8 +107,42 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
         )
     }
 
+    const handleChangePageClick = () => {
+        changePageRight();
+    };
+
+    const changePageLeft = () => {
+        if (currentPage === 0) {
+            setCurrentPage(chartPages.length - 1);
+        } else {
+            setCurrentPage(currentPage - 1);
+        }
+    }
+
+    const changePageRight = () => {
+        if (currentPage === chartPages.length - 1) {
+            setCurrentPage(0);
+        } else {
+            setCurrentPage(currentPage + 1);
+        }
+    }
+
+    const swipeConfig = {
+        delta: 10,
+        preventDefaultTouchmoveEvent: false,
+        trackTouch: true, 
+        trackMouse: false,
+        rotationAngle: 0,
+      }
+
+      const swipeHandlers = useSwipeable({
+        onSwipedLeft: (eventData) => changePageLeft(),
+        onSwipedRight: (eventData) => changePageRight(),
+        ...swipeConfig,
+    });
+
     return (
-        <div className={classes.chartContainer}>
+        <div className={classes.chartContainer} {...swipeHandlers}>
             <ResponsiveContainer width='100%' height="100%">     
                 <BarChart
                     barGap={-10}
@@ -156,7 +186,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                     <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
                 </BarChart>
             </ResponsiveContainer>
-            <div>{createPager()}</div>
+            <div onClick={handleChangePageClick} >{createPager()}</div>
         </div>
     );
 };
