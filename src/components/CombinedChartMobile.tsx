@@ -1,14 +1,16 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine, Brush } from 'recharts';
 import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
-import { CombinedChartProps } from '../types';
+import { ChartData, CombinedChartProps } from '../types';
 import { wrapString } from '../helperFunctions';
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;
 const iconSize = 18;
+
+const pageEntryLimit = 3;
 
 const useStyles = makeStyles({
     root: {
@@ -31,21 +33,48 @@ const useStyles = makeStyles({
     },
     motivation: {
         color: KnowitColors.darkGreen
+    },
+    container: {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     }
   });
 
 export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
 
+    const [chartPages, setChartPages] = useState<ChartData[][]>([]);
+    const [currentPage, setCurrentPage] = useState(0);
+
     let classes = useStyles();
 
+    useEffect(() => {
+        setChartPages(createPagedData());
+    }, [props.chartData]);
+
+    const createPagedData = (): ChartData[][] => {
+        let pagedData: ChartData[][] = [];
+        let items = props.chartData.length;
+        let i = 0;
+        while(items > 0) {
+            pagedData.push(props.chartData.slice(i, i + pageEntryLimit))
+            i += pageEntryLimit;
+            items -= pageEntryLimit;
+        }
+        return pagedData;
+    }
+
     return (
+        <div className={classes.container}>
         <ResponsiveContainer width='100%' height="100%">     
             <BarChart
                 barGap={-10}
                 barSize={10}
                 maxBarSize={10}
                 layout="horizontal"
-                data={props.chartData}
+                data={chartPages[currentPage]}
                 margin={{top: 50, right: 20, bottom: 10, left: -30}}>
             <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
                 <YAxis
@@ -80,14 +109,10 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                     <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>MOTIVASJON</Label>
                 </ReferenceLine>
                 <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
-                <Brush dataKey="name" height={15} stroke={KnowitColors.darkBrown} startIndex={0} endIndex={5} tickFormatter={() => {}}>
-                <BarChart barGap={-5} barSize={5} maxBarSize={5}>
-                    <Bar dataKey="valueKnowledge" fill={KnowitColors.lightGreen}/>
-                    <Bar dataKey="valueMotivation" fill={KnowitColors.greyGreen}/>
-                </BarChart>
-                </Brush>
             </BarChart>
         </ResponsiveContainer>
+        <div>Test</div>
+        </div>
     );
 };
 
