@@ -32,6 +32,13 @@ const useStyles = makeStyles({
     },
     motivation: {
         color: KnowitColors.darkGreen
+    },
+    container: {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     }
   });
 
@@ -40,6 +47,7 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
     let classes = useStyles();
 
     return (
+        <div className={classes.container}>
         <ResponsiveContainer width='100%' height="100%">     
             <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 50, right: 0, bottom: 6, left: 0}}>
             <CartesianGrid horizontal={true} vertical={false} strokeDasharray="2 5"/>
@@ -66,6 +74,7 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
                 </ReferenceLine>
             </BarChart>
         </ResponsiveContainer>
+        </div>
     );
 };
 
