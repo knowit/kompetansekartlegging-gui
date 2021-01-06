@@ -297,7 +297,7 @@ const Content = ({...props}: ContentProps) => {
             setRadarData(answers);
             setIsCategorySubmitted(false)
         }
-    }, [userAnswers, isCategorySubmitted]);
+    }, [isCategorySubmitted]);
 
     useEffect(() => {
         if(radarData.length > 0) {
