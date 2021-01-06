@@ -17,13 +17,18 @@ const cardCornerRadius: number = 40;
 export enum MenuButton {
     Overview,
     MyAnswers,
-    Category
+    Category,
+    GroupLeader,
+    LeaderCategory,
+    Other
 }
 
 export enum Panel {
     Overview,
     MyAnswers,
+    GroupLeader,
     ScaleDescription,
+    Other,
     None
 };
 
@@ -65,7 +70,7 @@ const contentStyle = makeStyles({
         borderRadius: '0px 0px 30px 0px',
         boxShadow: "0px 4px 4px 2px lightgrey",
     },
-    menuButton: {
+    MenuButton: {
         borderTopLeftRadius: cardCornerRadius,
         borderBottomLeftRadius: cardCornerRadius,
         '&:hover': {
@@ -322,9 +327,21 @@ const Content = ({...props}: ContentProps) => {
                 break;
             case MenuButton.MyAnswers:
                 setActivePanel(Panel.MyAnswers);
+                if(category) setActiveCategory(category);
                 break;
             case MenuButton.Category:
                 setActiveCategory(category || "");
+                break;
+            case MenuButton.GroupLeader:
+                setActivePanel(Panel.GroupLeader);
+                if(category) setActiveCategory(category);
+                break;
+            case MenuButton.LeaderCategory:
+                setActiveCategory(category || "");
+                break;
+            case MenuButton.Other:
+                setActivePanel(Panel.Other);
+                console.log("Other button pressed", category);
                 break;
         }
     };
@@ -335,33 +352,83 @@ const Content = ({...props}: ContentProps) => {
                 return activePanel === Panel.Overview ? style.menuButtonActive : "";
             case MenuButton.MyAnswers:
                 return activePanel === Panel.MyAnswers ? style.menuButtonActive : "";
+            case MenuButton.GroupLeader:
+                return activePanel === Panel.GroupLeader ? style.menuButtonActive : "";
         };
         return "";
     };
     
     const setupMenu = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
-        ["OVERSIKT", "MINE SVAR", "JIB!", "Sleep", "Test :D", "Fancy array magic"].forEach((text, index) => {
-            buttons.push(
-                <Button
-                    key={text.toLocaleLowerCase()}
-                    className={clsx(style.menuButton, displayActivePanel(index))}
-                    onClick={() => { checkIfCategoryIsSubmitted(index)}}>
-                    <div className={clsx(style.menuButtonText)}>{text}</div>
-                </Button>
-            );
+        /**
+         *  Setup for the button array structure:
+         * 
+         *  text: string - The text on the button
+         *  buttonType: MenuButton - The type of button it is
+         *  subButtons: Array of Objects - Only define if having sub buttons (like categories for answers)
+         *      subButton's Objects: text: string - The tet of the button (index is added in front automaticly)
+         *                           buttonType: MenuButton - The type of button it is, not same as 'parent'
+         *                           activePanel: Panel - What panel is needed to be active for this button to show up
+         * 
+         *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
+         */
+        const buttonArray = [
+            { text: "Oversikt", buttonType: MenuButton.Overview },
+            { text: "Mine Svar", buttonType: MenuButton.MyAnswers, subButtons: categories.map((cat) => {
+                    return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
+                })
+            },
+            { text: "Test", buttonType: MenuButton.Other },
+            { text: "Parent", buttonType: MenuButton.GroupLeader, subButtons: [
+                { text: "Child 1", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
+                { text: "Child 2", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
+                { text: "Child 3", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
+            ]},
+        ]
+        
+        buttonArray.forEach((butt) => {
+            buttons.push(<Button
+                key={butt.text}
+                className={clsx(style.MenuButton, displayActivePanel(butt.buttonType))}
+                onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, butt.subButtons ? butt.subButtons[0].text : undefined)}}>
+                    <div className={clsx(style.menuButtonText)}>{butt.text}</div>
+            </Button>);
+            if(butt.subButtons){
+                butt.subButtons.forEach((butt, index) => {
+                    buttons.push(<Button
+                        key={butt.text}
+                        className={clsx(style.MenuButton, activeCategory === butt.text ? style.menuButtonActive : "",
+                            activePanel === butt.activePanel ? "" : style.hideCategoryButtons)}
+                        onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, butt.text) }}>
+                            <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {butt.text}</div>
+                    </Button>);
+                });
+            }
         });
-        let categoryButtons: JSX.Element[] = categories.map((category, index) => {
-            return <Button
-                key={category}
-                className={clsx(style.menuButton, activeCategory === category ? style.menuButtonActive : "",
-                    activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
-                onClick={() => { checkIfCategoryIsSubmitted(MenuButton.Category, category) }}>
-                <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {category}</div>
-            </Button>
-        });
-        buttons.splice(2, 0, ...categoryButtons);
+        
         return buttons;
+        // let buttons: JSX.Element[] = [];
+        // ["OVERSIKT", "MINE SVAR", "JIB!", "Sleep", "Test :D", "Fancy array magic"].forEach((text, index) => {
+        //     buttons.push(
+        //         <Button
+        //             key={text.toLocaleLowerCase()}
+        //             className={clsx(style.MenuButton, displayActivePanel(index))}
+        //             onClick={() => { checkIfCategoryIsSubmitted(index)}}>
+        //             <div className={clsx(style.menuButtonText)}>{text}</div>
+        //         </Button>
+        //     );
+        // });
+        // let categoryButtons: JSX.Element[] = categories.map((category, index) => {
+        //     return <Button
+        //         key={category}
+        //         className={clsx(style.MenuButton, activeCategory === category ? style.menuButtonActive : "",
+        //             activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
+        //         onClick={() => { checkIfCategoryIsSubmitted(MenuButton.Category, category) }}>
+        //         <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {category}</div>
+        //     </Button>
+        // });
+        // buttons.splice(2, 0, ...categoryButtons);
+        // return buttons;
     };
     
     //TODO: Remove commonCardProps from desktop version (keep for mobile for now)

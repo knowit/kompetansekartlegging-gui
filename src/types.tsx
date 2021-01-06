@@ -1,4 +1,4 @@
-import { MenuButton, Panel } from "./components/Content";
+import { Panel } from "./components/Content";
 
 export type AnswerData = {
     questionId: string,
