@@ -127,8 +127,19 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                         <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Endre svar</Button>
                         <div className={style.catText} >{props.activeCategory}</div>
                     </div>
+<<<<<<< HEAD
                     <div className={style.graphHolder}>
                         <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={false}/>
+=======
+                    <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
+                        <Form 
+                            {...props} 
+                            setIsCategorySubmitted={props.setIsCategorySubmitted} 
+                            isCategorySubmitted={props.isCategorySubmitted}
+                            isMobile={false}
+                            alerts={props.alerts}
+                        />
+>>>>>>> Working alerts for category and questions
                     </div>
                 </div>
                 <div className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>

@@ -6,7 +6,17 @@ import RefreshRoundedIcon from '@material-ui/icons/Refresh';
 
 
 const useStyles = makeStyles({
+    root: {
+        display: 'flex',
+        alignItems: 'center',
+        position: 'relative',
+        fontSize: 'inherit',
+        marginLeft: 10
+    },
     alertBulb: {
+        position: 'absolute',
+        width: '1em',
+        height: '1em',
         borderRadius: '50%',
         fill: KnowitColors.fuchsia,
         backgroundColor: KnowitColors.darkBrown
@@ -39,15 +49,19 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
     switch (props.type) {
         case AlertType.Incomplete:
             return (
-                <Tooltip title={props.message}>
-                    <ErrorRoundedIcon aria-label={props.message} className={classes.alertBulb}/>
-                </Tooltip>
+                <div className={classes.root}>
+                    <Tooltip title={props.message}>
+                        <ErrorRoundedIcon aria-label={props.message} className={classes.alertBulb}/>
+                    </Tooltip>
+                </div>
             );
         case AlertType.Outdated:
             return (
-                <Tooltip title={props.message}>
-                    <RefreshRoundedIcon aria-label={props.message} className={classes.alertBulb}/>
-                </Tooltip>
+                <div className={classes.root}>
+                    <Tooltip title={props.message}>
+                        <RefreshRoundedIcon aria-label={props.message} className={classes.alertBulb}/>
+                    </Tooltip>
+                </div>
             );
         case AlertType.Multiple:
             return (

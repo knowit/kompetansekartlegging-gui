@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult } from '../types';
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
@@ -113,10 +113,30 @@ const Content = ({...props}: ContentProps) => {
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
+<<<<<<< HEAD
     const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
     const [activePanel, setActivePanel] = useState<Panel>(Panel.Overview);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
+=======
+    const [alerts, setAlerts] = useState<AlertState>();
+
+    const updateAndGetCategoryAlerts = () => {
+        let alerts = new Map<string, AlertType>();
+        let catAlerts = new Map<string, number>();
+        for (let answer of answers) {
+            if (answer.motivation  === -1 || answer.motivation === -1) {
+                alerts.set(answer.questionId, AlertType.Incomplete);
+                let numAlerts = catAlerts.get(answer.category);
+                if (numAlerts)
+                    catAlerts.set(answer.category, numAlerts + 1);
+                else
+                    catAlerts.set(answer.category, 1);
+            }
+        }
+        setAlerts({qidMap: alerts, categoryMap: catAlerts});
+    }
+>>>>>>> Working alerts for category and questions
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -245,8 +265,16 @@ const Content = ({...props}: ContentProps) => {
     }
 
     useEffect(() => {
+<<<<<<< HEAD
         setActiveCategory(categories[0]);
         setAnswerEditMode(false);
+=======
+        updateAndGetCategoryAlerts();
+    }, [answers]);
+
+    useEffect(() => {
+        changeActiveCategory(categories[0]);
+>>>>>>> Working alerts for category and questions
     }, [categories]);
     
     useEffect(() => {
@@ -364,6 +392,7 @@ const Content = ({...props}: ContentProps) => {
     const setupMenu = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
 <<<<<<< HEAD
+<<<<<<< HEAD
         /**
          *  Setup for the button array structure:
          * 
@@ -409,6 +438,12 @@ const Content = ({...props}: ContentProps) => {
                 });
             }
 =======
+=======
+        let totalAlerts = 0;
+        alerts?.categoryMap.forEach((numAlerts: number, category: string) => {
+            totalAlerts += numAlerts;
+        });
+>>>>>>> Working alerts for category and questions
         ["OVERSIKT", "MINE SVAR", "JIB!", "Sleep", "Test :D", "Fancy array magic"].forEach((text, index) => {
             buttons.push(
                 <Button
@@ -416,10 +451,11 @@ const Content = ({...props}: ContentProps) => {
                     className={clsx(style.menuButton, displayActivePanel(index))}
                     onClick={() => { checkIfCategoryIsSubmitted(index)}}>
                     <div className={clsx(style.menuButtonText)}>{text}</div>
-                    <AlertNotification type={AlertType.Multiple} message="Test!" size={1}/>
+                    {(text === "MINE SVAR") ? <AlertNotification type={AlertType.Multiple} message="Test!" size={totalAlerts}/> : ""}
                 </Button>
             );
         });
+
         let categoryButtons: JSX.Element[] = categories.map((category, index) => {
             return <Button
                 key={category}
@@ -427,6 +463,7 @@ const Content = ({...props}: ContentProps) => {
                     activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
                 onClick={() => { checkIfCategoryIsSubmitted(MenuButton.Category, category) }}>
                 <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {category}</div>
+                {alerts?.categoryMap.has(category) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdatert!" size={alerts.categoryMap.get(category)}/> : ""}
             </Button>
 >>>>>>> Notification component created
         });
@@ -462,6 +499,13 @@ const Content = ({...props}: ContentProps) => {
                         setAnswerEditMode={setAnswerEditMode}
                         answerEditMode={answerEditMode}
                         isMobile={props.isMobile}
+<<<<<<< HEAD
+=======
+                        isOverViewOpen={props.isOverViewOpen}
+                        isScaleDescriptionOpen={props.isScaleDescriptionOpen}
+                        isYourAnswersOpen={props.isYourAnswersOpen}
+                        alerts={alerts}
+>>>>>>> Working alerts for category and questions
                     />
                 );
             case Panel.GroupLeader:
@@ -520,6 +564,13 @@ const Content = ({...props}: ContentProps) => {
                     setAnswerEditMode={setAnswerEditMode}
                     answerEditMode={answerEditMode}
                     isMobile={props.isMobile}
+<<<<<<< HEAD
+=======
+                    isOverViewOpen={props.isOverViewOpen}
+                    isScaleDescriptionOpen={props.isScaleDescriptionOpen}
+                    isYourAnswersOpen={props.isYourAnswersOpen}
+                    alerts={alerts}
+>>>>>>> Working alerts for category and questions
                 />
                 <AnswerHistory
                     setHistoryViewOpen={props.setAnswerHistoryOpen}

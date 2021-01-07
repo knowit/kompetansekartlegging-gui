@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { Panel } from "./components/Content";
+=======
+import { AlertType } from "./components/AlertNotification";
+import { MenuButton, Panel } from "./components/Content";
+>>>>>>> Working alerts for category and questions
 
 export type AnswerData = {
     questionId: string,
@@ -235,7 +240,13 @@ export type AnswerProps = {
     categories: string[],
     activeCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+<<<<<<< HEAD
     isMobile: boolean
+=======
+    isCategorySubmitted: boolean,
+    isMobile: boolean,
+    alerts: AlertState | undefined
+>>>>>>> Working alerts for category and questions
 };
 
 export type CategoryProps = {
@@ -274,6 +285,7 @@ export type QuestionProps = {
     motivationDefaultValue: number,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     isMobile: boolean,
+    alerts: AlertState | undefined
 };
 
 export type BatchCreatedQuestionAnswer = {
@@ -306,8 +318,11 @@ export type ScaleDescriptionProps = {
 };
 
 export type YourAnswerProps = {
+<<<<<<< HEAD
     activePanel: Panel,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+=======
+    commonCardProps: CommonCardProps,
     createUserForm: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
@@ -316,9 +331,49 @@ export type YourAnswerProps = {
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
+    resetAnswers: () => void,
+    setAnswerViewModeActive: (viewModeActive: boolean) => void,
+    answerViewMode: boolean,
+    isMobile: boolean,
+    isOverViewOpen: boolean,
+    isScaleDescriptionOpen: boolean,
+    isYourAnswersOpen: boolean,
+    alerts: AlertState | undefined
+};
+
+export interface AlertState {
+    qidMap: Map<string, AlertType>,
+    categoryMap: Map<string, number>
+}
+
+export type YourAnswerPropsDesktop = {
+    commonCardProps: CommonCardProps,
+>>>>>>> Working alerts for category and questions
+    createUserForm: () => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    formDefinition: FormDefinition | null,
+    answers: AnswerData[],
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string,
+<<<<<<< HEAD
     setAnswerEditMode: (editMode: boolean) => void,
     answerEditMode: boolean,
     isMobile: boolean
+=======
+    resetAnswers: () => void,
+    setAnswerViewModeActive: (viewModeActive: boolean) => void,
+    answerViewMode: boolean,
+    isMobile: boolean,
+    toggleCard: () => void,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isCategorySubmitted: boolean,
+    setAlertDialogOpen: (alertDialogOpen: boolean) => void,
+    alertDialogOpen: boolean,
+    clickedCategory: string,
+    alerts: AlertState | undefined
+>>>>>>> Working alerts for category and questions
 };
 
 export type YourAnswerPropsMobile = {
@@ -340,7 +395,13 @@ export type YourAnswerPropsMobile = {
     isCategorySubmitted: boolean,
     clickedCategory: string,
     setAlertDialogOpen: (alertDialogOpen: boolean) => void,
+<<<<<<< HEAD
     isMobile: boolean
+=======
+    isYourAnswersOpen: boolean,
+    isMobile: boolean,
+    alerts: AlertState | undefined
+>>>>>>> Working alerts for category and questions
 };
 
 export type HighlightsProps = {

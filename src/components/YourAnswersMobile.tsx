@@ -182,8 +182,20 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
                         <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Oppdater</Button>
                         {/* <div className={style.catText} >{props.activeCategory}</div> */}
                     </div>
+<<<<<<< HEAD
                     <div className={style.graphHolder}>
                         <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={true}/>
+=======
+                    <div className={clsx(props.answerViewMode ? style.hidden : "box", style.form)}>
+                        {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
+                        <Form 
+                            {...props} 
+                            setIsCategorySubmitted={props.setIsCategorySubmitted} 
+                            isCategorySubmitted={props.isCategorySubmitted}
+                            isMobile={true}
+                            alerts={props.alerts}
+                        />
+>>>>>>> Working alerts for category and questions
                     </div>
                 </div>
                 <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>

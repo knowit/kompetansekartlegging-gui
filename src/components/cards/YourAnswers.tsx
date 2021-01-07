@@ -198,6 +198,7 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
 
     return (
         props.isMobile ? 
+<<<<<<< HEAD
             <div className={props.activePanel === Panel.MyAnswers ? "" : style.hidden}>
                 <YourAnswersMobile
                     {...props}
@@ -208,12 +209,36 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
                     isCategorySubmitted={isCategorySubmitted}
                     clickedCategory={clickedCategory}
                     setAlertDialogOpen={setAlertDialogOpen}
+=======
+            <div className={props.isYourAnswersOpen ? "yourAnswers" : style.hidden}>
+                <YourAnswersMobile 
+                     {...props} 
+                     toggleCard={toggleCard} 
+                     getCategoryButtons={getCategoryButtons} 
+                     alertDialogOpen={alertDialogOpen}
+                     setIsCategorySubmitted={setIsCategorySubmitted}
+                     isCategorySubmitted={isCategorySubmitted}
+                     clickedCategory={clickedCategory}
+                     setAlertDialogOpen={setAlertDialogOpen}
+                     isYourAnswersOpen={props.isYourAnswersOpen}
+                     alerts={props.alerts}
+>>>>>>> Working alerts for category and questions
                 />
             </div>
         :
         <YourAnswersDesktop 
             {...props}
+<<<<<<< HEAD
             setIsCategorySubmitted={props.setIsCategorySubmitted}
+=======
+            toggleCard={toggleCard}
+            setIsCategorySubmitted={setIsCategorySubmitted}
+            isCategorySubmitted={isCategorySubmitted}
+            setAlertDialogOpen={setAlertDialogOpen}
+            alertDialogOpen={alertDialogOpen}
+            clickedCategory={clickedCategory}
+            alerts={props.alerts}
+>>>>>>> Working alerts for category and questions
         />
     );
 
