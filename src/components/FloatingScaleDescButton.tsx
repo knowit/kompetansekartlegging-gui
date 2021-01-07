@@ -5,6 +5,7 @@ import { Fab, makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
 import { wrapString } from '../helperFunctions';
 import DescriptionTableMobile from './DescriptionTableMobile';
+import CloseIcon from '@material-ui/icons/Close';
 
 const floatingScaleDescButtonStyleDesktop = makeStyles({
     fab: {
@@ -30,11 +31,22 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
         marginBottom: '10px',
         bottom: '55px',
         right: '0px',
-        borderRadius: '50px 50px 0px 50px',
+        borderRadius: '50px 50px 50px 50px',
         backgroundColor: KnowitColors.beige,
-
         width: '400px',
-    }
+        boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)'
+    },
+    closeButton: {
+        marginTop: "10px",
+        marginRight: "15px",
+        '&:hover': {
+            color: KnowitColors.darkGreen
+        },
+        float: 'right',
+        position: 'absolute',
+        right: '0px',
+        top: '0px',
+    },
 });
 
 const floatingScaleDescButtonStyleMobile = makeStyles({
@@ -61,10 +73,21 @@ const floatingScaleDescButtonStyleMobile = makeStyles({
         width: '100%',
         height: '100%',
         zIndex: 101,
-        borderRadius: '50px 50px 0px 0px',
+        // borderRadius: '50px 50px 0px 0px',
         backgroundColor: KnowitColors.beige,
-        boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.25)'
-    }
+        // boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.25)'
+    },
+    closeButton: {
+        marginTop: "10px",
+        marginRight: "15px",
+        '&:hover': {
+            color: KnowitColors.darkGreen
+        },
+        float: 'right',
+        position: 'absolute',
+        right: '0px',
+        top: '0px',
+    },
 });
 
 
@@ -82,13 +105,20 @@ const FloatingScaleDescButton = ({ isMobile } : FloatingScaleDescButtonProps) =>
     const [scaleDescOpen, setScaleDescOpen] = useState(false)
 
     const handleClick = () => setScaleDescOpen(!scaleDescOpen);
+    
+    const handleClose = () => setScaleDescOpen(false)
 
     return (
         <>  
             {
                 scaleDescOpen ? 
                     <div className={style.fabMenu}>
-                        <DescriptionTableMobile />
+                        <CloseIcon 
+                            fontSize="large" 
+                            className={style.closeButton}
+                            onClick={handleClose}    
+                        />
+                        <DescriptionTableMobile/>
                     </div>
                 :
                     null

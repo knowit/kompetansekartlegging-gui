@@ -84,7 +84,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
     return (
         props.isMobile ? 
             <div className={props.isScaleDescriptionOpen ? style.mobile : style.hidden}>
-                <DescriptionTableMobile/>
+                {/* <DescriptionTableMobile/> */}
             </div> 
         :
         // TODO: Put this in a desktop component

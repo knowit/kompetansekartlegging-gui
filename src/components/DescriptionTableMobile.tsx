@@ -2,6 +2,8 @@ import React from 'react'
 import * as Icon from '../icons/iconController';
 import { makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 const DescTableStyle = makeStyles({
     root: {
@@ -26,12 +28,16 @@ const DescTableStyle = makeStyles({
         flexDirection: 'column',
         flexGrow: 2,
         padding: 10,
-        justifyContent: 'center',
         fontWeight: 'bold',
-        textAlign: 'center',
         width: '10%'
     },
-    container: {
+    containerMotivation: {
+        display: 'flex',
+        flex: 1,
+        flexGrow: 5,
+        flexDirection: 'column',
+    },
+    containerCompetence: {
         display: 'flex',
         flex: 1,
         flexGrow: 5,
@@ -60,20 +66,30 @@ const DescTableStyle = makeStyles({
     text: {
         textAlign: 'left',
         fontSize: 10
-    }
+    },
+
+
 });
 
 
-type ContainerObject = {
+type ScaleContainerProps = {
     icon: JSX.Element,
     heading: string,
-    text: string
+    text: string,
+    isMotivation: boolean
+}
+
+type ScaleContainerObject = {
+    icon: JSX.Element,
+    heading: string,
+    text: string,
 }
 
 export const DescriptionTableMobile = () => {
     const style = DescTableStyle();
 
-    const COMPETENCE : ContainerObject[] = [
+    // Possibly a better way to do this...
+    const COMPETENCE : ScaleContainerObject[] = [
         {icon: <Icon.K0 className={style.iconArea} />, heading: 'Kjenner ikke til området', text: ''}, 
         {icon: <Icon.K1 className={style.iconArea} />, heading: 'Noe innsikt', text: '(Har noe innsikt i området, samt evne til å resonnere over eller løse oppgaver på et ikke-profesjonelt nivå innenfor området)'}, 
         {icon: <Icon.K2 className={style.iconArea} />, heading: 'Potensielt brukbar kompetanse', text: '(Kompetanse som enten ikke er testet i oppdrag eller der man inntil videre trenger støtte fra andre i teamet)'}, 
@@ -82,7 +98,7 @@ export const DescriptionTableMobile = () => {
         {icon: <Icon.K5 className={style.iconArea} />, heading: 'Ekspert', text: '(En etterspurt spesialist, som fungerer som nyskapende eller strategisk kraft på området)'}, 
     ]
 
-    const MOTIVATION : ContainerObject[] = [
+    const MOTIVATION : ScaleContainerObject[] = [
         {icon: <Icon.M0 className={style.iconArea} />, heading: 'Nei. Ønsker ikke å jobbe med dette', text: ''}, 
         {icon: <Icon.M1 className={style.iconArea} />, heading: 'Egentlig ikke. Ønsker svært lite å jobbe med', text: ''}, 
         {icon: <Icon.M2 className={style.iconArea} />, heading: 'Nja. Kan motvillig jobbe med dette', text: ''}, 
@@ -91,8 +107,8 @@ export const DescriptionTableMobile = () => {
         {icon: <Icon.M5 className={style.iconArea} />, heading: 'Perfekt. Dette er akkurat det jeg ønsker meg', text: ''}, 
     ]
 
-    const Container = ({...props} : ContainerObject) => (
-        <div className={style.container}>
+    const ScaleContainer = ({...props} : ScaleContainerProps) => (
+        <div className={props.isMotivation ? style.containerMotivation : style.containerCompetence}>
             <div className={style.bottom}>
                 <div className={style.iconArea}>{props.icon}</div>
                 <div className={style.textBlock}>
@@ -103,15 +119,15 @@ export const DescriptionTableMobile = () => {
         </div>
     )
 
+
     return (
         <div className={style.root}>
-            <h3>SKALABESKRIVELSE</h3>
             <div className={style.scaleRow}>
                 <div className={style.scaleTitle}>
                     <div>KOMPETANSESKALA</div>
                 </div>
                 {
-                    COMPETENCE.map((obj) => (<Container icon={obj.icon} heading={obj.heading} text={obj.text}/>))
+                    COMPETENCE.map((obj) => (<ScaleContainer icon={obj.icon} heading={obj.heading} text={obj.text} isMotivation={false}/>))
                 }
             </div>
             <div className={style.scaleRow}>
@@ -119,7 +135,7 @@ export const DescriptionTableMobile = () => {
                     <div>MOTIVASJONSSKALA</div>
                 </div>
                 {
-                    MOTIVATION.map((obj) => (<Container icon={obj.icon} heading={obj.heading} text={obj.text}/>))
+                    MOTIVATION.map((obj) => (<ScaleContainer icon={obj.icon} heading={obj.heading} text={obj.text} isMotivation={true}/>))
                 }
             </div>
         </div>
