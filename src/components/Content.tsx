@@ -14,15 +14,6 @@ import { AlertDialog } from './AlertDialog';
 
 const cardCornerRadius: number = 40;
 
-export enum MenuButton {
-    Overview,
-    MyAnswers,
-    Category,
-    GroupLeader,
-    LeaderCategory,
-    Other
-}
-
 export enum Panel {
     Overview,
     MyAnswers,
@@ -31,6 +22,15 @@ export enum Panel {
     Other,
     None
 };
+
+export enum MenuButton {
+    Overview,
+    MyAnswers,
+    Category,
+    GroupLeader,
+    LeaderCategory,
+    Other
+}
 
 export const contentStyleDesktop = makeStyles({
     cardHolder: {
@@ -108,13 +108,14 @@ const Content = ({...props}: ContentProps) => {
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
-    const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
-    const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
-    const [activePanel, setActivePanel] = useState<Panel>(Panel.Overview);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
+    const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
+    const [activePanel, setActivePanel] = useState<Panel>(Panel.Overview);
+    const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
+    const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -150,7 +151,7 @@ const Content = ({...props}: ContentProps) => {
     const createUserForm = async () => {
         setIsCategorySubmitted(true)
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
-        setAnswerViewModeActive(true);
+        setAnswerEditMode(false);
       
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
@@ -226,12 +227,12 @@ const Content = ({...props}: ContentProps) => {
         if(lastUserForm) setUserAnswers(lastUserForm.questionAnswers.items);
         console.log("Last userform: ", lastUserForm);
     };
-
+    
     const changeActiveCategory = (newActiveCategory: string) => {
         setActiveCategory(newActiveCategory);
-        setAnswerViewModeActive(true);
+        setAnswerEditMode(false);
     };
-
+    
     const fetchUserFormsAndOpenView = async () => {
         let allUserForms = await helper.listUserForms();
         setAnswerLog(allUserForms);
@@ -243,7 +244,8 @@ const Content = ({...props}: ContentProps) => {
     }
 
     useEffect(() => {
-        changeActiveCategory(categories[0]);
+        setActiveCategory(categories[0]);
+        setAnswerEditMode(false);
     }, [categories]);
     
     useEffect(() => {
@@ -264,13 +266,6 @@ const Content = ({...props}: ContentProps) => {
     }, [userAnswers]);
 
     useEffect(() => {
-        console.log("CategoryIsSubmitted: ", isCategorySubmitted);
-        if (isCategorySubmitted) {
-            // setIsCategorySubmitted(false);
-        }
-    }, [isCategorySubmitted]);
-
-    useEffect(() => {
         if (props.answerHistoryOpen) {
             fetchUserFormsAndOpenView() 
         } else {
@@ -278,27 +273,35 @@ const Content = ({...props}: ContentProps) => {
         }
     }, [props.answerHistoryOpen]);
 
-    
+    useEffect(() => {
+        window.onbeforeunload = confirmExit;
+        function confirmExit() {
+            if (!isCategorySubmitted) {
+                return "show warning";
+            }
+        }
+    }, [isCategorySubmitted])
     
     
     
     
 
-    const [answerViewMode, setAnswerViewMode] = useState<boolean>(true);
     const [lastButtonClicked, setLastButtonClicked] = useState<{ buttonType: MenuButton, category?: string }>({ //Custom type might better be moved to type variable
         buttonType: MenuButton.Overview,
         category: undefined
     });
+    
     const style = contentStyle();
     const mobileStyle = contentStyleMobile();
     
-    const setAnswerViewModeActive = (viewModeActive: boolean) => {
-        setAnswerViewMode(viewModeActive);
+    //TODO: Remove this function when refactor is done. Needed to not change mobile too much for now
+    const dummyFunctionForRefactor = () => {
+        return;
     };
-    
+
     const checkIfCategoryIsSubmitted = (buttonType: MenuButton, category?: string) => {
         if (isCategorySubmitted) {
-            menuButtonClick(buttonType, category);
+            menuButtonClicked(buttonType, category);
         } else {
             setLastButtonClicked({
                 buttonType: buttonType,
@@ -314,31 +317,26 @@ const Content = ({...props}: ContentProps) => {
         setAlertDialogOpen(false);
         setIsCategorySubmitted(true);
         resetAnswers();
-        menuButtonClick(lastButtonClicked.buttonType, lastButtonClicked.category);
-    }
-    
-    //TODO: Remove this function when refactor is done. Needed to not change mobile too much for now
-    const dummyFunctionForRefactor = () => {
-        return;
+        menuButtonClicked(lastButtonClicked.buttonType, lastButtonClicked.category);
     };
     
-    const menuButtonClick = (buttonType: MenuButton, category?: string) => {
+    const menuButtonClicked = (buttonType: MenuButton, category?: string) => {
         // console.log("Button clicked ", buttonType, category);
-        switch(buttonType){
+        switch (buttonType) {
             case MenuButton.Overview:
                 setActivePanel(Panel.Overview);
                 break;
             case MenuButton.MyAnswers:
                 setActivePanel(Panel.MyAnswers);
-                if(category) setActiveCategory(category);
+                if (category) setActiveCategory(category);
                 break;
             case MenuButton.Category:
                 setActiveCategory(category || "");
-                setAnswerViewMode(true);
+                setAnswerEditMode(false);
                 break;
             case MenuButton.GroupLeader:
                 setActivePanel(Panel.GroupLeader);
-                if(category) setActiveCategory(category);
+                if (category) setActiveCategory(category);
                 break;
             case MenuButton.LeaderCategory:
                 setActiveCategory(category || "");
@@ -350,7 +348,7 @@ const Content = ({...props}: ContentProps) => {
         }
     };
     
-    const displayActivePanel = (buttonType: MenuButton): string => {
+    const keepButtonActive = (buttonType: MenuButton): string => {
         switch(buttonType){
             case MenuButton.Overview:
                 return activePanel === Panel.Overview ? style.menuButtonActive : "";
@@ -376,7 +374,7 @@ const Content = ({...props}: ContentProps) => {
          * 
          *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
          */
-        const buttonArray = [
+        const buttonSetup = [
             { text: "Oversikt", buttonType: MenuButton.Overview },
             { text: "Mine Svar", buttonType: MenuButton.MyAnswers, subButtons: categories.map((cat) => {
                     return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
@@ -390,10 +388,10 @@ const Content = ({...props}: ContentProps) => {
             ]},
         ]
         
-        buttonArray.forEach((butt) => {
+        buttonSetup.forEach((butt) => {
             buttons.push(<Button
                 key={butt.text}
-                className={clsx(style.MenuButton, displayActivePanel(butt.buttonType))}
+                className={clsx(style.MenuButton, keepButtonActive(butt.buttonType))}
                 onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, butt.subButtons ? butt.subButtons[0].text : undefined)}}>
                     <div className={clsx(style.menuButtonText)}>{butt.text}</div>
             </Button>);
@@ -411,28 +409,6 @@ const Content = ({...props}: ContentProps) => {
         });
         
         return buttons;
-        // let buttons: JSX.Element[] = [];
-        // ["OVERSIKT", "MINE SVAR", "JIB!", "Sleep", "Test :D", "Fancy array magic"].forEach((text, index) => {
-        //     buttons.push(
-        //         <Button
-        //             key={text.toLocaleLowerCase()}
-        //             className={clsx(style.MenuButton, displayActivePanel(index))}
-        //             onClick={() => { checkIfCategoryIsSubmitted(index)}}>
-        //             <div className={clsx(style.menuButtonText)}>{text}</div>
-        //         </Button>
-        //     );
-        // });
-        // let categoryButtons: JSX.Element[] = categories.map((category, index) => {
-        //     return <Button
-        //         key={category}
-        //         className={clsx(style.MenuButton, activeCategory === category ? style.menuButtonActive : "",
-        //             activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
-        //         onClick={() => { checkIfCategoryIsSubmitted(MenuButton.Category, category) }}>
-        //         <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {category}</div>
-        //     </Button>
-        // });
-        // buttons.splice(2, 0, ...categoryButtons);
-        // return buttons;
     };
     
     //TODO: Remove commonCardProps from desktop version (keep for mobile for now)
@@ -441,27 +417,16 @@ const Content = ({...props}: ContentProps) => {
             case Panel.Overview:
                 return(
                     <Overview
-                        commonCardProps={{
-                            activePanel: activePanel
-                            // setActiveCard: setActiveCard,
-                            // active: activeCards[0],
-                            // index: 0
-                        }}
+                        activePanel={activePanel}
                         answers={answers}
                         categories={categories}
                         isMobile={props.isMobile}
-                        isOverViewOpen={props.isOverViewOpen}
                     />
                 );
             case Panel.MyAnswers:
                 return(
                     <YourAnswers
-                        commonCardProps={{
-                            activePanel: activePanel
-                            // setActiveCard: setActiveCard,
-                            // active: activeCards[2],
-                            // index: 2
-                        }}
+                        activePanel={activePanel}
                         setIsCategorySubmitted={setIsCategorySubmitted}
                         createUserForm={createUserForm}
                         updateAnswer={updateAnswer}
@@ -471,14 +436,18 @@ const Content = ({...props}: ContentProps) => {
                         changeActiveCategory={changeActiveCategory}
                         categories={categories}
                         activeCategory={activeCategory}
-                        resetAnswers={resetAnswers}
-                        setAnswerViewModeActive={setAnswerViewModeActive}
-                        answerViewMode={answerViewMode}
+                        setAnswerEditMode={setAnswerEditMode}
+                        answerEditMode={answerEditMode}
                         isMobile={props.isMobile}
-                        isOverViewOpen={props.isOverViewOpen}
-                        isScaleDescriptionOpen={props.isScaleDescriptionOpen}
-                        isYourAnswersOpen={props.isYourAnswersOpen}
                     />
+                );
+            case Panel.GroupLeader:
+                return (
+                    <div>Welcome to the "Group Leader" panel!</div>
+                );
+            case Panel.Other:
+                return(
+                    <div>Hello! This is the "Other" panel :D</div>
                 );
         }
         return <div></div>;
@@ -502,37 +471,20 @@ const Content = ({...props}: ContentProps) => {
             </div>
         :
             <div className={mobileStyle.cardHolder}>
-                <Overview 
-                    commonCardProps={{
-                        activePanel: activePanel
-                        // setActiveCard: setActiveCard,
-                        // active: activeCards[0],
-                        // index: 0
-                    }}
+                <Overview
+                    activePanel={activePanel}
                     answers={answers}
                     categories={categories}
                     isMobile={props.isMobile}
-                    isOverViewOpen={props.isOverViewOpen}
 
                 />
-                <ScaleDescription 
-                    commonCardProps={{
-                        activePanel: activePanel
-                        // setActiveCard: setActiveCard,
-                        // active: activeCards[1],
-                        // index: 1
-                    }}
+                <ScaleDescription
+                    activePanel={activePanel}
                     isMobile={props.isMobile}
-                    isScaleDescriptionOpen={props.isScaleDescriptionOpen}
 
                 />
-                <YourAnswers 
-                    commonCardProps={{
-                        activePanel: activePanel
-                        // setActiveCard: setActiveCard,
-                        // active: activeCards[2],
-                        // index: 2
-                    }}
+                <YourAnswers
+                    activePanel={activePanel}
                     setIsCategorySubmitted={setIsCategorySubmitted}
                     createUserForm={createUserForm}
                     updateAnswer={updateAnswer}
@@ -542,19 +494,24 @@ const Content = ({...props}: ContentProps) => {
                     changeActiveCategory={changeActiveCategory}
                     categories={categories}
                     activeCategory={activeCategory}
-                    resetAnswers={resetAnswers}
-                    setAnswerViewModeActive={setAnswerViewModeActive}
-                    answerViewMode={answerViewMode}
+                    setAnswerEditMode={setAnswerEditMode}
+                    answerEditMode={answerEditMode}
                     isMobile={props.isMobile}
-                    isOverViewOpen={props.isOverViewOpen}
-                    isScaleDescriptionOpen={props.isScaleDescriptionOpen}
-                    isYourAnswersOpen={props.isYourAnswersOpen}
                 />
                 <AnswerHistory
                     setHistoryViewOpen={props.setAnswerHistoryOpen}
                     historyViewOpen={historyViewOpen}
                     history={answerLog}
                     formDefinition={formDefinition ?? undefined}
+                    isMobile={props.isMobile}
+                />
+                <AlertDialog
+                    setAlertDialogOpen={setAlertDialogOpen}
+                    alertDialogOpen={alertDialogOpen}
+                    changeActiveCategory={changeActiveCategory}
+                    clickedCategory={activeCategory}
+                    setIsCategorySubmitted={setIsCategorySubmitted}
+                    resetAnswers={resetAnswers}
                     isMobile={props.isMobile}
                 />
             </div>

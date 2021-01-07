@@ -73,9 +73,6 @@ export type TopicScoreWithIcon = {
     icon: number
 };
 
-// export interface FormDefinitionWithQuestions 
-//     extends Omit<Exclude<GetFormDefinitionWithQuestionsQuery["getFormDefinition"], null>, "__typename"> {}
-
 export type FormDefinitionWithQuestions = {
     data: {
         getFormDefinition: {
@@ -235,12 +232,10 @@ export type AnswerProps = {
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
     submitFeedback: string,
-    changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
-    isCategorySubmitted: boolean,
-    isMobile: boolean,
+    isMobile: boolean
 };
 
 export type CategoryProps = {
@@ -248,8 +243,6 @@ export type CategoryProps = {
     children: JSX.Element[],
     isMobile: boolean,
 };
-
-
 
 export type UserProps = {
     deleteUserData: () => void,
@@ -300,29 +293,20 @@ export type BatchCreatedQuestionAnswer = {
     }[]
 };
 
-//Types for new card functionality
-// export enum CardTypes {
-//     Overview = 0,
-//     ScaleDescription = 1,
-//     YourAnswer = 2
-// };
-
 export type OverviewProps = {
-    commonCardProps: CommonCardProps,
+    activePanel: Panel,
     answers: AnswerData[],
     categories: string[],
-    isMobile: boolean,
-    isOverViewOpen: boolean
+    isMobile: boolean
 };
 
 export type ScaleDescriptionProps = {
-    commonCardProps: CommonCardProps,
-    isMobile: boolean,
-    isScaleDescriptionOpen: boolean,
+    activePanel: Panel,
+    isMobile: boolean
 };
 
 export type YourAnswerProps = {
-    commonCardProps: CommonCardProps,
+    activePanel: Panel,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     createUserForm: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
@@ -332,59 +316,13 @@ export type YourAnswerProps = {
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
-    resetAnswers: () => void,
-    setAnswerViewModeActive: (viewModeActive: boolean) => void,
-    answerViewMode: boolean,
-    isMobile: boolean,
-    isOverViewOpen: boolean,
-    isScaleDescriptionOpen: boolean,
-    isYourAnswersOpen: boolean,
-};
-
-export type YourAnswerPropsDesktop = {
-    commonCardProps: CommonCardProps,
-    createUserForm: () => void,
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
-    formDefinition: FormDefinition | null,
-    answers: AnswerData[],
-    submitFeedback: string,
-    changeActiveCategory: (newCategoryIndex: string) => void,
-    categories: string[],
-    activeCategory: string,
-    resetAnswers: () => void,
-    setAnswerViewModeActive: (viewModeActive: boolean) => void,
-    answerViewMode: boolean,
-    isMobile: boolean,
-    toggleCard: () => void,
-    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
-    isCategorySubmitted: boolean,
-    setAlertDialogOpen: (alertDialogOpen: boolean) => void,
-    alertDialogOpen: boolean,
-    clickedCategory: string
+    setAnswerEditMode: (editMode: boolean) => void,
+    answerEditMode: boolean,
+    isMobile: boolean
 };
 
 export type YourAnswerPropsMobile = {
-    // commonCardProps: CommonCardProps,
-    // createUserForm: () => void,
-    // updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
-    // formDefinition: FormDefinition | null,
-    // answers: AnswerData[],
-    // submitFeedback: string,
-    // changeActiveCategory: (newCategoryIndex: string) => void,
-    // categories: string[],
-    // activeCategory: string,
-    // resetAnswers: () => void,
-    // setAnswerViewModeActive: (viewModeActive: boolean) => void,
-    // answerViewMode: boolean,
-    // // isMobile: boolean,
-    // toggleCard: () => void,
-    // getCategoryButtons: () => JSX.Element[],
-    // setIsCategorySubmitted: (categorySubmitted: boolean) => void,
-    // isCategorySubmitted: boolean,
-    // setAlertDialogOpen: (alertDialogOpen: boolean) => void,
-    // alertDialogOpen: boolean,
-    // clickedCategory: string
-    commonCardProps: CommonCardProps,
+    activePanel: Panel,
     createUserForm: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
@@ -393,9 +331,8 @@ export type YourAnswerPropsMobile = {
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
-    resetAnswers: () => void,
-    setAnswerViewModeActive: (viewModeActive: boolean) => void,
-    answerViewMode: boolean,
+    setAnswerEditMode: (editMode: boolean) => void,
+    answerEditMode: boolean,
     toggleCard: () => void,
     getCategoryButtons: (style : any) => JSX.Element[],
     alertDialogOpen: boolean,
@@ -403,7 +340,6 @@ export type YourAnswerPropsMobile = {
     isCategorySubmitted: boolean,
     clickedCategory: string,
     setAlertDialogOpen: (alertDialogOpen: boolean) => void,
-    isYourAnswersOpen: boolean,
     isMobile: boolean
 };
 
@@ -416,13 +352,6 @@ export type ResultDiagramProps = {
     isMobile: boolean,
     answers: AnswerData[],
     categories: string[]
-};
-
-type CommonCardProps = {
-    activePanel: Panel
-    // setActiveCard: (cardIndex: number, active: boolean) => void,
-    // active: boolean,
-    // index: number
 };
 
 export type NavBarProps = {
@@ -491,10 +420,7 @@ export type ContentProps = {
     user: any
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
     answerHistoryOpen: boolean,
-    isMobile: boolean,
-    isOverViewOpen: boolean,
-    isScaleDescriptionOpen: boolean,
-    isYourAnswersOpen: boolean,
+    isMobile: boolean
 };
 
 export type ChartData = {

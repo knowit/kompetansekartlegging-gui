@@ -88,7 +88,7 @@ export const Overview = ({...props}: OverviewProps) => {
 
     return (
         props.isMobile ? 
-                <div className={props.isOverViewOpen ? styles.mobile : styles.hidden}>
+            <div className={props.activePanel === Panel.Overview ? styles.mobile : styles.hidden}>
                     <ResultDiagram isMobile={props.isMobile} answers={props.answers} categories={props.categories} />
                     <Highlights isMobile={props.isMobile} answers={props.answers} />
                 </div> 
@@ -96,8 +96,8 @@ export const Overview = ({...props}: OverviewProps) => {
         // TODO: Put this in a desktop component
         // <div className={clsx(styles.root, props.commonCardProps.active ? styles.open : styles.closed)}>
         //     <div className={props.commonCardProps.active ? styles.radarPlot : styles.empty}>
-        <div className={clsx(styles.root, props.commonCardProps.activePanel === Panel.Overview ? styles.open : styles.closed)}>
-            <div className={props.commonCardProps.activePanel === Panel.Overview ? styles.radarPlot : styles.empty}>
+        <div className={clsx(styles.root, props.activePanel === Panel.Overview ? styles.open : styles.closed)}>
+            <div className={props.activePanel === Panel.Overview ? styles.radarPlot : styles.empty}>
                 <ResultDiagram isMobile={props.isMobile} answers={props.answers} categories={props.categories} />
                 <Highlights isMobile={props.isMobile} answers={props.answers} />
             </div>

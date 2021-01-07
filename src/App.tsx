@@ -30,6 +30,7 @@ type FormType = {
 };
 const formDef: FormType[] = require('./form3.json');
 
+
 const appStyle = makeStyles({
     root: {
         display: 'flex',
@@ -49,7 +50,6 @@ const App = () => {
     // const [customState, setCustomState] = useState<any | null>(null)
     const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     
-
     useEffect(() => {
         Hub.listen('auth', ({ payload: { event, data } }) => {
             switch (event) {
@@ -63,7 +63,6 @@ const App = () => {
                 //     setCustomState(data);
             }
         });
-
         Auth.currentAuthenticatedUser()
             .then(user => setUser(user))
             .catch(() => console.log("Not signed in"));
@@ -74,12 +73,7 @@ const App = () => {
         // if(user) console.log("Username: ", user.username);
     }, [user])
 
-    async function sendFormDefinition() {
-        /* 
-        Dirty function to upload form definition in the initial stages of the project.
-        Should not be kept in the future.
-        */
-
+    const sendFormDefinition = async () => {
         // Get all categories, create categories that dont exists, create form def
 
         let categories: Category[] = (await helper.callGraphQL<{ listCategorys: { items: [Category] } }>(queries.listCategorys)).data?.listCategorys.items || [];
@@ -102,11 +96,9 @@ const App = () => {
             let newCat = (await helper.callGraphQL<{createCategory: Category}>(mutations.createCategory, {input: input})).data?.createCategory;
             if(newCat) categories.push(newCat);
         }
-
         console.log("Total categories: ", categories);
 
         let formId = (await helper.callGraphQL<{ createFormDefinition: { id: String } }>(mutations.createFormDefinition, qustomQueries.createFormDefinitionInputConsts)).data?.createFormDefinition.id;
-        
         console.log("Created form definition with id: ", formId);
 
         console.log("Start creating questions, wait for them to complete before reloading site....");
@@ -140,70 +132,25 @@ const App = () => {
             console.log(deleteResult);
         } else console.log("No Userforms active");
     };
-
-
-    // MOBILENAV
-
-    // mobile sites shows based on these
-    const [isOverViewOpen, setIsOverviewOpen] = useState<boolean>(true);
-    const [isScaleDescriptionOpen, setIsScaleDescriptionOpen] = useState<boolean>(false);
-    const [isYourAnswersOpen, setIsYourAnswersOpen] = useState<boolean>(false);
-    const [currentSiteName, setCurrentSiteName] = useState<string>("")
-
-    useEffect(() => {
-        openOverview()
-    }, [])
-
-
-    const openOverview = () => {
-        console.log("OVERSIKT")
-
-        setIsOverviewOpen(true)
-        setIsScaleDescriptionOpen(false)
-        setIsYourAnswersOpen(false)
-        setCurrentSiteName("OVERSIKT")
-    }
-    const openScaleDescription = () => {
-        console.log("SKALABESKRIVELSE")
-
-        setIsOverviewOpen(false)
-        setIsScaleDescriptionOpen(true)
-        setIsYourAnswersOpen(false)
-        setCurrentSiteName("SKALABESKRIVELSE")
-
-    }
-    const openMyAnswers = () => {
-        console.log("MINE SVAR")
-        setIsOverviewOpen(false)
-        setIsScaleDescriptionOpen(false)
-        setIsYourAnswersOpen(true)
-        setCurrentSiteName("MINE SVAR")
-    }
+    
     return (
         <div className={style.root}>
             <BrowserRouter>
                 {user ?
                     <Fragment>
-                        <NavBar
+                        {/* <NavBar
                             user={user}
                             callbackDelete={deleteUserData}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
                             isMobile={isMobile}
-                            openOverview={openOverview}
-                            openScaleDescription={openScaleDescription}
-                            openMyAnswers={openMyAnswers}
                             currentSiteName={currentSiteName}
-
-                        />
+                        /> */}
                         {showFormDefSendButton ? <button onClick={() => sendFormDefinition()}>Send form definition to server</button> : ""}
                         <Content
                             user={user}
-                            answerHistoryOpen={answerHistoryOpen}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
+                            answerHistoryOpen={answerHistoryOpen}
                             isMobile={isMobile}
-                            isOverViewOpen={isOverViewOpen}
-                            isScaleDescriptionOpen={isScaleDescriptionOpen}
-                            isYourAnswersOpen={isYourAnswersOpen}
                         />
                         <Footer/>
                     </Fragment>

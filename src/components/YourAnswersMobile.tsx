@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { KnowitColors } from '../styles';
 import { YourAnswerPropsMobile } from '../types';
-import { AlertDialog } from './AlertDialog';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
 import { Panel } from './Content';
@@ -165,16 +164,11 @@ const yourAnswersStyleMobile = makeStyles({
 export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
     const style = yourAnswersStyleMobile();
 
-    useEffect(() => {
-        console.log("change view")
-        console.log(props.answerViewMode)
-    }, [props.answerViewMode]);
-
     return (
         <div>
             <div className={style.leftCard}>
                 {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
-                <div className={props.commonCardProps.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
+                <div className={props.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
                     <div className={style.categoryListInner}>
                         
                         {props.getCategoryButtons(style)}
@@ -182,34 +176,23 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
                 </div>
             </div>
             {/* <div className={props.commonCardProps.active ? style.answerBox : style.hidden}> */}
-            <div className={props.commonCardProps.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                     
-                    <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
-                        <div className={style.catHeader}>
-                            <Button className={style.editButton} onClick={() => props.setAnswerViewModeActive(false)}>Oppdater</Button>
-                            {/* <div className={style.catText} >{props.activeCategory}</div> */}
-                        </div>
-                        <div className={style.graphHolder}>
-                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={true}/>
-                        </div>
+            <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                     
+                <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
+                    <div className={style.catHeader}>
+                        <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Oppdater</Button>
+                        {/* <div className={style.catText} >{props.activeCategory}</div> */}
                     </div>
-                    <div className={clsx(props.answerViewMode ? style.hidden : "box", style.form)}>
-                        {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
-                        <Form 
-                            {...props} 
-                            setIsCategorySubmitted={props.setIsCategorySubmitted} 
-                            isCategorySubmitted={props.isCategorySubmitted}
-                            isMobile={true}
-                        />
+                    <div className={style.graphHolder}>
+                        <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={true}/>
                     </div>
-                <AlertDialog
-                    setAlertDialogOpen={props.setAlertDialogOpen}
-                    alertDialogOpen={props.alertDialogOpen}
-                    changeActiveCategory={props.changeActiveCategory}
-                    clickedCategory={props.clickedCategory}
-                    setIsCategorySubmitted={props.setIsCategorySubmitted}
-                    resetAnswers={props.resetAnswers}
-                    isMobile={props.isMobile}
-                />
+                </div>
+                <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
+                    {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
+                    <Form 
+                        {...props}
+                        isMobile={true}
+                    />
+                </div>
             </div>
         </div>
     );

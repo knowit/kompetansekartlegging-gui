@@ -1,11 +1,10 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
-import { KnowitColors } from '../styles';
-import { YourAnswerPropsDesktop } from '../types';
-import { AlertDialog } from './AlertDialog';
-import AnswerDiagram from './AnswerDiagram';
 import { Panel } from './Content';
+import { KnowitColors } from '../styles';
+import { YourAnswerProps } from '../types';
+import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
 
 const cardCornerRadius: number = 40;
@@ -115,40 +114,29 @@ const yourAnwersStyle = makeStyles({
     },
 });
 
-export const YourAnswersDesktop = ({ ...props }: YourAnswerPropsDesktop) => {
+export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
     const style = yourAnwersStyle();
 
     return (
         // <div className={clsx(props.commonCardProps.active ? style.bottomCardOpen : style.bottomCardClosed)}>
         //     <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>   
-        <div className={clsx(props.commonCardProps.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
-            <div className={props.commonCardProps.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
-                    <div className={clsx(props.answerViewMode ? "" : style.hidden, style.answerView)}>
-                        <div className={style.catHeader}>
-                            <Button className={style.editButton} onClick={() => props.setAnswerViewModeActive(false)}>Endre svar</Button>
-                            <div className={style.catText} >{props.activeCategory}</div>
-                        </div>
-                        <div className={style.graphHolder}>
-                            <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={false}/>
-                        </div>
+        <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
+            <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
+                <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
+                    <div className={style.catHeader}>
+                        <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Endre svar</Button>
+                        <div className={style.catText} >{props.activeCategory}</div>
                     </div>
-                    <div className={clsx(props.answerViewMode ? style.hidden : "", style.form)}>
-                        <Form 
-                            {...props} 
-                            setIsCategorySubmitted={props.setIsCategorySubmitted} 
-                            isCategorySubmitted={props.isCategorySubmitted}
-                            isMobile={false}
-                        />
+                    <div className={style.graphHolder}>
+                        <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={false}/>
                     </div>
-                <AlertDialog
-                    setAlertDialogOpen={props.setAlertDialogOpen}
-                    alertDialogOpen={props.alertDialogOpen}
-                    changeActiveCategory={props.changeActiveCategory}
-                    clickedCategory={props.clickedCategory}
-                    setIsCategorySubmitted={props.setIsCategorySubmitted}
-                    resetAnswers={props.resetAnswers}
-                    isMobile={props.isMobile}
-                />
+                </div>
+                <div className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
+                    <Form 
+                        {...props}
+                        isMobile={false}
+                    />
+                </div>
             </div>
         </div>
     );

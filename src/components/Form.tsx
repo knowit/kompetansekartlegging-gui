@@ -1,5 +1,5 @@
 import { Button, makeStyles } from '@material-ui/core';
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment } from 'react'
 import { KnowitColors } from '../styles';
 import { AnswerProps } from '../types';
 import { Category } from './Category';
@@ -89,19 +89,8 @@ export const Form = ({...props}: AnswerProps) => {
         return questions;
     };
 
-    useEffect(() => {
-        window.onbeforeunload = confirmExit;
-        function confirmExit()
-        {
-            if (!props.isCategorySubmitted) {
-                return "show warning";
-            }
-        }
-    }, [props.isCategorySubmitted])
-
     const handleClick = () => {
-        props.createUserForm(); 
-        props.setIsCategorySubmitted(true);
+        props.createUserForm();
     }
 
     //TODO: Return only used category, not everyone
