@@ -5,6 +5,7 @@ import { KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { YourAnswersMobile } from '../YourAnswersMobile';
 import { YourAnswersDesktop } from '../YourAnswersDesktop';
+import { Panel } from '../Content';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 20;
@@ -197,16 +198,18 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
 
     return (
         props.isMobile ? 
-            <YourAnswersMobile 
-                {...props} 
-                toggleCard={toggleCard} 
-                getCategoryButtons={getCategoryButtons} 
-                alertDialogOpen={alertDialogOpen}
-                setIsCategorySubmitted={setIsCategorySubmitted}
-                isCategorySubmitted={isCategorySubmitted}
-                clickedCategory={clickedCategory}
-                setAlertDialogOpen={setAlertDialogOpen}
-            />
+            <div className={props.activePanel === Panel.MyAnswers ? "" : style.hidden}>
+                <YourAnswersMobile
+                    {...props}
+                    toggleCard={toggleCard}
+                    getCategoryButtons={getCategoryButtons}
+                    alertDialogOpen={alertDialogOpen}
+                    setIsCategorySubmitted={setIsCategorySubmitted}
+                    isCategorySubmitted={isCategorySubmitted}
+                    clickedCategory={clickedCategory}
+                    setAlertDialogOpen={setAlertDialogOpen}
+                />
+            </div>
         :
         <YourAnswersDesktop 
             {...props}

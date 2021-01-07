@@ -138,13 +138,12 @@ const App = () => {
             <BrowserRouter>
                 {user ?
                     <Fragment>
-                        {/* <NavBar
+                        <NavBar
                             user={user}
                             callbackDelete={deleteUserData}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
                             isMobile={isMobile}
-                            currentSiteName={currentSiteName}
-                        /> */}
+                        />
                         {showFormDefSendButton ? <button onClick={() => sendFormDefinition()}>Send form definition to server</button> : ""}
                         <Content
                             user={user}

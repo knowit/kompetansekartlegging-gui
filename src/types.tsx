@@ -359,10 +359,6 @@ export type NavBarProps = {
     callbackDelete: () => void,
     setAnswerHistoryOpen: (answerHistoryOpen: boolean) => void,
     isMobile: boolean
-    openOverview: () => void,
-    openScaleDescription: () => void,
-    openMyAnswers: () => void,
-    currentSiteName: string,
 };
 
 export type NavBarPropsDesktop = {
@@ -386,10 +382,10 @@ export type NavBarPropsMobile = {
     userName: string,
     userPicture: string,
     deleteAlertOpen: boolean,
-    openOverview: () => void,
-    openScaleDescription: () => void,
-    openMyAnswers: () => void,
-    currentSiteName: string,
+    // openOverview: () => void,
+    // openScaleDescription: () => void,
+    // openMyAnswers: () => void,
+    // currentSiteName: string,
 }
 
 

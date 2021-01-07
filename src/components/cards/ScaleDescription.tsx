@@ -83,7 +83,9 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
 
     return (
         props.isMobile ? 
-            <DescriptionTableMobile/>
+            <div className={props.activePanel === Panel.ScaleDescription ? style.mobile : style.hidden}>
+                <DescriptionTableMobile />
+            </div> 
         :
         // TODO: Put this in a desktop component
         // <div className={clsx(style.root, props.commonCardProps.active ? style.open : style.closed)}>

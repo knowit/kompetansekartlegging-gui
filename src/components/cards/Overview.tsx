@@ -89,9 +89,9 @@ export const Overview = ({...props}: OverviewProps) => {
     return (
         props.isMobile ? 
             <div className={props.activePanel === Panel.Overview ? styles.mobile : styles.hidden}>
-                    <ResultDiagram isMobile={props.isMobile} answers={props.answers} categories={props.categories} />
-                    <Highlights isMobile={props.isMobile} answers={props.answers} />
-                </div> 
+                <ResultDiagram isMobile={props.isMobile} answers={props.answers} categories={props.categories} />
+                <Highlights isMobile={props.isMobile} answers={props.answers} />
+            </div> 
         :
         // TODO: Put this in a desktop component
         // <div className={clsx(styles.root, props.commonCardProps.active ? styles.open : styles.closed)}>
