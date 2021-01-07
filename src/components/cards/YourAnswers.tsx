@@ -1,6 +1,6 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { YourAnswersMobile } from '../YourAnswersMobile';
@@ -195,37 +195,22 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
         return buttons;
     };
 
-    useEffect(() => {
-        console.log("HELLO")
-    }, [props.isYourAnswersOpen]);
-    
-
     return (
         props.isMobile ? 
-            <div className={props.isYourAnswersOpen ? "yourAnswers" : style.hidden}>
-                <YourAnswersMobile 
-                     {...props} 
-                     toggleCard={toggleCard} 
-                     getCategoryButtons={getCategoryButtons} 
-                     alertDialogOpen={alertDialogOpen}
-                     setIsCategorySubmitted={setIsCategorySubmitted}
-                     isCategorySubmitted={isCategorySubmitted}
-                     clickedCategory={clickedCategory}
-                     setAlertDialogOpen={setAlertDialogOpen}
-                     isYourAnswersOpen={props.isYourAnswersOpen}
-                />
-            </div>
-            
-
-        : <YourAnswersDesktop 
+            <YourAnswersMobile 
+                {...props} 
+                toggleCard={toggleCard} 
+                getCategoryButtons={getCategoryButtons} 
+                alertDialogOpen={alertDialogOpen}
+                setIsCategorySubmitted={setIsCategorySubmitted}
+                isCategorySubmitted={isCategorySubmitted}
+                clickedCategory={clickedCategory}
+                setAlertDialogOpen={setAlertDialogOpen}
+            />
+        :
+        <YourAnswersDesktop 
             {...props}
-            toggleCard={toggleCard}
-            setIsCategorySubmitted={setIsCategorySubmitted}
-            isCategorySubmitted={isCategorySubmitted}
-            setAlertDialogOpen={setAlertDialogOpen}
-            alertDialogOpen={alertDialogOpen}
-            clickedCategory={clickedCategory}
-        
+            setIsCategorySubmitted={props.setIsCategorySubmitted}
         />
     );
 
