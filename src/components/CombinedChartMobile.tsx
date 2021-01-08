@@ -11,7 +11,7 @@ const numTicks = 5;
 const chartSplitAt = numTicks + 2;
 const iconSize = 18;
 
-const pageEntryLimit = 6;
+const pageEntryLimit = 3;
 
 const useStyles = makeStyles({
     tooltip: {
