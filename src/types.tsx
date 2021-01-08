@@ -1,4 +1,5 @@
 import { Panel } from "./components/Content";
+import { AlertType } from "./components/AlertNotification";
 
 export type AnswerData = {
     questionId: string,
@@ -236,6 +237,7 @@ export type AnswerProps = {
     activeCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     isMobile: boolean
+    alerts: AlertState | undefined
 };
 
 export type CategoryProps = {
@@ -274,6 +276,7 @@ export type QuestionProps = {
     motivationDefaultValue: number,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     isMobile: boolean,
+    alerts: AlertState | undefined
 };
 
 export type BatchCreatedQuestionAnswer = {
@@ -318,9 +321,14 @@ export type YourAnswerProps = {
     activeCategory: string,
     setAnswerEditMode: (editMode: boolean) => void,
     answerEditMode: boolean,
-    isMobile: boolean
+    isMobile: boolean,
+    alerts: AlertState | undefined
 };
 
+export interface AlertState {
+    qidMap: Map<string, AlertType>,
+    categoryMap: Map<string, number>
+}
 export type YourAnswerPropsMobile = {
     activePanel: Panel,
     createUserForm: () => void,
@@ -341,6 +349,7 @@ export type YourAnswerPropsMobile = {
     clickedCategory: string,
     setAlertDialogOpen: (alertDialogOpen: boolean) => void,
     isMobile: boolean
+    alerts: AlertState | undefined
 };
 
 export type HighlightsProps = {

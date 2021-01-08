@@ -208,12 +208,14 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
                     isCategorySubmitted={isCategorySubmitted}
                     clickedCategory={clickedCategory}
                     setAlertDialogOpen={setAlertDialogOpen}
+                    alerts={props.alerts}
                 />
             </div>
         :
         <YourAnswersDesktop 
             {...props}
             setIsCategorySubmitted={props.setIsCategorySubmitted}
+            alerts={props.alerts}
         />
     );
 

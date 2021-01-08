@@ -191,6 +191,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
                     <Form 
                         {...props}
                         isMobile={true}
+                        alerts={props.alerts}
                     />
                 </div>
             </div>

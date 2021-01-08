@@ -5,6 +5,7 @@ import Slider from './Slider';
 import { makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
 import * as Icon from '../icons/iconController';
+import { AlertNotification, AlertType } from './AlertNotification';
 
 const questionStyleDesktop = makeStyles({
     root: {
@@ -20,6 +21,8 @@ const questionStyleDesktop = makeStyles({
         width: '90%'
     },
     topic: {
+        display: 'flex',
+        alignItems: 'center',
         fontSize: 15,
         fontWeight: "bold"
     },
@@ -156,7 +159,11 @@ const Question = ({...props}: QuestionProps) => {
 
     return (
         <div className={style.root}>
-            <div className={style.topic}>{props.topic}</div>
+            <div className={style.topic}>
+                {props.topic}
+                {props.alerts?.qidMap.has(props.questionId)
+                    ? <AlertNotification type={props.alerts?.qidMap.get(props.questionId)!} message="Må besvares!"/> : ""}
+            </div>
             <div className={style.text}>{props.text}</div>
             <div className={style.answerArea}>
                 <div className={clsx(style.largeBold)}>KOMPETANSE</div>

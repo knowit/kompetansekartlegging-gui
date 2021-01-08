@@ -65,7 +65,7 @@ const yourAnwersStyle = makeStyles({
     },
     graphHolder: {
         width: '100%',
-        height: '85%',
+        height: '70%',
     },
     editButton: {
         margin: 5,
@@ -135,6 +135,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                     <Form 
                         {...props}
                         isMobile={false}
+                        alerts={props.alerts}
                     />
                 </div>
             </div>

@@ -83,6 +83,7 @@ export const Form = ({...props}: AnswerProps) => {
                     motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
                     setIsCategorySubmitted={props.setIsCategorySubmitted}
                     isMobile={props.isMobile}
+                    alerts={props.alerts}
                 />
             );
         };
