@@ -70,7 +70,7 @@ const highlightsStyle = makeStyles({
         width: '100%'
     },
     listitem: {
-        zIndex: 1,
+        zIndex: 0,
         display: 'flex',
         width: '25%',
         flexDirection: 'column',
@@ -221,22 +221,6 @@ export default function Highlights({...props }: HighlightsProps) {
             </div>
         );
     };
-
-    // return (
-    //     <div className={props.isMobile ? style.rootMobile : style.root}>
-    //         <div className={style.title}>MINE EGENSKAPER</div>
-    //     <div className={style.container}>
-    //         <div className={style.col}>
-    //             <div className={style.heading}>STYRKER</div>
-    //                 {createKnowledgeHighlights()}
-    //         </div>
-    //         <div className={style.col}>
-    //             <div className={style.heading}>AMBISJONER</div>
-    //                 {createMotivationHighlights()}
-    //         </div>
-    //         </div>
-    //     </div>
-    // );
 
     return (
         <div className={style.root}>

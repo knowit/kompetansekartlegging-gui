@@ -64,8 +64,8 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
                 />
                 <YAxis width={200} dataKey="name" type="category" interval={0}/>
                 <Tooltip content={RenderCustomTooltip(classes)}/>
-                <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen} label={renderCustomBarLabel} />
-                <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen} label={renderCustomBarLabel} />
+                <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen} />
+                <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen} />
                 <ReferenceLine x={0} stroke="green">
                     <Label className={classes.label} position="top" offset={50} >KOMPETANSE</Label>
                 </ReferenceLine>
@@ -78,14 +78,14 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
     );
 };
 
-const renderCustomBarLabel = ({...props}: BarLabelProps) => {
-    let displayValue = Number(props.value);
-    if (displayValue >= chartSplitAt) {
-        displayValue -= chartSplitAt;
-    }
-if (props.width && (displayValue) > 0.5)
-    return <text x={props.x + props.width - 24} y={props.y + props.height} dy={-2} fill={KnowitColors.darkGreen} textAnchor="middle">{displayValue.toFixed(1)}</text>;
-};
+// const renderCustomBarLabel = ({...props}: BarLabelProps) => {
+//     let displayValue = Number(props.value);
+//     if (displayValue >= chartSplitAt) {
+//         displayValue -= chartSplitAt;
+//     }
+// if (props.width && (displayValue) > 0.5)
+//     return <text x={props.x + props.width - 24} y={props.y + props.height} dy={-2} fill={KnowitColors.darkGreen} textAnchor="middle">{displayValue.toFixed(1)}</text>;
+// };
 
 const renderCustomAxisTicks = () => {
     return ( {...props}:TickProps ) => {
