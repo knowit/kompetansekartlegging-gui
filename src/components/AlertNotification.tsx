@@ -10,22 +10,18 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
-        fontSize: 'inherit',
         marginLeft: 10
     },
     alertBulb: {
         position: 'absolute',
-        width: '1em',
-        height: '1em',
         borderRadius: '50%',
         fill: KnowitColors.fuchsia,
         backgroundColor: KnowitColors.darkBrown
     },
     alertBulbMultiple: {
         width: '2em',
-        height: 'inherit',
         borderStyle: 'solid',
-        borderRadius: '1em',
+        borderRadius: '50%',
         borderWidth: 2,
         backgroundColor: KnowitColors.fuchsia,
         color: KnowitColors.darkBrown,
