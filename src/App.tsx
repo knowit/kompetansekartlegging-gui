@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core';
 import * as qustomQueries from './graphql/custom-queries'
 import { Category } from './types'
 import {isMobile} from 'react-device-detect';
+import FloatingScaleDescButton from './components/FloatingScaleDescButton';
 
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
@@ -151,7 +152,7 @@ const App = () => {
                             answerHistoryOpen={answerHistoryOpen}
                             isMobile={isMobile}
                         />
-                        <Footer/>
+                        <FloatingScaleDescButton isMobile={isMobile}/>
                     </Fragment>
                 :
                 <Login />
