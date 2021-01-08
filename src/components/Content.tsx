@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
@@ -113,15 +113,13 @@ const Content = ({...props}: ContentProps) => {
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
-<<<<<<< HEAD
     const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
     const [activePanel, setActivePanel] = useState<Panel>(Panel.Overview);
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
-=======
     const [alerts, setAlerts] = useState<AlertState>();
 
-    const updateAndGetCategoryAlerts = () => {
+    const updateCategoryAlerts = () => {
         let alerts = new Map<string, AlertType>();
         let catAlerts = new Map<string, number>();
         for (let answer of answers) {
@@ -136,7 +134,6 @@ const Content = ({...props}: ContentProps) => {
         }
         setAlerts({qidMap: alerts, categoryMap: catAlerts});
     }
->>>>>>> Working alerts for category and questions
 
     const createCategories = () => {
         if(!formDefinition) return [];
@@ -265,17 +262,13 @@ const Content = ({...props}: ContentProps) => {
     }
 
     useEffect(() => {
-<<<<<<< HEAD
         setActiveCategory(categories[0]);
         setAnswerEditMode(false);
-=======
-        updateAndGetCategoryAlerts();
-    }, [answers]);
+    }, [categories]);
 
     useEffect(() => {
-        changeActiveCategory(categories[0]);
->>>>>>> Working alerts for category and questions
-    }, [categories]);
+        updateCategoryAlerts();
+    }, [answers]);
     
     useEffect(() => {
         fetchLastFormDefinition();
@@ -391,8 +384,6 @@ const Content = ({...props}: ContentProps) => {
     
     const setupMenu = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
-<<<<<<< HEAD
-<<<<<<< HEAD
         /**
          *  Setup for the button array structure:
          * 
@@ -419,12 +410,28 @@ const Content = ({...props}: ContentProps) => {
             ]},
         ]
         
+        const getTotalAlertsElement = (): JSX.Element => {
+            let totalAlerts = 0;
+            alerts?.categoryMap.forEach((numAlerts: number, category: string) => {
+                totalAlerts += numAlerts;
+            });
+            if (totalAlerts > 0)
+                return <AlertNotification
+                    type={AlertType.Multiple}
+                    message="Totalt ubesvarte eller utdaterte spørsmål"
+                    size={totalAlerts}
+                    />;
+            else
+                return <Fragment/>;
+        }
+        
         buttonSetup.forEach((butt) => {
             buttons.push(<Button
                 key={butt.text}
                 className={clsx(style.MenuButton, keepButtonActive(butt.buttonType))}
                 onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, butt.subButtons ? butt.subButtons[0].text : undefined)}}>
                     <div className={clsx(style.menuButtonText)}>{butt.text}</div>
+                    {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""}
             </Button>);
             if(butt.subButtons){
                 butt.subButtons.forEach((butt, index) => {
@@ -434,38 +441,10 @@ const Content = ({...props}: ContentProps) => {
                             activePanel === butt.activePanel ? "" : style.hideCategoryButtons)}
                         onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, butt.text) }}>
                             <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {butt.text}</div>
+                            {alerts?.categoryMap.has(butt.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={alerts.categoryMap.get(butt.text)}/> : ""}
                     </Button>);
                 });
             }
-=======
-=======
-        let totalAlerts = 0;
-        alerts?.categoryMap.forEach((numAlerts: number, category: string) => {
-            totalAlerts += numAlerts;
-        });
->>>>>>> Working alerts for category and questions
-        ["OVERSIKT", "MINE SVAR", "JIB!", "Sleep", "Test :D", "Fancy array magic"].forEach((text, index) => {
-            buttons.push(
-                <Button
-                    key={text.toLocaleLowerCase()}
-                    className={clsx(style.menuButton, displayActivePanel(index))}
-                    onClick={() => { checkIfCategoryIsSubmitted(index)}}>
-                    <div className={clsx(style.menuButtonText)}>{text}</div>
-                    {(text === "MINE SVAR") ? <AlertNotification type={AlertType.Multiple} message="Test!" size={totalAlerts}/> : ""}
-                </Button>
-            );
-        });
-
-        let categoryButtons: JSX.Element[] = categories.map((category, index) => {
-            return <Button
-                key={category}
-                className={clsx(style.menuButton, activeCategory === category ? style.menuButtonActive : "",
-                    activePanel === Panel.MyAnswers ? "" : style.hideCategoryButtons)}
-                onClick={() => { checkIfCategoryIsSubmitted(MenuButton.Category, category) }}>
-                <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {category}</div>
-                {alerts?.categoryMap.has(category) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdatert!" size={alerts.categoryMap.get(category)}/> : ""}
-            </Button>
->>>>>>> Notification component created
         });
         
         return buttons;
@@ -499,13 +478,7 @@ const Content = ({...props}: ContentProps) => {
                         setAnswerEditMode={setAnswerEditMode}
                         answerEditMode={answerEditMode}
                         isMobile={props.isMobile}
-<<<<<<< HEAD
-=======
-                        isOverViewOpen={props.isOverViewOpen}
-                        isScaleDescriptionOpen={props.isScaleDescriptionOpen}
-                        isYourAnswersOpen={props.isYourAnswersOpen}
                         alerts={alerts}
->>>>>>> Working alerts for category and questions
                     />
                 );
             case Panel.GroupLeader:
@@ -564,13 +537,7 @@ const Content = ({...props}: ContentProps) => {
                     setAnswerEditMode={setAnswerEditMode}
                     answerEditMode={answerEditMode}
                     isMobile={props.isMobile}
-<<<<<<< HEAD
-=======
-                    isOverViewOpen={props.isOverViewOpen}
-                    isScaleDescriptionOpen={props.isScaleDescriptionOpen}
-                    isYourAnswersOpen={props.isYourAnswersOpen}
                     alerts={alerts}
->>>>>>> Working alerts for category and questions
                 />
                 <AnswerHistory
                     setHistoryViewOpen={props.setAnswerHistoryOpen}
