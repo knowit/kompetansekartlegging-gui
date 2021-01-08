@@ -60,8 +60,8 @@ const yourAnwersStyle = makeStyles({
         display: 'flex',
         flexDirection: 'row',
         height: '10%',
-        margin: '10px'
-
+        margin: '10px',
+        maxHeight: '50px'
     },
     graphHolder: {
         width: '100%',
