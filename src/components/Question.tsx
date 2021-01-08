@@ -162,7 +162,7 @@ const Question = ({...props}: QuestionProps) => {
             <div className={style.topic}>
                 {props.topic}
                 {props.alerts?.qidMap.has(props.questionId)
-                    ? <AlertNotification type={props.alerts?.qidMap.get(props.questionId)!} message="Må besvares!"/> : ""}
+                    ? <AlertNotification type={props.alerts?.qidMap.get(props.questionId)!} message="Ubesvart!"/> : ""}
             </div>
             <div className={style.text}>{props.text}</div>
             <div className={style.answerArea}>
