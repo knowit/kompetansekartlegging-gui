@@ -74,10 +74,10 @@ const NavBar = ({...props}: NavBarProps) => {
                 userName={userName}
                 userPicture={userPicture}
                 deleteAlertOpen={deleteAlertOpen}
-                openOverview={props.openOverview}
-                openScaleDescription={props.openScaleDescription}
-                openMyAnswers={props.openMyAnswers}
-                currentSiteName={props.currentSiteName}
+                // openOverview={props.openOverview}
+                // openScaleDescription={props.openScaleDescription}
+                // openMyAnswers={props.openMyAnswers}
+                // currentSiteName={props.currentSiteName}
             
             />
         :

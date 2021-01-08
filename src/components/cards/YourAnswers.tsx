@@ -1,10 +1,11 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { KnowitColors } from '../../styles';
 import { YourAnswerProps } from '../../types';
 import { YourAnswersMobile } from '../YourAnswersMobile';
 import { YourAnswersDesktop } from '../YourAnswersDesktop';
+import { Panel } from '../Content';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 20;
@@ -195,37 +196,24 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
         return buttons;
     };
 
-    useEffect(() => {
-        console.log("HELLO")
-    }, [props.isYourAnswersOpen]);
-    
-
     return (
         props.isMobile ? 
-            <div className={props.isYourAnswersOpen ? "yourAnswers" : style.hidden}>
-                <YourAnswersMobile 
-                     {...props} 
-                     toggleCard={toggleCard} 
-                     getCategoryButtons={getCategoryButtons} 
-                     alertDialogOpen={alertDialogOpen}
-                     setIsCategorySubmitted={setIsCategorySubmitted}
-                     isCategorySubmitted={isCategorySubmitted}
-                     clickedCategory={clickedCategory}
-                     setAlertDialogOpen={setAlertDialogOpen}
-                     isYourAnswersOpen={props.isYourAnswersOpen}
+            <div className={props.activePanel === Panel.MyAnswers ? "" : style.hidden}>
+                <YourAnswersMobile
+                    {...props}
+                    toggleCard={toggleCard}
+                    getCategoryButtons={getCategoryButtons}
+                    alertDialogOpen={alertDialogOpen}
+                    setIsCategorySubmitted={setIsCategorySubmitted}
+                    isCategorySubmitted={isCategorySubmitted}
+                    clickedCategory={clickedCategory}
+                    setAlertDialogOpen={setAlertDialogOpen}
                 />
             </div>
-            
-
-        : <YourAnswersDesktop 
+        :
+        <YourAnswersDesktop 
             {...props}
-            toggleCard={toggleCard}
-            setIsCategorySubmitted={setIsCategorySubmitted}
-            isCategorySubmitted={isCategorySubmitted}
-            setAlertDialogOpen={setAlertDialogOpen}
-            alertDialogOpen={alertDialogOpen}
-            clickedCategory={clickedCategory}
-        
+            setIsCategorySubmitted={props.setIsCategorySubmitted}
         />
     );
 

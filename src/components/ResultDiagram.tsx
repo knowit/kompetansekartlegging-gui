@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { roundDecimals } from '../helperFunctions';
-import { AnswerData, CalculationData, ChartData, ResultData } from '../types';
+import { ChartData, ResultData, ResultDiagramProps } from '../types';
 import { makeStyles } from '@material-ui/core/styles';
 import { CombinedChart } from './CombinedChart';
 import { CombinedChartMobile } from './CombinedChartMobile';
@@ -17,62 +17,59 @@ const graphStyle = makeStyles({
     }
 });
 
-export default function ResultDiagram(props: { isMobile: boolean, data: AnswerData[] }) {
+export default function ResultDiagram({...props}: ResultDiagramProps) {
     const style = graphStyle();
 
     const [answerData, setAnswerData] = useState<ResultData[]>([]);
-
+    
     useEffect(() => {
-        if (answerData.length === 0) {
-            let result: ResultData[] = [];
-            props.data.forEach(dat => {
-                let cat = result.find(res => res.category === dat.category);
-                if (!cat) {
-                    result.push({
-                        category: dat.category,
-                        averageKnowledge: 0,
-                        averageMotivation: 0
-                    });
-                }
-            });
-            createData(result);
-        }
-    }, [props.data]);
-
-    const createData = (data: ResultData[]) => {
-        let calcData: CalculationData[] = [];
-        props.data.forEach(dat => {
-            if (dat.knowledge < 0 && dat.motivation < 0) return;
-            let catIndex = calcData.findIndex(calc => calc.category === dat.category);
-            if (catIndex === -1) {
-                catIndex = calcData.length;
-                calcData.push({
-                    category: dat.category,
-                    knowledgeCount: 0,
+        setAnswerData(createData());
+    }, [props.answers]);
+    
+    type ReduceValue = {
+        konwledgeCount: number,
+        knowledgeAverage: number,
+        knowledgeTotal: number,
+        motivationCount: number,
+        motivationAverage: number,
+        motivationTotal: number
+    }
+    
+    const createData = (): ResultData[] => { //data: ResultData[]
+        let result = props.categories.map(category => {
+            let reduced = props.answers.filter(answer => answer.category === category)
+                .reduce<ReduceValue>((acc, cur): ReduceValue => {
+                    if(cur.knowledge >= 0) {
+                        acc.konwledgeCount = acc.konwledgeCount + 1;
+                        acc.knowledgeTotal = acc.knowledgeTotal + cur.knowledge;
+                        acc.knowledgeAverage = acc.knowledgeTotal / acc.konwledgeCount;
+                    }
+                    if(cur.motivation >= 0) {
+                        acc.motivationCount = acc.motivationCount + 1;
+                        acc.motivationTotal = acc.motivationTotal + cur.motivation;
+                        acc.motivationAverage = acc.motivationTotal / acc.motivationCount;
+                    }
+                    return acc;
+                }, {
+                    konwledgeCount: 0,
+                    knowledgeAverage: 0,
                     knowledgeTotal: 0,
                     motivationCount: 0,
-                    motivationTotal: 0,
-                    questionIds: []
-                });
-            }
-            if (dat.knowledge >= 0) {
-                calcData[catIndex].knowledgeCount += 1;
-                calcData[catIndex].knowledgeTotal += dat.knowledge;
-            }
-            if (dat.motivation >= 0) {
-                calcData[catIndex].motivationCount += 1;
-                calcData[catIndex].motivationTotal += dat.motivation;
-            }
+                    motivationAverage: 0,
+                    motivationTotal: 0
+                })
+            ;
+            return {
+                category: category,
+                averageKnowledge: roundDecimals(reduced.knowledgeAverage, 1),
+                averageMotivation: roundDecimals(reduced.motivationAverage, 1)
+            } as ResultData;
         });
-        calcData.forEach(dat => {
-            let answers = [...data];
-            let resIndex = answers.findIndex(ans => ans.category === dat.category);
-            if (resIndex === -1) return;
-            answers[resIndex].averageKnowledge = roundDecimals(dat.knowledgeTotal / dat.knowledgeCount || 0, 1);
-            answers[resIndex].averageMotivation = roundDecimals(dat.motivationTotal / dat.motivationCount || 0, 1);
-            setAnswerData(answers);
-        });
+        console.log(result);
+        return result;
     };
+    
+
 
     let chartData: ChartData[] = answerData.map(
         (answer) => ({

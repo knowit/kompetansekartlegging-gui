@@ -138,6 +138,8 @@ const Question = ({...props}: QuestionProps) => {
 
 
     const sliderChanged = (newValue: number, motivation: boolean) => {
+        props.setIsCategorySubmitted(false);
+        // console.log("Slider changed");
         if(motivation){
             setMotivationValue(newValue);
             props.updateAnswer(props.questionId, knowledgeValue, newValue);
@@ -145,7 +147,6 @@ const Question = ({...props}: QuestionProps) => {
             setKnowledgeValue(newValue);
             props.updateAnswer(props.questionId, newValue, motivationValue);
         }
-        props.setIsCategorySubmitted(false)
     };
 
     useEffect(() => {

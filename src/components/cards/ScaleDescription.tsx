@@ -83,13 +83,13 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
 
     return (
         props.isMobile ? 
-            <div className={props.isScaleDescriptionOpen ? style.mobile : style.hidden}>
-                {/* <DescriptionTableMobile/> */}
+            <div className={props.activePanel === Panel.ScaleDescription ? style.mobile : style.hidden}>
+                <DescriptionTableMobile />
             </div> 
         :
         // TODO: Put this in a desktop component
         // <div className={clsx(style.root, props.commonCardProps.active ? style.open : style.closed)}>
-        <div className={clsx(style.root, props.commonCardProps.activePanel === Panel.ScaleDescription ? style.open : style.closed)}>
+        <div className={clsx(style.root, props.activePanel === Panel.ScaleDescription ? style.open : style.closed)}>
             <div className={style.cardHeader}>
                 <button 
                     onClick={buttonClick} 
@@ -98,7 +98,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                     SKALABESKRIVELSE 
                 </button>
                 {/* {props.commonCardProps.active ? ( */}
-                {props.commonCardProps.activePanel === Panel.ScaleDescription ? (
+                {props.activePanel === Panel.ScaleDescription ? (
                         <CloseIcon 
                             fontSize="large" 
                             className={style.closeButton}
@@ -107,7 +107,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                     ) : null}
             </div>
             {/* {props.commonCardProps.active ? */}
-            {props.commonCardProps.activePanel === Panel.ScaleDescription ?
+            {props.activePanel === Panel.ScaleDescription ?
                 <DescriptionTable/>
             : ""}
             
