@@ -60,7 +60,7 @@ const yourAnwersStyle = makeStyles({
         borderBottomLeftRadius: 20,
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0,
-        backgroundColor: KnowitColors.greyGreen,
+        backgroundColor: KnowitColors.beige,
         '&:hover': {
             background: KnowitColors.white
         },
@@ -153,6 +153,9 @@ const yourAnwersStyle = makeStyles({
         height: '100%',
         zIndex: zIndex
     },
+    yourAnswersContainer: {
+        height: '100%'
+    }
 });
 
 export const YourAnswers = ({ ...props }: YourAnswerProps) => {
@@ -198,7 +201,7 @@ export const YourAnswers = ({ ...props }: YourAnswerProps) => {
 
     return (
         props.isMobile ? 
-            <div className={props.activePanel === Panel.MyAnswers ? "" : style.hidden}>
+            <div className={props.activePanel === Panel.MyAnswers ? style.yourAnswersContainer : style.hidden}>
                 <YourAnswersMobile
                     {...props}
                     toggleCard={toggleCard}

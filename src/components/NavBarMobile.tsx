@@ -105,21 +105,7 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
         >
             {/* TODO: mappe denne ut heller */}
            <List>
-            <ListItem button key="Oversikt" onClick={() => console.log("") /*props.openOverview()*/}>
-                <ListItemText primary="Oversikt" />
-              </ListItem>
-            <ListItem button key="Skalabeskrivelse" onClick={() => console.log("") /*props.openScaleDescription()*/}>
-                <ListItemText primary="Skalabeskrivelse" />
-              </ListItem>
-            <ListItem button key="Mine svar" onClick={() => console.log("") /*props.openMyAnswers()*/}>
-                <ListItemText primary="Mine svar" />
-              </ListItem>
-              <ListItem button key="Se alle lagrede svar" onClick={(e: React.MouseEvent<EventTarget>) => props.handleDisplayAnswers(e)}>
-                <ListItemText primary="Se alle lagrede svar" />
-              </ListItem>
-              <ListItem button key="logg ut" onClick={(e: React.MouseEvent<EventTarget>) => props.handleCloseSignout(e)}>
-                <ListItemText primary="Logg ut" />
-              </ListItem>
+            {props.menuButtons}
           </List>
         </div>
       );

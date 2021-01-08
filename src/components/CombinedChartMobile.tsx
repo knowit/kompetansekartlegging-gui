@@ -41,7 +41,7 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     bulletRoot: {
         width: '100%',
@@ -142,8 +142,8 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
     });
 
     return (
-        <div className={classes.chartContainer} {...swipeHandlers}>
-            <ResponsiveContainer width='100%' height="100%">     
+        <div className={classes.chartContainer} {...swipeHandlers} >
+            <ResponsiveContainer>     
                 <BarChart
                     barGap={-10}
                     barSize={10}

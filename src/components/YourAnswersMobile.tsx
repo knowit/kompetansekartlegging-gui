@@ -18,8 +18,7 @@ const yourAnswersStyleMobile = makeStyles({
     answerBox: {
         display: 'flex',
         flexDirection: 'column',
-        // height: 'fit-content',
-        // marginTop: '40px',
+        height: '100%',
         width: '100%',
     },
     answerView: {
@@ -29,7 +28,7 @@ const yourAnswersStyleMobile = makeStyles({
         height: '100%',
         borderRadius: 10,
         background: KnowitColors.white,
-        position: 'absolute'
+        // position: 'absolute'
     },
     form: {
         width: '100%',
@@ -38,7 +37,7 @@ const yourAnswersStyleMobile = makeStyles({
     },
     categoryList: {
         height: 'min-content',
-        backgroundColor: KnowitColors.greyGreen,
+        backgroundColor: KnowitColors.beige,
         borderRadius: '0px 0px 35px 35px',
         paddingBottom: '25px',
         boxShadow: "0px 3px 0px grey",
@@ -158,6 +157,9 @@ const yourAnswersStyleMobile = makeStyles({
         height: '100%',
         // zIndex: zIndex
     },
+    yourAnswersMobileContainer: {
+        height: '100%'
+    }
 });
 
 
@@ -165,7 +167,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
     const style = yourAnswersStyleMobile();
 
     return (
-        <div>
+        <div className={style.yourAnswersMobileContainer}>
             <div className={style.leftCard}>
                 {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
                 <div className={props.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
