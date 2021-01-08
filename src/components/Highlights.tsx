@@ -4,12 +4,16 @@ import { GetIcon } from '../icons/iconController'
 import { makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
 import { wrapString } from '../helperFunctions';
+import clsx from 'clsx';
 
 const barIconSize = 24;
+const barIconSizeMobile = 20;
+const maxTopicStringLength = 20;
 
 const highlightsStyle = makeStyles({
     root: {
         display: 'flex',
+        height: '40%',
         width: '80%',
         flexDirection: 'column'
     },
@@ -29,8 +33,9 @@ const highlightsStyle = makeStyles({
     containerMobile: { 
         display: 'flex',
         flexDirection: 'column',
+        height: '100%',
         width: '100%',
-        justifyContent: 'space-between'
+        justifyContent: 'flex-start'
     },
     block: {
         display: 'flex',
@@ -78,12 +83,16 @@ const highlightsStyle = makeStyles({
         paddingBottom: 5
     },
     iconKnowledge: {
-        width: barIconSize,
         fill: KnowitColors.white
     },
     iconMotivation: {
-        width: barIconSize,
         fill: KnowitColors.darkBrown
+    },
+    iconSize: {
+        width: barIconSize
+    },
+    iconSizeMobile: {
+        width: barIconSizeMobile
     },
     topic: {
         width: '100%',
@@ -96,41 +105,48 @@ const highlightsStyle = makeStyles({
         fontSize: 12,
         whiteSpace: 'pre-wrap'
     },
-    bulletKnowledge: {
+    bullet: {
         display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bulletSize: {
         width: barIconSize * 2,
         height: barIconSize * 2,
         borderRadius: barIconSize,
-        justifyContent: 'center',
-        alignItems: 'center',
+    },
+    bulletSizeMobile: {
+        width: barIconSizeMobile * 2,
+        height: barIconSizeMobile * 2,
+        borderRadius: barIconSizeMobile,
+    },
+    bulletColorKnowledge: {
         backgroundColor: KnowitColors.darkGreen
     },
-    bulletMotivation: {
-        display: 'flex',
-        width: barIconSize * 2,
-        height: barIconSize * 2,
-        borderRadius: barIconSize,
-        justifyContent: 'center',
-        alignItems: 'center',
+    bulletColorMotivation: {
         backgroundColor: KnowitColors.lightGreen
     },
     bar: {
         position: 'absolute',
         zIndex: 0,
-        width: '30%',
-        height: barIconSize,
-        borderRadius: barIconSize / 2,
-        marginTop: barIconSize / 2,
         backgroundColor: KnowitColors.beige
     },
-    barMobile: {
-        position: 'absolute',
-        zIndex: 0,
+    barSize: {
         width: '80%',
         height: barIconSize,
         borderRadius: barIconSize / 2,
         marginTop: barIconSize / 2,
-        backgroundColor: KnowitColors.beige
+    },
+    barSizeMobile: {
+        width: '100%',
+        height: barIconSizeMobile,
+        borderRadius: barIconSizeMobile / 2,
+        marginTop: barIconSizeMobile / 2,
+    },
+    barWrapper: {
+        height: '100%',
+        width: '100%',
+        position: 'relative'
     },
     hidden: {
         display: "none"
@@ -186,18 +202,20 @@ export default function Highlights({...props }: HighlightsProps) {
         if(!motivationAboveCutoff) return <Fragment />;
         if(!motivationAboveCutoff[0]) return <Fragment />;
         return (
-            <div className={props.isMobile ? style.listMobile : style.list}>
-                <div className={props.isMobile ? style.barMobile : style.bar}/>
-                {motivationAboveCutoff
-                    .map((el, i) =>
-                        <div key={i} className={style.listitem}>
-                            <div className={style.bulletMotivation}>
-                                <div className={style.iconMotivation}>{GetIcon(false, el.icon)}</div>
+            <div className={style.barWrapper}>
+                <div className={props.isMobile ? style.listMobile : style.list}>
+                <div className={clsx(style.bar, props.isMobile ? style.barSizeMobile : style.barSize)}/>
+                    {motivationAboveCutoff
+                        .map((el, i) =>
+                            <div key={i} className={style.listitem}>
+                                <div className={clsx(style.bullet, style.bulletColorMotivation, props.isMobile ? style.bulletSizeMobile : style.bulletSize)}>
+                                    <div className={clsx(style.iconMotivation, props.isMobile ? style.iconSizeMobile : style.iconSize)}>{GetIcon(false, el.icon)}</div>
+                                </div>
+                                <div className={style.topic}>{wrapString(el.topic, maxTopicStringLength).join('\n')}</div>
                             </div>
-                            <div className={style.topic}>{wrapString(el.topic, 15).join('\n')}</div>
-                        </div>
-                    )
-                }
+                        )
+                    }
+                </div>
             </div>
         );
     };
@@ -206,18 +224,20 @@ export default function Highlights({...props }: HighlightsProps) {
         if(!knowledgeAboveCutoff) return <Fragment />;
         if(!knowledgeAboveCutoff[0]) return <Fragment />;
         return (
-            <div className={props.isMobile ? style.listMobile : style.list}>
-                <div className={props.isMobile ? style.barMobile : style.bar}/>
-                {knowledgeAboveCutoff
-                    .map((el, i) =>
-                        <div key={i} className={style.listitem}>
-                            <div className={style.bulletKnowledge}>
-                                <div className={style.iconKnowledge}>{GetIcon(true, el.icon)}</div>
+            <div className={style.barWrapper}>
+                <div className={props.isMobile ? style.listMobile : style.list}>
+                <div className={clsx(style.bar, props.isMobile ? style.barSizeMobile : style.barSize)}/>
+                    {knowledgeAboveCutoff
+                        .map((el, i) =>
+                            <div key={i} className={style.listitem}>
+                                <div className={clsx(style.bullet, style.bulletColorKnowledge, props.isMobile ? style.bulletSizeMobile : style.bulletSize)}>
+                                    <div className={clsx(style.iconKnowledge, props.isMobile ? style.iconSizeMobile : style.iconSize)}>{GetIcon(true, el.icon)}</div>
+                                </div>
+                                <div className={style.topic}>{wrapString(el.topic, maxTopicStringLength).join('\n')}</div>
                             </div>
-                            <div className={style.topic}>{wrapString(el.topic, 15).join('\n')}</div>
-                        </div>
-                    )
-                }
+                        )
+                    }
+                </div>
             </div>
         );
     };
