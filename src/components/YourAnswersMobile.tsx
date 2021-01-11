@@ -2,7 +2,7 @@ import { Button, ButtonBase, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { KnowitColors } from '../styles';
-import { YourAnswerProps, YourAnswerPropsMobile } from '../types';
+import { YourAnswerProps } from '../types';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
 import { MenuButton, Panel } from './Content';
