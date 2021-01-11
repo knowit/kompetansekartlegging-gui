@@ -514,6 +514,7 @@ const Content = ({...props}: ContentProps) => {
                         answerEditMode={answerEditMode}
                         isMobile={props.isMobile}
                         alerts={alerts}
+                        checkIfCategoryIsSubmitted={checkIfCategoryIsSubmitted}
                     />
                 );
             case Panel.GroupLeader:
@@ -531,7 +532,7 @@ const Content = ({...props}: ContentProps) => {
     return (
             <div className={props.isMobile ? mobileStyle.root : style.root}>
                 {
-                    props.isMobile ? <NavBarMobile menuButtons={setUpMobileMenu()}/> : <div className={style.menu}>{setupDesktopMenu()}</div>
+                    props.isMobile ? <NavBarMobile menuButtons={setUpMobileMenu()} activePanel={activePanel}/> : <div className={style.menu}>{setupDesktopMenu()}</div>
                 } 
                 <div className={props.isMobile ? mobileStyle.panel : style.panel}>{setupPanel()}</div>
                 <AlertDialog

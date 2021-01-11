@@ -79,6 +79,14 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
     // const handleDrawerToggle = () => {
     //   setMobileOpen(!mobileOpen);
     // };
+    const navbarHeader = () => {
+
+        switch (props.activePanel) {
+            case 0: return "Oversikt";
+            case 1: return "Dine svar";
+            default: return ""
+        }
+    }
 
     const toggleDrawer = (open: boolean) => (
         event: React.KeyboardEvent | React.MouseEvent,
@@ -125,8 +133,7 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
                     <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap className={style.headerText}>
-                        {/* AKTIV */}
-                        {/* {props.currentSiteName} */}
+                        {navbarHeader()}
                     </Typography>
                 </Toolbar> 
             </AppBar>

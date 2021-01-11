@@ -1,4 +1,4 @@
-import { Panel } from "./components/Content";
+import { MenuButton, Panel } from "./components/Content";
 import { AlertType } from "./components/AlertNotification";
 
 export type AnswerData = {
@@ -322,35 +322,15 @@ export type YourAnswerProps = {
     setAnswerEditMode: (editMode: boolean) => void,
     answerEditMode: boolean,
     isMobile: boolean,
-    alerts: AlertState | undefined
+    alerts: AlertState | undefined,
+    checkIfCategoryIsSubmitted:(buttonType: MenuButton, category?: string | undefined) => void
 };
 
 export interface AlertState {
     qidMap: Map<string, AlertType>,
     categoryMap: Map<string, number>
 }
-export type YourAnswerPropsMobile = {
-    activePanel: Panel,
-    createUserForm: () => void,
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
-    formDefinition: FormDefinition | null,
-    answers: AnswerData[],
-    submitFeedback: string,
-    changeActiveCategory: (newCategoryIndex: string) => void,
-    categories: string[],
-    activeCategory: string,
-    setAnswerEditMode: (editMode: boolean) => void,
-    answerEditMode: boolean,
-    toggleCard: () => void,
-    getCategoryButtons: (style : any) => JSX.Element[],
-    alertDialogOpen: boolean,
-    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
-    isCategorySubmitted: boolean,
-    clickedCategory: string,
-    setAlertDialogOpen: (alertDialogOpen: boolean) => void,
-    isMobile: boolean
-    alerts: AlertState | undefined
-};
+
 
 export type HighlightsProps = {
     isMobile: boolean,
@@ -382,18 +362,8 @@ export type NavBarPropsDesktop = {
 }
 
 export type NavBarPropsMobile = {
-    menuButtons : JSX.Element[]
-
-
-    // handleDeleteAnswers: (event: React.MouseEvent<EventTarget>) => void,
-    // handleConfirmDelete: (event: React.MouseEvent<EventTarget>) => void,
-    // handleDisplayAnswers: (event: React.MouseEvent<EventTarget>) => void,
-    // handleCloseSignout: (event: React.MouseEvent<EventTarget>) => void,
-    // handleCloseAlert: () => void,
-    // anchorRef: React.RefObject<HTMLButtonElement>,
-    // userName: string,
-    // userPicture: string,
-    // deleteAlertOpen: boolean,
+    menuButtons : JSX.Element[],
+    activePanel: Panel,
 }
 
 

@@ -1,11 +1,12 @@
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, ButtonBase, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { KnowitColors } from '../styles';
-import { YourAnswerPropsMobile } from '../types';
+import { YourAnswerProps, YourAnswerPropsMobile } from '../types';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
-import { Panel } from './Content';
+import { MenuButton, Panel } from './Content';
+import { AlertNotification, AlertType } from './AlertNotification';
 
 
 const cardCornerRadius: number = 40;
@@ -32,7 +33,7 @@ const yourAnswersStyleMobile = makeStyles({
     },
     form: {
         width: '100%',
-        overflowY: 'auto',
+        // overflowY: 'auto',
         height: '100%'
     },
     categoryList: {
@@ -47,14 +48,17 @@ const yourAnswersStyleMobile = makeStyles({
         width: '100%'
     },
     categoryListInner: {
-        marginLeft: 10,
-        textAlign: 'center'
+        // marginLeft: 10,
+        textAlign: 'center',
+        display: "flex",
+        flexDirection: "column"
     },
     buttonGeneral: {
         overflow: 'wrap',
         fontSize: 13,
         fontWeight: 'bolder',
-        border: 'none'
+        border: 'none',
+        justifyContent: 'left'
     },
     categoryButton: {
         width: '100%',
@@ -159,21 +163,62 @@ const yourAnswersStyleMobile = makeStyles({
     },
     yourAnswersMobileContainer: {
         height: '100%'
-    }
+    },
+    menuButtonActive: {
+        background: KnowitColors.white,
+    },
+    MenuButton: {
+        // borderTopLeftRadius: cardCornerRadius,
+        // borderBottomLeftRadius: cardCornerRadius,
+        '&:hover': {
+            background: KnowitColors.white
+        },
+        overflow: 'wrap',
+        fontSize: 13,
+        fontWeight: 'bolder',
+        border: 'none',
+        justifyContent: 'left',
+        borderRadius: '0px 17px 17px 0px'
+
+    },
 });
 
 
-export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
+export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
     const style = yourAnswersStyleMobile();
 
+    const getCategoryButtons = () => {
+        let buttons: JSX.Element[] = [];
+
+        const categories = props.categories.map((cat) => {
+            return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
+        })
+
+        categories.forEach((category, index) => {
+            buttons.push(
+                <Button
+                    key={category.text}
+                    className={clsx(style.MenuButton, props.activeCategory === category.text ? style.menuButtonActive : "",
+                        props.activePanel === category.activePanel ? "" : style.hidden)}
+                    onClick={() => { props.checkIfCategoryIsSubmitted(category.buttonType, category.text) }}
+                >
+                    <div className={clsx(style.buttonText)}>{index + 1}. {category.text}</div>
+                    {props.alerts?.categoryMap.has(category.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={props.alerts.categoryMap.get(category.text)}/> : ""}
+                </Button>
+            )
+        });
+        return buttons;
+    }
+    
+
     return (
-        <div className={style.yourAnswersMobileContainer}>
+        <div className={props.activePanel === Panel.MyAnswers ? style.yourAnswersMobileContainer : style.hidden}>
             <div className={style.leftCard}>
                 {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
                 <div className={props.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
                     <div className={style.categoryListInner}>
                         
-                        {props.getCategoryButtons(style)}
+                        {getCategoryButtons()}
                     </div>
                 </div>
             </div>
