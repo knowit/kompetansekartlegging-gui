@@ -123,7 +123,7 @@ const Content = ({...props}: ContentProps) => {
         let alerts = new Map<string, AlertType>();
         let catAlerts = new Map<string, number>();
         for (let answer of answers) {
-            if (answer.motivation  === -1 || answer.motivation === -1) {
+            if (answer.motivation  === -1 || answer.knowledge === -1) {
                 alerts.set(answer.questionId, AlertType.Incomplete);
                 let numAlerts = catAlerts.get(answer.category);
                 if (numAlerts)
