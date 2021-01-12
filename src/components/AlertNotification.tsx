@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import UpdateIcon from '@material-ui/icons/Update';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import clsx from 'clsx';
 
 const useStyles = makeStyles({
@@ -15,9 +18,10 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: KnowitColors.fuchsia,
-        color: KnowitColors.black,
-        fontSize: 16,
+        backgroundColor: KnowitColors.burgunder,
+        color: KnowitColors.white,
+        fontWeight: 'bold',
+        fontSize: 11,
         fontFamily: 'Arial'
     },
     bulbPositionAbsolute: {
@@ -28,8 +32,8 @@ const useStyles = makeStyles({
         width: 24,
     },
     sizeMenu: {
-        height: 28,
-        width: 28,
+        height: 24,
+        width: 24,
     }
 });
 
@@ -56,7 +60,7 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
             return (
                 <div className={classes.root}>
                     <Tooltip title={props.message}>
-                        <div aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}/>
+                        <RefreshIcon aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}/>
                     </Tooltip>
                 </div>
             );

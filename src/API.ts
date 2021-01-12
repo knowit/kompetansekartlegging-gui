@@ -100,7 +100,7 @@ export type CreateQuestionAnswerInput = {
   knowledge: number,
   motivation: number,
   environmentID: string,
-  formDefinitionID: string,
+  formDefinitionID: string
 };
 
 export type CreateFormDefinitionInput = {
@@ -390,6 +390,7 @@ export type CustomUserFormByCreatedAtQuery = {
           id: string,
           knowledge: number,
           motivation: number,
+          updatedAt: string,
           question:  {
             __typename: "Question",
             id: string,
