@@ -323,7 +323,8 @@ export type YourAnswerProps = {
     answerEditMode: boolean,
     isMobile: boolean,
     alerts: AlertState | undefined,
-    checkIfCategoryIsSubmitted:(buttonType: MenuButton, category?: string | undefined) => void
+    checkIfCategoryIsSubmitted:(buttonType: MenuButton, category?: string | undefined) => void,
+    collapseMobileCategories: boolean
 };
 
 export interface AlertState {

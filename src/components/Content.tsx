@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
@@ -484,6 +484,8 @@ const Content = ({...props}: ContentProps) => {
 
         return listItems;
     }
+
+    const mobileNavRef = useRef<HTMLInputElement>(null);
     
     //TODO: Remove commonCardProps from desktop version (keep for mobile for now)
     const setupPanel = (): JSX.Element => {
@@ -515,6 +517,7 @@ const Content = ({...props}: ContentProps) => {
                         isMobile={props.isMobile}
                         alerts={alerts}
                         checkIfCategoryIsSubmitted={checkIfCategoryIsSubmitted}
+                        collapseMobileCategories={collapseMobileCategories}
                     />
                 );
             case Panel.GroupLeader:
@@ -528,9 +531,21 @@ const Content = ({...props}: ContentProps) => {
         }
         return <div></div>;
     };
+
+    const handleScroll = () => {
+        console.log("SCROLl")
+        console.log(mobileNavRef.current?.scrollTop)
+        if (mobileNavRef.current?.scrollTop !== undefined) {
+            if (mobileNavRef.current?.scrollTop > 57) {
+                console.log("SETTRUE")
+                setCollapseMobileCategories(true)
+            }
+        }
+    }
+    const [collapseMobileCategories, setCollapseMobileCategories] = useState<boolean>(false);
     
     return (
-            <div className={props.isMobile ? mobileStyle.root : style.root}>
+            <div className={props.isMobile ? mobileStyle.root : style.root} onScroll={() => handleScroll()} ref={mobileNavRef}>
                 {
                     props.isMobile ? <NavBarMobile menuButtons={setUpMobileMenu()} activePanel={activePanel}/> : <div className={style.menu}>{setupDesktopMenu()}</div>
                 } 

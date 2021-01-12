@@ -45,7 +45,8 @@ const yourAnswersStyleMobile = makeStyles({
         marginBottom: "8px",
     },
     leftCard: {
-        width: '100%'
+        width: '100%',
+        overflowY: 'auto'
     },
     categoryListInner: {
         // marginLeft: 10,
@@ -209,11 +210,15 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
         });
         return buttons;
     }
+
+    useEffect(() => {
+        console.log("COLLAPSE")
+    },[props.collapseMobileCategories])
     
 
     return (
         <div className={props.activePanel === Panel.MyAnswers ? style.yourAnswersMobileContainer : style.hidden}>
-            <div className={style.leftCard}>
+            <div className={style.leftCard} >
                 {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
                 <div className={props.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
                     <div className={style.categoryListInner}>
