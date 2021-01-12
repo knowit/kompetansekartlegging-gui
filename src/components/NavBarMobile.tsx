@@ -1,5 +1,5 @@
 
-import { AppBar, Toolbar, IconButton, Typography, List, ListItem, ListItemText } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, List } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { KnowitColors } from '../styles';
@@ -20,21 +20,12 @@ const navbarStyles = makeStyles((theme) => ({
           flexShrink: 0,
         },
     },
-    drawerPaper: {
-        width: drawerWidth,
-      },
     menuButton: {
         marginRight: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
     },
     root: {
         flexGrow: 1,
         zIndex: 100
-    },
-    navigation: {
-        flexGrow: 1,
     },
     logoutButton: {
         marginRight: theme.spacing(2),
@@ -111,7 +102,6 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-            {/* TODO: mappe denne ut heller */}
            <List>
             {props.menuButtons}
           </List>
@@ -137,8 +127,6 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
                     </Typography>
                 </Toolbar> 
             </AppBar>
-
-            {/* <nav className={style.drawer} aria-label="mailbox folders"> */}
                 <SwipeableDrawer
                     disableBackdropTransition={!isIOS} 
                     disableDiscovery={isIOS}
@@ -149,7 +137,6 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
                 >
                     {list()}
                 </SwipeableDrawer>
-            {/* </nav> */}
         </div>
     );
 }
