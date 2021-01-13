@@ -157,6 +157,7 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
             id
             knowledge
             motivation
+            updatedAt
             question {
               id
               text
