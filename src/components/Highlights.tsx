@@ -204,7 +204,7 @@ export default function Highlights({...props }: HighlightsProps) {
     };
 
     const createMotivationHighlights = (): JSX.Element => {
-        if(!motivationAboveCutoff || !motivationAboveCutoff[0]) {
+        if(motivationAboveCutoff.length === 0) {
             return (
                 <div className={style.barWrapper}>
                     <div className={clsx(style.bar, props.isMobile ? style.barSizeMobile : style.barSize)}>Her kommer dine topp-ambisjoner</div>
@@ -230,7 +230,7 @@ export default function Highlights({...props }: HighlightsProps) {
     };
 
     const createKnowledgeHighlights = (): JSX.Element => {
-        if(!knowledgeAboveCutoff || !knowledgeAboveCutoff[0]) {
+        if(knowledgeAboveCutoff.length === 0) {
             return (
                 <div className={style.barWrapper}>
                     <div className={clsx(style.bar, props.isMobile ? style.barSizeMobile : style.barSize)}>Her kommer dine topp-styrker</div>
@@ -255,19 +255,22 @@ export default function Highlights({...props }: HighlightsProps) {
         );
     };
 
-    return (
-        <div className={style.root}>
-            <div className={props.isMobile ? style.hidden : style.title}>FOKUSOMRÅDER</div>
-        <div className={props.isMobile ? style.containerMobile : style.container}>
-            <div className={style.block}>
-                <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP STYRKER</div>
-                    {createKnowledgeHighlights()}
+    if (props.answers.length === 0)
+        return <Fragment/>
+    else 
+        return (
+            <div className={style.root}>
+                <div className={props.isMobile ? style.hidden : style.title}>FOKUSOMRÅDER</div>
+            <div className={props.isMobile ? style.containerMobile : style.container}>
+                <div className={style.block}>
+                    <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP STYRKER</div>
+                        {createKnowledgeHighlights()}
+                </div>
+                <div className={style.block}>
+                    <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP AMBISJONER</div>
+                        {createMotivationHighlights()}
+                </div>
+                </div>
             </div>
-            <div className={style.block}>
-                <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP AMBISJONER</div>
-                    {createMotivationHighlights()}
-            </div>
-            </div>
-        </div>
-    );
+        );
 };
