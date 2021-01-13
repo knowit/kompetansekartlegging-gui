@@ -64,35 +64,6 @@ export const FontSettings = makeStyles({
     }
 });
 
-export const ValueSlider = withStyles({
-    thumb: {
-        height: 28,
-        width: 28,
-        backgroundColor: KnowitColors.lightGreen,
-        marginTop: -14,
-        marginLeft: -14
-    },
-    valueLabel: {
-        left: 'calc(-50% + 12px)',
-        top: '30%',
-        '& *': {
-            background: 'transparent',
-            color: KnowitColors.black,
-            fontWeight: "bold"
-        }
-    },
-    track: {
-        height: 2,
-        opacity: 1,
-        backgroundColor: KnowitColors.darkGreen
-    },
-    rail: {
-        height: 2,
-        opacity: 1,
-        backgroundColor: KnowitColors.darkGreen
-    }
-})(Slider);
-
 type ZProps = {
     zIndex: number;
   };
