@@ -52,7 +52,7 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
             return (
                 <div className={classes.root}>
                     <Tooltip title={props.message}>
-                        <div aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}>!</div>
+                        <div aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}>↻</div>
                     </Tooltip>
                 </div>
             );
@@ -60,7 +60,7 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
             return (
                 <div className={classes.root}>
                     <Tooltip title={props.message}>
-                        <RefreshIcon aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}/>
+                        <UpdateIcon aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}/>
                     </Tooltip>
                 </div>
             );
