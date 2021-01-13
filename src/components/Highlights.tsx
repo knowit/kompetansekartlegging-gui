@@ -129,7 +129,12 @@ const highlightsStyle = makeStyles({
     bar: {
         position: 'absolute',
         zIndex: 0,
-        backgroundColor: KnowitColors.beige
+        backgroundColor: KnowitColors.beige,
+        color: KnowitColors.darkBrown,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 12
     },
     barSize: {
         width: '80%',
@@ -199,8 +204,12 @@ export default function Highlights({...props }: HighlightsProps) {
     };
 
     const createMotivationHighlights = (): JSX.Element => {
-        if(!motivationAboveCutoff) return <Fragment />;
-        if(!motivationAboveCutoff[0]) return <Fragment />;
+        if(!motivationAboveCutoff || !motivationAboveCutoff[0]) {
+            return (
+                <div className={style.barWrapper}>
+                    <div className={clsx(style.bar, props.isMobile ? style.barSizeMobile : style.barSize)}>Her kommer dine topp-ambisjoner</div>
+                </div>
+        )};
         return (
             <div className={style.barWrapper}>
                 <div className={props.isMobile ? style.listMobile : style.list}>
@@ -221,8 +230,12 @@ export default function Highlights({...props }: HighlightsProps) {
     };
 
     const createKnowledgeHighlights = (): JSX.Element => {
-        if(!knowledgeAboveCutoff) return <Fragment />;
-        if(!knowledgeAboveCutoff[0]) return <Fragment />;
+        if(!knowledgeAboveCutoff || !knowledgeAboveCutoff[0]) {
+            return (
+                <div className={style.barWrapper}>
+                    <div className={clsx(style.bar, props.isMobile ? style.barSizeMobile : style.barSize)}>Her kommer dine topp-styrker</div>
+                </div>
+        )};
         return (
             <div className={style.barWrapper}>
                 <div className={props.isMobile ? style.listMobile : style.list}>
