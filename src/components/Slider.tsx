@@ -43,13 +43,37 @@ const ValueSlider = withStyles({
         borderColor: KnowitColors.black,
         borderRadius: 10,
         marginTop: -3,
-        marginLeft: -2
+        marginLeft: -2,
+        alignSelf: 'center'
     },
     markActive: {
         opacity: 1,
         backgroundColor: KnowitColors.black,
+    },
+    '@global': {
+        'span:nth-child(4)': {
+            height: 30,
+        },
+        'span:nth-child(14)': {
+            height: 30,
+        },
+        'span:nth-child(24)': {
+            height: 30,
+        },
+        'span:nth-child(34)': {
+            height: 30,
+        },
+        'span:nth-child(44)': {
+            height: 30,
+        },
+        'span:nth-child(54)': {
+            height: 30,
+        },
+    },
+    root: {
+        display: 'flex'
     }
-})(CoreSlider);
+}, {name: 'MuiSlider'}) (CoreSlider);
 
 const marks = new Array(51).fill(undefined).map((v, i) => { return { value: (i / 10) || 0 } });
 // [

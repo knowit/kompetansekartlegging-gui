@@ -52,11 +52,12 @@ const questionStyleDesktop = makeStyles({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 30
+        height: 30,
+        paddingBottom: 10
     },
     icon: {
         height: '100%',
-        fill: KnowitColors.darkGreen
+        fill: KnowitColors.darkBrown
     },
     smallBold: {
         fontSize: 14,
