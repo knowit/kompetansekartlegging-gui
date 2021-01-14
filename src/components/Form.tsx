@@ -4,6 +4,7 @@ import { KnowitColors } from '../styles';
 import { AnswerProps } from '../types';
 import { Category } from './Category';
 import Question from './Question';
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 
 const FormStyleDesktop = makeStyles({
     root: {
@@ -21,20 +22,21 @@ const FormStyleDesktop = makeStyles({
         justifyContent: 'space-around'
     },
     submitButton: {
-        padding: 10,
         paddingLeft: 20,
         paddingRight: 20,
         borderRadius: 18,
         fontWeight: 'bold',
         textTransform: "none",
         color: KnowitColors.black,
-        backgroundColor: KnowitColors.lightGreen,
+        backgroundColor: KnowitColors.white,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderColor: KnowitColors.lightGreen,
         '&:hover': {
-            background: KnowitColors.lightGreen
+            background: KnowitColors.ecaluptus
         }
     },
     submitAndProceedButton: {
-        padding: 10,
         paddingLeft: 20,
         paddingRight: 20,
         borderRadius: 18,
@@ -43,8 +45,11 @@ const FormStyleDesktop = makeStyles({
         color: KnowitColors.black,
         backgroundColor: KnowitColors.lightGreen,
         '&:hover': {
-            background: KnowitColors.lightGreen
+            background: KnowitColors.ecaluptus
         }
+    },
+    buttonIcon: {
+        paddingLeft: 10
     },
 });
 
@@ -87,6 +92,9 @@ const FormStyleMobile = makeStyles({
             background: KnowitColors.darkGreen
         }
     },
+    buttonIcon: {
+        paddingLeft: 10
+    },
 });
 
 export const Form = ({...props}: AnswerProps) => {
@@ -123,14 +131,15 @@ export const Form = ({...props}: AnswerProps) => {
         };
         return questions;
     };
-
+    
     const handleClickSubmit = () => {
-        props.createUserForm();
+        // TODO pending other PR: check isCategorySubmitted so new user form isn't generated when nothing has changed
+            props.createUserForm();
     }
 
     const handleClickProceed = () => {
-        props.submitAndProceed();
-
+            props.submitAndProceed();
+            
     }
 
     //TODO: Return only used category, not everyone
@@ -155,7 +164,7 @@ export const Form = ({...props}: AnswerProps) => {
                         ? <Button 
                             onClick={handleClickProceed} 
                             className={style.submitAndProceedButton} 
-                            >Lagre og gå videre</Button>
+                            >Lagre og gå videre<ArrowForwardRoundedIcon className={style.buttonIcon}/></Button>
                         : ""
                     }
                 </div>
