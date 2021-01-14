@@ -110,7 +110,7 @@ const Slider = ({ ...props }: SliderProps) => {
             value={sliderValue}
             onChange={sliderChanged}
             onChangeCommitted={sliderCommitted}
-            step={0.01}
+            step={0.1}
             max={5}
             marks={marks}
         />
