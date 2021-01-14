@@ -1,11 +1,12 @@
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, ButtonBase, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { KnowitColors } from '../styles';
-import { YourAnswerPropsMobile } from '../types';
+import { YourAnswerProps } from '../types';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
-import { Panel } from './Content';
+import { MenuButton, Panel } from './Content';
+import { AlertNotification, AlertType } from './AlertNotification';
 
 
 const cardCornerRadius: number = 40;
@@ -18,10 +19,17 @@ const yourAnswersStyleMobile = makeStyles({
     answerBox: {
         display: 'flex',
         flexDirection: 'column',
-        // height: 'fit-content',
-        // marginTop: '40px',
+        height: '100%',
         width: '100%',
     },
+    answerBoxScrolled: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        width: '100%',
+        marginTop: 20
+    },
+
     answerView: {
         marginRight: 10,
         marginLeft: 10,
@@ -29,33 +37,38 @@ const yourAnswersStyleMobile = makeStyles({
         height: '100%',
         borderRadius: 10,
         background: KnowitColors.white,
-        position: 'absolute'
+        // position: 'absolute'
     },
     form: {
         width: '100%',
-        overflowY: 'auto',
+        // overflowY: 'auto',
         height: '100%'
     },
     categoryList: {
         height: 'min-content',
-        backgroundColor: KnowitColors.greyGreen,
+        backgroundColor: KnowitColors.beige,
         borderRadius: '0px 0px 35px 35px',
         paddingBottom: '25px',
         boxShadow: "0px 3px 0px grey",
         marginBottom: "8px",
     },
-    leftCard: {
-        width: '100%'
+    navigationContainer: {
+        width: '100%',
+        // position: 'fixed',
+        // top: 56,
+        // zIndex: 1
+    },
+    navigationContainerScrolled: {
+        width: '100%',
+        position: 'fixed',
+        top: 56,
+        zIndex: 2
     },
     categoryListInner: {
-        marginLeft: 10,
-        textAlign: 'center'
-    },
-    buttonGeneral: {
-        overflow: 'wrap',
-        fontSize: 13,
-        fontWeight: 'bolder',
-        border: 'none'
+        // marginLeft: 10,
+        textAlign: 'center',
+        display: "flex",
+        flexDirection: "column"
     },
     categoryButton: {
         width: '100%',
@@ -68,34 +81,6 @@ const yourAnswersStyleMobile = makeStyles({
             background: KnowitColors.white
         },
         justifyContent: 'left'
-    },
-    categoryButtonActive: {
-        backgroundColor: KnowitColors.white
-    },
-    cardHeaderOpen: {
-        display: "flex",
-        paddingTop: cardCornerRadius,
-        height: 'max-content',
-        backgroundColor: KnowitColors.greyGreen,
-    },
-    cardHeaderClosed: {
-        display: "flex",
-        height: 'max-content',
-
-        paddingTop: cardCornerRadius,
-        marginTop: -cardCornerRadius,
-        boxShadow: '0px 3px 2px gray',
-        borderRadius: '0px 0px 20px 20px',
-
-        backgroundColor: KnowitColors.greyGreen
-    },
-
-    closeButton: {
-        marginTop: "3px",
-        marginRight: "32px",
-        '&:hover': {
-            color: KnowitColors.darkGreen
-        }
     },
     catHeader: {
         display: 'flex',
@@ -135,48 +120,108 @@ const yourAnswersStyleMobile = makeStyles({
         textAlign: 'left',
         justifyContent: 'left'
     },
-    cardButton: {
-        fontWeight: "bold",
-        fontSize: 18,
-        padding: 10,
-        border: "none",
-        outline: "none",
-        backgroundColor: "transparent",
-        textAlign: "left",
-        paddingLeft: 50,
-        width: "100%"
-    },
-    bottomCardClosed: {
-        // zIndex: zIndex
-    },
-    myAnswersStyle: {
-        position: 'relative',
-        // marginTop: -cardCornerRadius,
-        // display: 'flex',
-        // flexDirection: 'row',
-        overflowY: 'auto',
+    yourAnswersMobileContainer: {
         height: '100%',
-        // zIndex: zIndex
+    },
+    menuButtonActive: {
+        background: KnowitColors.white,
+    },
+    MenuButton: {
+        '&:hover': {
+            background: KnowitColors.white
+        },
+        overflow: 'wrap',
+        fontSize: 13,
+        fontWeight: 'bolder',
+        border: 'none',
+        justifyContent: 'left',
+        borderRadius: '0px 17px 17px 0px',
+        width: 'fit-content' // todo denne kan tilbakestilles?
     },
 });
 
 
-export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
+export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
     const style = yourAnswersStyleMobile();
 
+    const getCategoryButtons = () => {
+        let buttons: JSX.Element[] = [];
+
+        const categories = props.categories.map((cat) => {
+            return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
+        })
+
+        categories.forEach((category, index) => {
+            buttons.push(
+                <Button
+                    key={category.text}
+                    className={clsx(style.MenuButton, props.activeCategory === category.text ? style.menuButtonActive : "",
+                        props.activePanel === category.activePanel ? "" : style.hidden)}
+                    onClick={() => { props.checkIfCategoryIsSubmitted(category.buttonType, category.text) }}
+                >
+                    <div className={clsx(style.buttonText)}>{index + 1}. {category.text}</div>
+                    {props.alerts?.categoryMap.has(category.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={props.alerts.categoryMap.get(category.text)}/> : ""}
+                </Button>
+            )
+        });
+        return buttons;
+    }
+
+    const getCategoryButtonsCollapsed = () => {
+        let buttons: JSX.Element[] = [];
+
+        const categories = props.categories.map((cat) => {
+            return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
+        })
+
+        categories.forEach((category, index) => {
+            if (category.text === props.activeCategory) {
+                buttons.push(
+                    <Button
+                        key={category.text}
+                        className={clsx(style.MenuButton, props.activeCategory === category.text ? style.menuButtonActive : "",
+                            props.activePanel === category.activePanel ? "" : style.hidden)}
+                        onClick={() => { props.checkIfCategoryIsSubmitted(category.buttonType, category.text) }}
+                    >
+                        <div className={clsx(style.buttonText)}>{index + 1}. {category.text}</div>
+                        {props.alerts?.categoryMap.has(category.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={props.alerts.categoryMap.get(category.text)}/> : ""}
+                    </Button>
+                )
+            }
+            
+        });
+        return buttons;
+    }
+
+    useEffect(() => {
+        console.log(props.collapseMobileCategories)
+    },[props.collapseMobileCategories])
+    
+
     return (
-        <div>
-            <div className={style.leftCard}>
+        <div className={props.activePanel === Panel.MyAnswers ? style.yourAnswersMobileContainer : style.hidden}>
+            <div className={style.navigationContainer} ref={props.categoryNavRef}>
                 {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
                 <div className={props.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
                     <div className={style.categoryListInner}>
                         
-                        {props.getCategoryButtons(style)}
+                        {getCategoryButtons()}
+                    </div>
+                </div>
+            </div>
+            <div className={props.collapseMobileCategories ? style.navigationContainerScrolled : style.hidden}>
+            {/* <div className={style.navigationContainerScrolled} ref={props.categoryNavRef}> */}
+
+                {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
+                <div className={props.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
+                    <div className={style.categoryListInner}>
+                        
+                        {getCategoryButtonsCollapsed()}
                     </div>
                 </div>
             </div>
             {/* <div className={props.commonCardProps.active ? style.answerBox : style.hidden}> */}
-            <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                     
+            <div className={props.activePanel === Panel.MyAnswers ? (props.collapseMobileCategories ? style.answerBoxScrolled : style.answerBox) : style.hidden}>                     
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
                         <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Oppdater</Button>

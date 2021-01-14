@@ -45,6 +45,7 @@ type Category @model {
     id: ID!
     text: String!
     description: String
+    index: Int
 }
 
 type CreateQuestionAnswerResult {

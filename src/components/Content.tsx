@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState, Alert } from '../types';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
@@ -7,11 +7,12 @@ import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
 import { CreateQuestionAnswerInput } from '../API';
 import { AnswerHistory } from './AnswerHistory';
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { KnowitColors } from '../styles';
 import { AlertDialog } from './AlertDialog';
 import { AlertNotification, AlertType } from './AlertNotification';
+import NavBarMobile from './NavBarMobile';
 
 const cardCornerRadius: number = 40;
 
@@ -45,12 +46,18 @@ export const contentStyleDesktop = makeStyles({
 });
 
 export const contentStyleMobile = makeStyles({
-    cardHolder: {
+    root: {
         display: 'flex',
-        // flexDirection: 'column',
-        // overflow: 'scroll',
+        flexDirection: 'column',
+        overflowY: 'scroll',
         height: '100%'
     },
+    panel: {
+        background: KnowitColors.white,
+        height: '100%',
+        width: '100%',
+        marginTop: 56
+    }
 });
 
 const contentStyle = makeStyles({
@@ -277,32 +284,45 @@ const Content = ({...props}: ContentProps) => {
     }
 
     useEffect(() => {
-        setActiveCategory(categories[0]);
-        setAnswerEditMode(false);
-    }, [categories]);
+        console.log("formDefinition")
 
-    useEffect(() => {
-        updateCategoryAlerts();
-    }, [answers]);
-    
-    useEffect(() => {
-        fetchLastFormDefinition();
-        setSubmitFeedback("");
-    }, []);
-
-    useEffect(() => {
         getUserAnswers();
         setAnswers(createAnswers());
         setCategories(createCategories());
     }, [formDefinition]);
 
     useEffect(() => {
+        console.log("categories")
+        setActiveCategory(categories[0]);
+        setAnswerEditMode(false);
+    }, [categories]);
+
+    useEffect(() => {
+        console.log("answers")
+
+        updateCategoryAlerts();
+    }, [answers]);
+    
+    useEffect(() => {
+        console.log("INITIAL1")
+
+        fetchLastFormDefinition();
+        setSubmitFeedback("");
+    }, []);
+
+    
+
+    useEffect(() => {
+        console.log("userAnswers")
+
         setAnswers(createAnswers());
 
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
     }, [userAnswers]);
 
     useEffect(() => {
+        console.log("props.answerHistoryOpen")
+
         if (props.answerHistoryOpen) {
             fetchUserFormsAndOpenView() 
         } else {
@@ -311,6 +331,8 @@ const Content = ({...props}: ContentProps) => {
     }, [props.answerHistoryOpen]);
 
     useEffect(() => {
+        console.log("isCategorySubmitted")
+
         window.onbeforeunload = confirmExit;
         function confirmExit() {
             if (!isCategorySubmitted) {
@@ -396,10 +418,24 @@ const Content = ({...props}: ContentProps) => {
         };
         return "";
     };
-    
-    const setupMenu = (): JSX.Element[] => {
-        let buttons: JSX.Element[] = [];
-        /**
+
+
+    const getTotalAlertsElement = (): JSX.Element => {
+        let totalAlerts = 0;
+        alerts?.categoryMap.forEach((numAlerts: number, category: string) => {
+            totalAlerts += numAlerts;
+        });
+        if (totalAlerts > 0)
+            return <AlertNotification
+                type={AlertType.Multiple}
+                message="Totalt ubesvarte eller utdaterte spørsmål"
+                size={totalAlerts}
+                />;
+        else
+            return <Fragment/>;
+    }
+
+    /**
          *  Setup for the button array structure:
          * 
          *  text: string - The text on the button
@@ -411,61 +447,91 @@ const Content = ({...props}: ContentProps) => {
          * 
          *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
          */
-        const buttonSetup = [
-            { text: "Oversikt", buttonType: MenuButton.Overview },
-            { text: "Mine Svar", buttonType: MenuButton.MyAnswers, subButtons: categories.map((cat) => {
-                    return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
-                })
-            },
-            { text: "Test", buttonType: MenuButton.Other },
-            { text: "Parent", buttonType: MenuButton.GroupLeader, subButtons: [
-                { text: "Child 1", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
-                { text: "Child 2", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
-                { text: "Child 3", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
-            ]},
-        ]
-        
-        const getTotalAlertsElement = (): JSX.Element => {
-            let totalAlerts = 0;
-            alerts?.categoryMap.forEach((numAlerts: number, category: string) => {
-                totalAlerts += numAlerts;
-            });
-            if (totalAlerts > 0)
-                return <AlertNotification
-                    type={AlertType.Multiple}
-                    message="Totalt ubesvarte eller utdaterte spørsmål"
-                    size={totalAlerts}
-                    />;
-            else
-                return <Fragment/>;
-        }
+    const buttonSetup = [
+        { text: "Oversikt", buttonType: MenuButton.Overview },
+        { text: "Mine Svar", buttonType: MenuButton.MyAnswers, subButtons: categories.map((cat) => {
+                return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
+            })
+        },
+        { text: "Test", buttonType: MenuButton.Other },
+        { text: "Parent", buttonType: MenuButton.GroupLeader, subButtons: [
+            { text: "Child 1", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
+            { text: "Child 2", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
+            { text: "Child 3", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
+        ]},
+    ]
+
+
+    const setupDesktopMenu = (): JSX.Element[] => {
+        let buttons: JSX.Element[] = [];
         
         buttonSetup.forEach((butt) => {
-            buttons.push(<Button
-                key={butt.text}
-                className={clsx(style.MenuButton, keepButtonActive(butt.buttonType))}
-                onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, butt.subButtons ? butt.subButtons[0].text : undefined)}}>
-                    <div className={clsx(style.menuButtonText)}>{butt.text}</div>
-                    {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""}
-            </Button>);
+            buttons.push(
+                <Button
+                    key={butt.text}
+                    className={clsx(style.MenuButton, keepButtonActive(butt.buttonType))}
+                    onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, undefined)}}
+                >
+                        <div className={clsx(style.menuButtonText)}>{butt.text}</div>
+                        {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""}
+                </Button>
+            );
             if(butt.subButtons){
                 butt.subButtons.forEach((butt, index) => {
-                    buttons.push(<Button
-                        key={butt.text}
-                        className={clsx(style.MenuButton, activeCategory === butt.text ? style.menuButtonActive : "",
-                            activePanel === butt.activePanel ? "" : style.hideCategoryButtons)}
-                        onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, butt.text) }}>
+                    buttons.push(
+                        <Button
+                            key={butt.text}
+                            className={clsx(style.MenuButton, activeCategory === butt.text ? style.menuButtonActive : "",
+                                activePanel === butt.activePanel ? "" : style.hideCategoryButtons)}
+                            onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, butt.text) }}
+                        >
                             <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {butt.text}</div>
                             {alerts?.categoryMap.has(butt.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={alerts.categoryMap.get(butt.text)}/> : ""}
-                    </Button>);
+                        </Button>
+                    );
                 });
             }
         });
         
         return buttons;
     };
+
+    const setUpMobileMenu = () => {
+        let listItems: JSX.Element[] = [];
+
+        buttonSetup.forEach((butt) => {
+            listItems.push(
+                <ListItem
+                    key={butt.text}
+                    className={clsx(style.MenuButton)}
+                    onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, undefined)}}
+                >
+                    <ListItemText primary={butt.text} />
+                    {/* <div className={clsx(style.menuButtonText)}>{butt.text}</div> */}
+                    {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""}
+                </ListItem>
+            );
+        });
+
+        return listItems;
+    }
+
+    const mobileNavRef = useRef<HTMLInputElement>(null);
+    const categoryNavRef = useRef<HTMLInputElement | null>(null)
+    const [collapseMobileCategories, setCollapseMobileCategories] = useState<boolean>(false);
+
+
+    const handleScroll = () => {
+        if (mobileNavRef.current?.scrollTop !== undefined && categoryNavRef.current?.clientHeight !== undefined) {
+            if (mobileNavRef.current?.scrollTop > categoryNavRef.current?.clientHeight-56) {
+                setCollapseMobileCategories(true)
+            } else {
+                setCollapseMobileCategories(false)
+            }
+        }
+    }
     
-    //TODO: Remove commonCardProps from desktop version (keep for mobile for now)
+
     const setupPanel = (): JSX.Element => {
         switch (activePanel) {
             case Panel.Overview:
@@ -494,6 +560,9 @@ const Content = ({...props}: ContentProps) => {
                         answerEditMode={answerEditMode}
                         isMobile={props.isMobile}
                         alerts={alerts}
+                        checkIfCategoryIsSubmitted={checkIfCategoryIsSubmitted}
+                        collapseMobileCategories={collapseMobileCategories}
+                        categoryNavRef={categoryNavRef}
                     />
                 );
             case Panel.GroupLeader:
@@ -507,12 +576,15 @@ const Content = ({...props}: ContentProps) => {
         }
         return <div></div>;
     };
+
+    
     
     return (
-        !props.isMobile ?
-            <div className={style.root}>
-                <div className={style.menu}>{setupMenu()}</div>
-                <div className={style.panel}>{setupPanel()}</div>
+            <div className={props.isMobile ? mobileStyle.root : style.root} onScroll={() => handleScroll()} ref={mobileNavRef}>
+                {
+                    props.isMobile ? <NavBarMobile menuButtons={setUpMobileMenu()} activePanel={activePanel}/> : <div className={style.menu}>{setupDesktopMenu()}</div>
+                } 
+                <div className={props.isMobile ? mobileStyle.panel : style.panel}>{setupPanel()}</div>
                 <AlertDialog
                     setAlertDialogOpen={setAlertDialogOpen}
                     alertDialogOpen={alertDialogOpen}
@@ -524,53 +596,8 @@ const Content = ({...props}: ContentProps) => {
                     isMobile={props.isMobile}
                 />
             </div>
-        :
-            <div className={mobileStyle.cardHolder}>
-                <Overview
-                    activePanel={activePanel}
-                    answers={answers}
-                    categories={categories}
-                    isMobile={props.isMobile}
-
-                />
-                <ScaleDescription
-                    activePanel={activePanel}
-                    isMobile={props.isMobile}
-
-                />
-                <YourAnswers
-                    activePanel={activePanel}
-                    setIsCategorySubmitted={setIsCategorySubmitted}
-                    createUserForm={createUserForm}
-                    updateAnswer={updateAnswer}
-                    formDefinition={formDefinition}
-                    answers={answers}
-                    submitFeedback={submitFeedback}
-                    changeActiveCategory={changeActiveCategory}
-                    categories={categories}
-                    activeCategory={activeCategory}
-                    setAnswerEditMode={setAnswerEditMode}
-                    answerEditMode={answerEditMode}
-                    isMobile={props.isMobile}
-                    alerts={alerts}
-                />
-                <AnswerHistory
-                    setHistoryViewOpen={props.setAnswerHistoryOpen}
-                    historyViewOpen={historyViewOpen}
-                    history={answerLog}
-                    formDefinition={formDefinition ?? undefined}
-                    isMobile={props.isMobile}
-                />
-                <AlertDialog
-                    setAlertDialogOpen={setAlertDialogOpen}
-                    alertDialogOpen={alertDialogOpen}
-                    changeActiveCategory={changeActiveCategory}
-                    clickedCategory={activeCategory}
-                    setIsCategorySubmitted={setIsCategorySubmitted}
-                    resetAnswers={resetAnswers}
-                    isMobile={props.isMobile}
-                />
-            </div>
+        
+          
     );
 };
 

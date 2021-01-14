@@ -118,8 +118,6 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
     const style = yourAnwersStyle();
 
     return (
-        // <div className={clsx(props.commonCardProps.active ? style.bottomCardOpen : style.bottomCardClosed)}>
-        //     <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>   
         <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
