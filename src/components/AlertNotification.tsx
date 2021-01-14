@@ -13,7 +13,7 @@ const useStyles = makeStyles({
         marginLeft: 10
     },
     alertBulb: {
-        position: 'absolute',
+        // position: 'absolute',
         borderRadius: '50%',
         fill: KnowitColors.fuchsia,
         backgroundColor: KnowitColors.darkBrown
