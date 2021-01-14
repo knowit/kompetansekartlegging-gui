@@ -18,6 +18,7 @@ const FormStyleDesktop = makeStyles({
         borderRadius: 10
     },
     blockButtons: {
+        padding: 20,
         display: 'flex',
         justifyContent: 'space-around'
     },
