@@ -276,6 +276,15 @@ const Content = ({...props}: ContentProps) => {
         setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
     }
 
+    const submitAndProceed = () => {
+        createUserForm();
+        let currentIndex = categories.findIndex( (cat) => cat === activeCategory);
+        if (categories.length >= currentIndex) {
+            changeActiveCategory(categories[currentIndex + 1]);
+            setAnswerEditMode(true);   
+        }
+    }
+
     useEffect(() => {
         setActiveCategory(categories[0]);
         setAnswerEditMode(false);
@@ -483,6 +492,7 @@ const Content = ({...props}: ContentProps) => {
                         activePanel={activePanel}
                         setIsCategorySubmitted={setIsCategorySubmitted}
                         createUserForm={createUserForm}
+                        submitAndProceed={submitAndProceed}
                         updateAnswer={updateAnswer}
                         formDefinition={formDefinition}
                         answers={answers}
@@ -542,6 +552,7 @@ const Content = ({...props}: ContentProps) => {
                     activePanel={activePanel}
                     setIsCategorySubmitted={setIsCategorySubmitted}
                     createUserForm={createUserForm}
+                    submitAndProceed={submitAndProceed}
                     updateAnswer={updateAnswer}
                     formDefinition={formDefinition}
                     answers={answers}

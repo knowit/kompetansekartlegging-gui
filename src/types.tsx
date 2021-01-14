@@ -231,6 +231,7 @@ export type UserFormList = {
 
 export type AnswerProps = {
     createUserForm: () => void,
+    submitAndProceed: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
@@ -314,6 +315,7 @@ export type YourAnswerProps = {
     activePanel: Panel,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     createUserForm: () => void,
+    submitAndProceed: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
@@ -340,6 +342,7 @@ export interface Alert {
 export type YourAnswerPropsMobile = {
     activePanel: Panel,
     createUserForm: () => void,
+    submitAndProceed: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
