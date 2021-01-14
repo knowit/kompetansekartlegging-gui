@@ -121,6 +121,10 @@ const Content = ({...props}: ContentProps) => {
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<AlertState>();
+    
+    function shouldComponentUpdate() {
+        return false;
+    }
 
     const updateCategoryAlerts = () => {
         let msNow = Date.now();
