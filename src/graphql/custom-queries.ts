@@ -113,6 +113,8 @@ export const formByCreatedAtt = /* GraphQL */ `
             category {
               id
               text
+              description
+              index
             }
             id
             createdAt
@@ -166,6 +168,7 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
                 id
                 text
                 description
+                index
               }
             }
           }

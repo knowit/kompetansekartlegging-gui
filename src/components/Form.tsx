@@ -57,37 +57,44 @@ const FormStyleMobile = makeStyles({
 
 export const Form = ({...props}: AnswerProps) => {
 
-    type Question = {
-        id: string,
-        text: string,
-        topic: string,
-        category: {
-            text: string
-        }
-    }
-
     const style = props.isMobile ? FormStyleMobile() : FormStyleDesktop();
 
-    const getQuestionsForCategory = (items: Question[]): JSX.Element[] => {
-        let questions: JSX.Element[] = [];
-        for(const item of items){
-            const answer = props.answers.find(a => a.questionId === item.id);
-            questions.push(
-                <Question 
-                    key={item.id} 
-                    questionId={item.id}
-                    topic={item.topic}
-                    text={item.text}
-                    updateAnswer={props.updateAnswer}
-                    knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
-                    motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
-                    setIsCategorySubmitted={props.setIsCategorySubmitted}
-                    isMobile={props.isMobile}
-                    alerts={props.alerts}
-                />
-            );
-        };
-        return questions;
+    const getQuestionsForCategory = (): JSX.Element[] => {
+        return props.questions.map(question => {
+            const answer = props.answers.find(a => a.questionId === question.id);
+            return <Question
+                key={question.id}
+                questionId={question.id}
+                topic={question.topic}
+                text={question.text}
+                updateAnswer={props.updateAnswer}
+                knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
+                motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
+                setIsCategorySubmitted={props.setIsCategorySubmitted}
+                isMobile={props.isMobile}
+                alerts={props.alerts}
+            />
+        });
+        
+        // let questions: JSX.Element[] = [];
+        // for(const item of items){
+        //     const answer = props.answers.find(a => a.questionId === item.id);
+        //     questions.push(
+        //         <Question 
+        //             key={item.id} 
+        //             questionId={item.id}
+        //             topic={item.topic}
+        //             text={item.text}
+        //             updateAnswer={props.updateAnswer}
+        //             knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
+        //             motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
+        //             setIsCategorySubmitted={props.setIsCategorySubmitted}
+        //             isMobile={props.isMobile}
+        //             alerts={props.alerts}
+        //         />
+        //     );
+        // };
+        // return questions;
     };
 
     const handleClick = () => {
@@ -96,9 +103,9 @@ export const Form = ({...props}: AnswerProps) => {
 
     //TODO: Return only used category, not everyone
     const createQuestionCategory = (): JSX.Element => {
-        if(!props.formDefinition) return <Fragment />;
-        let questions = props.formDefinition.questions.items.filter(item => item.category.text === props.activeCategory)
-            .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
+        // if (!props.formDefinition) return <Fragment />;
+        // let questions = props.formDefinition.questions.items.filter(item => item.category.text === props.activeCategory)
+        //     .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
             <Fragment>
                 {props.categories.length > 0
@@ -109,7 +116,7 @@ export const Form = ({...props}: AnswerProps) => {
                     : ""
                 }
                 <Category name={props.activeCategory} isMobile={props.isMobile}>
-                    {getQuestionsForCategory(questions)}
+                    {getQuestionsForCategory()}
                 </Category>
                 {props.categories.length > 0
                     ? <Button 

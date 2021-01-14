@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState, Alert } from '../types';
+import { Category, AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState, Alert, Question } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
@@ -111,6 +111,7 @@ const Content = ({...props}: ContentProps) => {
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
+    const [questions, setQuestions] = useState<Question[]>([]);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
@@ -150,13 +151,41 @@ const Content = ({...props}: ContentProps) => {
         setAlerts({qidMap: alerts, categoryMap: catAlerts});
     }
 
-    const createCategories = () => {
+    const createCategories = (): string[] => {
         if(!formDefinition) return [];
         if(!formDefinition?.questions.items) return [];
-        return formDefinition.questions.items
-            .map(item => item.category.text)
-            .filter((value, index, array) => array.indexOf(value) === index);
+        // console.log("Form def: ", formDefinition);
+        let categories = formDefinition.questions.items
+            .map(item => item.category)
+            .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index);
+        console.log("categories: ", categories);
+        let sorted = categories
+            .sort((a, b) => {
+                if (a.index && b.index == null) return -1;
+                if (a.index == null && b.index) return 1;
+                if (a.index && b.index) return a.index - b.index;
+                if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
+                return -1;
+            })
+            .map(category => category.text);
+        console.log("sorted categories: ", sorted);
+        return sorted;
     };
+    
+    const createQuestions = (): Question[] => {
+        if(!formDefinition) return [];
+        if(!formDefinition?.questions.items) return [];
+        let questions = formDefinition.questions.items
+            .sort((a, b) => {
+                if (a.index && b.index == null) return -1;
+                if (a.index == null && b.index) return 1;
+                if (a.index && b.index) return a.index - b.index;
+                if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
+                return -1;
+            });
+        console.log("sorted questions: ", questions);
+        return questions;
+    }
 
     const createAnswers = (): AnswerData[] => {
         if(!formDefinition) return [];
@@ -246,7 +275,7 @@ const Content = ({...props}: ContentProps) => {
 
 
             setFormDefinition(currentForm.data.formByCreatedAt.items[0]);
-        } 
+        }
     };
 
     const getUserAnswers = async () => {
@@ -294,6 +323,7 @@ const Content = ({...props}: ContentProps) => {
         getUserAnswers();
         setAnswers(createAnswers());
         setCategories(createCategories());
+        setQuestions(createQuestions());
     }, [formDefinition]);
 
     useEffect(() => {
@@ -424,7 +454,7 @@ const Content = ({...props}: ContentProps) => {
                 { text: "Child 3", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
             ]},
         ]
-        
+        console.log("Button setup: ", buttonSetup);
         const getTotalAlertsElement = (): JSX.Element => {
             let totalAlerts = 0;
             alerts?.categoryMap.forEach((numAlerts: number, category: string) => {
@@ -484,7 +514,7 @@ const Content = ({...props}: ContentProps) => {
                         setIsCategorySubmitted={setIsCategorySubmitted}
                         createUserForm={createUserForm}
                         updateAnswer={updateAnswer}
-                        formDefinition={formDefinition}
+                        questions={questions}
                         answers={answers}
                         submitFeedback={submitFeedback}
                         changeActiveCategory={changeActiveCategory}
@@ -543,7 +573,7 @@ const Content = ({...props}: ContentProps) => {
                     setIsCategorySubmitted={setIsCategorySubmitted}
                     createUserForm={createUserForm}
                     updateAnswer={updateAnswer}
-                    formDefinition={formDefinition}
+                    questions={questions}
                     answers={answers}
                     submitFeedback={submitFeedback}
                     changeActiveCategory={changeActiveCategory}
