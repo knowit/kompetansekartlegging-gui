@@ -52,17 +52,6 @@ const yourAnswersStyleMobile = makeStyles({
         boxShadow: "0px 3px 0px grey",
         marginBottom: "8px",
     },
-    categoryListScrolled: {
-        height: 'min-content',
-        backgroundColor: KnowitColors.beige,
-        borderRadius: '0px 0px 35px 35px',
-        paddingBottom: '25px',
-        boxShadow: "0px 3px 0px grey",
-        marginBottom: "8px",
-        position: 'fixed',
-        marginTop: 56,
-        zIndex: 1
-    },
     navigationContainer: {
         width: '100%',
         // position: 'fixed',
@@ -81,13 +70,6 @@ const yourAnswersStyleMobile = makeStyles({
         display: "flex",
         flexDirection: "column"
     },
-    buttonGeneral: {
-        overflow: 'wrap',
-        fontSize: 13,
-        fontWeight: 'bolder',
-        border: 'none',
-        justifyContent: 'left'
-    },
     categoryButton: {
         width: '100%',
         borderTopLeftRadius: 20,
@@ -99,34 +81,6 @@ const yourAnswersStyleMobile = makeStyles({
             background: KnowitColors.white
         },
         justifyContent: 'left'
-    },
-    categoryButtonActive: {
-        backgroundColor: KnowitColors.white
-    },
-    cardHeaderOpen: {
-        display: "flex",
-        paddingTop: cardCornerRadius,
-        height: 'max-content',
-        backgroundColor: KnowitColors.greyGreen,
-    },
-    cardHeaderClosed: {
-        display: "flex",
-        height: 'max-content',
-
-        paddingTop: cardCornerRadius,
-        marginTop: -cardCornerRadius,
-        boxShadow: '0px 3px 2px gray',
-        borderRadius: '0px 0px 20px 20px',
-
-        backgroundColor: KnowitColors.greyGreen
-    },
-
-    closeButton: {
-        marginTop: "3px",
-        marginRight: "32px",
-        '&:hover': {
-            color: KnowitColors.darkGreen
-        }
     },
     catHeader: {
         display: 'flex',
@@ -166,39 +120,13 @@ const yourAnswersStyleMobile = makeStyles({
         textAlign: 'left',
         justifyContent: 'left'
     },
-    cardButton: {
-        fontWeight: "bold",
-        fontSize: 18,
-        padding: 10,
-        border: "none",
-        outline: "none",
-        backgroundColor: "transparent",
-        textAlign: "left",
-        paddingLeft: 50,
-        width: "100%"
-    },
-    bottomCardClosed: {
-        // zIndex: zIndex
-    },
-    myAnswersStyle: {
-        position: 'relative',
-        // marginTop: -cardCornerRadius,
-        // display: 'flex',
-        // flexDirection: 'row',
-        overflowY: 'auto',
-        height: '100%',
-        // zIndex: zIndex
-    },
     yourAnswersMobileContainer: {
         height: '100%',
-        // marginTop: 56
     },
     menuButtonActive: {
         background: KnowitColors.white,
     },
     MenuButton: {
-        // borderTopLeftRadius: cardCornerRadius,
-        // borderBottomLeftRadius: cardCornerRadius,
         '&:hover': {
             background: KnowitColors.white
         },
