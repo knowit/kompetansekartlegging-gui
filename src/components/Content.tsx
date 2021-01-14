@@ -488,7 +488,7 @@ const Content = ({...props}: ContentProps) => {
             listItems.push(
                 <ListItem
                     key={butt.text}
-                    className={clsx(style.MenuButton, keepButtonActive(butt.buttonType))}
+                    className={clsx(style.MenuButton)}
                     onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, undefined)}}
                 >
                     <ListItemText primary={butt.text} />

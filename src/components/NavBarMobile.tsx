@@ -15,10 +15,19 @@ const navbarStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
 
     drawer: {
-        [theme.breakpoints.up('sm')]: {
-          width: drawerWidth,
-          flexShrink: 0,
-        },
+        // [theme.breakpoints.up('sm')]: {
+        //   width: drawerWidth,
+        //   flexShrink: 0,
+        // },
+    },
+    paper: {
+        backgroundColor: KnowitColors.darkBrown,
+        color: KnowitColors.beige,
+        borderRadius: '0px 50px 0px 0px'
+
+    },
+    panel: {
+        background: KnowitColors.greyGreen
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -131,16 +140,17 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
                     </Typography>
                 </Toolbar> 
             </AppBar>
-                <SwipeableDrawer
-                    disableBackdropTransition={!isIOS} 
-                    disableDiscovery={isIOS}
-                    anchor={'left'}
-                    open={drawerOpen}
-                    onClose={toggleDrawer(false)}
-                    onOpen={toggleDrawer(true)}
-                >
-                    {list()}
-                </SwipeableDrawer>
+            <SwipeableDrawer
+                classes={{ paper: style.paper }}
+                disableBackdropTransition={!isIOS} 
+                disableDiscovery={isIOS}
+                anchor={'left'}
+                open={drawerOpen}
+                onClose={toggleDrawer(false)}
+                onOpen={toggleDrawer(true)}
+            >
+                {list()}
+            </SwipeableDrawer>
         </div>
     );
 }
