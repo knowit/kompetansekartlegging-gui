@@ -1,5 +1,5 @@
 
-import { AppBar, Toolbar, IconButton, Typography, List } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, List, ListItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { KnowitColors } from '../styles';
@@ -72,6 +72,9 @@ const navbarStyles = makeStyles((theme) => ({
     list: {
         width: 250,
       },
+      logout: {
+          
+      }
 }));
 
 
@@ -115,8 +118,9 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-           <List>
+        <List>
             {props.menuButtons}
+            <ListItem className={style.logout}>Logg ut</ListItem>
           </List>
         </div>
       );
