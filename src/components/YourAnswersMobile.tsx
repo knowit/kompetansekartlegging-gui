@@ -144,6 +144,7 @@ const yourAnswersStyleMobile = makeStyles({
 export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
     const style = yourAnswersStyleMobile();
 
+<<<<<<< HEAD
     const getCategoryButtons = () => {
         let buttons: JSX.Element[] = [];
 
@@ -197,6 +198,9 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
         console.log(props.collapseMobileCategories)
     },[props.collapseMobileCategories])
     
+=======
+    const scrollRef = React.useRef<HTMLDivElement>(null);
+>>>>>>> Scroll to top when proceeding to next block
 
     return (
         <div className={props.activePanel === Panel.MyAnswers ? style.yourAnswersMobileContainer : style.hidden}>
@@ -231,12 +235,13 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                         <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={true}/>
                     </div>
                 </div>
-                <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
+                <div ref={scrollRef} className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
                     {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
                     <Form 
                         {...props}
                         isMobile={true}
                         alerts={props.alerts}
+                        scrollRef={scrollRef}
                     />
                 </div>
             </div>

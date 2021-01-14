@@ -239,8 +239,9 @@ export type AnswerProps = {
     categories: string[],
     activeCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
-    isMobile: boolean
-    alerts: AlertState | undefined
+    isMobile: boolean,
+    alerts: AlertState | undefined,
+    scrollRef: React.RefObject<HTMLDivElement>,
 };
 
 export type CategoryProps = {

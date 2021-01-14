@@ -287,7 +287,7 @@ const Content = ({...props}: ContentProps) => {
         createUserForm();
         let currentIndex = categories.findIndex( (cat) => cat === activeCategory);
         if (categories.length >= currentIndex) {
-            changeActiveCategory(categories[currentIndex + 1]);
+            setActiveCategory(categories[currentIndex + 1]);
             setAnswerEditMode(true);   
         }
     }
