@@ -135,12 +135,12 @@ export const Form = ({...props}: AnswerProps) => {
     
     const handleClickSubmit = () => {
         // TODO pending other PR: check isCategorySubmitted so new user form isn't generated when nothing has changed
-            props.createUserForm();
+        props.createUserForm();
     }
 
     const handleClickProceed = () => {
-            props.submitAndProceed();
-            
+        props.submitAndProceed();
+        console.log(props.scrollRef.current?.scroll(0, 0));
     }
 
     //TODO: Return only used category, not everyone

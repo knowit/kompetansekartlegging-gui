@@ -164,6 +164,8 @@ const yourAnswersStyleMobile = makeStyles({
 export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
     const style = yourAnswersStyleMobile();
 
+    const scrollRef = React.useRef<HTMLDivElement>(null);
+
     return (
         <div>
             <div className={style.leftCard}>
@@ -186,12 +188,13 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerPropsMobile) => {
                         <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={true}/>
                     </div>
                 </div>
-                <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
+                <div ref={scrollRef} className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
                     {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
                     <Form 
                         {...props}
                         isMobile={true}
                         alerts={props.alerts}
+                        scrollRef={scrollRef}
                     />
                 </div>
             </div>
