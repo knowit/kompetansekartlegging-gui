@@ -283,6 +283,15 @@ const Content = ({...props}: ContentProps) => {
         setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
     }
 
+    const submitAndProceed = () => {
+        createUserForm();
+        let currentIndex = categories.findIndex( (cat) => cat === activeCategory);
+        if (categories.length >= currentIndex) {
+            changeActiveCategory(categories[currentIndex + 1]);
+            setAnswerEditMode(true);   
+        }
+    }
+
     useEffect(() => {
         console.log("formDefinition")
 
@@ -549,6 +558,7 @@ const Content = ({...props}: ContentProps) => {
                         activePanel={activePanel}
                         setIsCategorySubmitted={setIsCategorySubmitted}
                         createUserForm={createUserForm}
+                        submitAndProceed={submitAndProceed}
                         updateAnswer={updateAnswer}
                         formDefinition={formDefinition}
                         answers={answers}
@@ -596,8 +606,59 @@ const Content = ({...props}: ContentProps) => {
                     isMobile={props.isMobile}
                 />
             </div>
+<<<<<<< HEAD
         
           
+=======
+        :
+            <div className={mobileStyle.cardHolder}>
+                <Overview
+                    activePanel={activePanel}
+                    answers={answers}
+                    categories={categories}
+                    isMobile={props.isMobile}
+
+                />
+                <ScaleDescription
+                    activePanel={activePanel}
+                    isMobile={props.isMobile}
+
+                />
+                <YourAnswers
+                    activePanel={activePanel}
+                    setIsCategorySubmitted={setIsCategorySubmitted}
+                    createUserForm={createUserForm}
+                    submitAndProceed={submitAndProceed}
+                    updateAnswer={updateAnswer}
+                    formDefinition={formDefinition}
+                    answers={answers}
+                    submitFeedback={submitFeedback}
+                    changeActiveCategory={changeActiveCategory}
+                    categories={categories}
+                    activeCategory={activeCategory}
+                    setAnswerEditMode={setAnswerEditMode}
+                    answerEditMode={answerEditMode}
+                    isMobile={props.isMobile}
+                    alerts={alerts}
+                />
+                <AnswerHistory
+                    setHistoryViewOpen={props.setAnswerHistoryOpen}
+                    historyViewOpen={historyViewOpen}
+                    history={answerLog}
+                    formDefinition={formDefinition ?? undefined}
+                    isMobile={props.isMobile}
+                />
+                <AlertDialog
+                    setAlertDialogOpen={setAlertDialogOpen}
+                    alertDialogOpen={alertDialogOpen}
+                    changeActiveCategory={changeActiveCategory}
+                    clickedCategory={activeCategory}
+                    setIsCategorySubmitted={setIsCategorySubmitted}
+                    resetAnswers={resetAnswers}
+                    isMobile={props.isMobile}
+                />
+            </div>
+>>>>>>> Category block buttons
     );
 };
 

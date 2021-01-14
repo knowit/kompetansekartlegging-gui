@@ -231,6 +231,7 @@ export type UserFormList = {
 
 export type AnswerProps = {
     createUserForm: () => void,
+    submitAndProceed: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
@@ -314,6 +315,7 @@ export type YourAnswerProps = {
     activePanel: Panel,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     createUserForm: () => void,
+    submitAndProceed: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
@@ -340,6 +342,33 @@ export interface Alert {
     message: string
 }
 
+<<<<<<< HEAD
+=======
+export type YourAnswerPropsMobile = {
+    activePanel: Panel,
+    createUserForm: () => void,
+    submitAndProceed: () => void,
+    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    formDefinition: FormDefinition | null,
+    answers: AnswerData[],
+    submitFeedback: string,
+    changeActiveCategory: (newCategoryIndex: string) => void,
+    categories: string[],
+    activeCategory: string,
+    setAnswerEditMode: (editMode: boolean) => void,
+    answerEditMode: boolean,
+    toggleCard: () => void,
+    getCategoryButtons: (style : any) => JSX.Element[],
+    alertDialogOpen: boolean,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isCategorySubmitted: boolean,
+    clickedCategory: string,
+    setAlertDialogOpen: (alertDialogOpen: boolean) => void,
+    isMobile: boolean
+    alerts: AlertState | undefined
+};
+
+>>>>>>> Category block buttons
 export type HighlightsProps = {
     isMobile: boolean,
     answers: AnswerData[]  

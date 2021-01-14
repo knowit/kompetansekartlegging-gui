@@ -16,16 +16,34 @@ const FormStyleDesktop = makeStyles({
         boxSizing: "border-box",
         borderRadius: 10
     },
+    blockButtons: {
+        display: 'flex',
+        justifyContent: 'space-around'
+    },
     submitButton: {
-        margin: 5,
         padding: 10,
-        borderRadius: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 18,
         fontWeight: 'bold',
         textTransform: "none",
-        color: KnowitColors.white,
-        backgroundColor: KnowitColors.darkGreen,
+        color: KnowitColors.black,
+        backgroundColor: KnowitColors.lightGreen,
         '&:hover': {
-            background: KnowitColors.darkGreen
+            background: KnowitColors.lightGreen
+        }
+    },
+    submitAndProceedButton: {
+        padding: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 18,
+        fontWeight: 'bold',
+        textTransform: "none",
+        color: KnowitColors.black,
+        backgroundColor: KnowitColors.lightGreen,
+        '&:hover': {
+            background: KnowitColors.lightGreen
         }
     },
 });
@@ -41,7 +59,23 @@ const FormStyleMobile = makeStyles({
         boxSizing: "border-box",
         borderRadius: 10
     },
+    blockButtons: {
+        display: 'flex',
+        justifyContent: 'space-around'
+    },
     submitButton: {
+        margin: 5,
+        padding: 10,
+        borderRadius: 10,
+        fontWeight: 'bold',
+        textTransform: "none",
+        color: KnowitColors.white,
+        backgroundColor: KnowitColors.darkGreen,
+        '&:hover': {
+            background: KnowitColors.darkGreen
+        }
+    },
+    submitAndProceedButton: {
         margin: 5,
         padding: 10,
         borderRadius: 10,
@@ -90,8 +124,13 @@ export const Form = ({...props}: AnswerProps) => {
         return questions;
     };
 
-    const handleClick = () => {
+    const handleClickSubmit = () => {
         props.createUserForm();
+    }
+
+    const handleClickProceed = () => {
+        props.submitAndProceed();
+
     }
 
     //TODO: Return only used category, not everyone
@@ -101,23 +140,25 @@ export const Form = ({...props}: AnswerProps) => {
             .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
             <Fragment>
-                {props.categories.length > 0
-                    ? <Button 
-                        onClick={handleClick} 
-                        className={style.submitButton} 
-                        >Send inn svar</Button>
-                    : ""
-                }
                 <Category name={props.activeCategory} isMobile={props.isMobile}>
                     {getQuestionsForCategory(questions)}
                 </Category>
-                {props.categories.length > 0
-                    ? <Button 
-                        onClick={handleClick} 
-                        className={style.submitButton} 
-                        >Send inn svar</Button>
-                    : ""
-                }
+                <div className={style.blockButtons}>
+                    {props.categories.length > 0
+                        ? <Button 
+                            onClick={handleClickSubmit} 
+                            className={style.submitButton} 
+                            >Send inn svar og avslutt</Button>
+                        : ""
+                    }
+                    {(props.categories.findIndex((cat) => cat === props.activeCategory) !== (props.categories.length - 1))
+                        ? <Button 
+                            onClick={handleClickProceed} 
+                            className={style.submitAndProceedButton} 
+                            >Lagre og gå videre</Button>
+                        : ""
+                    }
+                </div>
             </Fragment>
         );
     };
