@@ -22,6 +22,14 @@ const yourAnswersStyleMobile = makeStyles({
         height: '100%',
         width: '100%',
     },
+    answerBoxScrolled: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        width: '100%',
+        marginTop: 20
+    },
+
     answerView: {
         marginRight: 10,
         marginLeft: 10,
@@ -44,9 +52,28 @@ const yourAnswersStyleMobile = makeStyles({
         boxShadow: "0px 3px 0px grey",
         marginBottom: "8px",
     },
-    leftCard: {
+    categoryListScrolled: {
+        height: 'min-content',
+        backgroundColor: KnowitColors.beige,
+        borderRadius: '0px 0px 35px 35px',
+        paddingBottom: '25px',
+        boxShadow: "0px 3px 0px grey",
+        marginBottom: "8px",
+        position: 'fixed',
+        marginTop: 56,
+        zIndex: 1
+    },
+    navigationContainer: {
         width: '100%',
-        overflowY: 'auto'
+        // position: 'fixed',
+        // top: 56,
+        // zIndex: 1
+    },
+    navigationContainerScrolled: {
+        width: '100%',
+        position: 'fixed',
+        top: 56,
+        zIndex: 2
     },
     categoryListInner: {
         // marginLeft: 10,
@@ -163,7 +190,8 @@ const yourAnswersStyleMobile = makeStyles({
         // zIndex: zIndex
     },
     yourAnswersMobileContainer: {
-        height: '100%'
+        height: '100%',
+        // marginTop: 56
     },
     menuButtonActive: {
         background: KnowitColors.white,
@@ -179,8 +207,8 @@ const yourAnswersStyleMobile = makeStyles({
         fontWeight: 'bolder',
         border: 'none',
         justifyContent: 'left',
-        borderRadius: '0px 17px 17px 0px'
-
+        borderRadius: '0px 17px 17px 0px',
+        width: 'fit-content' // todo denne kan tilbakestilles?
     },
 });
 
@@ -211,14 +239,40 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
         return buttons;
     }
 
+    const getCategoryButtonsCollapsed = () => {
+        let buttons: JSX.Element[] = [];
+
+        const categories = props.categories.map((cat) => {
+            return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
+        })
+
+        categories.forEach((category, index) => {
+            if (category.text === props.activeCategory) {
+                buttons.push(
+                    <Button
+                        key={category.text}
+                        className={clsx(style.MenuButton, props.activeCategory === category.text ? style.menuButtonActive : "",
+                            props.activePanel === category.activePanel ? "" : style.hidden)}
+                        onClick={() => { props.checkIfCategoryIsSubmitted(category.buttonType, category.text) }}
+                    >
+                        <div className={clsx(style.buttonText)}>{index + 1}. {category.text}</div>
+                        {props.alerts?.categoryMap.has(category.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={props.alerts.categoryMap.get(category.text)}/> : ""}
+                    </Button>
+                )
+            }
+            
+        });
+        return buttons;
+    }
+
     useEffect(() => {
-        console.log("COLLAPSE")
+        console.log(props.collapseMobileCategories)
     },[props.collapseMobileCategories])
     
 
     return (
         <div className={props.activePanel === Panel.MyAnswers ? style.yourAnswersMobileContainer : style.hidden}>
-            <div className={style.leftCard} >
+            <div className={style.navigationContainer} ref={props.categoryNavRef}>
                 {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
                 <div className={props.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
                     <div className={style.categoryListInner}>
@@ -227,8 +281,19 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                     </div>
                 </div>
             </div>
+            <div className={props.collapseMobileCategories ? style.navigationContainerScrolled : style.hidden}>
+            {/* <div className={style.navigationContainerScrolled} ref={props.categoryNavRef}> */}
+
+                {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
+                <div className={props.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
+                    <div className={style.categoryListInner}>
+                        
+                        {getCategoryButtonsCollapsed()}
+                    </div>
+                </div>
+            </div>
             {/* <div className={props.commonCardProps.active ? style.answerBox : style.hidden}> */}
-            <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                     
+            <div className={props.activePanel === Panel.MyAnswers ? (props.collapseMobileCategories ? style.answerBoxScrolled : style.answerBox) : style.hidden}>                     
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
                         <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Oppdater</Button>

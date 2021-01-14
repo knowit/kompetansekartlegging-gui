@@ -324,7 +324,8 @@ export type YourAnswerProps = {
     isMobile: boolean,
     alerts: AlertState | undefined,
     checkIfCategoryIsSubmitted:(buttonType: MenuButton, category?: string | undefined) => void,
-    collapseMobileCategories: boolean
+    collapseMobileCategories: boolean,
+    categoryNavRef:  React.MutableRefObject<HTMLInputElement | null>
 };
 
 export interface AlertState {

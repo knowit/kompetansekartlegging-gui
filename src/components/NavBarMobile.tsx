@@ -25,7 +25,11 @@ const navbarStyles = makeStyles((theme) => ({
     },
     root: {
         flexGrow: 1,
-        zIndex: 100
+        zIndex: 100,
+        position: 'fixed',
+        width: '100%',
+        top: '0',
+        height: 55
     },
     logoutButton: {
         marginRight: theme.spacing(2),

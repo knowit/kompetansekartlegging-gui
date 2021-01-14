@@ -53,7 +53,8 @@ export const contentStyleMobile = makeStyles({
     panel: {
         background: KnowitColors.white,
         height: '100%',
-        width: '100%'
+        width: '100%',
+        marginTop: 56
     }
 });
 
@@ -268,32 +269,45 @@ const Content = ({...props}: ContentProps) => {
     }
 
     useEffect(() => {
-        setActiveCategory(categories[0]);
-        setAnswerEditMode(false);
-    }, [categories]);
+        console.log("formDefinition")
 
-    useEffect(() => {
-        updateCategoryAlerts();
-    }, [answers]);
-    
-    useEffect(() => {
-        fetchLastFormDefinition();
-        setSubmitFeedback("");
-    }, []);
-
-    useEffect(() => {
         getUserAnswers();
         setAnswers(createAnswers());
         setCategories(createCategories());
     }, [formDefinition]);
 
     useEffect(() => {
+        console.log("categories")
+        setActiveCategory(categories[0]);
+        setAnswerEditMode(false);
+    }, [categories]);
+
+    useEffect(() => {
+        console.log("answers")
+
+        updateCategoryAlerts();
+    }, [answers]);
+    
+    useEffect(() => {
+        console.log("INITIAL1")
+
+        fetchLastFormDefinition();
+        setSubmitFeedback("");
+    }, []);
+
+    
+
+    useEffect(() => {
+        console.log("userAnswers")
+
         setAnswers(createAnswers());
 
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
     }, [userAnswers]);
 
     useEffect(() => {
+        console.log("props.answerHistoryOpen")
+
         if (props.answerHistoryOpen) {
             fetchUserFormsAndOpenView() 
         } else {
@@ -302,6 +316,8 @@ const Content = ({...props}: ContentProps) => {
     }, [props.answerHistoryOpen]);
 
     useEffect(() => {
+        console.log("isCategorySubmitted")
+
         window.onbeforeunload = confirmExit;
         function confirmExit() {
             if (!isCategorySubmitted) {
@@ -486,8 +502,21 @@ const Content = ({...props}: ContentProps) => {
     }
 
     const mobileNavRef = useRef<HTMLInputElement>(null);
+    const categoryNavRef = useRef<HTMLInputElement | null>(null)
+    const [collapseMobileCategories, setCollapseMobileCategories] = useState<boolean>(false);
+
+
+    const handleScroll = () => {
+        if (mobileNavRef.current?.scrollTop !== undefined && categoryNavRef.current?.clientHeight !== undefined) {
+            if (mobileNavRef.current?.scrollTop > categoryNavRef.current?.clientHeight-56) {
+                setCollapseMobileCategories(true)
+            } else {
+                setCollapseMobileCategories(false)
+            }
+        }
+    }
     
-    //TODO: Remove commonCardProps from desktop version (keep for mobile for now)
+
     const setupPanel = (): JSX.Element => {
         switch (activePanel) {
             case Panel.Overview:
@@ -518,6 +547,7 @@ const Content = ({...props}: ContentProps) => {
                         alerts={alerts}
                         checkIfCategoryIsSubmitted={checkIfCategoryIsSubmitted}
                         collapseMobileCategories={collapseMobileCategories}
+                        categoryNavRef={categoryNavRef}
                     />
                 );
             case Panel.GroupLeader:
@@ -532,17 +562,7 @@ const Content = ({...props}: ContentProps) => {
         return <div></div>;
     };
 
-    const handleScroll = () => {
-        console.log("SCROLl")
-        console.log(mobileNavRef.current?.scrollTop)
-        if (mobileNavRef.current?.scrollTop !== undefined) {
-            if (mobileNavRef.current?.scrollTop > 57) {
-                console.log("SETTRUE")
-                setCollapseMobileCategories(true)
-            }
-        }
-    }
-    const [collapseMobileCategories, setCollapseMobileCategories] = useState<boolean>(false);
+    
     
     return (
             <div className={props.isMobile ? mobileStyle.root : style.root} onScroll={() => handleScroll()} ref={mobileNavRef}>
