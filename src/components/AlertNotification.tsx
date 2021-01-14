@@ -1,9 +1,10 @@
 import { makeStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import UpdateIcon from '@material-ui/icons/Update';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
-import RefreshRoundedIcon from '@material-ui/icons/Refresh';
-
+import clsx from 'clsx';
 
 const useStyles = makeStyles({
     root: {
@@ -13,22 +14,26 @@ const useStyles = makeStyles({
         marginLeft: 10
     },
     alertBulb: {
-        // position: 'absolute',
         borderRadius: '50%',
-        fill: KnowitColors.fuchsia,
-        backgroundColor: KnowitColors.darkBrown
-    },
-    alertBulbMultiple: {
-        width: '2em',
-        borderStyle: 'solid',
-        borderRadius: '50%',
-        borderWidth: 2,
-        backgroundColor: KnowitColors.fuchsia,
-        color: KnowitColors.darkBrown,
-        borderColor: KnowitColors.darkBrown,
-        fontFamily: 'Arial',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: KnowitColors.burgunder,
+        color: KnowitColors.white,
         fontWeight: 'bold',
-        textAlign: 'center'
+        fontSize: 11,
+        fontFamily: 'Arial'
+    },
+    bulbPositionAbsolute: {
+        position: 'absolute'
+    },
+    sizeAnswers: {
+        height: 24,
+        width: 24,
+    },
+    sizeMenu: {
+        height: 24,
+        width: 24,
     }
 });
 
@@ -47,7 +52,7 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
             return (
                 <div className={classes.root}>
                     <Tooltip title={props.message}>
-                        <ErrorRoundedIcon aria-label={props.message} className={classes.alertBulb}/>
+                        <div aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}>!</div>
                     </Tooltip>
                 </div>
             );
@@ -55,17 +60,19 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
             return (
                 <div className={classes.root}>
                     <Tooltip title={props.message}>
-                        <RefreshRoundedIcon aria-label={props.message} className={classes.alertBulb}/>
+                        <UpdateIcon aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}/>
                     </Tooltip>
                 </div>
             );
         case AlertType.Multiple:
             return (
-                <Tooltip title={props.message}>
-                    <div aria-label={props.message} className={classes.alertBulbMultiple}>
-                        {props.size}
-                    </div>
-                </Tooltip>
+                <div className={classes.root}>
+                    <Tooltip title={props.message}>
+                        <div aria-label={props.message} className={clsx(classes.alertBulb, classes.sizeMenu)}>
+                            {props.size}
+                        </div>
+                    </Tooltip>
+                </div>
             );
     }
 }

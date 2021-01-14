@@ -28,7 +28,7 @@ const overviewStyle = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'auto',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
     cardHeader: {

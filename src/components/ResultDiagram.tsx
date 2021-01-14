@@ -66,7 +66,6 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
                 averageMotivation: roundDecimals(reduced.motivationAverage, 1)
             } as ResultData;
         });
-        console.log(result);
         return result;
     };
     

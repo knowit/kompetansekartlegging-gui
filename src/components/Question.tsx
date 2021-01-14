@@ -52,11 +52,12 @@ const questionStyleDesktop = makeStyles({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 30
+        height: 30,
+        paddingBottom: 10
     },
     icon: {
         height: '100%',
-        fill: KnowitColors.darkGreen
+        fill: KnowitColors.darkBrown
     },
     smallBold: {
         fontSize: 14,
@@ -162,8 +163,12 @@ const Question = ({...props}: QuestionProps) => {
         <div className={style.root}>
             <div className={style.topic}>
                 {props.topic}
-                {props.alerts?.qidMap.has(props.questionId)
-                    ? <AlertNotification type={props.alerts?.qidMap.get(props.questionId)!} message="Må besvares!"/> : ""}
+                {props.alerts?.qidMap.has(props.questionId) ?
+                        <AlertNotification
+                            type={props.alerts?.qidMap.get(props.questionId)!.type}
+                            message={props.alerts?.qidMap.get(props.questionId)!.message}
+                        />
+                    : ""}
             </div>
             <div className={style.text}>{props.text}</div>
             <div className={style.answerArea}>

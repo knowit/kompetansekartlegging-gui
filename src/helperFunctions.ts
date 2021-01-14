@@ -217,7 +217,12 @@ export const addLeftPaddingToStringArray = (str: string[], padLength: number, pa
 //     return getActivePanel();
 // };
 
-
+export const Millisecs = {
+    FIVEMINUTES: 300000,
+    ONEDAY: 86400000,
+    THREEDAYS: 259200000,
+    THREEMONTHS: 7889400000
+}
 
 
 

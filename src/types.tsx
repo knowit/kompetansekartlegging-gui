@@ -6,7 +6,8 @@ export type AnswerData = {
     topic: string,
     category: string,
     knowledge: number,
-    motivation: number
+    motivation: number,
+    updatedAt: number
 };
 
 export type Answers = {
@@ -176,6 +177,7 @@ export type UserAnswer = {
     id: string,
     knowledge: number,
     motivation: number,
+    updatedAt: string,
     question: {
         id: string,
         text: string,
@@ -329,10 +331,14 @@ export type YourAnswerProps = {
 };
 
 export interface AlertState {
-    qidMap: Map<string, AlertType>,
+    qidMap: Map<string, Alert>,
     categoryMap: Map<string, number>
 }
 
+export interface Alert {
+    type: AlertType,
+    message: string
+}
 
 export type HighlightsProps = {
     isMobile: boolean,

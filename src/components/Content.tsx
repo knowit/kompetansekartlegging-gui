@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState } from '../types';
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
@@ -15,6 +15,8 @@ import { AlertNotification, AlertType } from './AlertNotification';
 import NavBarMobile from './NavBarMobile';
 
 const cardCornerRadius: number = 40;
+
+const staleAnswersLimit: number = helper.Millisecs.FIVEMINUTES;
 
 export enum Panel {
     Overview,
@@ -127,16 +129,29 @@ const Content = ({...props}: ContentProps) => {
     const [alerts, setAlerts] = useState<AlertState>();
 
     const updateCategoryAlerts = () => {
-        let alerts = new Map<string, AlertType>();
+        let msNow = Date.now();
+        let alerts = new Map<string, Alert>();
         let catAlerts = new Map<string, number>();
         for (let answer of answers) {
-            if (answer.motivation  === -1 || answer.motivation === -1) {
-                alerts.set(answer.questionId, AlertType.Incomplete);
+            if (answer.motivation  === -1 || answer.knowledge === -1) {
+                alerts.set(answer.questionId, {type: AlertType.Incomplete, message: "Ubesvart!"});
                 let numAlerts = catAlerts.get(answer.category);
                 if (numAlerts)
                     catAlerts.set(answer.category, numAlerts + 1);
                 else
                     catAlerts.set(answer.category, 1);
+            } else if (msNow - answer.updatedAt > staleAnswersLimit) {
+                alerts.set(answer.questionId, {
+                    type: AlertType.Outdated,
+                    message: `Bør oppdateres! Sist besvart: ${
+                        new Date(answer.updatedAt)  //.toLocaleDateString('no-NO')
+                    }`
+                });
+                let numAlerts = catAlerts.get(answer.category);
+                if (numAlerts)
+                    catAlerts.set(answer.category, numAlerts + 1);
+                else
+                catAlerts.set(answer.category, 1);
             }
         }
         setAlerts({qidMap: alerts, categoryMap: catAlerts});
@@ -154,7 +169,6 @@ const Content = ({...props}: ContentProps) => {
         if(!formDefinition) return [];
         let as: AnswerData[] = [];
         if(formDefinition?.questions.items){
-            console.log(userAnswers);
             for (let i = 0; i < formDefinition.questions.items.length; i++) {
                 const question = formDefinition.questions.items[i];
                 // console.log(question);
@@ -165,11 +179,11 @@ const Content = ({...props}: ContentProps) => {
                     topic: question.topic,
                     category: question.category.text,
                     knowledge: preAnswer ? (preAnswer.knowledge ? preAnswer.knowledge : 0) : -1,
-                    motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1
+                    motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1,
+                    updatedAt: preAnswer ? Date.parse(preAnswer.updatedAt) : 0
                 });
             }
         }
-        console.log(as);
         return as;
     };
     
@@ -217,6 +231,7 @@ const Content = ({...props}: ContentProps) => {
             if(!answer) return [];
             answer.knowledge = knowledgeValue;
             answer.motivation = motivationValue;
+            answer.updatedAt = Date.now();
             return newAnswers
         });
     };
