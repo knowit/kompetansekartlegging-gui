@@ -114,7 +114,7 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                                 aria-haspopup="true"
                                 onClick={handleToggle}
                             >
-                                <Avatar className={style.userPicture} src={props.userPicture}
+                                <Avatar className={style.userPicture} src={props.userPicture} alt="Profile Picture"
                             />
                             </Button>
                             <Popper
