@@ -73,19 +73,12 @@ const questionStyleDesktop = makeStyles({
 
 const questionStyleMobile = makeStyles({
     root: {
-        marginTop: 10,
-        // marginLeft: 10,
-        marginRight: 10,
-        paddingLeft: 20,
+        margin: 5,
         paddingTop: 5,
-        paddingBottom: 5,
-        // paddingRight: 5,
+        paddingBottom: 20,
         backgroundColor: KnowitColors.white,
         borderRadius: 10,
-        width: '95%',
-        // position: 'absolute'
-        // zIndex: 10000
-
+        width: '100%',
     },
     topic: {
         fontSize: 15,
