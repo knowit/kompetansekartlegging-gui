@@ -146,7 +146,7 @@ export const Form = ({...props}: AnswerProps) => {
 
     const handleClickProceed = () => {
         props.submitAndProceed();
-        props.scrollRef.current?.scroll(0, 0);
+        props.scrollToTop();
     }
 
     //TODO: Return only used category, not everyone

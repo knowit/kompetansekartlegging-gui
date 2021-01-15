@@ -119,6 +119,10 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
 
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
+    const scrollToTop = () => {
+        scrollRef.current?.scroll(0,0);
+    }
+
     return (
         <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
@@ -134,7 +138,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                 <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
                     <Form 
                         {...props}
-                        scrollRef={scrollRef}
+                        scrollToTop={scrollToTop}
                         isMobile={false}
                         alerts={props.alerts}
                     />

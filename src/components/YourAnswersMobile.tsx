@@ -196,8 +196,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
     useEffect(() => {
         console.log(props.collapseMobileCategories)
     },[props.collapseMobileCategories])
-    
-    const scrollRef = React.useRef<HTMLDivElement>(null);
+
 
     return (
         <div className={props.activePanel === Panel.MyAnswers ? style.yourAnswersMobileContainer : style.hidden}>
@@ -232,13 +231,13 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                         <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={true}/>
                     </div>
                 </div>
-                <div ref={scrollRef} className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
+                <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
                     {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
                     <Form 
                         {...props}
                         isMobile={true}
                         alerts={props.alerts}
-                        scrollRef={scrollRef}
+                        scrollToTop={props.scrollToTop}
                     />
                 </div>
             </div>

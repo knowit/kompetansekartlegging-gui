@@ -539,7 +539,13 @@ const Content = ({...props}: ContentProps) => {
             }
         }
     }
-    
+
+    const scrollToTopMobile = () => {
+        if (categoryNavRef.current?.clientHeight) {
+            mobileNavRef.current?.scroll(0, categoryNavRef.current?.clientHeight-50);
+            setCollapseMobileCategories(true);
+        }
+    }
 
     const setupPanel = (): JSX.Element => {
         switch (activePanel) {
@@ -573,6 +579,7 @@ const Content = ({...props}: ContentProps) => {
                         checkIfCategoryIsSubmitted={checkIfCategoryIsSubmitted}
                         collapseMobileCategories={collapseMobileCategories}
                         categoryNavRef={categoryNavRef}
+                        scrollToTop={scrollToTopMobile}
                     />
                 );
             case Panel.GroupLeader:
