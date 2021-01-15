@@ -169,7 +169,7 @@ const Content = ({...props}: ContentProps) => {
                 if (a.index == null && b.index) return 1;
                 if (a.index && b.index) return a.index - b.index;
                 if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
-                return -1;
+                return 0;
             })
             .map(category => category.text);
         console.log("sorted categories: ", sorted);
@@ -185,7 +185,7 @@ const Content = ({...props}: ContentProps) => {
                 if (a.index == null && b.index) return 1;
                 if (a.index && b.index) return a.index - b.index;
                 if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
-                return -1;
+                return 0;
             });
         console.log("sorted questions: ", questions);
         return questions;
@@ -518,6 +518,7 @@ const Content = ({...props}: ContentProps) => {
                         setIsCategorySubmitted={setIsCategorySubmitted}
                         createUserForm={createUserForm}
                         updateAnswer={updateAnswer}
+                        formDefinition={formDefinition}
                         questions={questions}
                         answers={answers}
                         submitFeedback={submitFeedback}
@@ -577,7 +578,8 @@ const Content = ({...props}: ContentProps) => {
                     setIsCategorySubmitted={setIsCategorySubmitted}
                     createUserForm={createUserForm}
                     updateAnswer={updateAnswer}
-                    questions={questions}
+                    formDefinition={formDefinition}
+                    questions={undefined}
                     answers={answers}
                     submitFeedback={submitFeedback}
                     changeActiveCategory={changeActiveCategory}

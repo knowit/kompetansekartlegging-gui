@@ -56,11 +56,20 @@ const FormStyleMobile = makeStyles({
 });
 
 export const Form = ({...props}: AnswerProps) => {
+    
+    type Question = {
+        id: string,
+        text: string,
+        topic: string,
+        category: {
+            text: string
+        }
+    }
 
     const style = props.isMobile ? FormStyleMobile() : FormStyleDesktop();
 
-    const getQuestionsForCategory = (): JSX.Element[] => {
-        return props.questions.map(question => {
+    const getQuestionsForCategory = (items: Question[] | undefined): JSX.Element[] => {
+        return props.questions?.map(question => {
             const answer = props.answers.find(a => a.questionId === question.id);
             return <Question
                 key={question.id}
@@ -74,8 +83,7 @@ export const Form = ({...props}: AnswerProps) => {
                 isMobile={props.isMobile}
                 alerts={props.alerts}
             />
-        });
-        
+        }) || [];
         // let questions: JSX.Element[] = [];
         // for(const item of items){
         //     const answer = props.answers.find(a => a.questionId === item.id);
@@ -103,7 +111,7 @@ export const Form = ({...props}: AnswerProps) => {
 
     //TODO: Return only used category, not everyone
     const createQuestionCategory = (): JSX.Element => {
-        // if (!props.formDefinition) return <Fragment />;
+        if (!props.formDefinition) return <Fragment />;
         // let questions = props.formDefinition.questions.items.filter(item => item.category.text === props.activeCategory)
         //     .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
@@ -116,7 +124,7 @@ export const Form = ({...props}: AnswerProps) => {
                     : ""
                 }
                 <Category name={props.activeCategory} isMobile={props.isMobile}>
-                    {getQuestionsForCategory()}
+                    {getQuestionsForCategory(undefined)}
                 </Category>
                 {props.categories.length > 0
                     ? <Button 
