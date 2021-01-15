@@ -117,9 +117,9 @@ const yourAnwersStyle = makeStyles({
 export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
     const style = yourAnwersStyle();
 
+    const scrollRef = React.useRef<HTMLDivElement>(null);
+
     return (
-        // <div className={clsx(props.commonCardProps.active ? style.bottomCardOpen : style.bottomCardClosed)}>
-        //     <div className={props.commonCardProps.active ? style.answerBox : style.hidden}>   
         <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
@@ -131,9 +131,10 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                         <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={false}/>
                     </div>
                 </div>
-                <div className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
+                <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
                     <Form 
                         {...props}
+                        scrollRef={scrollRef}
                         isMobile={false}
                         alerts={props.alerts}
                     />

@@ -13,7 +13,8 @@ const graphStyle = makeStyles({
     },
     mobile: {
         height: '60%',
-        width: '90%'
+        width: '90%',
+        marginBottom: 30,
     }
 });
 

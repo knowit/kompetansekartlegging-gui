@@ -1,5 +1,5 @@
 
-import { AppBar, Toolbar, IconButton, Typography, List, ListItem, ListItemText } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, List, ListItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { KnowitColors } from '../styles';
@@ -15,26 +15,30 @@ const navbarStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
 
     drawer: {
-        [theme.breakpoints.up('sm')]: {
-          width: drawerWidth,
-          flexShrink: 0,
-        },
+        // [theme.breakpoints.up('sm')]: {
+        //   width: drawerWidth,
+        //   flexShrink: 0,
+        // },
     },
-    drawerPaper: {
-        width: drawerWidth,
-      },
+    paper: {
+        backgroundColor: KnowitColors.darkBrown,
+        color: KnowitColors.beige,
+        borderRadius: '0px 50px 0px 0px'
+
+    },
+    panel: {
+        background: KnowitColors.greyGreen
+    },
     menuButton: {
         marginRight: theme.spacing(2),
     },
-    title: {
-        flexGrow: 1,
-    },
     root: {
         flexGrow: 1,
-        zIndex: 100
-    },
-    navigation: {
-        flexGrow: 1,
+        zIndex: 100,
+        position: 'fixed',
+        width: '100%',
+        top: '0',
+        height: 55
     },
     logoutButton: {
         marginRight: theme.spacing(2),
@@ -68,6 +72,9 @@ const navbarStyles = makeStyles((theme) => ({
     list: {
         width: 250,
       },
+      logout: {
+          
+      }
 }));
 
 
@@ -79,6 +86,14 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
     // const handleDrawerToggle = () => {
     //   setMobileOpen(!mobileOpen);
     // };
+    const navbarHeader = () => {
+
+        switch (props.activePanel) {
+            case 0: return "Oversikt";
+            case 1: return "Dine svar";
+            default: return ""
+        }
+    }
 
     const toggleDrawer = (open: boolean) => (
         event: React.KeyboardEvent | React.MouseEvent,
@@ -103,23 +118,9 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-            {/* TODO: mappe denne ut heller */}
-           <List>
-            <ListItem button key="Oversikt" onClick={() => console.log("") /*props.openOverview()*/}>
-                <ListItemText primary="Oversikt" />
-              </ListItem>
-            <ListItem button key="Skalabeskrivelse" onClick={() => console.log("") /*props.openScaleDescription()*/}>
-                <ListItemText primary="Skalabeskrivelse" />
-              </ListItem>
-            <ListItem button key="Mine svar" onClick={() => console.log("") /*props.openMyAnswers()*/}>
-                <ListItemText primary="Mine svar" />
-              </ListItem>
-              <ListItem button key="Se alle lagrede svar" onClick={(e: React.MouseEvent<EventTarget>) => props.handleDisplayAnswers(e)}>
-                <ListItemText primary="Se alle lagrede svar" />
-              </ListItem>
-              <ListItem button key="logg ut" onClick={(e: React.MouseEvent<EventTarget>) => props.handleCloseSignout(e)}>
-                <ListItemText primary="Logg ut" />
-              </ListItem>
+        <List>
+            {props.menuButtons}
+            <ListItem className={style.logout}>Logg ut</ListItem>
           </List>
         </div>
       );
@@ -139,24 +140,21 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
                     <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap className={style.headerText}>
-                        {/* AKTIV */}
-                        {/* {props.currentSiteName} */}
+                        {navbarHeader()}
                     </Typography>
                 </Toolbar> 
             </AppBar>
-
-            {/* <nav className={style.drawer} aria-label="mailbox folders"> */}
-                <SwipeableDrawer
-                    disableBackdropTransition={!isIOS} 
-                    disableDiscovery={isIOS}
-                    anchor={'left'}
-                    open={drawerOpen}
-                    onClose={toggleDrawer(false)}
-                    onOpen={toggleDrawer(true)}
-                >
-                    {list()}
-                </SwipeableDrawer>
-            {/* </nav> */}
+            <SwipeableDrawer
+                classes={{ paper: style.paper }}
+                disableBackdropTransition={!isIOS} 
+                disableDiscovery={isIOS}
+                anchor={'left'}
+                open={drawerOpen}
+                onClose={toggleDrawer(false)}
+                onOpen={toggleDrawer(true)}
+            >
+                {list()}
+            </SwipeableDrawer>
         </div>
     );
 }

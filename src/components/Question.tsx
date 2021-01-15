@@ -87,7 +87,8 @@ const questionStyleMobile = makeStyles({
     },
     topic: {
         fontSize: 15,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        display: 'flex',
     },
     text: {
         fontSize: 12,
