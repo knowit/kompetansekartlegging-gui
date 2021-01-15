@@ -66,31 +66,37 @@ const FormStyleMobile = makeStyles({
         borderRadius: 10
     },
     blockButtons: {
+        padding: 10,
         display: 'flex',
-        justifyContent: 'space-around'
+        flexDirection: 'column-reverse',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     submitButton: {
-        margin: 5,
-        padding: 10,
-        borderRadius: 10,
+        margin: 10,
+        width: '80%',
+        borderRadius: 18,
         fontWeight: 'bold',
         textTransform: "none",
-        color: KnowitColors.white,
-        backgroundColor: KnowitColors.darkGreen,
+        color: KnowitColors.black,
+        backgroundColor: KnowitColors.white,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderColor: KnowitColors.lightGreen,
         '&:hover': {
-            background: KnowitColors.darkGreen
+            background: KnowitColors.ecaluptus
         }
     },
     submitAndProceedButton: {
-        margin: 5,
-        padding: 10,
-        borderRadius: 10,
+        margin: 10,
+        width: '80%',
+        borderRadius: 18,
         fontWeight: 'bold',
         textTransform: "none",
-        color: KnowitColors.white,
-        backgroundColor: KnowitColors.darkGreen,
+        color: KnowitColors.black,
+        backgroundColor: KnowitColors.lightGreen,
         '&:hover': {
-            background: KnowitColors.darkGreen
+            background: KnowitColors.ecaluptus
         }
     },
     buttonIcon: {
