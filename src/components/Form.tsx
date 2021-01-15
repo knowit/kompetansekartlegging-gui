@@ -4,6 +4,7 @@ import { KnowitColors } from '../styles';
 import { AnswerProps } from '../types';
 import { Category } from './Category';
 import Question from './Question';
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 
 const FormStyleDesktop = makeStyles({
     root: {
@@ -16,17 +17,40 @@ const FormStyleDesktop = makeStyles({
         boxSizing: "border-box",
         borderRadius: 10
     },
+    blockButtons: {
+        padding: 20,
+        display: 'flex',
+        justifyContent: 'space-around'
+    },
     submitButton: {
-        margin: 5,
-        padding: 10,
-        borderRadius: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 18,
         fontWeight: 'bold',
         textTransform: "none",
-        color: KnowitColors.white,
-        backgroundColor: KnowitColors.darkGreen,
+        color: KnowitColors.black,
+        backgroundColor: KnowitColors.white,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderColor: KnowitColors.lightGreen,
         '&:hover': {
-            background: KnowitColors.darkGreen
+            background: KnowitColors.ecaluptus
         }
+    },
+    submitAndProceedButton: {
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 18,
+        fontWeight: 'bold',
+        textTransform: "none",
+        color: KnowitColors.black,
+        backgroundColor: KnowitColors.lightGreen,
+        '&:hover': {
+            background: KnowitColors.ecaluptus
+        }
+    },
+    buttonIcon: {
+        paddingLeft: 10
     },
 });
 
@@ -41,17 +65,42 @@ const FormStyleMobile = makeStyles({
         boxSizing: "border-box",
         borderRadius: 10
     },
-    submitButton: {
-        margin: 5,
+    blockButtons: {
         padding: 10,
-        borderRadius: 10,
+        display: 'flex',
+        flexDirection: 'column-reverse',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    submitButton: {
+        margin: 10,
+        width: '80%',
+        borderRadius: 18,
         fontWeight: 'bold',
         textTransform: "none",
-        color: KnowitColors.white,
-        backgroundColor: KnowitColors.darkGreen,
+        color: KnowitColors.black,
+        backgroundColor: KnowitColors.white,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderColor: KnowitColors.lightGreen,
         '&:hover': {
-            background: KnowitColors.darkGreen
+            background: KnowitColors.ecaluptus
         }
+    },
+    submitAndProceedButton: {
+        margin: 10,
+        width: '80%',
+        borderRadius: 18,
+        fontWeight: 'bold',
+        textTransform: "none",
+        color: KnowitColors.black,
+        backgroundColor: KnowitColors.lightGreen,
+        '&:hover': {
+            background: KnowitColors.ecaluptus
+        }
+    },
+    buttonIcon: {
+        paddingLeft: 10
     },
 });
 
@@ -89,9 +138,15 @@ export const Form = ({...props}: AnswerProps) => {
         };
         return questions;
     };
-
-    const handleClick = () => {
+    
+    const handleClickSubmit = () => {
+        // TODO pending other PR: check isCategorySubmitted so new user form isn't generated when nothing has changed
         props.createUserForm();
+    }
+
+    const handleClickProceed = () => {
+        props.submitAndProceed();
+        props.scrollRef.current?.scroll(0, 0);
     }
 
     //TODO: Return only used category, not everyone
@@ -101,23 +156,25 @@ export const Form = ({...props}: AnswerProps) => {
             .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
             <Fragment>
-                {props.categories.length > 0
-                    ? <Button 
-                        onClick={handleClick} 
-                        className={style.submitButton} 
-                        >Send inn svar</Button>
-                    : ""
-                }
                 <Category name={props.activeCategory} isMobile={props.isMobile}>
                     {getQuestionsForCategory(questions)}
                 </Category>
-                {props.categories.length > 0
-                    ? <Button 
-                        onClick={handleClick} 
-                        className={style.submitButton} 
-                        >Send inn svar</Button>
-                    : ""
-                }
+                <div className={style.blockButtons}>
+                    {props.categories.length > 0
+                        ? <Button 
+                            onClick={handleClickSubmit} 
+                            className={style.submitButton} 
+                            >Send inn svar og avslutt</Button>
+                        : ""
+                    }
+                    {(props.categories.findIndex((cat) => cat === props.activeCategory) !== (props.categories.length - 1))
+                        ? <Button 
+                            onClick={handleClickProceed} 
+                            className={style.submitAndProceedButton} 
+                            >Lagre og gå videre<ArrowForwardRoundedIcon className={style.buttonIcon}/></Button>
+                        : ""
+                    }
+                </div>
             </Fragment>
         );
     };

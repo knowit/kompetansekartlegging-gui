@@ -231,6 +231,7 @@ export type UserFormList = {
 
 export type AnswerProps = {
     createUserForm: () => void,
+    submitAndProceed: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
@@ -238,8 +239,9 @@ export type AnswerProps = {
     categories: string[],
     activeCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
-    isMobile: boolean
-    alerts: AlertState | undefined
+    isMobile: boolean,
+    alerts: AlertState | undefined,
+    scrollRef: React.RefObject<HTMLDivElement>
 };
 
 export type CategoryProps = {
@@ -314,6 +316,7 @@ export type YourAnswerProps = {
     activePanel: Panel,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     createUserForm: () => void,
+    submitAndProceed: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
     answers: AnswerData[],
