@@ -155,13 +155,9 @@ const Slider = ({ ...props }: SliderProps) => {
         props.sliderChanged(helper.roundDecimals(sliderValue, 1), props.motivation);
     };
     
-    
-
     useEffect(() => {
         setSliderValue(props.value);
     },[]);
-
-    console.log("Mobile? " + props.isMobile);
 
     return (
         (!props.isMobile) ?
