@@ -144,7 +144,6 @@ const yourAnswersStyleMobile = makeStyles({
 export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
     const style = yourAnswersStyleMobile();
 
-<<<<<<< HEAD
     const getCategoryButtons = () => {
         let buttons: JSX.Element[] = [];
 
@@ -198,9 +197,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
         console.log(props.collapseMobileCategories)
     },[props.collapseMobileCategories])
     
-=======
     const scrollRef = React.useRef<HTMLDivElement>(null);
->>>>>>> Scroll to top when proceeding to next block
 
     return (
         <div className={props.activePanel === Panel.MyAnswers ? style.yourAnswersMobileContainer : style.hidden}>
