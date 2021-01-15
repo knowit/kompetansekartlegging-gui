@@ -26,6 +26,8 @@ const questionStyleDesktop = makeStyles({
         fontSize: 15,
         fontWeight: "bold"
     },
+    topicText: {
+    },
     text: {
         fontSize: 12,
         paddingTop: 5,
@@ -88,7 +90,10 @@ const questionStyleMobile = makeStyles({
     topic: {
         fontSize: 15,
         fontWeight: "bold",
-        display: 'flex',
+        display: 'flex'
+    },
+    topicText: {
+        maxWidth: '80%'
     },
     text: {
         fontSize: 12,
@@ -162,7 +167,7 @@ const Question = ({...props}: QuestionProps) => {
     return (
         <div className={style.root}>
             <div className={style.topic}>
-                {props.topic}
+                <div className={style.topicText}>{props.topic}</div>
                 {props.alerts?.qidMap.has(props.questionId) ?
                         <AlertNotification
                             type={props.alerts?.qidMap.get(props.questionId)!.type}
