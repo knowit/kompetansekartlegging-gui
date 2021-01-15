@@ -85,22 +85,21 @@ const yourAnswersStyleMobile = makeStyles({
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
-        height: '10%',
-        margin: '10px'
+        justifyContent: 'flex-end'
 
     },
     graphHolder: {
         width: '100%',
-        height: '85%',
+        height: '60%',
         // borderRadius: 10,
         // background: KnowitColors.creme,
     },
     editButton: {
         margin: 5,
         padding: 10,
-        borderRadius: 10,
-        color: KnowitColors.white,
-        background: KnowitColors.darkGreen,
+        borderRadius: 18,
+        color: KnowitColors.darkBrown,
+        background: KnowitColors.lightGreen,
         '&:hover': {
             color: KnowitColors.darkGreen
         },
