@@ -190,6 +190,7 @@ export const onCreateQuestion = /* GraphQL */ `
         id
         text
         description
+        index
         createdAt
         updatedAt
       }
@@ -212,6 +213,7 @@ export const onUpdateQuestion = /* GraphQL */ `
         id
         text
         description
+        index
         createdAt
         updatedAt
       }
@@ -234,6 +236,7 @@ export const onDeleteQuestion = /* GraphQL */ `
         id
         text
         description
+        index
         createdAt
         updatedAt
       }
@@ -248,6 +251,7 @@ export const onCreateCategory = /* GraphQL */ `
       id
       text
       description
+      index
       createdAt
       updatedAt
     }
@@ -259,6 +263,7 @@ export const onUpdateCategory = /* GraphQL */ `
       id
       text
       description
+      index
       createdAt
       updatedAt
     }
@@ -270,6 +275,7 @@ export const onDeleteCategory = /* GraphQL */ `
       id
       text
       description
+      index
       createdAt
       updatedAt
     }

@@ -130,6 +130,7 @@ export const getQuestion = /* GraphQL */ `
         id
         text
         description
+        index
         createdAt
         updatedAt
       }
@@ -166,6 +167,7 @@ export const getCategory = /* GraphQL */ `
       id
       text
       description
+      index
       createdAt
       updatedAt
     }
@@ -182,6 +184,7 @@ export const listCategorys = /* GraphQL */ `
         id
         text
         description
+        index
         createdAt
         updatedAt
       }
