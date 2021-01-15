@@ -268,7 +268,8 @@ export type FromAppProps = {
 export type SliderProps = {
     sliderChanged: (newValue: number, motivation: boolean) => void,
     motivation: boolean,
-    value: number
+    value: number,
+    isMobile: boolean
 };
 
 export type QuestionProps = {

@@ -106,7 +106,7 @@ const questionStyleMobile = makeStyles({
         // marginLeft: 30,
         // marginRight: 20,
         // padding: 20,
-        width: '90%'
+        width: '100%'
     },
     slider: {
         marginRight: 15,
@@ -182,6 +182,7 @@ const Question = ({...props}: QuestionProps) => {
                             value={knowledgeValue}
                             motivation={false}
                             sliderChanged={sliderChanged}
+                            isMobile={props.isMobile}
                         />
                     </div>
                 </div>
@@ -197,6 +198,7 @@ const Question = ({...props}: QuestionProps) => {
                             value={motivationValue}
                             motivation={true}
                             sliderChanged={sliderChanged}
+                            isMobile={props.isMobile}
                         />
                     </div>
                 </div>
