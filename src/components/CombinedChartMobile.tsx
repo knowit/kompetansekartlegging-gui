@@ -11,7 +11,7 @@ const numTicks = 5;
 const chartSplitAt = numTicks + 2;
 const iconSize = 18;
 
-const pageEntryLimit = 3;
+const pageEntryLimit = 6;
 
 const useStyles = makeStyles({
     tooltip: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     bulletRoot: {
         width: '100%',
@@ -142,8 +142,8 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
     });
 
     return (
-        <div className={classes.chartContainer} {...swipeHandlers}>
-            <ResponsiveContainer width='100%' height="100%">     
+        <div className={classes.chartContainer} {...swipeHandlers} >
+            <ResponsiveContainer>     
                 <BarChart
                     barGap={-10}
                     barSize={10}

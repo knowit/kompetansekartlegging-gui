@@ -26,6 +26,8 @@ const questionStyleDesktop = makeStyles({
         fontSize: 15,
         fontWeight: "bold"
     },
+    topicText: {
+    },
     text: {
         fontSize: 12,
         paddingTop: 5,
@@ -71,23 +73,20 @@ const questionStyleDesktop = makeStyles({
 
 const questionStyleMobile = makeStyles({
     root: {
-        marginTop: 10,
-        // marginLeft: 10,
-        marginRight: 10,
-        paddingLeft: 20,
+        margin: 5,
         paddingTop: 5,
-        paddingBottom: 5,
-        // paddingRight: 5,
+        paddingBottom: 20,
         backgroundColor: KnowitColors.white,
         borderRadius: 10,
-        width: '95%',
-        // position: 'absolute'
-        // zIndex: 10000
-
+        width: '100%',
     },
     topic: {
         fontSize: 15,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        display: 'flex'
+    },
+    topicText: {
+        maxWidth: '80%'
     },
     text: {
         fontSize: 12,
@@ -105,7 +104,7 @@ const questionStyleMobile = makeStyles({
         // marginLeft: 30,
         // marginRight: 20,
         // padding: 20,
-        width: '90%'
+        width: '100%'
     },
     slider: {
         marginRight: 15,
@@ -161,7 +160,7 @@ const Question = ({...props}: QuestionProps) => {
     return (
         <div className={style.root}>
             <div className={style.topic}>
-                {props.topic}
+                <div className={style.topicText}>{props.topic}</div>
                 {props.alerts?.qidMap.has(props.questionId) ?
                         <AlertNotification
                             type={props.alerts?.qidMap.get(props.questionId)!.type}
@@ -181,6 +180,7 @@ const Question = ({...props}: QuestionProps) => {
                             value={knowledgeValue}
                             motivation={false}
                             sliderChanged={sliderChanged}
+                            isMobile={props.isMobile}
                         />
                     </div>
                 </div>
@@ -196,6 +196,7 @@ const Question = ({...props}: QuestionProps) => {
                             value={motivationValue}
                             motivation={true}
                             sliderChanged={sliderChanged}
+                            isMobile={props.isMobile}
                         />
                     </div>
                 </div>

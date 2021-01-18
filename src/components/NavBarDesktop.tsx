@@ -113,8 +113,9 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                                 aria-controls={avatarMenuOpen ? 'menu-list-grow' : undefined}
                                 aria-haspopup="true"
                                 onClick={handleToggle}
+                                aria-label="Toggle dropdownmenu"
                             >
-                                <Avatar className={style.userPicture} src={props.userPicture}
+                                <Avatar className={style.userPicture} src={props.userPicture} alt="Profile Picture"
                             />
                             </Button>
                             <Popper
