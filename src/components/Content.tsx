@@ -111,7 +111,7 @@ const Content = ({...props}: ContentProps) => {
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
-    const [questions, setQuestions] = useState<Question[]>([]);
+    const [questions, setQuestions] = useState<Map<string, Question[]>>(new Map<string, Question[]>());
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
@@ -122,10 +122,6 @@ const Content = ({...props}: ContentProps) => {
     const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<AlertState>();
     
-    function shouldComponentUpdate() {
-        return false;
-    }
-
     const updateCategoryAlerts = () => {
         let msNow = Date.now();
         let alerts = new Map<string, Alert>();
@@ -176,19 +172,38 @@ const Content = ({...props}: ContentProps) => {
         return sorted;
     };
     
-    const createQuestions = (): Question[] => {
-        if(!formDefinition) return [];
-        if(!formDefinition?.questions.items) return [];
-        let questions = formDefinition.questions.items
-            .sort((a, b) => {
-                if (a.index && b.index == null) return -1;
-                if (a.index == null && b.index) return 1;
-                if (a.index && b.index) return a.index - b.index;
-                if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
-                return 0;
-            });
-        console.log("sorted questions: ", questions);
-        return questions;
+    const createQuestions = (): Map<string, Question[]> => {
+        if(!formDefinition) return new Map();
+        if(!formDefinition?.questions.items) return new Map();
+        let categories = formDefinition.questions.items
+            .map(item => item.category)
+            .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index);
+        let questionMap = new Map<string, Question[]>();
+        categories.forEach(cat => {
+            let questions = formDefinition.questions.items
+                .filter(question => question.category.id === cat.id)
+                .sort((a, b) => {
+                    if (a.index && b.index == null) return -1;
+                    if (a.index == null && b.index) return 1;
+                    if (a.index && b.index) return a.index - b.index;
+                    if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
+                    return 0;
+                });
+            console.log(`Sorted question for ${cat.text}: `, questions);
+            questionMap.set(cat.text, questions);
+        });
+        console.log("Question map: ", questionMap);
+        return questionMap;
+        // let questions = formDefinition.questions.items
+        //     .sort((a, b) => {
+        //         if (a.index && b.index == null) return -1;
+        //         if (a.index == null && b.index) return 1;
+        //         if (a.index && b.index) return a.index - b.index;
+        //         if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
+        //         return 0;
+        //     });
+        // console.log("sorted questions: ", questions);
+        // return questions;
     }
 
     const createAnswers = (): AnswerData[] => {

@@ -69,21 +69,36 @@ export const Form = ({...props}: AnswerProps) => {
     const style = props.isMobile ? FormStyleMobile() : FormStyleDesktop();
 
     const getQuestionsForCategory = (items: Question[] | undefined): JSX.Element[] => {
-        return props.questions?.map(question => {
+        return props.questions?.get(props.activeCategory)?.map(question => {
             const answer = props.answers.find(a => a.questionId === question.id);
             return <Question
-                key={question.id}
-                questionId={question.id}
-                topic={question.topic}
-                text={question.text}
-                updateAnswer={props.updateAnswer}
-                knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
-                motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
-                setIsCategorySubmitted={props.setIsCategorySubmitted}
-                isMobile={props.isMobile}
-                alerts={props.alerts}
-            />
+                    key={question.id}
+                    questionId={question.id}
+                    topic={question.topic}
+                    text={question.text}
+                    updateAnswer={props.updateAnswer}
+                    knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
+                    motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
+                    setIsCategorySubmitted={props.setIsCategorySubmitted}
+                    isMobile={props.isMobile}
+                    alerts={props.alerts}
+                />
         }) || [];
+        // return props.questions?.map(question => {
+        //     const answer = props.answers.find(a => a.questionId === question.id);
+        //     return <Question
+        //         key={question.id}
+        //         questionId={question.id}
+        //         topic={question.topic}
+        //         text={question.text}
+        //         updateAnswer={props.updateAnswer}
+        //         knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
+        //         motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
+        //         setIsCategorySubmitted={props.setIsCategorySubmitted}
+        //         isMobile={props.isMobile}
+        //         alerts={props.alerts}
+        //     />
+        // }) || [];
         // let questions: JSX.Element[] = [];
         // for(const item of items){
         //     const answer = props.answers.find(a => a.questionId === item.id);
