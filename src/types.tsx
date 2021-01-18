@@ -364,14 +364,11 @@ export type NavBarProps = {
 };
 
 export type NavBarPropsDesktop = {
-    handleDeleteAnswers: (event: React.MouseEvent<EventTarget>) => void,
-    handleConfirmDelete: (event: React.MouseEvent<EventTarget>) => void,
-    handleDisplayAnswers: (event: React.MouseEvent<EventTarget>) => void,
-    handleCloseAlert: () => void,
-    anchorRef: React.RefObject<HTMLButtonElement>,
+    confirmDeleteUserdata: () => void,
+    displayAnswers: () => void,
+    signout: () => void,
     userName: string,
     userPicture: string,
-    deleteAlertOpen: boolean,
 }
 
 export type NavBarPropsMobile = {
