@@ -374,6 +374,9 @@ export type NavBarPropsDesktop = {
 export type NavBarPropsMobile = {
     menuButtons : JSX.Element[],
     activePanel: Panel,
+    userName: string,
+    userPicture: string,
+    signout: () => void,
 }
 
 
@@ -404,7 +407,11 @@ export type ContentProps = {
     user: any
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
     answerHistoryOpen: boolean,
-    isMobile: boolean
+    isMobile: boolean,
+    signout: () => void,
+    userName: string,
+    userPicture: string,
+
 };
 
 export type ChartData = {

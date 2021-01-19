@@ -1,5 +1,5 @@
 
-import { AppBar, Toolbar, IconButton, Typography, List, ListItem } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, List, ListItem, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { KnowitColors } from '../styles';
@@ -69,12 +69,19 @@ const navbarStyles = makeStyles((theme) => ({
     headerText: {
         fontWeight: 700,
     },
-    list: {
+    listContainer: {
         width: 250,
+        height: '90%'
       },
-      logout: {
-          
-      }
+    logout: {   
+        marginTop: 'auto'
+    },
+    list: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: '1',
+    }
 }));
 
 
@@ -111,19 +118,22 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
     };
     
     
-      const list = () => (
-        <div
-          className={style.list}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-        >
-        <List>
+    const list = () => (
+    <div
+        className={style.listContainer}
+        role="presentation"
+        onClick={toggleDrawer(false)}
+        onKeyDown={toggleDrawer(false)}
+    >
+        <List className={style.list}>
             {props.menuButtons}
-            <ListItem className={style.logout}>Logg ut</ListItem>
-          </List>
-        </div>
-      );
+            <ListItem className={style.logout} onClick={props.signout}>
+                {/* <Avatar className={style.userPicture} src={props.userPicture} alt="Profile Picture"/> */}
+                Logg ut
+            </ListItem>
+        </List>
+    </div>
+    );
     
 
     return (

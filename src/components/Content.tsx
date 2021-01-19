@@ -599,7 +599,16 @@ const Content = ({...props}: ContentProps) => {
     return (
             <div className={props.isMobile ? mobileStyle.root : style.root} onScroll={() => handleScroll()} ref={mobileNavRef}>
                 {
-                    props.isMobile ? <NavBarMobile menuButtons={setUpMobileMenu()} activePanel={activePanel}/> : <div className={style.menu}>{setupDesktopMenu()}</div>
+                    props.isMobile ? 
+                        <NavBarMobile 
+                            menuButtons={setUpMobileMenu()} 
+                            activePanel={activePanel}
+                            userName={props.userName}
+                            userPicture={props.userPicture}
+                            signout={props.signout}
+
+                        /> 
+                    : <div className={style.menu}>{setupDesktopMenu()}</div>
                 } 
                 <div className={props.isMobile ? mobileStyle.panel : style.panel}>{setupPanel()}</div>
                 <AlertDialog

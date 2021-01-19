@@ -187,7 +187,10 @@ const App = () => {
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
                             answerHistoryOpen={answerHistoryOpen}
                             isMobile={isMobile}
-                        />
+                            signout={signout}
+                            userName={userName}
+                            userPicture={userPicture}
+                    />
                         <FloatingScaleDescButton isMobile={isMobile}/>
                     </Fragment>
                 :
