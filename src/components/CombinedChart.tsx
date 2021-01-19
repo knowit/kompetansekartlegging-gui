@@ -7,7 +7,7 @@ import { CombinedChartProps } from '../types';
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;
-const heightPerColumn = 60;
+const heightPerColumn = 50;
 
 const useStyles = makeStyles({
     root: {
@@ -49,7 +49,7 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
 
     return (
         <div className={classes.container}>
-        <ResponsiveContainer width='100%' height={heightPerColumn * props.chartData.length}>     
+        <ResponsiveContainer width='100%' height={heightPerColumn * props.chartData.length + 90}>     
             <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 50, right: 0, bottom: 6, left: 0}}>
             <CartesianGrid horizontal={true} vertical={false} strokeDasharray="2 5"/>
                 <XAxis
