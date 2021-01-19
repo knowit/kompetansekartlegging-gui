@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert, Question } from '../types';
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert, Question, Category, QuestionAnswer } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
@@ -118,7 +118,7 @@ const Content = ({...props}: ContentProps) => {
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
-    const [questions, setQuestions] = useState<Map<string, Question[]>>(new Map<string, Question[]>());
+    const [questionAnswers, setQuestionAnswers] = useState<Map<string, QuestionAnswer[]>>(new Map<string, QuestionAnswer[]>());
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
@@ -158,36 +158,49 @@ const Content = ({...props}: ContentProps) => {
         setAlerts({qidMap: alerts, categoryMap: catAlerts});
     }
 
-    const createCategories = (): string[] => {
-        if(!formDefinition) return [];
-        if(!formDefinition?.questions.items) return [];
+    const createCategories = (formDef: FormDefinition): string[] => {
+        if (!formDef) return [];
+        if (!formDef?.questions.items) return [];
         // console.log("Form def: ", formDefinition);
-        let categories = formDefinition.questions.items
+        let categories = formDef.questions.items
             .map(item => item.category)
             .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index);
         console.log("categories: ", categories);
-        let sorted = categories
-            .sort((a, b) => {
-                if (a.index && b.index == null) return -1;
-                if (a.index == null && b.index) return 1;
-                if (a.index && b.index) return a.index - b.index;
-                if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
-                return 0;
-            })
-            .map(category => category.text);
+        let sorted = helper.sortArray(categories as Category[]).map(category => category.text);
+        // let sorted = categories
+        //     .sort((a, b) => {
+        //         if (a.index && b.index == null) return -1;
+        //         if (a.index == null && b.index) return 1;
+        //         if (a.index && b.index) return a.index - b.index;
+        //         if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
+        //         return 0;
+        //     })
+        //     .map(category => category.text);
         console.log("sorted categories: ", sorted);
         return sorted;
     };
     
-    const createQuestions = (): Map<string, Question[]> => {
-        if(!formDefinition) return new Map();
-        if(!formDefinition?.questions.items) return new Map();
+    const fetchLastFormDefinition = async () => {
+        let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAtt, customQueries.formByCreatedAtInputConsts);
+        // let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
+        // let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
+        // console.log("Current form: ", currentForm);
+        if (currentForm.data) {
+            let formDef = currentForm.data.formByCreatedAt.items[0];
+            console.log("FormDef:", formDef);
+            setFormDefinition(formDef);
+            setCategories(createCategories(formDef));
+        }
+    };
+    
+    const createQuestionAnswers = (): Map<string, QuestionAnswer[]> => {
+        if (!formDefinition) return new Map();
         let categories = formDefinition.questions.items
             .map(item => item.category)
             .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index);
-        let questionMap = new Map<string, Question[]>();
+        let quAnsMap = new Map<string, QuestionAnswer[]>();
         categories.forEach(cat => {
-            let questions = formDefinition.questions.items
+            let quAns: QuestionAnswer[] = formDefinition.questions.items
                 .filter(question => question.category.id === cat.id)
                 .sort((a, b) => {
                     if (a.index && b.index == null) return -1;
@@ -195,11 +208,50 @@ const Content = ({...props}: ContentProps) => {
                     if (a.index && b.index) return a.index - b.index;
                     if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
                     return 0;
+                })
+                .map(qu => {
+                    return {
+                        category: qu.category,
+                        createdAt: qu.createdAt,
+                        id: qu.id,
+                        index: qu.index,
+                        qid: qu.qid,
+                        text: qu.text,
+                        topic: qu.topic,
+                        knowledge: 0,
+                        motivation: 0,
+                        updatedAt: 0
+                    }
                 });
+            quAnsMap.set(cat.text, quAns);
+        });
+        console.log(`Sorted questionAnswerMap: `, quAnsMap);
+        return quAnsMap;
+    };
+    
+    const createQuestions = (formDef: FormDefinition): Map<string, Question[]> => {
+        if (!formDef) return new Map();
+        if (!formDef?.questions.items) return new Map();
+        let categories = formDef.questions.items
+            .map(item => item.category)
+            .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index);
+        let questionMap = new Map<string, Question[]>();
+        categories.forEach(cat => {
+            let questions = helper.sortArray(formDef.questions.items.filter(question => question.category.id === cat.id));
+            // let questions = formDef.questions.items
+            //     .filter(question => question.category.id === cat.id)
+            //     .sort((a, b) => {
+            //         if (a.index && b.index == null) return -1;
+            //         if (a.index == null && b.index) return 1;
+            //         if (a.index && b.index) return a.index - b.index;
+            //         if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
+            //         return 0;
+            //     });
             console.log(`Sorted question for ${cat.text}: `, questions);
             questionMap.set(cat.text, questions);
         });
         console.log("Question map: ", questionMap);
+        // setAnswers(createAnswers2(questionMap));
         return questionMap;
         // let questions = formDefinition.questions.items
         //     .sort((a, b) => {
@@ -212,28 +264,28 @@ const Content = ({...props}: ContentProps) => {
         // console.log("sorted questions: ", questions);
         // return questions;
     }
-
-    const createAnswers = (): AnswerData[] => {
-        if(!formDefinition) return [];
-        let as: AnswerData[] = [];
-        if(formDefinition?.questions.items){
-            for (let i = 0; i < formDefinition.questions.items.length; i++) {
-                const question = formDefinition.questions.items[i];
-                // console.log(question);
-                if (!question) continue;
-                let preAnswer = userAnswers.find(answer => answer.question.id === question.id);
-                as.push({
-                    questionId: question.id,
-                    topic: question.topic,
-                    category: question.category.text,
-                    knowledge: preAnswer ? (preAnswer.knowledge ? preAnswer.knowledge : 0) : -1,
-                    motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1,
-                    updatedAt: preAnswer ? Date.parse(preAnswer.updatedAt) : 0
-                });
-            }
-        }
-        return as;
-    };
+    
+    // const createAnswers = (): AnswerData[] => {
+    //     if(!formDefinition) return [];
+    //     let as: AnswerData[] = [];
+    //     if(formDefinition?.questions.items){
+    //         for (let i = 0; i < formDefinition.questions.items.length; i++) {
+    //             const question = formDefinition.questions.items[i];
+    //             // console.log(question);
+    //             if (!question) continue;
+    //             let preAnswer = userAnswers.find(answer => answer.question.id === question.id);
+    //             as.push({
+    //                 questionId: question.id,
+    //                 topic: question.topic,
+    //                 category: question.category.text,
+    //                 knowledge: preAnswer ? (preAnswer.knowledge ? preAnswer.knowledge : 0) : -1,
+    //                 motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1,
+    //                 updatedAt: preAnswer ? Date.parse(preAnswer.updatedAt) : 0
+    //             });
+    //         }
+    //     }
+    //     return as;
+    // };
     
     const createUserForm = async () => {
         setIsCategorySubmitted(true)
@@ -284,26 +336,6 @@ const Content = ({...props}: ContentProps) => {
         });
     };
 
-    const fetchLastFormDefinition = async () => {
-        let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAtt, customQueries.formByCreatedAtInputConsts);
-        // let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
-        // let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
-        // console.log("Current form: ", currentForm);
-        if(currentForm.data){
-
-            //TODO: Need to sort questions again, currently removed but can be implemented
-
-            // currentForm.data.formByCreatedAt.items[0].questions
-            // let sorted = currentForm.data.formByCreatedAt.items[0].questions.items
-            //     .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1);
-
-            // currentForm.data.getFormDefinition.questions.items = sorted;
-
-
-            setFormDefinition(currentForm.data.formByCreatedAt.items[0]);
-        }
-    };
-
     const getUserAnswers = async () => {
         // let allAnswers = await helper.listUserForms();
         // console.log(allAnswers);
@@ -344,8 +376,7 @@ const Content = ({...props}: ContentProps) => {
         console.log("formDefinition")
 
         getUserAnswers();
-        setAnswers(createAnswers());
-        setCategories(createCategories());
+        // setAnswers(createAnswers());
     }, [formDefinition]);
 
     useEffect(() => {
@@ -355,8 +386,7 @@ const Content = ({...props}: ContentProps) => {
     }, [categories]);
 
     useEffect(() => {
-        console.log("answers")
-
+        console.log("answers", answers)
         updateCategoryAlerts();
     }, [answers]);
     
@@ -370,8 +400,9 @@ const Content = ({...props}: ContentProps) => {
     useEffect(() => {
         console.log("userAnswers")
 
-        setAnswers(createAnswers());
-
+        // setAnswers(createAnswers());
+        setQuestionAnswers(createQuestionAnswers());
+        
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
     }, [userAnswers]);
 
@@ -598,7 +629,7 @@ const Content = ({...props}: ContentProps) => {
                 return(
                     <Overview
                         activePanel={activePanel}
-                        answers={answers}
+                        questionAnswers={questionAnswers}
                         categories={categories}
                         isMobile={props.isMobile}
                     />
@@ -612,7 +643,7 @@ const Content = ({...props}: ContentProps) => {
                         submitAndProceed={submitAndProceed}
                         updateAnswer={updateAnswer}
                         formDefinition={formDefinition}
-                        questions={questions}
+                        questionAnswers={questionAnswers}
                         answers={answers}
                         submitFeedback={submitFeedback}
                         changeActiveCategory={changeActiveCategory}
