@@ -197,7 +197,14 @@ const Content = ({...props}: ContentProps) => {
         if (!formDefinition) return new Map();
         let categories = formDefinition.questions.items
             .map(item => item.category)
-            .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index);
+            .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index)
+            .sort((a, b) => {
+                if (a.index && b.index == null) return -1;
+                if (a.index == null && b.index) return 1;
+                if (a.index && b.index) return a.index - b.index;
+                if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
+                return 0;
+            });
         let quAnsMap = new Map<string, QuestionAnswer[]>();
         categories.forEach(cat => {
             let quAns: QuestionAnswer[] = formDefinition.questions.items
