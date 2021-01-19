@@ -227,7 +227,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                         {/* <div className={style.catText} >{props.activeCategory}</div> */}
                     </div>
                     <div className={style.graphHolder}>
-                        <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={true}/>
+                        <AnswerDiagram questionAnswers={props.questionAnswers} activeCategory={props.activeCategory} isMobile={true}/>
                     </div>
                 </div>
                 <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>

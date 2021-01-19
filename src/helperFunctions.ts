@@ -1,6 +1,6 @@
 import {API, graphqlOperation} from "aws-amplify";
 import {GraphQLResult} from "@aws-amplify/api";
-import { UserFormList, UserFormWithAnswers } from "./types";
+import { Category, Question, UserFormList, UserFormWithAnswers } from "./types";
 import * as customQueries from './graphql/custom-queries';
 
 /*
@@ -182,6 +182,17 @@ export const addLeftPaddingToStringArray = (str: string[], padLength: number, pa
     return str.map((value) => value.padStart(padLength, padChar))
 };
 
+//Can be made more advanced, but this s enought for current useage
+export const sortArray = <T>(array: T[]): T[] => {
+    return array
+        .sort((a: any, b: any) => { //using any to remove "Index not found on type T" error
+            if (a.index && b.index == null) return -1;
+            if (a.index == null && b.index) return 1;
+            if (a.index && b.index) return a.index - b.index;
+            if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
+            return 0;
+        })
+};
 
 /*
     

@@ -132,7 +132,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                         <div className={style.catText} >{props.activeCategory}</div>
                     </div>
                     <div className={style.graphHolder}>
-                        <AnswerDiagram data={props.answers} activeCategory={props.activeCategory} isMobile={false}/>
+                        <AnswerDiagram questionAnswers={props.questionAnswers} activeCategory={props.activeCategory} isMobile={false}/>
                     </div>
                 </div>
                 <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>

@@ -1,7 +1,7 @@
 import { Button, makeStyles } from '@material-ui/core';
 import React, { Fragment } from 'react'
 import { KnowitColors } from '../styles';
-import { AnswerProps } from '../types';
+import { FormProps } from '../types';
 import { Category } from './Category';
 import Question from './Question';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
@@ -104,7 +104,7 @@ const FormStyleMobile = makeStyles({
     },
 });
 
-export const Form = ({...props}: AnswerProps) => {
+export const Form = ({...props}: FormProps) => {
     
     type Question = {
         id: string,
@@ -118,7 +118,7 @@ export const Form = ({...props}: AnswerProps) => {
     const style = props.isMobile ? FormStyleMobile() : FormStyleDesktop();
 
     const getQuestionsForCategory = (items: Question[] | undefined): JSX.Element[] => {
-        return props.questions?.get(props.activeCategory)?.map(question => {
+        return props.questionAnswers?.get(props.activeCategory)?.map(question => {
             const answer = props.answers.find(a => a.questionId === question.id);
             return <Question
                     key={question.id}
@@ -126,8 +126,8 @@ export const Form = ({...props}: AnswerProps) => {
                     topic={question.topic}
                     text={question.text}
                     updateAnswer={props.updateAnswer}
-                    knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
-                    motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
+                    knowledgeDefaultValue={question.knowledge}
+                    motivationDefaultValue={question.motivation}
                     setIsCategorySubmitted={props.setIsCategorySubmitted}
                     isMobile={props.isMobile}
                     alerts={props.alerts}

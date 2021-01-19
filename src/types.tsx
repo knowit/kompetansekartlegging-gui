@@ -7,7 +7,8 @@ export type AnswerData = {
     category: string,
     knowledge: number,
     motivation: number,
-    updatedAt: number
+    updatedAt: number,
+    index: number
 };
 
 export type Answers = {
@@ -29,8 +30,22 @@ export type Question = {
     }
 };
 
-export type Questions = {
-    [key: string]: Question
+export type QuestionAnswer = {
+    id: string,
+    qid: string | undefined,
+    createdAt: string,
+    text: string,
+    topic: string,
+    index: number,
+    category: {
+        id: string,
+        text: string,
+        description: string | undefined,
+        index: number | undefined
+    },
+    knowledge: number,
+    motivation: number,
+    updatedAt: number,
 };
 
 export type AggregatedAnswer = {
@@ -199,12 +214,12 @@ export type UserFormList = {
     }
 };
 
-export type AnswerProps = {
+export type FormProps = {
     createUserForm: () => void,
     submitAndProceed: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
-    questions: Map<string, Question[]> | undefined,
+    questionAnswers: Map<string, QuestionAnswer[]>,
     answers: AnswerData[],
     submitFeedback: string,
     categories: string[],
@@ -231,7 +246,7 @@ export type StatsProps = {
 }
 
 export type FromAppProps = {
-    answerProps: AnswerProps,
+    answerProps: FormProps,
     statsProps: StatsProps,
     userProps: UserProps
 }
@@ -274,7 +289,7 @@ export type BatchCreatedQuestionAnswer = {
 
 export type OverviewProps = {
     activePanel: Panel,
-    answers: AnswerData[],
+    questionAnswers: Map<string, QuestionAnswer[]>,
     categories: string[],
     isMobile: boolean
 };
@@ -291,7 +306,7 @@ export type YourAnswerProps = {
     submitAndProceed: () => void,
     updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
     formDefinition: FormDefinition | null,
-    questions: Map<string, Question[]> | undefined,
+    questionAnswers: Map<string, QuestionAnswer[]>,
     answers: AnswerData[],
     submitFeedback: string,
     changeActiveCategory: (newCategoryIndex: string) => void,
@@ -318,14 +333,20 @@ export interface Alert {
 }
 
 export type HighlightsProps = {
-    isMobile: boolean,
-    answers: AnswerData[]  
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    isMobile: boolean
 };
 
 export type ResultDiagramProps = {
-    isMobile: boolean,
-    answers: AnswerData[],
-    categories: string[]
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    categories: string[],
+    isMobile: boolean
+};
+
+export type AnswerDiagramProps = {
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    activeCategory: string,
+    isMobile: boolean
 };
 
 export type NavBarProps = {
@@ -391,4 +412,4 @@ export type ChartData = {
 export type CombinedChartProps = {
     chartData: ChartData[],
     className?: string
-}
+};
