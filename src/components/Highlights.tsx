@@ -261,15 +261,15 @@ export default function Highlights({...props }: HighlightsProps) {
         return (
             <div className={style.root}>
                 <div className={props.isMobile ? style.hidden : style.title}>FOKUSOMRÅDER</div>
-            <div className={props.isMobile ? style.containerMobile : style.container}>
-                <div className={style.block}>
-                    <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP STYRKER</div>
-                        {createKnowledgeHighlights()}
-                </div>
-                <div className={style.block}>
-                    <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP AMBISJONER</div>
-                        {createMotivationHighlights()}
-                </div>
+                <div className={props.isMobile ? style.containerMobile : style.container}>
+                    <div className={style.block}>
+                        <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP STYRKER</div>
+                            {createKnowledgeHighlights()}
+                    </div>
+                    <div className={style.block}>
+                        <div className={props.isMobile ? style.headingMobile : style.heading}>TOPP AMBISJONER</div>
+                            {createMotivationHighlights()}
+                    </div>
                 </div>
             </div>
         );

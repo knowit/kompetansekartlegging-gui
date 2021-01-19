@@ -29,7 +29,7 @@ const questionStyleDesktop = makeStyles({
     topicText: {
     },
     text: {
-        fontSize: 12,
+        fontSize: 14,
         paddingTop: 5,
         paddingBottom: 10
     },
@@ -89,7 +89,7 @@ const questionStyleMobile = makeStyles({
         maxWidth: '80%'
     },
     text: {
-        fontSize: 12,
+        fontSize: 14,
         paddingTop: 5,
         paddingBottom: 10
     },
