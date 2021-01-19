@@ -172,27 +172,46 @@ export default function Highlights({...props }: HighlightsProps) {
 
     useEffect(() => {
         generateShortlist();
-    }, [props.answers]);
+    }, [props.questionAnswers]);
 
     const generateShortlist = () => {
         let shortlistMotivation: TopicScoreWithIcon[] = [];
         let shortlistKnowledge: TopicScoreWithIcon[] = [];
-        props.answers.forEach(ans => {
-            if (ans.knowledge > shortlistCutoff) {
-                shortlistKnowledge.push({
-                    topic: ans.topic,
-                    score: ans.knowledge,
-                    icon: Math.floor(ans.knowledge)
-                });
-            }
-            if (ans.motivation > shortlistCutoff) {
-                shortlistMotivation.push({
-                    topic: ans.topic,
-                    score: ans.motivation,
-                    icon: Math.floor(ans.motivation)
-                });
-            }
+        props.questionAnswers.forEach((quAns, cat) => {
+            quAns.forEach(answer => {
+                if (answer.knowledge > shortlistCutoff) {
+                    shortlistKnowledge.push({
+                        topic: answer.topic,
+                        score: answer.knowledge,
+                        icon: Math.floor(answer.knowledge)
+                    });
+                }
+                if (answer.motivation > shortlistCutoff) {
+                    shortlistMotivation.push({
+                        topic: answer.topic,
+                        score: answer.motivation,
+                        icon: Math.floor(answer.motivation)
+                    });
+                }
+            });
+            
         });
+        // props.answers.forEach(ans => {
+        //     if (ans.knowledge > shortlistCutoff) {
+        //         shortlistKnowledge.push({
+        //             topic: ans.topic,
+        //             score: ans.knowledge,
+        //             icon: Math.floor(ans.knowledge)
+        //         });
+        //     }
+        //     if (ans.motivation > shortlistCutoff) {
+        //         shortlistMotivation.push({
+        //             topic: ans.topic,
+        //             score: ans.motivation,
+        //             icon: Math.floor(ans.motivation)
+        //         });
+        //     }
+        // });
         setKnowledgeAboveCutoff(shortlistKnowledge
                 .sort((a, b) => b.score - a.score)
                 .slice(0, maxInList)
@@ -255,7 +274,7 @@ export default function Highlights({...props }: HighlightsProps) {
         );
     };
 
-    if (props.answers.length === 0)
+    if (props.questionAnswers.size === 0)
         return <Fragment/>
     else 
         return (
