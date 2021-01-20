@@ -50,7 +50,7 @@ const App = () => {
 
     const [user, setUser] = useState<any | null>(null);
     // const [customState, setCustomState] = useState<any | null>(null)
-    const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
+    const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false); // oppdaterer seg ikke på close
     
     useEffect(() => {
         Hub.listen('auth', ({ payload: { event, data } }) => {
