@@ -34,6 +34,8 @@ const navbarStyles = makeStyles((theme) => ({
         fontSize: "20px",
         lineHeight: "23px",
         color: KnowitColors.ecaluptus,
+    },
+    dropdownMenuButton: {
         marginLeft: "auto"
     },
     userPicture: {
@@ -133,17 +135,17 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                     <Toolbar className={style.header}>
                         <div className={style.logo}><KnowitLogo/></div>
                         <div className={style.title}>Kompetansekartlegging</div>
-                        <div className={style.userName}>{props.userName}</div>
 
                         {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}
-                        <div>
-                            <Button
+                        <div className={style.dropdownMenuButton}>
+                            <Button 
                                 ref={anchorRef}
                                 aria-controls={avatarMenuOpen ? 'menu-list-grow' : undefined}
                                 aria-haspopup="true"
                                 onClick={handleToggle}
                                 aria-label="Toggle dropdownmenu"
                             >
+                                <div className={style.userName}>{props.userName}</div>
                                 <Avatar className={style.userPicture} src={props.userPicture} alt="Profile Picture"
                             />
                             </Button>
