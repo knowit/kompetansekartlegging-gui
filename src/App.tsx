@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import './App.css';
 import Amplify, {Auth, Hub} from 'aws-amplify';
 import awsconfig from './aws-exports';
@@ -15,6 +15,7 @@ import * as qustomQueries from './graphql/custom-queries'
 import { Category } from './types'
 import {isMobile} from 'react-device-detect';
 import FloatingScaleDescButton from './components/FloatingScaleDescButton';
+import NavBarDesktop from './components/NavBarDesktop';
 
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
@@ -49,7 +50,7 @@ const App = () => {
 
     const [user, setUser] = useState<any | null>(null);
     // const [customState, setCustomState] = useState<any | null>(null)
-    const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
+    const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false); // oppdaterer seg ikke på close
     
     useEffect(() => {
         Hub.listen('auth', ({ payload: { event, data } }) => {
@@ -133,25 +134,63 @@ const App = () => {
             console.log(deleteResult);
         } else console.log("No Userforms active");
     };
+
+    // Navbarfunctions:
+
+    // used to reference items in desktop navbar
+    const [userName, setUserName] = useState<string>('');
+    const [userPicture, setUserPicture] = useState<string>('');
+
+    // used to set username and userpicture
+    useEffect(() => {
+        if (user) {
+            if (typeof user != "undefined" && user.hasOwnProperty("attributes")) {
+                let attributes = user.attributes
+                setUserName(attributes.name)
+                setUserPicture(attributes.picture)
+            } 
+        }
+    }, [user]);
+
+    const signout = () => {
+        Auth.signOut();
+    };
+
+    // todo: trengs ikke...?
+    const confirmDeleteUserdata = () => {
+        deleteUserData();
+    };
+
+    const displayAnswers = () => {
+        setAnswerHistoryOpen(true);
+    };
+
     
     return (
         <div className={style.root}>
             <BrowserRouter>
                 {user ?
                     <Fragment>
-                        <NavBar
-                            user={user}
-                            callbackDelete={deleteUserData}
-                            setAnswerHistoryOpen={setAnswerHistoryOpen}
-                            isMobile={isMobile}
-                        />
+                        {isMobile ? null : 
+                            <NavBarDesktop 
+                                confirmDeleteUserdata={confirmDeleteUserdata}
+                                displayAnswers={displayAnswers}
+                                signout={signout}
+                                userName={userName}
+                                userPicture={userPicture}
+                             />
+                        }
+                        
                         {showFormDefSendButton ? <button onClick={() => sendFormDefinition()}>Send form definition to server</button> : ""}
                         <Content
                             user={user}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
                             answerHistoryOpen={answerHistoryOpen}
                             isMobile={isMobile}
-                        />
+                            signout={signout}
+                            userName={userName}
+                            userPicture={userPicture}
+                    />
                         <FloatingScaleDescButton isMobile={isMobile}/>
                     </Fragment>
                 :

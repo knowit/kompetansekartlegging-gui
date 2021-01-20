@@ -119,7 +119,7 @@ const Content = ({...props}: ContentProps) => {
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
-    const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
+    // const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
     const [isCategorySubmitted, setIsCategorySubmitted] = useState<boolean>(true);
@@ -274,9 +274,10 @@ const Content = ({...props}: ContentProps) => {
     };
     
     const fetchUserFormsAndOpenView = async () => {
+        // debugger
         let allUserForms = await helper.listUserForms();
         setAnswerLog(allUserForms);
-        setHistoryViewOpen(true);
+        props.setAnswerHistoryOpen(true);
     };
 
     const resetAnswers = () => {
@@ -335,7 +336,7 @@ const Content = ({...props}: ContentProps) => {
         if (props.answerHistoryOpen) {
             fetchUserFormsAndOpenView() 
         } else {
-            setHistoryViewOpen(false);
+            props.setAnswerHistoryOpen(false);
         }
     }, [props.answerHistoryOpen]);
 
@@ -599,7 +600,16 @@ const Content = ({...props}: ContentProps) => {
     return (
             <div className={props.isMobile ? mobileStyle.root : style.root} onScroll={() => handleScroll()} ref={mobileNavRef}>
                 {
-                    props.isMobile ? <NavBarMobile menuButtons={setUpMobileMenu()} activePanel={activePanel}/> : <div className={style.menu}>{setupDesktopMenu()}</div>
+                    props.isMobile ? 
+                        <NavBarMobile 
+                            menuButtons={setUpMobileMenu()} 
+                            activePanel={activePanel}
+                            userName={props.userName}
+                            userPicture={props.userPicture}
+                            signout={props.signout}
+
+                        /> 
+                    : <div className={style.menu}>{setupDesktopMenu()}</div>
                 } 
                 <div className={props.isMobile ? mobileStyle.panel : style.panel}>{setupPanel()}</div>
                 <AlertDialog
@@ -612,6 +622,7 @@ const Content = ({...props}: ContentProps) => {
                     leaveFormButtonClicked={leaveFormButtonClicked} //Temp added here, replace changeActiveCategory
                     isMobile={props.isMobile}
                 />
+                <AnswerHistory history={answerLog} historyViewOpen={props.answerHistoryOpen} setHistoryViewOpen={props.setAnswerHistoryOpen} isMobile={props.isMobile}/>
             </div>
         
           
