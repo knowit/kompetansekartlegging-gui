@@ -1,7 +1,7 @@
 import { Button, makeStyles } from '@material-ui/core';
-import React, { Fragment } from 'react'
+import React, { Fragment, useRef } from 'react'
 import { KnowitColors } from '../styles';
-import { FormProps } from '../types';
+import { FormProps, SliderValues } from '../types';
 import { Category } from './Category';
 import Question from './Question';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
@@ -104,22 +104,28 @@ const FormStyleMobile = makeStyles({
     },
 });
 
+type Question = {
+    id: string,
+    text: string,
+    topic: string,
+    category: {
+        text: string
+    }
+};
+
 export const Form = ({...props}: FormProps) => {
     
-    type Question = {
-        id: string,
-        text: string,
-        topic: string,
-        category: {
-            text: string
-        }
-    }
+    const sliderValues = useRef<Map<string, SliderValues>>(new Map()); //String is questionid, values are knowledge and motivation
 
     const style = props.isMobile ? FormStyleMobile() : FormStyleDesktop();
+    
+    const setSliderValues = (questionId: string, values: SliderValues) => {
+        sliderValues.current.set(questionId, values);
+    }
 
     const getQuestionsForCategory = (items: Question[] | undefined): JSX.Element[] => {
-        return props.questionAnswers?.get(props.activeCategory)?.map(question => {
-            const answer = props.answers.find(a => a.questionId === question.id);
+        let questionAnswers = props.questionAnswers?.get(props.activeCategory)?.map(question => {
+            sliderValues.current.set(question.id, {knowledge: question.knowledge, motivation: question.motivation});
             return <Question
                     key={question.id}
                     questionId={question.id}
@@ -131,8 +137,12 @@ export const Form = ({...props}: FormProps) => {
                     setIsCategorySubmitted={props.setIsCategorySubmitted}
                     isMobile={props.isMobile}
                     alerts={props.alerts}
+                    sliderValues={sliderValues.current}
+                    setSliderValues={setSliderValues}
                 />
         }) || [];
+        // console.log("Form question answers:", questionAnswers);
+        return questionAnswers;
         // return props.questions?.map(question => {
         //     const answer = props.answers.find(a => a.questionId === question.id);
         //     return <Question

@@ -170,7 +170,7 @@ const Content = ({...props}: ContentProps) => {
         // let sorted = categories
         //     .sort((a, b) => {
         //         if (a.index && b.index == null) return -1;
-        //         if (a.index == null && b.index) return 1;
+        //         if (a.indeSx == null && b.index) return 1;
         //         if (a.index && b.index) return a.index - b.index;
         //         if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
         //         return 0;
@@ -190,12 +190,15 @@ const Content = ({...props}: ContentProps) => {
             console.log("FormDef:", formDef);
             setFormDefinition(formDef);
             setCategories(createCategories(formDef));
+            createQuestionAnswers(formDef);
         }
     };
     
-    const createQuestionAnswers = (): Map<string, QuestionAnswer[]> => {
-        if (!formDefinition) return new Map();
-        let categories = formDefinition.questions.items
+    const createQuestionAnswers = (formDef: FormDefinition) => { //: Map<string, QuestionAnswer[]>
+        console.log("Creating questionAnswers with ", formDef);
+        if (!formDef) return new Map();
+        let categoriess: Category[] = [];
+        let categories = formDef.questions.items
             .map(item => item.category)
             .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index)
             .sort((a, b) => {
@@ -205,9 +208,11 @@ const Content = ({...props}: ContentProps) => {
                 if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
                 return 0;
             });
+        // console.log("sorted categories: ", categories);
+        // setCategories(categories);
         let quAnsMap = new Map<string, QuestionAnswer[]>();
         categories.forEach(cat => {
-            let quAns: QuestionAnswer[] = formDefinition.questions.items
+            let quAns: QuestionAnswer[] = formDef.questions.items
                 .filter(question => question.category.id === cat.id)
                 .sort((a, b) => {
                     if (a.index && b.index == null) return -1;
@@ -233,7 +238,8 @@ const Content = ({...props}: ContentProps) => {
             quAnsMap.set(cat.text, quAns);
         });
         console.log(`Sorted questionAnswerMap: `, quAnsMap);
-        return quAnsMap;
+        // return quAnsMap;
+        setQuestionAnswers(quAnsMap);
     };
     
     const createQuestions = (formDef: FormDefinition): Map<string, Question[]> => {
@@ -408,7 +414,7 @@ const Content = ({...props}: ContentProps) => {
         console.log("userAnswers")
 
         // setAnswers(createAnswers());
-        setQuestionAnswers(createQuestionAnswers());
+        // setQuestionAnswers(createQuestionAnswers());
         
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
     }, [userAnswers]);

@@ -134,28 +134,29 @@ const questionStyleMobile = makeStyles({
 
 const Question = ({...props}: QuestionProps) => {
     
-    const [knowledgeValue, setKnowledgeValue] = useState<number>(props.knowledgeDefaultValue);
-    const [motivationValue, setMotivationValue] = useState<number>(props.motivationDefaultValue);
+    // const [knowledgeValue, setKnowledgeValue] = useState<number>(props.knowledgeDefaultValue);
+    // const [motivationValue, setMotivationValue] = useState<number>(props.motivationDefaultValue);
 
     const style = props.isMobile ? questionStyleMobile() : questionStyleDesktop();
-
 
     const sliderChanged = (newValue: number, motivation: boolean) => {
         props.setIsCategorySubmitted(false);
         // console.log("Slider changed");
         if(motivation){
-            setMotivationValue(newValue);
-            props.updateAnswer(props.questionId, knowledgeValue, newValue);
+            props.setSliderValues(props.questionId, { knowledge: props.sliderValues.get(props.questionId)?.knowledge || 0, motivation: newValue });
+            // setMotivationValue(newValue);
+            // props.updateAnswer(props.questionId, knowledgeValue, newValue);
         } else {
-            setKnowledgeValue(newValue);
-            props.updateAnswer(props.questionId, newValue, motivationValue);
+            props.setSliderValues(props.questionId, { knowledge: newValue, motivation: props.sliderValues.get(props.questionId)?.motivation || 0 });
+            // setKnowledgeValue(newValue);
+            // props.updateAnswer(props.questionId, newValue, motivationValue);
         }
     };
 
-    useEffect(() => {
-        setKnowledgeValue(props.knowledgeDefaultValue);
-        setMotivationValue(props.motivationDefaultValue);
-    }, [props.knowledgeDefaultValue, props.motivationDefaultValue]);
+    // useEffect(() => {
+    //     setKnowledgeValue(props.knowledgeDefaultValue);
+    //     setMotivationValue(props.motivationDefaultValue);
+    // }, [props.knowledgeDefaultValue, props.motivationDefaultValue]);
 
     return (
         <div className={style.root}>
@@ -177,7 +178,7 @@ const Question = ({...props}: QuestionProps) => {
                     </div>
                     <div className={style.slider}>
                         <Slider
-                            value={knowledgeValue}
+                            value={props.sliderValues.get(props.questionId)?.knowledge || -2}
                             motivation={false}
                             sliderChanged={sliderChanged}
                             isMobile={props.isMobile}
@@ -193,7 +194,7 @@ const Question = ({...props}: QuestionProps) => {
                     </div>
                     <div className={style.slider}>
                         <Slider
-                            value={motivationValue}
+                            value={props.sliderValues.get(props.questionId)?.motivation || -2}
                             motivation={true}
                             sliderChanged={sliderChanged}
                             isMobile={props.isMobile}

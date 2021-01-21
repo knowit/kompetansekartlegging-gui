@@ -267,7 +267,9 @@ export type QuestionProps = {
     motivationDefaultValue: number,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     isMobile: boolean,
-    alerts: AlertState | undefined
+    alerts: AlertState | undefined,
+    sliderValues: Map<string, SliderValues>,
+    setSliderValues: (questionId: string, values: SliderValues) => void
 };
 
 export type BatchCreatedQuestionAnswer = {
@@ -413,3 +415,10 @@ export type CombinedChartProps = {
     chartData: ChartData[],
     className?: string
 };
+
+export type SliderValues = { //Used in form and question
+    knowledge: number,
+    motivation: number
+};
+
+
