@@ -116,6 +116,7 @@ export const formByCreatedAtt = /* GraphQL */ `
               description
               index
             }
+            index
             id
             createdAt
             text
