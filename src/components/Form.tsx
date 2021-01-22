@@ -124,6 +124,7 @@ export const Form = ({...props}: FormProps) => {
     }
 
     const getQuestionsForCategory = (items: Question[] | undefined): JSX.Element[] => {
+        //console.log("Props to make questions from: ", props.questionAnswers);
         let questionAnswers = props.questionAnswers?.get(props.activeCategory)?.map(question => {
             sliderValues.current.set(question.id, {knowledge: question.knowledge, motivation: question.motivation});
             return <Question
@@ -141,7 +142,7 @@ export const Form = ({...props}: FormProps) => {
                     setSliderValues={setSliderValues}
                 />
         }) || [];
-        // console.log("Form question answers:", questionAnswers);
+        //console.log("Form question answers:", questionAnswers);
         return questionAnswers;
         // return props.questions?.map(question => {
         //     const answer = props.answers.find(a => a.questionId === question.id);
@@ -179,12 +180,14 @@ export const Form = ({...props}: FormProps) => {
         // return questions;
     };
     
-    const handleClickSubmit = () => {
+    const handleClickSubmit = async () => {
         // TODO pending other PR: check isCategorySubmitted so new user form isn't generated when nothing has changed
+        await props.updateAnswer(props.activeCategory, sliderValues.current);
         props.createUserForm();
     }
 
-    const handleClickProceed = () => {
+    const handleClickProceed = async () => {
+        await props.updateAnswer(props.activeCategory, sliderValues.current);
         props.submitAndProceed();
         props.scrollToTop();
     }
