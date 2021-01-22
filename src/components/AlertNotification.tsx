@@ -19,7 +19,7 @@ const useStyles = makeStyles({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: KnowitColors.fuchsia,
-        color: KnowitColors.white,
+        color: KnowitColors.black,
         fontWeight: 'bold',
         fontSize: 11,
         fontFamily: 'Arial'

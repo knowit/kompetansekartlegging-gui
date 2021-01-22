@@ -19,7 +19,7 @@ const useStyles = makeStyles({
         borderRadius: 10,
         borderWidth: 1,
         borderStyle: "solid",
-        borderColor: KnowitColors.darkBrown
+        borderColor: KnowitColors.darkBrown,
     },
     label: {
         color: KnowitColors.darkBrown,
@@ -39,7 +39,8 @@ const useStyles = makeStyles({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        fontWeight: "bold",
     },
     '@global': {
         'g.recharts-cartesian-grid-horizontal > line:last-child': {
@@ -108,7 +109,7 @@ const renderCustomAxisTicks = () => {
             isKnowledge = false;
         }
         return (
-            <svg x={props.x-12} y={props.y-24} width={24} height={24} fill={KnowitColors.darkGreen}>
+            <svg x={props.x-12} y={props.y-24} width={24} height={24} fill={KnowitColors.darkBrown}>
                 {GetIcon(isKnowledge, Math.round(iconNumber))};
             </svg>
             
