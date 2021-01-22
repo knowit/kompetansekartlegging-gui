@@ -217,7 +217,7 @@ export type UserFormList = {
 export type FormProps = {
     createUserForm: () => void,
     submitAndProceed: () => void,
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    updateAnswer: (category: string, sliderMap: Map<string, SliderValues>) => void,
     formDefinition: FormDefinition | null,
     questionAnswers: Map<string, QuestionAnswer[]>,
     answers: AnswerData[],
@@ -259,7 +259,7 @@ export type SliderProps = {
 };
 
 export type QuestionProps = {
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    updateAnswer: (category: string, sliderMap: Map<string, SliderValues>) => void,
     topic: string,
     text: string,
     questionId: string,
@@ -306,7 +306,7 @@ export type YourAnswerProps = {
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     createUserForm: () => void,
     submitAndProceed: () => void,
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    updateAnswer: (category: string, sliderMap: Map<string, SliderValues>) => void,
     formDefinition: FormDefinition | null,
     questionAnswers: Map<string, QuestionAnswer[]>,
     answers: AnswerData[],

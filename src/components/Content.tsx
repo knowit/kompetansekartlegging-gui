@@ -1,12 +1,10 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert, Question, Category, QuestionAnswer } from '../types';
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert, Question, Category, QuestionAnswer, SliderValues } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
-import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
 import { CreateQuestionAnswerInput } from '../API';
-import { AnswerHistory } from './AnswerHistory';
 import { Button, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { KnowitColors } from '../styles';
@@ -118,7 +116,7 @@ const Content = ({...props}: ContentProps) => {
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
-    const [questionAnswers, setQuestionAnswers] = useState<Map<string, QuestionAnswer[]>>(new Map<string, QuestionAnswer[]>());
+    const [questionAnswers, setQuestionAnswers] = useState<Map<string, QuestionAnswer[]>>(new Map());
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
     const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
@@ -190,8 +188,25 @@ const Content = ({...props}: ContentProps) => {
             console.log("FormDef:", formDef);
             setFormDefinition(formDef);
             setCategories(createCategories(formDef));
-            createQuestionAnswers(formDef);
+            let quAns = createQuestionAnswers(formDef);
+            let userAnswers = await getUserAnswers();
+            setFirstAnswers(quAns, userAnswers);
+            console.log("Completed questuions");
         }
+    };
+    
+    const getUserAnswers = async() => {
+        // let allAnswers = await helper.listUserForms();
+        // console.log(allAnswers);
+        // if(allAnswers.length === 0) return;
+        // let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
+        if (!props.user) return console.error("User not found when getting useranswers");
+        let lastUserForm: UserForm | undefined = (await helper.callGraphQL<UserFormByCreatedAt>
+            (customQueries.customUserFormByCreatedAt, { ...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username })).data?.userFormByCreatedAt.items[0];
+        // if(lastUserForm) setUserAnswers(lastUserForm.questionAnswers.items);
+        // if (lastUserForm) setFirstAnswers(lastUserForm.questionAnswers.items);
+        console.log("Last userform: ", lastUserForm);
+        return lastUserForm?.questionAnswers.items;
     };
     
     const createQuestionAnswers = (formDef: FormDefinition) => { //: Map<string, QuestionAnswer[]>
@@ -238,8 +253,56 @@ const Content = ({...props}: ContentProps) => {
             quAnsMap.set(cat.text, quAns);
         });
         console.log(`Sorted questionAnswerMap: `, quAnsMap);
-        // return quAnsMap;
-        setQuestionAnswers(quAnsMap);
+        return quAnsMap;
+        // setQuestionAnswers(quAnsMap);
+    };
+    
+    const setFirstAnswers = (quAns: Map<string, QuestionAnswer[]>, newUserAnswers: UserAnswer[] | void) => {
+        let newMap = new Map<string, QuestionAnswer[]>();
+        // newUserAnswers.forEach(userAnswer => {
+        //     let answer = questionAnswers.get(userAnswer.question.category.text)
+        //         ?.filter(quAns => quAns.id === userAnswer.question.id);
+        //     if(answer && answer.length >= 1) newMap.set(answer[0].category.text, );
+        // });
+        quAns.forEach((quAns, category) => {
+            newMap.set(category, quAns.map(questionAnswer => {
+                if(newUserAnswers){
+                    let userAnswer = newUserAnswers.filter(userAnswer => userAnswer.question.id === questionAnswer.id);
+                    if(userAnswer.length === 0) return questionAnswer;
+                    return {
+                        ...questionAnswer,
+                        knowledge: userAnswer[0].knowledge || questionAnswer.knowledge,
+                        motication: userAnswer[0].motivation || questionAnswer.motivation
+                    }
+                }
+                return questionAnswer;
+            }))
+        });
+        setQuestionAnswers(newMap);
+    };
+    
+    //qustionId: string, knowledgeValue: number, motivationValue: number
+    const updateAnswer = (category: string, sliderMap: Map<string, SliderValues>): void => {
+        let newAnswers: QuestionAnswer[] = questionAnswers.get(category)
+            ?.map(quAns => {
+                let sliderValues = sliderMap.get(quAns.id);
+                return {
+                    ...quAns,
+                    knowledge: sliderValues?.knowledge || -2, //If is -2, something is wrong
+                    motivation: sliderValues?.motivation || -2
+                }
+            }) || [];
+        setQuestionAnswers(questionAnswers.set(category, newAnswers));
+        
+        // setAnswers(prevAnswers => {
+        //     let newAnswers: AnswerData[] = [...prevAnswers];
+        //     let answer = newAnswers.find(a => a.questionId === questionId);
+        //     if (!answer) return [];
+        //     answer.knowledge = knowledgeValue;
+        //     answer.motivation = motivationValue;
+        //     answer.updatedAt = Date.now();
+        //     return newAnswers
+        // });
     };
     
     const createQuestions = (formDef: FormDefinition): Map<string, Question[]> => {
@@ -336,30 +399,6 @@ const Content = ({...props}: ContentProps) => {
         }
         setSubmitFeedback("Your answers has been saved!");
     }
-
-    const updateAnswer = (questionId: string, knowledgeValue: number, motivationValue: number): void => {
-        setAnswers(prevAnswers => {
-            let newAnswers: AnswerData[] = [...prevAnswers];
-            let answer = newAnswers.find(a => a.questionId === questionId);
-            if(!answer) return [];
-            answer.knowledge = knowledgeValue;
-            answer.motivation = motivationValue;
-            answer.updatedAt = Date.now();
-            return newAnswers
-        });
-    };
-
-    const getUserAnswers = async () => {
-        // let allAnswers = await helper.listUserForms();
-        // console.log(allAnswers);
-        // if(allAnswers.length === 0) return;
-        // let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
-        if(!props.user) return console.error("User not found when getting useranswers");
-        let lastUserForm: UserForm | undefined = (await helper.callGraphQL<UserFormByCreatedAt>
-            (customQueries.customUserFormByCreatedAt, {...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username})).data?.userFormByCreatedAt.items[0];
-        if(lastUserForm) setUserAnswers(lastUserForm.questionAnswers.items);
-        console.log("Last userform: ", lastUserForm);
-    };
     
     const changeActiveCategory = (newActiveCategory: string) => {
         setActiveCategory(newActiveCategory);
@@ -388,7 +427,7 @@ const Content = ({...props}: ContentProps) => {
     useEffect(() => {
         console.log("formDefinition")
 
-        getUserAnswers();
+        // getUserAnswers();
         // setAnswers(createAnswers());
     }, [formDefinition]);
 
@@ -439,6 +478,13 @@ const Content = ({...props}: ContentProps) => {
             }
         }
     }, [isCategorySubmitted])
+    
+    
+    // useEffect(() => {
+    //     console.log("Question Answers updated", questionAnswers);
+    // }, [questionAnswers]);
+    
+    
     
     
     
