@@ -25,7 +25,7 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
     
     useEffect(() => {
         setAnswerData(createData());
-    }, [props.answers]);
+    }, [props.questionAnswers]);
     
     type ReduceValue = {
         konwledgeCount: number,
@@ -37,15 +37,16 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
     }
     
     const createData = (): ResultData[] => { //data: ResultData[]
-        let result = props.categories.map(category => {
-            let reduced = props.answers.filter(answer => answer.category === category)
+        let ansData: ResultData[] = [];
+        props.questionAnswers.forEach((questionAnswers, category) => {
+            let reduced = questionAnswers
                 .reduce<ReduceValue>((acc, cur): ReduceValue => {
-                    if(cur.knowledge >= 0) {
+                    if (cur.knowledge >= 0) {
                         acc.konwledgeCount = acc.konwledgeCount + 1;
                         acc.knowledgeTotal = acc.knowledgeTotal + cur.knowledge;
                         acc.knowledgeAverage = acc.knowledgeTotal / acc.konwledgeCount;
                     }
-                    if(cur.motivation >= 0) {
+                    if (cur.motivation >= 0) {
                         acc.motivationCount = acc.motivationCount + 1;
                         acc.motivationTotal = acc.motivationTotal + cur.motivation;
                         acc.motivationAverage = acc.motivationTotal / acc.motivationCount;
@@ -60,17 +61,45 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
                     motivationTotal: 0
                 })
             ;
-            return {
+            ansData.push({
                 category: category,
                 averageKnowledge: roundDecimals(reduced.knowledgeAverage, 1),
                 averageMotivation: roundDecimals(reduced.motivationAverage, 1)
-            } as ResultData;
+            });
         });
-        return result;
+        // let result = props.categories.map(category => {
+        //     let reduced = props.answers.filter(answer => answer.category === category)
+        //         .reduce<ReduceValue>((acc, cur): ReduceValue => {
+        //             if(cur.knowledge >= 0) {
+        //                 acc.konwledgeCount = acc.konwledgeCount + 1;
+        //                 acc.knowledgeTotal = acc.knowledgeTotal + cur.knowledge;
+        //                 acc.knowledgeAverage = acc.knowledgeTotal / acc.konwledgeCount;
+        //             }
+        //             if(cur.motivation >= 0) {
+        //                 acc.motivationCount = acc.motivationCount + 1;
+        //                 acc.motivationTotal = acc.motivationTotal + cur.motivation;
+        //                 acc.motivationAverage = acc.motivationTotal / acc.motivationCount;
+        //             }
+        //             return acc;
+        //         }, {
+        //             konwledgeCount: 0,
+        //             knowledgeAverage: 0,
+        //             knowledgeTotal: 0,
+        //             motivationCount: 0,
+        //             motivationAverage: 0,
+        //             motivationTotal: 0
+        //         })
+        //     ;
+        //     return {
+        //         category: category,
+        //         averageKnowledge: roundDecimals(reduced.knowledgeAverage, 1),
+        //         averageMotivation: roundDecimals(reduced.motivationAverage, 1)
+        //     } as ResultData;
+        // });
+        //console.log("overview AnswerData:", ansData);
+        return ansData;
     };
     
-
-
     let chartData: ChartData[] = answerData.map(
         (answer) => ({
             name: answer.category,
