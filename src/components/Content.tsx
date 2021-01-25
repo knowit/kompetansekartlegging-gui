@@ -132,28 +132,29 @@ const Content = ({...props}: ContentProps) => {
         let msNow = Date.now();
         let alerts = new Map<string, Alert>();
         let catAlerts = new Map<string, number>();
-        for (let answer of answers) {
-            if (answer.motivation  === -1 || answer.knowledge === -1) {
-                alerts.set(answer.questionId, {type: AlertType.Incomplete, message: "Ubesvart!"});
-                let numAlerts = catAlerts.get(answer.category);
-                if (numAlerts)
-                    catAlerts.set(answer.category, numAlerts + 1);
-                else
-                    catAlerts.set(answer.category, 1);
-            } else if (msNow - answer.updatedAt > staleAnswersLimit) {
-                alerts.set(answer.questionId, {
-                    type: AlertType.Outdated,
-                    message: `Bør oppdateres! Sist besvart: ${
-                        new Date(answer.updatedAt)  //.toLocaleDateString('no-NO')
-                    }`
-                });
-                let numAlerts = catAlerts.get(answer.category);
-                if (numAlerts)
-                    catAlerts.set(answer.category, numAlerts + 1);
-                else
-                catAlerts.set(answer.category, 1);
-            }
-        }
+        questionAnswers.forEach((quAnsArr, cat) => {
+            quAnsArr.forEach(quAns => {
+                if (quAns.motivation === -1 || quAns.knowledge === -1) {
+                    alerts.set(quAns.id, { type: AlertType.Incomplete, message: "Ubesvart!" });
+                    let numAlerts = catAlerts.get(quAns.category.text);
+                    if (numAlerts)
+                        catAlerts.set(quAns.category.text, numAlerts + 1);
+                    else
+                        catAlerts.set(quAns.category.text, 1);
+                } else if (msNow - quAns.updatedAt > staleAnswersLimit) {
+                    alerts.set(quAns.id, {
+                        type: AlertType.Outdated,
+                        message: `Bør oppdateres! Sist besvart: ${new Date(quAns.updatedAt)  //.toLocaleDateString('no-NO')
+                            }`
+                    });
+                    let numAlerts = catAlerts.get(quAns.category.text);
+                    if (numAlerts)
+                        catAlerts.set(quAns.category.text, numAlerts + 1);
+                    else
+                        catAlerts.set(quAns.category.text, 1);
+                }
+           });
+        });
         setAlerts({qidMap: alerts, categoryMap: catAlerts});
     }
 
@@ -213,7 +214,6 @@ const Content = ({...props}: ContentProps) => {
     const createQuestionAnswers = (formDef: FormDefinition) => { //: Map<string, QuestionAnswer[]>
         console.log("Creating questionAnswers with ", formDef);
         if (!formDef) return new Map();
-        let categoriess: Category[] = [];
         let categories = formDef.questions.items
             .map(item => item.category)
             .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index)
@@ -246,8 +246,8 @@ const Content = ({...props}: ContentProps) => {
                         qid: qu.qid,
                         text: qu.text,
                         topic: qu.topic,
-                        knowledge: 0,
-                        motivation: 0,
+                        knowledge: -1,
+                        motivation: -1,
                         updatedAt: 0
                     }
                 });
@@ -439,10 +439,15 @@ const Content = ({...props}: ContentProps) => {
         setAnswerEditMode(false);
     }, [categories]);
 
+    // useEffect(() => {
+    //     console.log("answers", answers)
+    //     updateCategoryAlerts();
+    // }, [answers]);
+    
     useEffect(() => {
-        console.log("answers", answers)
+        console.log("questionAnswers", questionAnswers)
         updateCategoryAlerts();
-    }, [answers]);
+    }, [questionAnswers]);
     
     useEffect(() => {
         console.log("INITIAL1")
