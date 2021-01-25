@@ -3,7 +3,7 @@ import { AppBar, Button, Toolbar, Avatar, MenuItem, ClickAwayListener, Popper, G
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Auth } from 'aws-amplify';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { KnowitColors } from '../styles';
 import { NavBarPropsDesktop } from '../types';
 import { ReactComponent as KnowitLogo } from '../Logotype-Knowit-Digital-white 1.svg';
@@ -34,6 +34,8 @@ const navbarStyles = makeStyles((theme) => ({
         fontSize: "20px",
         lineHeight: "23px",
         color: KnowitColors.ecaluptus,
+    },
+    dropdownMenuButton: {
         marginLeft: "auto"
     },
     userPicture: {
@@ -60,23 +62,16 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
     const avatarMenuPrevOpen = React.useRef(avatarMenuOpen);
     const style = navbarStyles();
 
+    const [deleteAlertOpen, setDeleteAlertOpen] = useState<boolean>(false);
+    const anchorRef = useRef<HTMLButtonElement>(null);
 
 
     const handleToggle = () => {
         setAvatarMenuOpen((avatarMenuPrevOpen) => !avatarMenuPrevOpen);
     };
 
-    const handleCloseSignout = (event: React.MouseEvent<EventTarget>) => {
-        if (props.anchorRef.current && props.anchorRef.current.contains(event.target as HTMLElement)) {
-          return;
-        }
-        
-        setAvatarMenuOpen(false);
-        Auth.signOut();
-    };
-
     const handleClose = (event: React.MouseEvent<EventTarget>) => {
-        if (props.anchorRef.current && props.anchorRef.current.contains(event.target as HTMLElement)) {
+        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
           return;
         }
         
@@ -90,9 +85,45 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
         }
       }
 
+      const handleCloseSignout = (event: React.MouseEvent<EventTarget>) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+          return;
+        }
+        
+        props.signout();
+    };
+
+    const handleDeleteAnswers = (event: React.MouseEvent<EventTarget>) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+          return;
+        }
+        setDeleteAlertOpen(true);
+    };
+
+    const handleCloseAlert = () => {
+        setDeleteAlertOpen(false);
+      };
+
+
+    const handleConfirmDelete = (event: React.MouseEvent<EventTarget>) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+          return;
+        }
+        props.confirmDeleteUserdata();
+        setDeleteAlertOpen(false);
+    };
+
+    const handleDisplayAnswers = (event: React.MouseEvent<EventTarget>) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+          return;
+        }
+        props.displayAnswers();
+        // setAvatarMenuOpen(false);
+    };
+
       useEffect(() => {
         if (avatarMenuPrevOpen.current === true && avatarMenuOpen === false) {
-        props.anchorRef.current!.focus();
+        anchorRef.current!.focus();
         }
 
         avatarMenuPrevOpen.current = avatarMenuOpen;
@@ -104,23 +135,23 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                     <Toolbar className={style.header}>
                         <div className={style.logo}><KnowitLogo/></div>
                         <div className={style.title}>Kompetansekartlegging</div>
-                        <div className={style.userName}>{props.userName}</div>
 
                         {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}
-                        <div>
-                            <Button
-                                ref={props.anchorRef}
+                        <div className={style.dropdownMenuButton}>
+                            <Button 
+                                ref={anchorRef}
                                 aria-controls={avatarMenuOpen ? 'menu-list-grow' : undefined}
                                 aria-haspopup="true"
                                 onClick={handleToggle}
                                 aria-label="Toggle dropdownmenu"
                             >
+                                <div className={style.userName}>{props.userName}</div>
                                 <Avatar className={style.userPicture} src={props.userPicture} alt="Profile Picture"
                             />
                             </Button>
                             <Popper
                                 open={avatarMenuOpen}
-                                anchorEl={props.anchorRef.current}
+                                anchorEl={anchorRef.current}
                                 placement={"bottom-end"}
                                 role={undefined}
                                 transition
@@ -134,8 +165,8 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                                 <Paper>
                                     <ClickAwayListener onClickAway={handleClose}>
                                     <MenuList autoFocusItem={avatarMenuOpen} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                        <MenuItem onClick={props.handleDisplayAnswers}>Vis alle lagrede svar</MenuItem>
-                                        <MenuItem onClick={props.handleDeleteAnswers}>Slett alle svar</MenuItem>
+                                        <MenuItem onClick={handleDisplayAnswers}>Vis alle lagrede svar</MenuItem>
+                                        <MenuItem onClick={handleDeleteAnswers}>Slett alle svar</MenuItem>
                                         <MenuItem onClick={handleCloseSignout}>Logg ut</MenuItem>
                                     </MenuList>
                                     </ClickAwayListener>
@@ -144,8 +175,8 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                             )}
                             </Popper>
                             <Dialog
-                                open={props.deleteAlertOpen}
-                                onClose={props.handleCloseAlert}
+                                open={deleteAlertOpen}
+                                onClose={handleCloseAlert}
                                 aria-labelledby="dialogtitle"
                                 aria-describedby="dialogdescription"
                             >
@@ -158,10 +189,10 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                                 </DialogContentText>
                                 </DialogContent>
                                 <DialogActions>
-                                <Button onClick={props.handleConfirmDelete} color="primary">
+                                <Button onClick={handleConfirmDelete} color="primary">
                                     Bekreft
                                 </Button>
-                                <Button onClick={props.handleCloseAlert} color="primary" autoFocus>
+                                <Button onClick={handleCloseAlert} color="primary" autoFocus>
                                     Avbryt
                                 </Button>
                                 </DialogActions>

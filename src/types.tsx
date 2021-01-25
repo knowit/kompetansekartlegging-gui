@@ -359,19 +359,19 @@ export type NavBarProps = {
 };
 
 export type NavBarPropsDesktop = {
-    handleDeleteAnswers: (event: React.MouseEvent<EventTarget>) => void,
-    handleConfirmDelete: (event: React.MouseEvent<EventTarget>) => void,
-    handleDisplayAnswers: (event: React.MouseEvent<EventTarget>) => void,
-    handleCloseAlert: () => void,
-    anchorRef: React.RefObject<HTMLButtonElement>,
+    confirmDeleteUserdata: () => void,
+    displayAnswers: () => void,
+    signout: () => void,
     userName: string,
     userPicture: string,
-    deleteAlertOpen: boolean,
 }
 
 export type NavBarPropsMobile = {
     menuButtons : JSX.Element[],
     activePanel: Panel,
+    userName: string,
+    userPicture: string,
+    signout: () => void,
 }
 
 
@@ -402,7 +402,11 @@ export type ContentProps = {
     user: any
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
     answerHistoryOpen: boolean,
-    isMobile: boolean
+    isMobile: boolean,
+    signout: () => void,
+    userName: string,
+    userPicture: string,
+
 };
 
 export type ChartData = {
