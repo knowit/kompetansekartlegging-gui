@@ -11,6 +11,7 @@ import { KnowitColors } from '../styles';
 import { AlertDialog } from './AlertDialog';
 import { AlertNotification, AlertType } from './AlertNotification';
 import NavBarMobile from './NavBarMobile';
+import { AnswerHistory } from './AnswerHistory';
 
 const cardCornerRadius: number = 40;
 
