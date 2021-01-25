@@ -157,39 +157,13 @@ const Content = ({...props}: ContentProps) => {
         });
         setAlerts({qidMap: alerts, categoryMap: catAlerts});
     }
-
-    const createCategories = (formDef: FormDefinition): string[] => {
-        if (!formDef) return [];
-        if (!formDef?.questions.items) return [];
-        // console.log("Form def: ", formDefinition);
-        let categories = formDef.questions.items
-            .map(item => item.category)
-            .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index);
-        console.log("categories: ", categories);
-        let sorted = helper.sortArray(categories as Category[]).map(category => category.text);
-        // let sorted = categories
-        //     .sort((a, b) => {
-        //         if (a.index && b.index == null) return -1;
-        //         if (a.indeSx == null && b.index) return 1;
-        //         if (a.index && b.index) return a.index - b.index;
-        //         if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
-        //         return 0;
-        //     })
-        //     .map(category => category.text);
-        console.log("sorted categories: ", sorted);
-        return sorted;
-    };
     
     const fetchLastFormDefinition = async () => {
         let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAtt, customQueries.formByCreatedAtInputConsts);
-        // let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
-        // let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
-        // console.log("Current form: ", currentForm);
         if (currentForm.data) {
             let formDef = currentForm.data.formByCreatedAt.items[0];
             console.log("FormDef:", formDef);
             setFormDefinition(formDef);
-            setCategories(createCategories(formDef));
             let quAns = createQuestionAnswers(formDef);
             let userAnswers = await getUserAnswers();
             setFirstAnswers(quAns, userAnswers);
@@ -198,20 +172,14 @@ const Content = ({...props}: ContentProps) => {
     };
     
     const getUserAnswers = async() => {
-        // let allAnswers = await helper.listUserForms();
-        // console.log(allAnswers);
-        // if(allAnswers.length === 0) return;
-        // let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
         if (!props.user) return console.error("User not found when getting useranswers");
         let lastUserForm: UserForm | undefined = (await helper.callGraphQL<UserFormByCreatedAt>
             (customQueries.customUserFormByCreatedAt, { ...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username })).data?.userFormByCreatedAt.items[0];
-        // if(lastUserForm) setUserAnswers(lastUserForm.questionAnswers.items);
-        // if (lastUserForm) setFirstAnswers(lastUserForm.questionAnswers.items);
         console.log("Last userform: ", lastUserForm);
         return lastUserForm?.questionAnswers.items;
     };
     
-    const createQuestionAnswers = (formDef: FormDefinition) => { //: Map<string, QuestionAnswer[]>
+    const createQuestionAnswers = (formDef: FormDefinition) => {
         console.log("Creating questionAnswers with ", formDef);
         if (!formDef) return new Map();
         let categories = formDef.questions.items
@@ -224,8 +192,7 @@ const Content = ({...props}: ContentProps) => {
                 if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
                 return 0;
             });
-        // console.log("sorted categories: ", categories);
-        // setCategories(categories);
+        setCategories(categories.map(cat => cat.text));
         let quAnsMap = new Map<string, QuestionAnswer[]>();
         categories.forEach(cat => {
             let quAns: QuestionAnswer[] = formDef.questions.items
@@ -255,16 +222,10 @@ const Content = ({...props}: ContentProps) => {
         });
         console.log(`Sorted questionAnswerMap: `, quAnsMap);
         return quAnsMap;
-        // setQuestionAnswers(quAnsMap);
     };
     
     const setFirstAnswers = (quAns: Map<string, QuestionAnswer[]>, newUserAnswers: UserAnswer[] | void) => {
         let newMap = new Map<string, QuestionAnswer[]>();
-        // newUserAnswers.forEach(userAnswer => {
-        //     let answer = questionAnswers.get(userAnswer.question.category.text)
-        //         ?.filter(quAns => quAns.id === userAnswer.question.id);
-        //     if(answer && answer.length >= 1) newMap.set(answer[0].category.text, );
-        // });
         quAns.forEach((quAns, category) => {
             newMap.set(category, quAns.map(questionAnswer => {
                 if(newUserAnswers){
@@ -282,7 +243,6 @@ const Content = ({...props}: ContentProps) => {
         setQuestionAnswers(newMap);
     };
     
-    //qustionId: string, knowledgeValue: number, motivationValue: number
     const updateAnswer = (category: string, sliderMap: Map<string, SliderValues>): void => {
         let newAnswers: QuestionAnswer[] = questionAnswers.get(category)
             ?.map(quAns => {
@@ -294,76 +254,10 @@ const Content = ({...props}: ContentProps) => {
                 }
             }) || [];
         setQuestionAnswers(questionAnswers.set(category, newAnswers));
-        
-        // setAnswers(prevAnswers => {
-        //     let newAnswers: AnswerData[] = [...prevAnswers];
-        //     let answer = newAnswers.find(a => a.questionId === questionId);
-        //     if (!answer) return [];
-        //     answer.knowledge = knowledgeValue;
-        //     answer.motivation = motivationValue;
-        //     answer.updatedAt = Date.now();
-        //     return newAnswers
-        // });
     };
     
-    const createQuestions = (formDef: FormDefinition): Map<string, Question[]> => {
-        if (!formDef) return new Map();
-        if (!formDef?.questions.items) return new Map();
-        let categories = formDef.questions.items
-            .map(item => item.category)
-            .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index);
-        let questionMap = new Map<string, Question[]>();
-        categories.forEach(cat => {
-            let questions = helper.sortArray(formDef.questions.items.filter(question => question.category.id === cat.id));
-            // let questions = formDef.questions.items
-            //     .filter(question => question.category.id === cat.id)
-            //     .sort((a, b) => {
-            //         if (a.index && b.index == null) return -1;
-            //         if (a.index == null && b.index) return 1;
-            //         if (a.index && b.index) return a.index - b.index;
-            //         if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
-            //         return 0;
-            //     });
-            console.log(`Sorted question for ${cat.text}: `, questions);
-            questionMap.set(cat.text, questions);
-        });
-        console.log("Question map: ", questionMap);
-        // setAnswers(createAnswers2(questionMap));
-        return questionMap;
-        // let questions = formDefinition.questions.items
-        //     .sort((a, b) => {
-        //         if (a.index && b.index == null) return -1;
-        //         if (a.index == null && b.index) return 1;
-        //         if (a.index && b.index) return a.index - b.index;
-        //         if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
-        //         return 0;
-        //     });
-        // console.log("sorted questions: ", questions);
-        // return questions;
-    }
     
-    // const createAnswers = (): AnswerData[] => {
-    //     if(!formDefinition) return [];
-    //     let as: AnswerData[] = [];
-    //     if(formDefinition?.questions.items){
-    //         for (let i = 0; i < formDefinition.questions.items.length; i++) {
-    //             const question = formDefinition.questions.items[i];
-    //             // console.log(question);
-    //             if (!question) continue;
-    //             let preAnswer = userAnswers.find(answer => answer.question.id === question.id);
-    //             as.push({
-    //                 questionId: question.id,
-    //                 topic: question.topic,
-    //                 category: question.category.text,
-    //                 knowledge: preAnswer ? (preAnswer.knowledge ? preAnswer.knowledge : 0) : -1,
-    //                 motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1,
-    //                 updatedAt: preAnswer ? Date.parse(preAnswer.updatedAt) : 0
-    //             });
-    //         }
-    //     }
-    //     return as;
-    // };
-    
+    //TODO IMPORTANT: This function is not converted to new questionAnswer system (no clue how it still works, remove answers state to debug)
     const createUserForm = async () => {
         setIsCategorySubmitted(true)
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
@@ -371,8 +265,6 @@ const Content = ({...props}: ContentProps) => {
       
         setSubmitFeedback("Sending data to server...");
         if(!formDefinition) return;
-        // let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"formDefinitionID": fdid}})).data;
-        // console.log(userForm);
         if(!answers) return;
         let questionAnswers: CreateQuestionAnswerInput[] = [];
         for(let i = 0; i < answers.length; i++){
@@ -388,10 +280,6 @@ const Content = ({...props}: ContentProps) => {
         }
 
         console.log(questionAnswers);
-        
-        //TODO: Use result to update: Remember that result is now an array, which must be looped.
-        // let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
-        // let result = (await helper.callBatchGraphQL2(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
         let result = (await helper.callBatchGraphQL<CreateQuestionAnswerResult>(customQueries.batchCreateQuestionAnswer2, {input: questionAnswers}, "QuestionAnswer")).map(result => result.data?.batchCreateQuestionAnswer);
         console.log("Result: ", result);
         if(!result || result.length === 0) {
@@ -427,22 +315,10 @@ const Content = ({...props}: ContentProps) => {
     }
 
     useEffect(() => {
-        console.log("formDefinition")
-
-        // getUserAnswers();
-        // setAnswers(createAnswers());
-    }, [formDefinition]);
-
-    useEffect(() => {
         console.log("categories")
         setActiveCategory(categories[0]);
         setAnswerEditMode(false);
     }, [categories]);
-
-    // useEffect(() => {
-    //     console.log("answers", answers)
-    //     updateCategoryAlerts();
-    // }, [answers]);
     
     useEffect(() => {
         console.log("questionAnswers", questionAnswers)
@@ -458,10 +334,6 @@ const Content = ({...props}: ContentProps) => {
 
     useEffect(() => {
         console.log("userAnswers")
-
-        // setAnswers(createAnswers());
-        // setQuestionAnswers(createQuestionAnswers());
-        
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
     }, [userAnswers]);
 
@@ -487,15 +359,6 @@ const Content = ({...props}: ContentProps) => {
     }, [isCategorySubmitted])
     
     
-    // useEffect(() => {
-    //     console.log("Question Answers updated", questionAnswers);
-    // }, [questionAnswers]);
-    
-    
-    
-    
-    
-    
 
     const [lastButtonClicked, setLastButtonClicked] = useState<{ buttonType: MenuButton, category?: string }>({ //Custom type might better be moved to type variable
         buttonType: MenuButton.Overview,
@@ -518,13 +381,11 @@ const Content = ({...props}: ContentProps) => {
                 buttonType: buttonType,
                 category: category
             });
-            // console.log(lastButtonClicked);
             setAlertDialogOpen(true);
         }
     };
     
     const leaveFormButtonClicked = () => {
-        // console.log("Leave button clicked", lastButtonClicked);
         setAlertDialogOpen(false);
         setIsCategorySubmitted(true);
         resetAnswers();
@@ -532,7 +393,6 @@ const Content = ({...props}: ContentProps) => {
     };
     
     const menuButtonClicked = (buttonType: MenuButton, category?: string) => {
-        // console.log("Button clicked ", buttonType, category);
         switch (buttonType) {
             case MenuButton.Overview:
                 setActivePanel(Panel.Overview);
