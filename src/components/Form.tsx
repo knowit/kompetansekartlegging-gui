@@ -5,6 +5,7 @@ import { FormProps, SliderValues } from '../types';
 import { Category } from './Category';
 import Question from './Question';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+import ProgressBar from './ProgressBar';
 
 const FormStyleDesktop = makeStyles({
     root: {
@@ -199,6 +200,7 @@ export const Form = ({...props}: FormProps) => {
         //     .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
             <Fragment>
+                <ProgressBar alerts={props.alerts} totalQuestions={props.questionAnswers.size}/>
                 <Category name={props.activeCategory} isMobile={props.isMobile}>
                     {getQuestionsForCategory(undefined)}
                 </Category>

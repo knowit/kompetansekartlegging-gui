@@ -425,4 +425,9 @@ export type SliderValues = { //Used in form and question
     motivation: number
 };
 
+export type ProgressProps = { //Used in form and question
+    alerts: AlertState | undefined,
+    totalQuestions: number
+};
+
 
