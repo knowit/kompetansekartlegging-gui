@@ -64,7 +64,7 @@ export default function ProgressBar({...props }: ProgressProps) {
         let unfilledQuestions = props.alerts?.qidMap.size ?? 0;
         let filledQuestions = props.totalQuestions - unfilledQuestions;
         let progressPercentage = filledQuestions / props.totalQuestions * 100;
-        setProgress(50);
+        setProgress(progressPercentage);
     };
 
     const LinearProgressWithPercentage = (props: LinearProgressProps & { value: number }) => {
