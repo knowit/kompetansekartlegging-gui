@@ -200,7 +200,6 @@ export const Form = ({...props}: FormProps) => {
         //     .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
             <Fragment>
-                <ProgressBar alerts={props.alerts} totalQuestions={props.questionAnswers.size}/>
                 <Category name={props.activeCategory} isMobile={props.isMobile}>
                     {getQuestionsForCategory(undefined)}
                 </Category>
