@@ -30,7 +30,7 @@ const useStyles = makeStyles({
         width: '5%'
     },
     bar: {
-        width: '95%'
+        width: '80%'
     }
 });
 
