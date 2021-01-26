@@ -112,13 +112,12 @@ const contentStyle = makeStyles({
 
 const Content = ({...props}: ContentProps) => {
     
-    const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
-    const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
     const [questionAnswers, setQuestionAnswers] = useState<Map<string, QuestionAnswer[]>>(new Map());
-    const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
+    // const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
+    const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<Map<string, QuestionAnswer[]>>(new Map());
     // const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
@@ -234,7 +233,7 @@ const Content = ({...props}: ContentProps) => {
                     return {
                         ...questionAnswer,
                         knowledge: userAnswer[0].knowledge || questionAnswer.knowledge,
-                        motication: userAnswer[0].motivation || questionAnswer.motivation
+                        motivation: userAnswer[0].motivation || questionAnswer.motivation
                     }
                 }
                 return questionAnswer;
@@ -257,36 +256,35 @@ const Content = ({...props}: ContentProps) => {
     };
     
     
-    //TODO IMPORTANT: This function is not converted to new questionAnswer system (no clue how it still works, remove answers state to debug)
     const createUserForm = async () => {
         setIsCategorySubmitted(true)
-        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+        // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+        setAnswersBeforeSubmitted(new Map(questionAnswers));
         setAnswerEditMode(false);
-      
-        setSubmitFeedback("Sending data to server...");
-        if(!formDefinition) return;
-        if(!answers) return;
-        let questionAnswers: CreateQuestionAnswerInput[] = [];
-        for(let i = 0; i < answers.length; i++){
-            if(answers[i].knowledge < 0 && answers[i].motivation < 0) continue;
-            questionAnswers.push({
-                userFormID: "",
-                questionID: answers[i].questionId,
-                knowledge: answers[i].knowledge,
-                motivation: answers[i].motivation,
-                environmentID: helper.getEnvTableID(),
-                formDefinitionID: formDefinition.id.toString()
-            });
-        }
-
-        console.log(questionAnswers);
-        let result = (await helper.callBatchGraphQL<CreateQuestionAnswerResult>(customQueries.batchCreateQuestionAnswer2, {input: questionAnswers}, "QuestionAnswer")).map(result => result.data?.batchCreateQuestionAnswer);
-        console.log("Result: ", result);
-        if(!result || result.length === 0) {
-            setSubmitFeedback("Something went wrong when inserting data to server database..");
+        if(!formDefinition) {
+            console.error("Missing formDefinition!");
             return;
         }
-        setSubmitFeedback("Your answers has been saved!");
+        let quAnsInput: CreateQuestionAnswerInput[] = [];
+        questionAnswers.forEach((quAnsArr, cat) => {
+            quAnsArr.forEach(quAns => {
+                if (quAns.knowledge < 0 && quAns.motivation < 0) return;
+                quAnsInput.push({
+                    userFormID: "",
+                    questionID: quAns.id,
+                    knowledge: quAns.knowledge,
+                    motivation: quAns.motivation,
+                    environmentID: helper.getEnvTableID(),
+                    formDefinitionID: formDefinition.id.toString()
+                });
+            })
+        });
+        console.log("question answer input: ", quAnsInput);
+        let result = (await helper.callBatchGraphQL<CreateQuestionAnswerResult>(customQueries.batchCreateQuestionAnswer2, { input: quAnsInput}, "QuestionAnswer")).map(result => result.data?.batchCreateQuestionAnswer);
+        console.log("Result: ", result);
+        if(!result || result.length === 0) {
+            return;
+        }
     }
     
     const changeActiveCategory = (newActiveCategory: string) => {
@@ -302,7 +300,8 @@ const Content = ({...props}: ContentProps) => {
     };
 
     const resetAnswers = () => {
-        setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
+        // setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
+        setQuestionAnswers(new Map(answersBeforeSubmitted));
     }
 
     const submitAndProceed = () => {
@@ -327,14 +326,13 @@ const Content = ({...props}: ContentProps) => {
     
     useEffect(() => {
         console.log("INITIAL1")
-
         fetchLastFormDefinition();
-        setSubmitFeedback("");
     }, []);
 
     useEffect(() => {
         console.log("userAnswers")
-        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+        // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+        setAnswersBeforeSubmitted(new Map(questionAnswers));
     }, [userAnswers]);
 
     useEffect(() => {
@@ -570,8 +568,6 @@ const Content = ({...props}: ContentProps) => {
                         updateAnswer={updateAnswer}
                         formDefinition={formDefinition}
                         questionAnswers={questionAnswers}
-                        answers={answers}
-                        submitFeedback={submitFeedback}
                         changeActiveCategory={changeActiveCategory}
                         categories={categories}
                         activeCategory={activeCategory}
