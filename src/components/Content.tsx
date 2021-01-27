@@ -200,7 +200,7 @@ const Content = ({...props}: ContentProps) => {
                     if (a.index && b.index == null) return -1;
                     if (a.index == null && b.index) return 1;
                     if (a.index && b.index) return a.index - b.index;
-                    if (a.index == null && b.index == null) { console.log("Locale sort"); return a.topic.localeCompare(b.topic); }
+                    if (a.index == null && b.index == null) return a.topic.localeCompare(b.topic);
                     return 0;
                 })
                 .map(qu => {
