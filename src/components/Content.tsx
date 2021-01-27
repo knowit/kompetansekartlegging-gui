@@ -116,6 +116,7 @@ const Content = ({...props}: ContentProps) => {
     const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
+    const [userAnswersLoaded, setUserAnswersLoaded] = useState(false)
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
     const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
@@ -269,9 +270,11 @@ const Content = ({...props}: ContentProps) => {
         if (lastUserForm) {
             lastUserFormAnswers = lastUserForm.questionAnswers.items
             setUserAnswers(lastUserFormAnswers);
+            setUserAnswersLoaded(true)
         } else {
             setActivePanel(Panel.MyAnswers)
             setAnswerEditMode(true);
+            setUserAnswersLoaded(true)
         }
 
         console.log("Last userform: ", lastUserForm);        
@@ -555,6 +558,7 @@ const Content = ({...props}: ContentProps) => {
                         answers={answers}
                         categories={categories}
                         isMobile={props.isMobile}
+                        userAnswersLoaded={userAnswersLoaded}
                     />
                 );
             case Panel.MyAnswers:

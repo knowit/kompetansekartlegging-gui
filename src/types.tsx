@@ -305,7 +305,8 @@ export type OverviewProps = {
     activePanel: Panel,
     answers: AnswerData[],
     categories: string[],
-    isMobile: boolean
+    isMobile: boolean,
+    userAnswersLoaded: boolean
 };
 
 export type ScaleDescriptionProps = {
