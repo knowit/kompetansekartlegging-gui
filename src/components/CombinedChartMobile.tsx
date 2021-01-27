@@ -65,6 +65,21 @@ const useStyles = makeStyles({
         marginLeft: 4,
         marginRight: 4,
         backgroundColor: KnowitColors.darkGreen 
+    },
+    // Removes svg lines framing the chart to more closely correspond with desired design.
+    '@global': {
+        'g.recharts-cartesian-grid-vertical > line:last-child': {
+            display: "none"
+        },
+        'g.recharts-cartesian-grid-vertical > line:nth-last-child(2)': {
+            display: "none"
+        },
+        'g.recharts-cartesian-grid-horizontal > line:last-child': {
+            display: "none"
+        },
+        'g.recharts-cartesian-grid-horizontal > line:nth-last-child(2)': {
+            display: "none"
+        }
     }
   });
 
@@ -151,7 +166,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                     layout="horizontal"
                     data={chartPages[currentPage]}
                     margin={{top: 50, right: 20, bottom: 10, left: -30}}>
-                <CartesianGrid horizontal={false} strokeDasharray="2 5"/>
+                <CartesianGrid horizontal={true} strokeDasharray="2 5"/>
                     <YAxis
                         axisLine={false}
                         dataKey="value"
@@ -172,7 +187,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                         tickLine={false}
                         tick={renderLabelTick}
                     />
-                    <Tooltip content={renderCustomTooltip(classes)}/>
+                    {/* <Tooltip content={renderCustomTooltip(classes)}/> */}
                     <Bar radius={[10, 10, 0, 0]} dataKey="valueKnowledge" fill={KnowitColors.lightGreen}/>
                     <Bar radius={[10, 10, 0, 0]} dataKey="valueMotivation" fill={KnowitColors.greyGreen}/>
                     <ReferenceLine y={0} stroke="green" >

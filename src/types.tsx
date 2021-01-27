@@ -7,25 +7,45 @@ export type AnswerData = {
     category: string,
     knowledge: number,
     motivation: number,
-    updatedAt: number
+    updatedAt: number,
+    index: number
 };
 
 export type Answers = {
     [key: string]: AnswerData
 };
 
-export type QuestionData = {
+export type Question = {
     id: string,
+    qid: string | undefined,
+    createdAt: string,
     text: string,
     topic: string,
+    index: number,
     category: {
+        id: string,
         text: string,
-        description: string | undefined
+        description: string | undefined,
+        index: number | undefined
     }
 };
 
-export type Questions = {
-    [key: string]: QuestionData
+export type QuestionAnswer = {
+    id: string,
+    qid: string | undefined,
+    createdAt: string,
+    text: string,
+    topic: string,
+    index: number,
+    category: {
+        id: string,
+        text: string,
+        description: string | undefined,
+        index: number | undefined
+    },
+    knowledge: number,
+    motivation: number,
+    updatedAt: number,
 };
 
 export type AggregatedAnswer = {
@@ -64,7 +84,7 @@ export type ResultData = {
 };
 
 export type AnsweredQuestion = {
-    question: QuestionData,
+    question: Question,
     answer: number,
     motivation: number
 };
@@ -80,20 +100,7 @@ export type FormDefinitionWithQuestions = {
         getFormDefinition: {
             id: String,
             questions: {
-                items: [
-                    {
-                        question: {
-                            id: string,
-                            text: string,
-                            topic: string,
-                            category: {
-                                id: string,
-                                text: string,
-                                description: string
-                            }
-                        }
-                    }
-                ]
+                items: [Question]
             }
         }
     }
@@ -113,34 +120,21 @@ export type CreateQuestionAnswerResult = {
             formDefinitionID: string
         }]
     }
-}
-
+};
 
 export type Category = {
-    id: String,
-    text: String,
-    description: String,
-    createdAt: String
+    id: string,
+    text: string,
+    description: string,
+    createdAt: string,
+    index: number
 };
 
 export type FormDefinition = {
     id: String,
     createdAt: string,
     questions: {
-        items: [
-            {
-                id: string,
-                qid: string,
-                createdAt: string,
-                text: string,
-                topic: string,
-                category: {
-                    id: string,
-                    text: string,
-                    description: string
-                }
-            }
-        ]
+        items: [Question]
     }
 };
 
@@ -178,16 +172,7 @@ export type UserAnswer = {
     knowledge: number,
     motivation: number,
     updatedAt: string,
-    question: {
-        id: string,
-        text: string,
-        topic: string,
-        category: {
-            id: string,
-            text: string,
-            description: string
-        }
-    }
+    question: Question
 }
 
 export type ListedFormDefinition = {
@@ -229,13 +214,12 @@ export type UserFormList = {
     }
 };
 
-export type AnswerProps = {
+export type FormProps = {
     createUserForm: () => void,
     submitAndProceed: () => void,
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    updateAnswer: (category: string, sliderMap: Map<string, SliderValues>) => void,
     formDefinition: FormDefinition | null,
-    answers: AnswerData[],
-    submitFeedback: string,
+    questionAnswers: Map<string, QuestionAnswer[]>,
     categories: string[],
     activeCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
@@ -260,7 +244,7 @@ export type StatsProps = {
 }
 
 export type FromAppProps = {
-    answerProps: AnswerProps,
+    answerProps: FormProps,
     statsProps: StatsProps,
     userProps: UserProps
 }
@@ -273,7 +257,7 @@ export type SliderProps = {
 };
 
 export type QuestionProps = {
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    updateAnswer: (category: string, sliderMap: Map<string, SliderValues>) => void,
     topic: string,
     text: string,
     questionId: string,
@@ -281,7 +265,9 @@ export type QuestionProps = {
     motivationDefaultValue: number,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     isMobile: boolean,
-    alerts: AlertState | undefined
+    alerts: AlertState | undefined,
+    sliderValues: Map<string, SliderValues>,
+    setSliderValues: (questionId: string, values: SliderValues) => void
 };
 
 export type BatchCreatedQuestionAnswer = {
@@ -303,7 +289,7 @@ export type BatchCreatedQuestionAnswer = {
 
 export type OverviewProps = {
     activePanel: Panel,
-    answers: AnswerData[],
+    questionAnswers: Map<string, QuestionAnswer[]>,
     categories: string[],
     isMobile: boolean,
     userAnswersLoaded: boolean
@@ -319,10 +305,9 @@ export type YourAnswerProps = {
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     createUserForm: () => void,
     submitAndProceed: () => void,
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    updateAnswer: (category: string, sliderMap: Map<string, SliderValues>) => void,
     formDefinition: FormDefinition | null,
-    answers: AnswerData[],
-    submitFeedback: string,
+    questionAnswers: Map<string, QuestionAnswer[]>,
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
@@ -347,14 +332,20 @@ export interface Alert {
 }
 
 export type HighlightsProps = {
-    isMobile: boolean,
-    answers: AnswerData[]  
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    isMobile: boolean
 };
 
 export type ResultDiagramProps = {
-    isMobile: boolean,
-    answers: AnswerData[],
-    categories: string[]
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    categories: string[],
+    isMobile: boolean
+};
+
+export type AnswerDiagramProps = {
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    activeCategory: string,
+    isMobile: boolean
 };
 
 export type NavBarProps = {
@@ -424,4 +415,11 @@ export type ChartData = {
 export type CombinedChartProps = {
     chartData: ChartData[],
     className?: string
-}
+};
+
+export type SliderValues = { //Used in form and question
+    knowledge: number,
+    motivation: number
+};
+
+

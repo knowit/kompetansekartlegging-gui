@@ -40,6 +40,17 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
+    },
+    '@global': {
+        'g.recharts-cartesian-grid-horizontal > line:last-child': {
+            display: "none"
+        },
+        'g.recharts-cartesian-grid-horizontal > line:nth-last-child(2)': {
+            display: "none"
+        },
+        'g.recharts-cartesian-grid-vertical > line:last-child': {
+            display: "none"
+        }
     }
   });
 
@@ -51,7 +62,7 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
         <div className={classes.container}>
         <ResponsiveContainer width='100%' height={heightPerColumn * props.chartData.length + 90}>     
             <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 50, right: 0, bottom: 6, left: 0}}>
-            <CartesianGrid horizontal={true} vertical={false} strokeDasharray="2 5"/>
+            <CartesianGrid horizontal={true} vertical={true} strokeDasharray="2 5"/>
                 <XAxis
                     tickLine={false}
                     axisLine={false}

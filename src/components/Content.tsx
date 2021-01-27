@@ -1,18 +1,17 @@
-import React, { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert } from '../types';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert, Question, Category, QuestionAnswer, SliderValues } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
-import { ScaleDescription } from './cards/ScaleDescription';
 import { YourAnswers } from './cards/YourAnswers';
 import { CreateQuestionAnswerInput } from '../API';
-import { AnswerHistory } from './AnswerHistory';
 import { Button, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { KnowitColors } from '../styles';
 import { AlertDialog } from './AlertDialog';
 import { AlertNotification, AlertType } from './AlertNotification';
 import NavBarMobile from './NavBarMobile';
+import { AnswerHistory } from './AnswerHistory';
 
 const cardCornerRadius: number = 40;
 
@@ -113,13 +112,14 @@ const contentStyle = makeStyles({
 
 const Content = ({...props}: ContentProps) => {
     
-    const [answers, setAnswers] = useState<AnswerData[]>([]);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(null);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [userAnswersLoaded, setUserAnswersLoaded] = useState(false)
     const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
-    const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
+    const [questionAnswers, setQuestionAnswers] = useState<Map<string, QuestionAnswer[]>>(new Map());
+    // const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<AnswerData[]>([]);
+    const [answersBeforeSubmitted, setAnswersBeforeSubmitted] = useState<Map<string, QuestionAnswer[]>>(new Map());
     // const [historyViewOpen, setHistoryViewOpen] = useState<boolean>(false);
     const [answerLog, setAnswerLog] = useState<UserFormWithAnswers[]>([]);
     const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
@@ -128,144 +128,56 @@ const Content = ({...props}: ContentProps) => {
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<AlertState>();
-
+    
     const updateCategoryAlerts = () => {
         let msNow = Date.now();
         let alerts = new Map<string, Alert>();
         let catAlerts = new Map<string, number>();
-        for (let answer of answers) {
-            if (answer.motivation  === -1 || answer.knowledge === -1) {
-                alerts.set(answer.questionId, {type: AlertType.Incomplete, message: "Ubesvart!"});
-                let numAlerts = catAlerts.get(answer.category);
-                if (numAlerts)
-                    catAlerts.set(answer.category, numAlerts + 1);
-                else
-                    catAlerts.set(answer.category, 1);
-            } else if (msNow - answer.updatedAt > staleAnswersLimit) {
-                alerts.set(answer.questionId, {
-                    type: AlertType.Outdated,
-                    message: `Bør oppdateres! Sist besvart: ${
-                        new Date(answer.updatedAt)  //.toLocaleDateString('no-NO')
-                    }`
-                });
-                let numAlerts = catAlerts.get(answer.category);
-                if (numAlerts)
-                    catAlerts.set(answer.category, numAlerts + 1);
-                else
-                catAlerts.set(answer.category, 1);
-            }
-        }
+        questionAnswers.forEach((quAnsArr, cat) => {
+            quAnsArr.forEach(quAns => {
+                if (quAns.motivation === -1 || quAns.knowledge === -1) {
+                    alerts.set(quAns.id, { type: AlertType.Incomplete, message: "Ubesvart!" });
+                    let numAlerts = catAlerts.get(quAns.category.text);
+                    if (numAlerts)
+                        catAlerts.set(quAns.category.text, numAlerts + 1);
+                    else
+                        catAlerts.set(quAns.category.text, 1);
+                } else if (msNow - quAns.updatedAt > staleAnswersLimit) {
+                    alerts.set(quAns.id, {
+                        type: AlertType.Outdated,
+                        message: `Bør oppdateres! Sist besvart: ${new Date(quAns.updatedAt)  //.toLocaleDateString('no-NO')
+                            }`
+                    });
+                    let numAlerts = catAlerts.get(quAns.category.text);
+                    if (numAlerts)
+                        catAlerts.set(quAns.category.text, numAlerts + 1);
+                    else
+                        catAlerts.set(quAns.category.text, 1);
+                }
+           });
+        });
         setAlerts({qidMap: alerts, categoryMap: catAlerts});
     }
-
-    const createCategories = () => {
-        if(!formDefinition) return [];
-        if(!formDefinition?.questions.items) return [];
-        return formDefinition.questions.items
-            .map(item => item.category.text)
-            .filter((value, index, array) => array.indexOf(value) === index);
-    };
-
-    const createAnswers = (): AnswerData[] => {
-        if(!formDefinition) return [];
-        let as: AnswerData[] = [];
-        if(formDefinition?.questions.items){
-            for (let i = 0; i < formDefinition.questions.items.length; i++) {
-                const question = formDefinition.questions.items[i];
-                // console.log(question);
-                if (!question) continue;
-                let preAnswer = userAnswers.find(answer => answer.question.id === question.id);
-                as.push({
-                    questionId: question.id,
-                    topic: question.topic,
-                    category: question.category.text,
-                    knowledge: preAnswer ? (preAnswer.knowledge ? preAnswer.knowledge : 0) : -1,
-                    motivation: preAnswer ? (preAnswer.motivation ? preAnswer.motivation : 0) : -1,
-                    updatedAt: preAnswer ? Date.parse(preAnswer.updatedAt) : 0
-                });
-            }
-        }
-        return as;
-    };
     
-    const createUserForm = async () => {
-        setIsCategorySubmitted(true)
-        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
-        setAnswerEditMode(false);
-      
-        setSubmitFeedback("Sending data to server...");
-        if(!formDefinition) return;
-        // let userForm: UserFormCreated | undefined = (await helper.callGraphQL<UserFormCreated>(mutations.createUserForm, {input: {"formDefinitionID": fdid}})).data;
-        // console.log(userForm);
-        if(!answers) return;
-        let questionAnswers: CreateQuestionAnswerInput[] = [];
-        for(let i = 0; i < answers.length; i++){
-            if(answers[i].knowledge < 0 && answers[i].motivation < 0) continue;
-            questionAnswers.push({
-                userFormID: "",
-                questionID: answers[i].questionId,
-                knowledge: answers[i].knowledge,
-                motivation: answers[i].motivation,
-                environmentID: helper.getEnvTableID(),
-                formDefinitionID: formDefinition.id.toString()
-            });
-        }
-
-        console.log(questionAnswers);
-        
-        //TODO: Use result to update: Remember that result is now an array, which must be looped.
-        // let result = (await helper.callBatchGraphQL<BatchCreatedQuestionAnswer>(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
-        // let result = (await helper.callBatchGraphQL2(mutations.batchCreateQuestionAnswer, {input: questionAnswers}, "QuestionAnswer"));
-        let result = (await helper.callBatchGraphQL<CreateQuestionAnswerResult>(customQueries.batchCreateQuestionAnswer2, {input: questionAnswers}, "QuestionAnswer")).map(result => result.data?.batchCreateQuestionAnswer);
-        console.log("Result: ", result);
-        if(!result || result.length === 0) {
-            setSubmitFeedback("Something went wrong when inserting data to server database..");
-            return;
-        }
-        setSubmitFeedback("Your answers has been saved!");
-    }
-
-    const updateAnswer = (questionId: string, knowledgeValue: number, motivationValue: number): void => {
-        setAnswers(prevAnswers => {
-            let newAnswers: AnswerData[] = [...prevAnswers];
-            let answer = newAnswers.find(a => a.questionId === questionId);
-            if(!answer) return [];
-            answer.knowledge = knowledgeValue;
-            answer.motivation = motivationValue;
-            answer.updatedAt = Date.now();
-            return newAnswers
-        });
-    };
-
     const fetchLastFormDefinition = async () => {
         let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAtt, customQueries.formByCreatedAtInputConsts);
-        // let lastForm = await helper.getLastItem(formList.data?.listFormDefinitions.items);
-        // let currentForm = await helper.callGraphQL<FormDefinition>(customQueries.getFormDefinitionWithQuestions, {id: lastForm?.id})
-        // console.log("Current form: ", currentForm);
-        if(currentForm.data){
-
-            //TODO: Need to sort questions again, currently removed but can be implemented
-
-            // currentForm.data.formByCreatedAt.items[0].questions
-            // let sorted = currentForm.data.formByCreatedAt.items[0].questions.items
-            //     .sort((a,b) => (a.question.index < b.question.index) ? -1 : 1);
-
-            // currentForm.data.getFormDefinition.questions.items = sorted;
-
-
-            setFormDefinition(currentForm.data.formByCreatedAt.items[0]);
-        } 
+        if (currentForm.data) {
+            let formDef = currentForm.data.formByCreatedAt.items[0];
+            console.log("FormDef:", formDef);
+            setFormDefinition(formDef);
+            let quAns = createQuestionAnswers(formDef);
+            let userAnswers = await getUserAnswers();
+            setFirstAnswers(quAns, userAnswers);
+            console.log("Completed questuions");
+        }
     };
-
-    const getUserAnswers = async () => {
-        // let allAnswers = await helper.listUserForms();
-        // console.log(allAnswers);
-        // if(allAnswers.length === 0) return;
-        // let lastUserAnswer = (helper.getLastItem(allAnswers))?.questionAnswers.items;
-        if(!props.user) return console.error("User not found when getting useranswers");
+    
+    const getUserAnswers = async() => {
+        if (!props.user) return console.error("User not found when getting useranswers");
         let lastUserForm: UserForm | undefined = (await helper.callGraphQL<UserFormByCreatedAt>
-            (customQueries.customUserFormByCreatedAt, {...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username})).data?.userFormByCreatedAt.items[0];
-        let lastUserFormAnswers;// : UserAnswer[];
+            (customQueries.customUserFormByCreatedAt, { ...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username })).data?.userFormByCreatedAt.items[0];
+         
+        let lastUserFormAnswers;
         
         if (lastUserForm) {
             lastUserFormAnswers = lastUserForm.questionAnswers.items
@@ -276,9 +188,121 @@ const Content = ({...props}: ContentProps) => {
             setAnswerEditMode(true);
             setUserAnswersLoaded(true)
         }
-
-        console.log("Last userform: ", lastUserForm);        
+        
+        console.log("Last userform: ", lastUserForm);
+        return lastUserForm?.questionAnswers.items;
     };
+    
+    const createQuestionAnswers = (formDef: FormDefinition) => {
+        console.log("Creating questionAnswers with ", formDef);
+        if (!formDef) return new Map();
+        let categories = formDef.questions.items
+            .map(item => item.category)
+            .filter((category, index, array) => array.findIndex(obj => obj.text === category.text) === index)
+            .sort((a, b) => {
+                if (a.index && b.index == null) return -1;
+                if (a.index == null && b.index) return 1;
+                if (a.index && b.index) return a.index - b.index;
+                if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
+                return 0;
+            });
+        setCategories(categories.map(cat => cat.text));
+        let quAnsMap = new Map<string, QuestionAnswer[]>();
+        categories.forEach(cat => {
+            let quAns: QuestionAnswer[] = formDef.questions.items
+                .filter(question => question.category.id === cat.id)
+                .sort((a, b) => {
+                    if (a.index && b.index == null) return -1;
+                    if (a.index == null && b.index) return 1;
+                    if (a.index && b.index) return a.index - b.index;
+                    if (a.index == null && b.index == null) return a.topic.localeCompare(b.topic);
+                    return 0;
+                })
+                .map(qu => {
+                    return {
+                        category: qu.category,
+                        createdAt: qu.createdAt,
+                        id: qu.id,
+                        index: qu.index,
+                        qid: qu.qid,
+                        text: qu.text,
+                        topic: qu.topic,
+                        knowledge: -1,
+                        motivation: -1,
+                        updatedAt: 0
+                    }
+                });
+            quAnsMap.set(cat.text, quAns);
+        });
+        console.log(`Sorted questionAnswerMap: `, quAnsMap);
+        return quAnsMap;
+    };
+    
+    const setFirstAnswers = (quAns: Map<string, QuestionAnswer[]>, newUserAnswers: UserAnswer[] | void) => {
+        let newMap = new Map<string, QuestionAnswer[]>();
+        quAns.forEach((quAns, category) => {
+            newMap.set(category, quAns.map(questionAnswer => {
+                if(newUserAnswers){
+                    let userAnswer = newUserAnswers.filter(userAnswer => userAnswer.question.id === questionAnswer.id);
+                    if(userAnswer.length === 0) return questionAnswer;
+                    return {
+                        ...questionAnswer,
+                        knowledge: userAnswer[0].knowledge || questionAnswer.knowledge,
+                        motivation: userAnswer[0].motivation || questionAnswer.motivation,
+                        updatedAt: Date.parse(userAnswer[0].updatedAt) || 0
+                    }
+                }
+                return questionAnswer;
+            }))
+        });
+        setQuestionAnswers(newMap);
+    };
+    
+    const updateAnswer = (category: string, sliderMap: Map<string, SliderValues>): void => {
+        let newAnswers: QuestionAnswer[] = questionAnswers.get(category)
+            ?.map(quAns => {
+                let sliderValues = sliderMap.get(quAns.id);
+                return {
+                    ...quAns,
+                    knowledge: sliderValues?.knowledge || -2, //If is -2, something is wrong
+                    motivation: sliderValues?.motivation || -2,
+                    updatedAt: Date.now()
+                }
+            }) || [];
+        setQuestionAnswers(new Map(questionAnswers.set(category, newAnswers)));
+    };
+    
+    
+    const createUserForm = async () => {
+        setIsCategorySubmitted(true)
+        // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+        setAnswersBeforeSubmitted(new Map(questionAnswers));
+        setAnswerEditMode(false);
+        if(!formDefinition) {
+            console.error("Missing formDefinition!");
+            return;
+        }
+        let quAnsInput: CreateQuestionAnswerInput[] = [];
+        questionAnswers.forEach((quAnsArr, cat) => {
+            quAnsArr.forEach(quAns => {
+                if (quAns.knowledge < 0 && quAns.motivation < 0) return;
+                quAnsInput.push({
+                    userFormID: "",
+                    questionID: quAns.id,
+                    knowledge: quAns.knowledge,
+                    motivation: quAns.motivation,
+                    environmentID: helper.getEnvTableID(),
+                    formDefinitionID: formDefinition.id.toString()
+                });
+            })
+        });
+        console.log("question answer input: ", quAnsInput);
+        let result = (await helper.callBatchGraphQL<CreateQuestionAnswerResult>(customQueries.batchCreateQuestionAnswer2, { input: quAnsInput}, "QuestionAnswer")).map(result => result.data?.batchCreateQuestionAnswer);
+        console.log("Result: ", result);
+        if(!result || result.length === 0) {
+            return;
+        }
+    }
     
     const changeActiveCategory = (newActiveCategory: string) => {
         setActiveCategory(newActiveCategory);
@@ -293,7 +317,8 @@ const Content = ({...props}: ContentProps) => {
     };
 
     const resetAnswers = () => {
-        setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
+        // setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
+        setQuestionAnswers(new Map(answersBeforeSubmitted));
     }
 
     const submitAndProceed = () => {
@@ -317,22 +342,19 @@ const Content = ({...props}: ContentProps) => {
         setActiveCategory(categories[0]);
         // setAnswerEditMode(false);
     }, [categories]);
-
+    
     useEffect(() => {
         updateCategoryAlerts();
-    }, [answers]);
+    }, [questionAnswers]);
     
     useEffect(() => {
         fetchLastFormDefinition();
-        setSubmitFeedback("");
     }, []);
 
-    
-
     useEffect(() => {
-        setAnswers(createAnswers());
-
-        setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+        console.log("userAnswers")
+        // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
+        setAnswersBeforeSubmitted(new Map(questionAnswers));
     }, [userAnswers]);
 
     useEffect(() => {
@@ -351,9 +373,6 @@ const Content = ({...props}: ContentProps) => {
             }
         }
     }, [isCategorySubmitted])
-
-
-
 
 
     const [lastButtonClicked, setLastButtonClicked] = useState<{ buttonType: MenuButton, category?: string }>({ //Custom type might better be moved to type variable
@@ -377,13 +396,11 @@ const Content = ({...props}: ContentProps) => {
                 buttonType: buttonType,
                 category: category
             });
-            // console.log(lastButtonClicked);
             setAlertDialogOpen(true);
         }
     };
     
     const leaveFormButtonClicked = () => {
-        // console.log("Leave button clicked", lastButtonClicked);
         setAlertDialogOpen(false);
         setIsCategorySubmitted(true);
         resetAnswers();
@@ -391,7 +408,6 @@ const Content = ({...props}: ContentProps) => {
     };
     
     const menuButtonClicked = (buttonType: MenuButton, category?: string) => {
-        // console.log("Button clicked ", buttonType, category);
         switch (buttonType) {
             case MenuButton.Overview:
                 setActivePanel(Panel.Overview);
@@ -447,17 +463,17 @@ const Content = ({...props}: ContentProps) => {
     }
 
     /**
-         *  Setup for the button array structure:
-         * 
-         *  text: string - The text on the button
-         *  buttonType: MenuButton - The type of button it is
-         *  subButtons: Array of Objects - Only define if having sub buttons (like categories for answers)
-         *      subButton's Objects: text: string - The tet of the button (index is added in front automaticly)
-         *                           buttonType: MenuButton - The type of button it is, not same as 'parent'
-         *                           activePanel: Panel - What panel is needed to be active for this button to show up
-         * 
-         *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
-         */
+     *  Setup for the button array structure:
+     * 
+     *  text: string - The text on the button
+     *  buttonType: MenuButton - The type of button it is
+     *  subButtons: Array of Objects - Only define if having sub buttons (like categories for answers)
+     *      subButton's Objects: text: string - The tet of the button (index is added in front automaticly)
+     *                           buttonType: MenuButton - The type of button it is, not same as 'parent'
+     *                           activePanel: Panel - What panel is needed to be active for this button to show up
+     * 
+     *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
+     */
     const buttonSetup = [
         { text: "Oversikt", buttonType: MenuButton.Overview },
         { text: "Mine Svar", buttonType: MenuButton.MyAnswers, subButtons: categories.map((cat) => {
@@ -475,7 +491,6 @@ const Content = ({...props}: ContentProps) => {
 
     const setupDesktopMenu = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
-        
         buttonSetup.forEach((butt) => {
             buttons.push(
                 <Button
@@ -555,7 +570,7 @@ const Content = ({...props}: ContentProps) => {
                 return(
                     <Overview
                         activePanel={activePanel}
-                        answers={answers}
+                        questionAnswers={questionAnswers}
                         categories={categories}
                         isMobile={props.isMobile}
                         userAnswersLoaded={userAnswersLoaded}
@@ -570,8 +585,7 @@ const Content = ({...props}: ContentProps) => {
                         submitAndProceed={submitAndProceed}
                         updateAnswer={updateAnswer}
                         formDefinition={formDefinition}
-                        answers={answers}
-                        submitFeedback={submitFeedback}
+                        questionAnswers={questionAnswers}
                         changeActiveCategory={changeActiveCategory}
                         categories={categories}
                         activeCategory={activeCategory}
@@ -626,8 +640,6 @@ const Content = ({...props}: ContentProps) => {
                 />
                 <AnswerHistory history={answerLog} historyViewOpen={props.answerHistoryOpen} setHistoryViewOpen={props.setAnswerHistoryOpen} isMobile={props.isMobile}/>
             </div>
-        
-          
     );
 };
 

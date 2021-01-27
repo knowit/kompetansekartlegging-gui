@@ -1,16 +1,16 @@
 import React from 'react'
-import { AnswerProps } from '../../types';
-import { Form } from '../Form'
+// import { AnswerProps } from '../../types';
+// import { Form } from '../Form'
 
 
-const AnswerPage = ({...props}: AnswerProps) => {
+// const AnswerPage = ({...props}: AnswerProps) => {
     
-    return(
-        <div>
-            <Form {...props} />
-        </div>
-    );
+//     return(
+//         <div>
+//             <Form {...props} />
+//         </div>
+//     );
 
-};
+// };
 
-export default AnswerPage;
+// export default AnswerPage;
