@@ -4,6 +4,7 @@ import { ChartData, ResultData, ResultDiagramProps } from '../types';
 import { makeStyles } from '@material-ui/core/styles';
 import { CombinedChart } from './CombinedChart';
 import { CombinedChartMobile } from './CombinedChartMobile';
+import Highlights from './Highlights';
 
 const graphStyle = makeStyles({
     container: {
@@ -112,10 +113,14 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
         props.isMobile ?
             <div className={style.mobile}>
                 <CombinedChartMobile chartData={chartData}/>
+                <Highlights isMobile={props.isMobile} questionAnswers={props.questionAnswers} />
+
             </div> 
         :
             <div className={style.container}>
                 <CombinedChart chartData={chartData}/>
+                <Highlights isMobile={props.isMobile} questionAnswers={props.questionAnswers} />
+
             </div>
     );
 };

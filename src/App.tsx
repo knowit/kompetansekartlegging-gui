@@ -37,7 +37,8 @@ const appStyle = makeStyles({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        height: '100vh'
+        height: '100vh',
+        marginBottom: 50
     },
     content: {
         height: '100%',
@@ -168,35 +169,33 @@ const App = () => {
     
     return (
         <div className={style.root}>
-            <BrowserRouter>
-                {user ?
-                    <Fragment>
-                        {isMobile ? null : 
-                            <NavBarDesktop 
-                                confirmDeleteUserdata={confirmDeleteUserdata}
-                                displayAnswers={displayAnswers}
-                                signout={signout}
-                                userName={userName}
-                                userPicture={userPicture}
-                             />
-                        }
-                        
-                        {showFormDefSendButton ? <button onClick={() => sendFormDefinition()}>Send form definition to server</button> : ""}
-                        <Content
-                            user={user}
-                            setAnswerHistoryOpen={setAnswerHistoryOpen}
-                            answerHistoryOpen={answerHistoryOpen}
-                            isMobile={isMobile}
+            {user ?
+                <Fragment>
+                    {isMobile ? null : 
+                        <NavBarDesktop 
+                            confirmDeleteUserdata={confirmDeleteUserdata}
+                            displayAnswers={displayAnswers}
                             signout={signout}
                             userName={userName}
                             userPicture={userPicture}
-                    />
-                        <FloatingScaleDescButton isMobile={isMobile}/>
-                    </Fragment>
-                :
-                <Login />
-                }
-            </BrowserRouter>
+                            />
+                    }
+                    
+                    {showFormDefSendButton ? <button onClick={() => sendFormDefinition()}>Send form definition to server</button> : ""}
+                    <Content
+                        user={user}
+                        setAnswerHistoryOpen={setAnswerHistoryOpen}
+                        answerHistoryOpen={answerHistoryOpen}
+                        isMobile={isMobile}
+                        signout={signout}
+                        userName={userName}
+                        userPicture={userPicture}
+                />
+                    <FloatingScaleDescButton isMobile={isMobile}/>
+                </Fragment>
+            :
+            <Login />
+            }
         </div>
     );
 }
