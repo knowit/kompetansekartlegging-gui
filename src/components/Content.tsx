@@ -330,13 +330,6 @@ const Content = ({...props}: ContentProps) => {
         }
     }
 
-    useEffect(() => {
-        if (formDefinition) {
-            getUserAnswers();
-            setAnswers(createAnswers());
-            setCategories(createCategories());
-        }
-    }, [formDefinition]);
 
     useEffect(() => {
         setActiveCategory(categories[0]);
