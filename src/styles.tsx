@@ -19,21 +19,6 @@ export const KnowitColors = {
     lightPink: "#F7E1DD"
 };
 
-export const IconPaths: string[] = [
-    "K_ingen.svg",
-    "K_noeInnsikt.svg",
-    "K_potesieltBrukbar.svg",
-    "K_profesjoneltNivå.svg",
-    "K_ekspert.svg",
-    "K_superstjerne.svg",
-    "M_nei.svg",
-    "M_egentligIkke.svg",
-    "M_nja.svg",
-    "M_ok.svg",
-    "M_godt.svg",
-    "M_perfekt.svg"
-];
-
 export const AppStyle = makeStyles({
     root: {
         display: 'flex',
