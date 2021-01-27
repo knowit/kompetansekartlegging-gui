@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
@@ -264,8 +264,17 @@ const Content = ({...props}: ContentProps) => {
         if(!props.user) return console.error("User not found when getting useranswers");
         let lastUserForm: UserForm | undefined = (await helper.callGraphQL<UserFormByCreatedAt>
             (customQueries.customUserFormByCreatedAt, {...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username})).data?.userFormByCreatedAt.items[0];
-        if(lastUserForm) setUserAnswers(lastUserForm.questionAnswers.items);
-        console.log("Last userform: ", lastUserForm);
+        let lastUserFormAnswers;// : UserAnswer[];
+        
+        if (lastUserForm) {
+            lastUserFormAnswers = lastUserForm.questionAnswers.items
+            setUserAnswers(lastUserFormAnswers);
+        } else {
+            setActivePanel(Panel.MyAnswers)
+            setAnswerEditMode(true);
+        }
+
+        console.log("Last userform: ", lastUserForm);        
     };
     
     const changeActiveCategory = (newActiveCategory: string) => {
@@ -294,28 +303,23 @@ const Content = ({...props}: ContentProps) => {
     }
 
     useEffect(() => {
-        console.log("formDefinition")
-
-        getUserAnswers();
-        setAnswers(createAnswers());
-        setCategories(createCategories());
+        if (formDefinition) {
+            getUserAnswers();
+            setAnswers(createAnswers());
+            setCategories(createCategories());
+        }
     }, [formDefinition]);
 
     useEffect(() => {
-        console.log("categories")
         setActiveCategory(categories[0]);
-        setAnswerEditMode(false);
+        // setAnswerEditMode(false);
     }, [categories]);
 
     useEffect(() => {
-        console.log("answers")
-
         updateCategoryAlerts();
     }, [answers]);
     
     useEffect(() => {
-        console.log("INITIAL1")
-
         fetchLastFormDefinition();
         setSubmitFeedback("");
     }, []);
@@ -323,16 +327,12 @@ const Content = ({...props}: ContentProps) => {
     
 
     useEffect(() => {
-        console.log("userAnswers")
-
         setAnswers(createAnswers());
 
         setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
     }, [userAnswers]);
 
     useEffect(() => {
-        console.log("props.answerHistoryOpen")
-
         if (props.answerHistoryOpen) {
             fetchUserFormsAndOpenView() 
         } else {
@@ -341,8 +341,6 @@ const Content = ({...props}: ContentProps) => {
     }, [props.answerHistoryOpen]);
 
     useEffect(() => {
-        console.log("isCategorySubmitted")
-
         window.onbeforeunload = confirmExit;
         function confirmExit() {
             if (!isCategorySubmitted) {
@@ -350,10 +348,10 @@ const Content = ({...props}: ContentProps) => {
             }
         }
     }, [isCategorySubmitted])
-    
-    
-    
-    
+
+
+
+
 
     const [lastButtonClicked, setLastButtonClicked] = useState<{ buttonType: MenuButton, category?: string }>({ //Custom type might better be moved to type variable
         buttonType: MenuButton.Overview,
