@@ -40,6 +40,17 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
+    },
+    '@global': {
+        'g.recharts-cartesian-grid-horizontal > line:last-child': {
+            display: "none"
+        },
+        'g.recharts-cartesian-grid-horizontal > line:nth-last-child(2)': {
+            display: "none"
+        },
+        'g.recharts-cartesian-grid-vertical > line:last-child': {
+            display: "none"
+        }
     }
   });
 
