@@ -233,7 +233,8 @@ const Content = ({...props}: ContentProps) => {
                     return {
                         ...questionAnswer,
                         knowledge: userAnswer[0].knowledge || questionAnswer.knowledge,
-                        motivation: userAnswer[0].motivation || questionAnswer.motivation
+                        motivation: userAnswer[0].motivation || questionAnswer.motivation,
+                        updatedAt: Date.parse(userAnswer[0].updatedAt) || 0
                     }
                 }
                 return questionAnswer;
@@ -249,10 +250,11 @@ const Content = ({...props}: ContentProps) => {
                 return {
                     ...quAns,
                     knowledge: sliderValues?.knowledge || -2, //If is -2, something is wrong
-                    motivation: sliderValues?.motivation || -2
+                    motivation: sliderValues?.motivation || -2,
+                    updatedAt: Date.now()
                 }
             }) || [];
-        setQuestionAnswers(questionAnswers.set(category, newAnswers));
+        setQuestionAnswers(new Map(questionAnswers.set(category, newAnswers)));
     };
     
     

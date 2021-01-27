@@ -121,6 +121,7 @@ export const Form = ({...props}: FormProps) => {
     
     const setSliderValues = (questionId: string, values: SliderValues) => {
         sliderValues.current.set(questionId, values);
+        props.updateAnswer(props.activeCategory, sliderValues.current);
     }
 
     const getQuestionsForCategory = (items: Question[] | undefined): JSX.Element[] => {
@@ -182,12 +183,10 @@ export const Form = ({...props}: FormProps) => {
     
     const handleClickSubmit = async () => {
         // TODO pending other PR: check isCategorySubmitted so new user form isn't generated when nothing has changed
-        await props.updateAnswer(props.activeCategory, sliderValues.current);
         props.createUserForm();
     }
 
     const handleClickProceed = async () => {
-        await props.updateAnswer(props.activeCategory, sliderValues.current);
         props.submitAndProceed();
         props.scrollToTop();
     }
