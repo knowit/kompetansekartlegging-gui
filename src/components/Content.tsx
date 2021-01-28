@@ -443,10 +443,7 @@ const Content = ({...props}: ContentProps) => {
 
 
     const getTotalAlertsElement = (): JSX.Element => {
-        let totalAlerts = 0;
-        alerts?.categoryMap.forEach((numAlerts: number, category: string) => {
-            totalAlerts += numAlerts;
-        });
+        let totalAlerts = alerts?.qidMap.size ?? 0;
         if (totalAlerts > 0)
             return <AlertNotification
                 type={AlertType.Multiple}
@@ -456,6 +453,21 @@ const Content = ({...props}: ContentProps) => {
         else
             return <Fragment/>;
     }
+
+    const getMainMenuAlertElement = (): JSX.Element => {
+        let totalAlerts = alerts?.qidMap.size ?? 0;
+        if (totalAlerts > 0)
+            return <AlertNotification
+                type={AlertType.Multiple}
+                message="Besvarelsen er utdatert eller ikke komplett!"
+                size={0}
+                />;
+        else
+            return <Fragment/>;
+    }
+
+
+    <AlertNotification type={AlertType.Multiple} message="Besvarelsen er utdatert eller ikke komplett!" size={0}/>
 
     /**
      *  Setup for the button array structure:
@@ -495,7 +507,7 @@ const Content = ({...props}: ContentProps) => {
                 >
                         <div className={clsx(style.menuButtonText)}>
                             {butt.text}
-                            {(butt.buttonType === MenuButton.MyAnswers) ? <AlertNotification type={AlertType.Multiple} message="Besvarelsen er utdatert eller ikke komplett!" size={0}/> : ""}
+                            {(butt.buttonType === MenuButton.MyAnswers) ? getMainMenuAlertElement() : ""}
                         </div>
                         {/* {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""} */}
                 </Button>
