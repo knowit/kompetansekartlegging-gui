@@ -291,7 +291,8 @@ export type OverviewProps = {
     activePanel: Panel,
     questionAnswers: Map<string, QuestionAnswer[]>,
     categories: string[],
-    isMobile: boolean
+    isMobile: boolean,
+    userAnswersLoaded: boolean
 };
 
 export type ScaleDescriptionProps = {
