@@ -77,7 +77,8 @@ const contentStyle = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         borderRadius: '0px 0px 30px 0px',
-        boxShadow: "0px 4px 4px 2px lightgrey",
+        boxShadow: "0px 4px 4px rgb(0 0 0 / 15%)",
+        zIndex: 1
     },
     MenuButton: {
         borderTopLeftRadius: cardCornerRadius,
@@ -530,6 +531,7 @@ const Content = ({...props}: ContentProps) => {
             if(butt.subButtons){
                 butt.subButtons.forEach((butt, index) => {
                     buttons.push(
+                        // TODO: IKKE CAPS
                         <Button
                             key={butt.text}
                             className={clsx(style.MenuButton, activeCategory === butt.text ? style.menuButtonActive : "",

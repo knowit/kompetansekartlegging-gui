@@ -19,9 +19,9 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: KnowitColors.flamingo,
+        backgroundColor: KnowitColors.fuchsia,
         color: KnowitColors.black,
-        fontWeight: 900,
+        fontWeight: 'bold',
         fontSize: 11,
         fontFamily: 'Arial'
     },

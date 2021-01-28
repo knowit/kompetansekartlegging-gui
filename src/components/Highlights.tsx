@@ -12,6 +12,7 @@ const maxTopicStringLength = 20;
 
 const highlightsStyle = makeStyles({
     root: {
+        marginTop: 50,
         display: 'flex',
         height: '40%',
         width: '80%',

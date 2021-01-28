@@ -18,7 +18,7 @@ const useStyles = makeStyles({
         borderRadius: 10,
         borderWidth: 1,
         borderStyle: "solid",
-        borderColor: KnowitColors.darkBrown
+        borderColor: KnowitColors.darkBrown,
     },
     label: {
         color: KnowitColors.darkBrown,
@@ -38,12 +38,13 @@ const useStyles = makeStyles({
         fontSize: "13px",
         fontWeight: "bold"
     },
-    container: {
+    combinedChartContainer: {
         width: '100%',
-        height: '100%',
+        // height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        fontWeight: "bold",
     },
     '@global': {
         'g.recharts-cartesian-grid-horizontal > line:last-child': {
@@ -63,9 +64,9 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
     let classes = useStyles();
 
     return (
-        <div className={classes.container}>
+        <div className={classes.combinedChartContainer}>
         <ResponsiveContainer width='100%' height={heightPerColumn * props.chartData.length + 90}>     
-            <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 50, right: 0, bottom: 6, left: 0}}>
+            <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 50, right: 50, bottom: 6, left: 50}}>
             <CartesianGrid horizontal={true} vertical={true} strokeDasharray="2 5"/>
                 <XAxis
                     tickLine={false}
@@ -112,7 +113,7 @@ const renderCustomAxisTicks = () => {
             isKnowledge = false;
         }
         return (
-            <svg x={props.x-12} y={props.y-24} width={24} height={24} fill={KnowitColors.darkGreen}>
+            <svg x={props.x-12} y={props.y-24} width={24} height={24} fill={KnowitColors.darkBrown}>
                 {GetIcon(isKnowledge, Math.round(iconNumber))};
             </svg>
             

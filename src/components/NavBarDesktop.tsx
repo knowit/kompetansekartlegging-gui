@@ -33,7 +33,7 @@ const navbarStyles = makeStyles((theme) => ({
         fontWeight: "bold",
         fontSize: "20px",
         lineHeight: "23px",
-        color: KnowitColors.ecaluptus,
+        color: KnowitColors.white,
     },
     dropdownMenuButton: {
         marginLeft: "auto"

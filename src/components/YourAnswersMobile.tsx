@@ -226,7 +226,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
             <div className={props.activePanel === Panel.MyAnswers ? (props.collapseMobileCategories ? style.answerBoxScrolled : style.answerBox) : style.hidden}>                     
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
-                        <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Oppdater</Button>
+                        <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Endre svar</Button>
                         {/* <div className={style.catText} >{props.activeCategory}</div> */}
                     </div>
                     <div className={style.graphHolder}>

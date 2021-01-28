@@ -70,15 +70,19 @@ const yourAnwersStyle = makeStyles({
         maxHeight: '50px'
     },
     graphHolder: {
-        width: '100%',
+        width: '90%',
         height: '70%',
+        marginLeft: 100,
     },
     editButton: {
+        fontWeight: 'bold',
+
         margin: 5,
         padding: 10,
-        borderRadius: 10,
-        color: KnowitColors.white,
-        background: KnowitColors.darkGreen,
+        width: 106,
+        borderRadius: 19,
+        color: KnowitColors.black,
+        background: KnowitColors.lightGreen,
         '&:hover': {
             color: KnowitColors.darkGreen
         },
@@ -91,7 +95,7 @@ const yourAnwersStyle = makeStyles({
         alignItems: 'center',
         justifyContent: 'center',
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 24,
     },
     buttonText: {
         textTransform: 'none',
@@ -151,7 +155,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
-                        <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Endre svar</Button>
+                        <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Fyll ut</Button>
                         {/* {getOutdatedWarning()} */}
                         <div className={style.catText} >{props.activeCategory}</div>
                     </div>
