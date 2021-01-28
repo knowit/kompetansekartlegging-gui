@@ -82,10 +82,10 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
                 <Tooltip content={RenderCustomTooltip(classes)}/>
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen} />
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen} />
-                <ReferenceLine x={0} stroke="green">
+                <ReferenceLine x={0} stroke={KnowitColors.darkGreen}>
                     <Label className={classes.label} position="top" offset={50} >KOMPETANSE</Label>
                 </ReferenceLine>
-                <ReferenceLine x={chartSplitAt} stroke="green">
+                <ReferenceLine x={chartSplitAt} stroke={KnowitColors.darkGreen}>
                     <Label className={classes.label} position="top" offset={50} >MOTIVASJON</Label>
                 </ReferenceLine>
             </BarChart>
