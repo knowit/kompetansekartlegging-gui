@@ -5,6 +5,7 @@ import { FormProps, SliderValues } from '../types';
 import { Category } from './Category';
 import Question from './Question';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+import ProgressBar from './ProgressBar';
 
 const FormStyleDesktop = makeStyles({
     root: {

@@ -195,7 +195,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                     </ReferenceLine>
                     <ReferenceLine y={0.1} stroke={KnowitColors.darkGreen} strokeWidth={1}></ReferenceLine>
                     <ReferenceLine y={0} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
-                    <ReferenceLine y={chartSplitAt} stroke="green" >
+                    <ReferenceLine y={chartSplitAt} stroke={KnowitColors.darkGreen}>
                         <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>MOTIVASJON</Label>
                     </ReferenceLine>
                     <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>

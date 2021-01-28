@@ -7,6 +7,7 @@ import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
 import { MenuButton, Panel } from './Content';
 import { AlertNotification, AlertType } from './AlertNotification';
+import ProgressBar from './ProgressBar';
 
 
 const cardCornerRadius: number = 40;
@@ -50,7 +51,7 @@ const yourAnswersStyleMobile = makeStyles({
         borderRadius: '0px 0px 35px 35px',
         paddingBottom: '25px',
         boxShadow: "0px 3px 0px grey",
-        marginBottom: "8px",
+        marginBottom: "3px",
     },
     navigationContainer: {
         width: '100%',
@@ -214,9 +215,11 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                 {/* <div className={props.commonCardProps.active ? style.categoryList : style.hidden}> */}
                 <div className={props.activePanel === Panel.MyAnswers ? style.categoryList : style.hidden}>
                     <div className={style.categoryListInner}>
-                        
                         {getCategoryButtonsCollapsed()}
                     </div>
+                </div>
+                <div className={clsx(props.answerEditMode ? "" : style.hidden)}>
+                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
                 </div>
             </div>
             {/* <div className={props.commonCardProps.active ? style.answerBox : style.hidden}> */}
@@ -232,6 +235,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                 </div>
                 <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
                     {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
+                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
                     <Form 
                         {...props}
                         isMobile={true}

@@ -291,7 +291,8 @@ export type OverviewProps = {
     activePanel: Panel,
     questionAnswers: Map<string, QuestionAnswer[]>,
     categories: string[],
-    isMobile: boolean
+    isMobile: boolean,
+    userAnswersLoaded: boolean
 };
 
 export type ScaleDescriptionProps = {
@@ -419,6 +420,11 @@ export type CombinedChartProps = {
 export type SliderValues = { //Used in form and question
     knowledge: number,
     motivation: number
+};
+
+export type ProgressProps = { //Used in form and question
+    alerts: AlertState | undefined,
+    totalQuestions: number
 };
 
 

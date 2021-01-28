@@ -6,6 +6,7 @@ import { KnowitColors } from '../styles';
 import { YourAnswerProps } from '../types';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
+import ProgressBar from './ProgressBar';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 20;
@@ -30,6 +31,10 @@ const yourAnwersStyle = makeStyles({
     form: {
         width: '100%',
         overflowY: 'auto',
+        height: '100%'
+    },
+    progressForm: {
+        width: '100%',
         height: '100%'
     },
     leftCard: {
@@ -139,13 +144,16 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                         <AnswerDiagram questionAnswers={props.questionAnswers} activeCategory={props.activeCategory} isMobile={false}/>
                     </div>
                 </div>
-                <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
-                    <Form 
-                        {...props}
-                        scrollToTop={scrollToTop}
-                        isMobile={false}
-                        alerts={props.alerts}
-                    />
+                <div className={clsx(props.answerEditMode ? "" : style.hidden, style.progressForm)}>
+                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
+                        <Form 
+                            {...props}
+                            scrollToTop={scrollToTop}
+                            isMobile={false}
+                            alerts={props.alerts}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

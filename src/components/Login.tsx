@@ -8,7 +8,8 @@ const loginStyle = makeStyles({
     container: {
         height: '100vw',
         width: '100vw',
-        position: "relative"
+        position: "relative",
+        fontFamily: 'Arial'
     },
     topDiv: {
         width: '100%',
@@ -23,9 +24,9 @@ const loginStyle = makeStyles({
         zIndex: 2,
         height: '70%',
         top: '30%',
-        background: KnowitColors.ecaluptus,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40
+        background: KnowitColors.beige,
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50
     },
     botDiv: {
         width: '100%',
@@ -33,14 +34,14 @@ const loginStyle = makeStyles({
         zIndex: 3,
         height: '65%',
         top: '35%',
-        background: KnowitColors.greyGreen,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40
+        background: KnowitColors.darkBrown,
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50
     },
     frontDiv: {
         position: "absolute",
         width: '100%',
-        height: '80%',
+        height: '75%',
         zIndex: 4,
         display: 'flex',
         flexDirection: 'column',
@@ -48,13 +49,17 @@ const loginStyle = makeStyles({
         alignItems: 'center'
     },
     headline: {
-        fontSize: 30,
+        fontSize: 40,
         fontWeight: 'bold',
         marginBottom: '10%'
     },
     loginButton: {
-        padding: 30,
+        padding: 10,
+        paddingLeft: 40,
+        paddingRight: 40,
+        borderRadius: 50,
         background: KnowitColors.lightGreen,
+        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
         fontSize: 20,
         '&:hover': {
             background: KnowitColors.green
@@ -72,7 +77,7 @@ const Login = () => {
             <div className={style.botDiv} />
             <div className={style.frontDiv}>
                 <div className={style.headline}>
-                    KOMPETANSEKARTLEGGING
+                    Kompetansekartlegging
                 </div>
                 <Button 
                     className={style.loginButton} 

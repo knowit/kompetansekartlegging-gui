@@ -12,7 +12,6 @@ const heightPerColumn = 50;
 const useStyles = makeStyles({
     root: {
         backgroundColor: KnowitColors.white,
-        padding: 5,
         paddingLeft: 10,
         paddingRight: 10,
         opacity: 0.9,
@@ -24,15 +23,20 @@ const useStyles = makeStyles({
     label: {
         color: KnowitColors.darkBrown,
         fontFamily: "Arial",
-        fontSize: "20px",
+        fontSize: "14px",
         fontWeight: "bold",
-        textAnchor: "start"
+        textAnchor: "start",
+        opacity: 1
     },
     knowledge: {
-        color: KnowitColors.greyGreen
+        color: KnowitColors.darkGreen,
+        fontSize: "13px",
+        fontWeight: "bold"
     },
     motivation: {
-        color: KnowitColors.darkGreen
+        color: KnowitColors.greyGreen,
+        fontSize: "13px",
+        fontWeight: "bold"
     },
     combinedChartContainer: {
         width: '100%',
@@ -79,10 +83,10 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
                 <Tooltip content={RenderCustomTooltip(classes)}/>
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen} />
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen} />
-                <ReferenceLine x={0} stroke="green">
+                <ReferenceLine x={0} stroke={KnowitColors.darkGreen}>
                     <Label className={classes.label} position="top" offset={50} >KOMPETANSE</Label>
                 </ReferenceLine>
-                <ReferenceLine x={chartSplitAt} stroke="green">
+                <ReferenceLine x={chartSplitAt} stroke={KnowitColors.darkGreen}>
                     <Label className={classes.label} position="top" offset={50} >MOTIVASJON</Label>
                 </ReferenceLine>
             </BarChart>
@@ -126,7 +130,7 @@ const RenderCustomTooltip = (classes: any) => {
                 <div className={classes.root}>
                     <p className={classes.label}>{props.label}</p>
                     <p className={classes.knowledge}>
-                        {`Kunnskap: ${knowledgeValue}`}
+                        {`Kompetanse: ${knowledgeValue}`}
                     </p>
                     <p className={classes.motivation}>
                         {`Motivasjon: ${motivationValue}`}

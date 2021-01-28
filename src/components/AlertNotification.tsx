@@ -4,6 +4,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import UpdateIcon from '@material-ui/icons/Update';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
+import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
 import clsx from 'clsx';
 
 const useStyles = makeStyles({
@@ -28,12 +29,12 @@ const useStyles = makeStyles({
         position: 'absolute'
     },
     sizeAnswers: {
-        height: 24,
-        width: 24,
+        height: 22,
+        width: 22,
     },
     sizeMenu: {
-        height: 24,
-        width: 24,
+        height: 22,
+        width: 22,
     }
 });
 
@@ -69,7 +70,7 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
                 <div className={classes.root}>
                     <Tooltip title={props.message}>
                         <div aria-label={props.message} className={clsx(classes.alertBulb, classes.sizeMenu)}>
-                            {props.size}
+                            {props.size != 0 ? props.size : <NotificationsActiveOutlinedIcon fontSize='small'/>}
                         </div>
                     </Tooltip>
                 </div>
