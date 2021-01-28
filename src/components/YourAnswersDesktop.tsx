@@ -7,6 +7,7 @@ import { YourAnswerProps } from '../types';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
 import ProgressBar from './ProgressBar';
+import { AlertType } from './AlertNotification';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 20;
@@ -121,6 +122,12 @@ const yourAnwersStyle = makeStyles({
         overflowY: 'hidden',
         height: '100%'
     },
+    // warningText: {
+    //     fontFamily: 'Arial',
+    //     fontWeight: 'normal',
+    //     fontSize: '16px',
+    //     padding: 10
+    // },
 });
 
 export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
@@ -132,12 +139,24 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
         scrollRef.current?.scroll(0,0);
     }
 
+    // const getOutdatedWarning = (): JSX.Element => {
+    //     let categoryQuestions = props.questionAnswers.get(props.activeCategory);
+    //     let firstOutdatedQuestion = categoryQuestions?.find((question) => {
+    //         if (props.alerts?.qidMap.get(question.id)?.type === AlertType.Outdated)
+    //             return true;
+    //         else
+    //             return false;
+    //     });
+    //     return <span>{`This is a test ${firstOutdatedQuestion?.createdAt}`}</span>;
+    // }
+
     return (
         <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
                         <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Fyll ut</Button>
+                        {/* {getOutdatedWarning()} */}
                         <div className={style.catText} >{props.activeCategory}</div>
                     </div>
                     <div className={style.graphHolder}>

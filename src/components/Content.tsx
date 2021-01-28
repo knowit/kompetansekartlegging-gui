@@ -250,8 +250,8 @@ const Content = ({...props}: ContentProps) => {
                     if(userAnswer.length === 0) return questionAnswer;
                     return {
                         ...questionAnswer,
-                        knowledge: userAnswer[0].knowledge || questionAnswer.knowledge,
-                        motivation: userAnswer[0].motivation || questionAnswer.motivation,
+                        knowledge: userAnswer[0] ? userAnswer[0].knowledge : questionAnswer.knowledge,
+                        motivation: userAnswer[0] ? userAnswer[0].motivation : questionAnswer.motivation,
                         updatedAt: Date.parse(userAnswer[0].updatedAt) || 0
                     }
                 }
@@ -267,8 +267,8 @@ const Content = ({...props}: ContentProps) => {
                 let sliderValues = sliderMap.get(quAns.id);
                 return {
                     ...quAns,
-                    knowledge: sliderValues?.knowledge || -2, //If is -2, something is wrong
-                    motivation: sliderValues?.motivation || -2,
+                    knowledge: sliderValues ? sliderValues.knowledge : -2, //If is -2, something is wrong
+                    motivation: sliderValues ? sliderValues.motivation : -2,
                     updatedAt: Date.now()
                 }
             }) || [];
