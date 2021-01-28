@@ -495,7 +495,7 @@ const Content = ({...props}: ContentProps) => {
                 >
                         <div className={clsx(style.menuButtonText)}>
                             {butt.text}
-                            {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""}
+                            {(butt.buttonType === MenuButton.MyAnswers) ? <AlertNotification type={AlertType.Multiple} message="Besvarelsen er utdatert eller ikke komplett!" size={0}/> : ""}
                         </div>
                         {/* {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""} */}
                 </Button>
