@@ -141,7 +141,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                     </div>
                 </div>
                 <div className={clsx(props.answerEditMode ? "" : style.hidden, style.progressForm)}>
-                    <ProgressBar alerts={props.alerts} totalQuestions={props.questionAnswers.size}/>
+                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
                     <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
                         <Form 
                             {...props}

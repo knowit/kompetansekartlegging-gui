@@ -1,15 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { HighlightsProps, ProgressProps, TopicScoreWithIcon } from '../types'
-import { GetIcon } from '../icons/iconController'
-import { Box, createStyles, makeStyles, Theme, withStyles } from '@material-ui/core';
+import React, { useEffect, useState } from 'react'
+import { ProgressProps } from '../types'
+import { createStyles, makeStyles, withStyles } from '@material-ui/core';
 import { KnowitColors } from '../styles';
-import { wrapString } from '../helperFunctions';
-import clsx from 'clsx';
 import LinearProgress, { LinearProgressProps } from '@material-ui/core/LinearProgress';
 
-const barIconSize = 24;
-const barIconSizeMobile = 20;
-const maxTopicStringLength = 20;
 
 const useStyles = makeStyles({
     root: {
@@ -58,7 +52,7 @@ export default function ProgressBar({...props }: ProgressProps) {
 
     useEffect(() => {
         updateProgress();
-    }, []);
+    }, [props.alerts]);
 
     const updateProgress = () => {
         let unfilledQuestions = props.alerts?.qidMap.size ?? 0;

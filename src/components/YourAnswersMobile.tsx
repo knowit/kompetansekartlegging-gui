@@ -218,7 +218,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                         {getCategoryButtonsCollapsed()}
                     </div>
                 </div>
-                <ProgressBar alerts={props.alerts} totalQuestions={props.questionAnswers.size}/>
+                <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
             </div>
             {/* <div className={props.commonCardProps.active ? style.answerBox : style.hidden}> */}
             <div className={props.activePanel === Panel.MyAnswers ? (props.collapseMobileCategories ? style.answerBoxScrolled : style.answerBox) : style.hidden}>                     
@@ -233,7 +233,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                 </div>
                 <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
                     {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
-                    <ProgressBar alerts={props.alerts} totalQuestions={props.questionAnswers.size}/>
+                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
                     <Form 
                         {...props}
                         isMobile={true}
