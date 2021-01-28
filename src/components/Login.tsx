@@ -25,8 +25,8 @@ const loginStyle = makeStyles({
         height: '70%',
         top: '30%',
         background: KnowitColors.beige,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50
     },
     botDiv: {
         width: '100%',
@@ -35,8 +35,8 @@ const loginStyle = makeStyles({
         height: '65%',
         top: '35%',
         background: KnowitColors.darkBrown,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50
     },
     frontDiv: {
         position: "absolute",
