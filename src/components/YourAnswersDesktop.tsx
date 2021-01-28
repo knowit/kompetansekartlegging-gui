@@ -118,6 +118,12 @@ const yourAnwersStyle = makeStyles({
         overflowY: 'hidden',
         height: '100%'
     },
+    // warningText: {
+    //     fontFamily: 'Arial',
+    //     fontWeight: 'normal',
+    //     fontSize: '16px',
+    //     padding: 10
+    // },
 });
 
 export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {

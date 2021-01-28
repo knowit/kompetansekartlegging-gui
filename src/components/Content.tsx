@@ -249,8 +249,8 @@ const Content = ({...props}: ContentProps) => {
                     if(userAnswer.length === 0) return questionAnswer;
                     return {
                         ...questionAnswer,
-                        knowledge: userAnswer[0].knowledge || questionAnswer.knowledge,
-                        motivation: userAnswer[0].motivation || questionAnswer.motivation,
+                        knowledge: userAnswer[0] ? userAnswer[0].knowledge : questionAnswer.knowledge,
+                        motivation: userAnswer[0] ? userAnswer[0].motivation : questionAnswer.motivation,
                         updatedAt: Date.parse(userAnswer[0].updatedAt) || 0
                     }
                 }
