@@ -94,11 +94,13 @@ const contentStyle = makeStyles({
         textAlign: 'left',
         width: '100%',
         marginLeft: 10,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        display: 'flex'
     },
     menuButtonCategoryText: {
         fontSize: 12,
-        marginLeft: 20
+        marginLeft: 20,
+        display: 'flex'
     },
     hideCategoryButtons: {
         display: 'none'  
@@ -491,8 +493,11 @@ const Content = ({...props}: ContentProps) => {
                     className={clsx(style.MenuButton, keepButtonActive(butt.buttonType))}
                     onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, undefined)}}
                 >
-                        <div className={clsx(style.menuButtonText)}>{butt.text}</div>
-                        {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""}
+                        <div className={clsx(style.menuButtonText)}>
+                            {butt.text}
+                            {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""}
+                        </div>
+                        {/* {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""} */}
                 </Button>
             );
             if(butt.subButtons){
@@ -504,8 +509,11 @@ const Content = ({...props}: ContentProps) => {
                                 activePanel === butt.activePanel ? "" : style.hideCategoryButtons)}
                             onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, butt.text) }}
                         >
-                            <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>{index + 1}. {butt.text}</div>
-                            {alerts?.categoryMap.has(butt.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={alerts.categoryMap.get(butt.text)}/> : ""}
+                            <div className={clsx(style.menuButtonText, style.menuButtonCategoryText)}>
+                                {index + 1}. {butt.text}
+                                {alerts?.categoryMap.has(butt.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={alerts.categoryMap.get(butt.text)}/> : ""}
+                            </div>
+                            {/* {alerts?.categoryMap.has(butt.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={alerts.categoryMap.get(butt.text)}/> : ""} */}
                         </Button>
                     );
                 });

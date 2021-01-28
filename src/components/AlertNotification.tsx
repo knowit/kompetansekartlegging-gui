@@ -18,9 +18,9 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: KnowitColors.fuchsia,
-        color: KnowitColors.white,
-        fontWeight: 'bold',
+        backgroundColor: KnowitColors.flamingo,
+        color: KnowitColors.black,
+        fontWeight: 900,
         fontSize: 11,
         fontFamily: 'Arial'
     },
@@ -32,8 +32,8 @@ const useStyles = makeStyles({
         width: 24,
     },
     sizeMenu: {
-        height: 24,
-        width: 24,
+        height: 22,
+        width: 22,
     }
 });
 
