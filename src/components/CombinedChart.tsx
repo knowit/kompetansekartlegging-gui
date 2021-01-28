@@ -12,7 +12,6 @@ const heightPerColumn = 50;
 const useStyles = makeStyles({
     root: {
         backgroundColor: KnowitColors.white,
-        padding: 5,
         paddingLeft: 10,
         paddingRight: 10,
         opacity: 0.9,
@@ -24,15 +23,20 @@ const useStyles = makeStyles({
     label: {
         color: KnowitColors.darkBrown,
         fontFamily: "Arial",
-        fontSize: "20px",
+        fontSize: "14px",
         fontWeight: "bold",
-        textAnchor: "start"
+        textAnchor: "start",
+        opacity: 1
     },
     knowledge: {
-        color: KnowitColors.greyGreen
+        color: KnowitColors.darkGreen,
+        fontSize: "13px",
+        fontWeight: "bold"
     },
     motivation: {
-        color: KnowitColors.darkGreen
+        color: KnowitColors.greyGreen,
+        fontSize: "13px",
+        fontWeight: "bold"
     },
     container: {
         width: '100%',
@@ -125,7 +129,7 @@ const RenderCustomTooltip = (classes: any) => {
                 <div className={classes.root}>
                     <p className={classes.label}>{props.label}</p>
                     <p className={classes.knowledge}>
-                        {`Kunnskap: ${knowledgeValue}`}
+                        {`Kompetanse: ${knowledgeValue}`}
                     </p>
                     <p className={classes.motivation}>
                         {`Motivasjon: ${motivationValue}`}
