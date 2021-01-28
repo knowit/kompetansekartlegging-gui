@@ -285,19 +285,34 @@ const Content = ({...props}: ContentProps) => {
             return;
         }
         let quAnsInput: CreateQuestionAnswerInput[] = [];
-        questionAnswers.forEach((quAnsArr, cat) => {
-            quAnsArr.forEach(quAns => {
-                if (quAns.knowledge < 0 && quAns.motivation < 0) return;
-                quAnsInput.push({
-                    userFormID: "",
-                    questionID: quAns.id,
-                    knowledge: quAns.knowledge,
-                    motivation: quAns.motivation,
-                    environmentID: helper.getEnvTableID(),
-                    formDefinitionID: formDefinition.id.toString()
-                });
-            })
+        questionAnswers.get(activeCategory)?.forEach(quAns => {
+            if (quAns.knowledge < 0 && quAns.motivation < 0) return;
+            quAnsInput.push({
+                userFormID: "",
+                questionID: quAns.id,
+                knowledge: quAns.knowledge,
+                motivation: quAns.motivation,
+                environmentID: helper.getEnvTableID(),
+                formDefinitionID: formDefinition.id.toString()
+            });
         });
+        if(quAnsInput.length === 0){
+            console.error("Error finding active category whe creating userform");
+            return;
+        }
+        // questionAnswers.forEach((quAnsArr, cat) => {
+        //     quAnsArr.forEach(quAns => {
+        //         if (quAns.knowledge < 0 && quAns.motivation < 0) return;
+        //         quAnsInput.push({
+        //             userFormID: "",
+        //             questionID: quAns.id,
+        //             knowledge: quAns.knowledge,
+        //             motivation: quAns.motivation,
+        //             environmentID: helper.getEnvTableID(),
+        //             formDefinitionID: formDefinition.id.toString()
+        //         });
+        //     })
+        // });
         console.log("question answer input: ", quAnsInput);
         let result = (await helper.callBatchGraphQL<CreateQuestionAnswerResult>(customQueries.batchCreateQuestionAnswer2, { input: quAnsInput}, "QuestionAnswer")).map(result => result.data?.batchCreateQuestionAnswer);
         console.log("Result: ", result);
