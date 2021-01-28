@@ -266,8 +266,8 @@ const Content = ({...props}: ContentProps) => {
                 let sliderValues = sliderMap.get(quAns.id);
                 return {
                     ...quAns,
-                    knowledge: sliderValues?.knowledge || -2, //If is -2, something is wrong
-                    motivation: sliderValues?.motivation || -2,
+                    knowledge: sliderValues ? sliderValues.knowledge : -2, //If is -2, something is wrong
+                    motivation: sliderValues ? sliderValues.motivation : -2,
                     updatedAt: Date.now()
                 }
             }) || [];
