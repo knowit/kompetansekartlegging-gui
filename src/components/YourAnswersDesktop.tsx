@@ -64,8 +64,9 @@ const yourAnwersStyle = makeStyles({
         maxHeight: '50px'
     },
     graphHolder: {
-        width: '100%',
+        width: '90%',
         height: '70%',
+        marginLeft: 100,
     },
     editButton: {
         fontWeight: 'bold',

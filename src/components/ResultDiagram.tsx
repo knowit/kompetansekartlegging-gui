@@ -7,12 +7,12 @@ import { CombinedChartMobile } from './CombinedChartMobile';
 import Highlights from './Highlights';
 
 const graphStyle = makeStyles({
-    container: {
-        width: '80%',
+    resultDiagramContainer: {
+        width: '90%',
         height: '60%',
-        padding: 30
+        paddingTop: 30
     },
-    mobile: {
+    resultDiagramContainerMobile: {
         height: '60%',
         width: '90%',
         marginBottom: 30,
@@ -111,13 +111,13 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
 
     return (
         props.isMobile ?
-            <div className={style.mobile}>
+            <div className={style.resultDiagramContainerMobile}>
                 <CombinedChartMobile chartData={chartData}/>
                 <Highlights isMobile={props.isMobile} questionAnswers={props.questionAnswers} />
 
             </div> 
         :
-            <div className={style.container}>
+            <div className={style.resultDiagramContainer}>
                 <CombinedChart chartData={chartData}/>
                 <Highlights isMobile={props.isMobile} questionAnswers={props.questionAnswers} />
 
