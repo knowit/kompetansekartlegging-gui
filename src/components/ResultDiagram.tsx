@@ -8,14 +8,13 @@ import Highlights from './Highlights';
 
 const graphStyle = makeStyles({
     resultDiagramContainer: {
-        width: '90%',
-        height: '60%',
+        width: '100%',
+        height: '100%',
         paddingTop: 30
     },
     resultDiagramContainerMobile: {
         height: '60%',
         width: '90%',
-        marginBottom: 30,
     }
 });
 
@@ -113,14 +112,10 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
         props.isMobile ?
             <div className={style.resultDiagramContainerMobile}>
                 <CombinedChartMobile chartData={chartData}/>
-                <Highlights isMobile={props.isMobile} questionAnswers={props.questionAnswers} />
-
             </div> 
         :
             <div className={style.resultDiagramContainer}>
                 <CombinedChart chartData={chartData}/>
-                <Highlights isMobile={props.isMobile} questionAnswers={props.questionAnswers} />
-
             </div>
     );
 };

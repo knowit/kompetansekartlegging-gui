@@ -12,11 +12,11 @@ const maxTopicStringLength = 20;
 
 const highlightsStyle = makeStyles({
     root: {
-        marginTop: 50,
         display: 'flex',
         height: '40%',
-        width: '80%',
-        flexDirection: 'column'
+        width: '100%',
+        flexDirection: 'column',
+        alignItems: 'center'
     },
     title: {    
         textAlign: 'left',
@@ -35,8 +35,8 @@ const highlightsStyle = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        width: '100%',
-        justifyContent: 'flex-start'
+        width: '80%',
+        justifyContent: 'center'
     },
     block: {
         display: 'flex',
