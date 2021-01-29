@@ -14,6 +14,13 @@ const highlightsStyle = makeStyles({
     root: {
         display: 'flex',
         height: '40%',
+        width: '80%',
+        flexDirection: 'column',
+        alignItems: 'flex-start'
+    },
+    rootMobile: {
+        display: 'flex',
+        height: '40%',
         width: '100%',
         flexDirection: 'column',
         alignItems: 'flex-start'
@@ -279,7 +286,7 @@ export default function Highlights({...props }: HighlightsProps) {
         return <Fragment/>
     else 
         return (
-            <div className={style.root}>
+            <div className={props.isMobile ? style.rootMobile : style.root}>
                 <div className={props.isMobile ? style.hidden : style.title}>FOKUSOMRÅDER</div>
                 <div className={props.isMobile ? style.containerMobile : style.container}>
                     <div className={style.block}>
