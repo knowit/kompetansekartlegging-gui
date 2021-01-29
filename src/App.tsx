@@ -37,8 +37,7 @@ const appStyle = makeStyles({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        height: '100vh',
-        marginBottom: 50
+        height: '100vh'
     },
     content: {
         height: '100%',
