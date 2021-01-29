@@ -31,7 +31,8 @@ const highlightsStyle = makeStyles({
         paddingBottom: 20,
         paddingLeft: 30,
         fontFamily: "Arial",
-        fontSize: "20px"
+        fill: KnowitColors.darkBrown,
+        fontSize: "18px"
     },
     container: { 
         display: 'flex',
