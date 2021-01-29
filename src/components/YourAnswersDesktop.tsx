@@ -1,13 +1,13 @@
 import { Button, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Panel } from './Content';
 import { KnowitColors } from '../styles';
 import { YourAnswerProps } from '../types';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
 import ProgressBar from './ProgressBar';
-import { AlertType } from './AlertNotification';
+import { AlertNotification, AlertType } from './AlertNotification';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 20;
@@ -65,14 +65,17 @@ const yourAnwersStyle = makeStyles({
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
         height: '10%',
+        width: '60%',
         margin: '10px',
         maxHeight: '50px'
     },
     graphHolder: {
         width: '90%',
         height: '70%',
-        marginLeft: 100,
+        marginLeft: 50,
     },
     editButton: {
         fontWeight: 'bold',
@@ -95,7 +98,9 @@ const yourAnwersStyle = makeStyles({
         alignItems: 'center',
         justifyContent: 'center',
         fontWeight: 'bold',
-        fontSize: 24,
+        fontFamily: 'Arial',
+        fontSize: 16,
+        color: KnowitColors.darkBrown
     },
     buttonText: {
         textTransform: 'none',
@@ -122,12 +127,22 @@ const yourAnwersStyle = makeStyles({
         overflowY: 'hidden',
         height: '100%'
     },
-    // warningText: {
-    //     fontFamily: 'Arial',
-    //     fontWeight: 'normal',
-    //     fontSize: '16px',
-    //     padding: 10
-    // },
+    blockAlert: {
+        position: 'relative',
+        display: 'flex',
+        fontFamily: 'Arial',
+        fontWeight: 'normal',
+        fontSize: '16px',
+        padding: 10
+    },
+    warningText: {
+        position: 'relative',
+        display: 'flex',
+        fontFamily: 'Arial',
+        fontWeight: 'normal',
+        fontSize: '16px',
+        marginLeft: 30
+    },
 });
 
 export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
@@ -139,25 +154,42 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
         scrollRef.current?.scroll(0,0);
     }
 
-    // const getOutdatedWarning = (): JSX.Element => {
-    //     let categoryQuestions = props.questionAnswers.get(props.activeCategory);
-    //     let firstOutdatedQuestion = categoryQuestions?.find((question) => {
-    //         if (props.alerts?.qidMap.get(question.id)?.type === AlertType.Outdated)
-    //             return true;
-    //         else
-    //             return false;
-    //     });
-    //     return <span>{`This is a test ${firstOutdatedQuestion?.createdAt}`}</span>;
-    // }
+    const getOutdatedWarning = (): JSX.Element => {
+
+        const daysBetween = (d1: number, d2:number) => {
+            return Math.round((d2-d1) / (1000*60*60*24));
+        }
+
+        let categoryQuestions = props.questionAnswers.get(props.activeCategory);
+        let firstOutdatedQuestion = categoryQuestions?.find((question) => {
+            if (props.alerts?.qidMap.get(question.id)?.type === AlertType.Outdated)
+                return true;
+            else
+                return false;
+        });
+        if (firstOutdatedQuestion?.createdAt) {
+            let updateDate = Date.parse(firstOutdatedQuestion.createdAt);
+            let now = new Date().getTime();
+            let diff = daysBetween(updateDate, now);
+            console.log(diff);
+            return  <div className={style.blockAlert}>
+                    <AlertNotification type={AlertType.Outdated} message="Utdatert blokk!"/>
+                        <div className={style.warningText}>{`Det har gått ${diff} dager siden blokken ble oppdatert!`}</div>                
+                    </div>;
+        } else {
+            return <Fragment/>;
+        }
+
+    
+    }
 
     return (
         <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
+                        <div className={style.catText}>{getOutdatedWarning()}</div>
                         <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Fyll ut</Button>
-                        {/* {getOutdatedWarning()} */}
-                        <div className={style.catText} >{props.activeCategory}</div>
                     </div>
                     <div className={style.graphHolder}>
                         <AnswerDiagram questionAnswers={props.questionAnswers} activeCategory={props.activeCategory} isMobile={false}/>
