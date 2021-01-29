@@ -21,9 +21,9 @@ const useStyles = makeStyles({
         borderColor: KnowitColors.darkBrown,
     },
     label: {
-        color: KnowitColors.darkBrown,
+        fill: KnowitColors.darkBrown,
         fontFamily: "Arial",
-        fontSize: "14px",
+        fontSize: "18px",
         fontWeight: "bold",
         textAnchor: "start",
         opacity: 1
@@ -45,6 +45,7 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         alignItems: 'center',
         fontWeight: "bold",
+        fontSize: '15px'
     },
     '@global': {
         'g.recharts-cartesian-grid-horizontal > line:last-child': {
@@ -84,7 +85,7 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen} />
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen} />
                 <ReferenceLine x={0} stroke={KnowitColors.darkGreen}>
-                    <Label className={classes.label} position="top" offset={50} >KOMPETANSE</Label>
+                    <Label className={classes.label} position="top" offset={50}>KOMPETANSE</Label>
                 </ReferenceLine>
                 <ReferenceLine x={chartSplitAt} stroke={KnowitColors.darkGreen}>
                     <Label className={classes.label} position="top" offset={50} >MOTIVASJON</Label>
