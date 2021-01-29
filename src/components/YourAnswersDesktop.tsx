@@ -156,31 +156,35 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
 
     const getOutdatedWarning = (): JSX.Element => {
 
-        const daysBetween = (d1: number, d2:number) => {
-            return Math.round((d2-d1) / (1000*60*60*24));
+        enum TimeType {
+            MINUTES, // For testing
+            DAYS,
+        }
+
+        const timeBetweenString = (then: number, now: number, type: TimeType): string => {
+            switch(type) {
+                case TimeType.MINUTES:
+                    return Math.round((now-then) / (1000*60)) + " minutter";
+                case TimeType.DAYS:
+                    return Math.round((now-then) / (1000*60*60*24)) + " dager";
+            }
         }
 
         let categoryQuestions = props.questionAnswers.get(props.activeCategory);
         let firstOutdatedQuestion = categoryQuestions?.find((question) => {
-            if (props.alerts?.qidMap.get(question.id)?.type === AlertType.Outdated)
-                return true;
-            else
-                return false;
+            return props.alerts?.qidMap.get(question.id)?.type === AlertType.Outdated;
         });
-        if (firstOutdatedQuestion?.createdAt) {
-            let updateDate = Date.parse(firstOutdatedQuestion.createdAt);
+        if (firstOutdatedQuestion) {
+            let updateDate = firstOutdatedQuestion.updatedAt;
             let now = new Date().getTime();
-            let diff = daysBetween(updateDate, now);
-            console.log(diff);
             return  <div className={style.blockAlert}>
                     <AlertNotification type={AlertType.Outdated} message="Utdatert blokk!"/>
-                        <div className={style.warningText}>{`Det har gått ${diff} dager siden blokken ble oppdatert!`}</div>                
+                        <div className={style.warningText}>{`Det har gått ${timeBetweenString(updateDate, now, TimeType.MINUTES)} siden blokken ble oppdatert!`}</div>                
                     </div>;
         } else {
             return <Fragment/>;
         }
 
-    
     }
 
     return (
