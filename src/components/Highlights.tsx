@@ -23,7 +23,7 @@ const highlightsStyle = makeStyles({
         height: '40%',
         width: '100%',
         flexDirection: 'column',
-        alignItems: 'flex-start'
+        alignItems: 'center'
     },
     title: {    
         textAlign: 'left',
