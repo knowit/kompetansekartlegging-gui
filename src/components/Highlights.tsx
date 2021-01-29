@@ -8,7 +8,9 @@ import clsx from 'clsx';
 
 const barIconSize = 24;
 const barIconSizeMobile = 20;
-const maxTopicStringLength = 20;
+
+const topicWrapScaler = Math.round(window.innerWidth / 25);
+const maxTopicStringLength = Math.max(15, topicWrapScaler);
 
 const highlightsStyle = makeStyles({
     root: {
