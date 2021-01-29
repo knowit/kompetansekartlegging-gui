@@ -31,7 +31,7 @@ const highlightsStyle = makeStyles({
         paddingBottom: 20,
         paddingLeft: 30,
         fontFamily: "Arial",
-        fill: KnowitColors.darkBrown,
+        color: KnowitColors.darkBrown,
         fontSize: "18px"
     },
     container: { 
@@ -57,7 +57,8 @@ const highlightsStyle = makeStyles({
         paddingBottom: 10,
         paddingLeft: 30,
         fontFamily: 'Arial',
-        fontSize: 16
+        fontSize: 16,
+        color: KnowitColors.darkBrown,
     },
     headingMobile: {
         textAlign: 'left',
