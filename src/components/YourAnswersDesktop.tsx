@@ -124,8 +124,8 @@ const yourAnwersStyle = makeStyles({
     bottomCardOpen: {
         display: 'flex',
         flexDirection: 'row',
-        overflowY: 'hidden',
-        height: '100%'
+        overflowY: 'scroll',
+        height: '100%',
     },
     blockAlert: {
         position: 'relative',
