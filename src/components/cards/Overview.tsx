@@ -28,7 +28,8 @@ const overviewStyle = makeStyles({
         width: '90%',
         height: '60%',
         paddingTop: 30,
-        paddingLeft: 50
+        paddingLeft: 50,
+        marginTop: 50
     },
     mobile: {
         height: '100%',

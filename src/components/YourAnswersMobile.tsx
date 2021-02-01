@@ -96,6 +96,7 @@ const yourAnswersStyleMobile = makeStyles({
         // background: KnowitColors.creme,
     },
     editButton: {
+        fontWeight: 'bold',
         margin: 5,
         padding: 10,
         borderRadius: 18,
@@ -125,6 +126,7 @@ const yourAnswersStyleMobile = makeStyles({
     },
     menuButtonActive: {
         background: KnowitColors.white,
+        marginRight: -2
     },
     MenuButton: {
         '&:hover': {
