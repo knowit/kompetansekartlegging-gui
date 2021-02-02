@@ -9,13 +9,11 @@ import { Button, ListItem, ListItemText, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { KnowitColors } from '../styles';
 import { AlertDialog } from './AlertDialog';
-import { AlertNotification, AlertType } from './AlertNotification';
+import { AlertNotification, AlertType, staleAnswersLimit } from './AlertNotification';
 import NavBarMobile from './NavBarMobile';
 import { AnswerHistory } from './AnswerHistory';
 
 const cardCornerRadius: number = 40;
-
-const staleAnswersLimit: number = helper.Millisecs.FIVEMINUTES;
 
 export enum Panel {
     Overview,
