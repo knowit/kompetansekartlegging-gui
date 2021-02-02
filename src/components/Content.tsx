@@ -98,7 +98,8 @@ const contentStyle = makeStyles({
         width: '100%',
         marginLeft: 10,
         fontWeight: 'bold',
-        display: 'flex'
+        display: 'flex',
+        color: KnowitColors.darkBrown
     },
     menuButtonCategoryText: {
         fontSize: 12,
