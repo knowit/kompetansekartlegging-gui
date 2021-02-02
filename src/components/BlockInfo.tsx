@@ -8,18 +8,26 @@ import { staleAnswersLimit } from './AlertNotification';
 
 
 const useStyles = makeStyles({
-    blockAlert: {
+    blockOK: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 15,
         color: KnowitColors.darkBrown
     },
+    blockAlert: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 15,
+        color: KnowitColors.fuchsia
+    },
     warningText: {
         fontFamily: 'Arial',
         fontWeight: 'normal',
         fontSize: '16px',
-        marginLeft: 10
+        marginLeft: 10,
+        color: KnowitColors.darkBrown
     },
 });
 
@@ -66,7 +74,7 @@ export const BlockInfo = (props: {questions: QuestionAnswer[] | undefined}) => {
                         <div className={classes.warningText}>{`Det har gått ${timeBetweenString(timeOfOldestQuestion, now, TimeType.MINUTES)} siden blokken ble oppdatert!`}</div>                
                     </div>;
         } else {
-            return  <div className={classes.blockAlert}>
+            return  <div className={classes.blockOK}>
                         <CheckCircleOutlineRoundedIcon/>
                         <div className={classes.warningText}>{`Blokken ble sist oppdatert ${new Date(timeOfOldestQuestion).toLocaleDateString('no-NO')}`}</div>                
                     </div>;
