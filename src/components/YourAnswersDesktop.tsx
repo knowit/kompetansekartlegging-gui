@@ -144,7 +144,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
                         <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
-                        <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Fyll ut</Button>
+                        <Button className={style.editButton} onClick={() => props.enableAnswerEditMode()}>Fyll ut</Button>
                     </div>
                     <div className={style.graphHolder}>
                         <AnswerDiagram questionAnswers={props.questionAnswers} activeCategory={props.activeCategory} isMobile={false}/>

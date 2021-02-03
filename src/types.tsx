@@ -311,7 +311,7 @@ export type YourAnswerProps = {
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
-    setAnswerEditMode: (editMode: boolean) => void,
+    enableAnswerEditMode: () => void,
     answerEditMode: boolean,
     isMobile: boolean,
     alerts: AlertState | undefined,

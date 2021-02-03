@@ -413,6 +413,7 @@ const Content = ({...props}: ContentProps) => {
     };
     
     const leaveFormButtonClicked = () => {
+        setAnswerEditMode(false);
         setAlertDialogOpen(false);
         setIsCategorySubmitted(true);
         resetAnswers();
@@ -595,6 +596,11 @@ const Content = ({...props}: ContentProps) => {
         }
     }
 
+    const enableAnswerEditMode = () => {
+        setAnswersBeforeSubmitted(new Map(questionAnswers));
+        setAnswerEditMode(true);
+    }
+
     const setupPanel = (): JSX.Element => {
         switch (activePanel) {
             case Panel.Overview:
@@ -620,7 +626,7 @@ const Content = ({...props}: ContentProps) => {
                         changeActiveCategory={changeActiveCategory}
                         categories={categories}
                         activeCategory={activeCategory}
-                        setAnswerEditMode={setAnswerEditMode}
+                        enableAnswerEditMode={enableAnswerEditMode}
                         answerEditMode={answerEditMode}
                         isMobile={props.isMobile}
                         alerts={alerts}
@@ -642,7 +648,7 @@ const Content = ({...props}: ContentProps) => {
         return <div></div>;
     };
 
-    
+
     
     return (
             <div className={props.isMobile ? mobileStyle.root : style.root} onScroll={() => handleScroll()} ref={mobileNavRef}>

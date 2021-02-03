@@ -233,7 +233,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
                         <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
-                        <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Endre svar</Button>
+                        <Button className={style.editButton} onClick={() => props.enableAnswerEditMode()}>Endre svar</Button>
                         {/* <div className={style.catText} >{props.activeCategory}</div> */}
                     </div>
                     <div className={style.graphHolder}>
