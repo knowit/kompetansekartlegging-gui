@@ -7,7 +7,7 @@ import { YourAnswerProps } from '../types';
 import AnswerDiagram from './AnswerDiagram';
 import { Form } from './Form';
 import ProgressBar from './ProgressBar';
-import { AlertNotification, AlertType } from './AlertNotification';
+import { BlockInfo } from './BlockInfo';
 
 const cardCornerRadius: number = 40;
 const zIndex: number = 20;
@@ -124,25 +124,9 @@ const yourAnwersStyle = makeStyles({
     bottomCardOpen: {
         display: 'flex',
         flexDirection: 'row',
-        overflowY: 'scroll',
-        height: '100%',
-    },
-    blockAlert: {
-        position: 'relative',
-        display: 'flex',
-        fontFamily: 'Arial',
-        fontWeight: 'normal',
-        fontSize: '16px',
-        padding: 10
-    },
-    warningText: {
-        position: 'relative',
-        display: 'flex',
-        fontFamily: 'Arial',
-        fontWeight: 'normal',
-        fontSize: '16px',
-        marginLeft: 30
-    },
+        overflowY: 'hidden',
+        height: '100%'
+    }
 });
 
 export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
@@ -154,45 +138,12 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
         scrollRef.current?.scroll(0,0);
     }
 
-    const getOutdatedWarning = (): JSX.Element => {
-
-        enum TimeType {
-            MINUTES, // For testing
-            DAYS,
-        }
-
-        const timeBetweenString = (then: number, now: number, type: TimeType): string => {
-            switch(type) {
-                case TimeType.MINUTES:
-                    return Math.round((now-then) / (1000*60)) + " minutter";
-                case TimeType.DAYS:
-                    return Math.round((now-then) / (1000*60*60*24)) + " dager";
-            }
-        }
-
-        let categoryQuestions = props.questionAnswers.get(props.activeCategory);
-        let firstOutdatedQuestion = categoryQuestions?.find((question) => {
-            return props.alerts?.qidMap.get(question.id)?.type === AlertType.Outdated;
-        });
-        if (firstOutdatedQuestion) {
-            let updateDate = firstOutdatedQuestion.updatedAt;
-            let now = new Date().getTime();
-            return  <div className={style.blockAlert}>
-                    <AlertNotification type={AlertType.Outdated} message="Utdatert blokk!"/>
-                        <div className={style.warningText}>{`Det har gått ${timeBetweenString(updateDate, now, TimeType.MINUTES)} siden blokken ble oppdatert!`}</div>                
-                    </div>;
-        } else {
-            return <Fragment/>;
-        }
-
-    }
-
     return (
         <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
-                        <div className={style.catText}>{getOutdatedWarning()}</div>
+                        <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
                         <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Fyll ut</Button>
                     </div>
                     <div className={style.graphHolder}>

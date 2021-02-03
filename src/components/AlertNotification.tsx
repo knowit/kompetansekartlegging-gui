@@ -6,6 +6,9 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
 import clsx from 'clsx';
+import { Millisecs } from '../helperFunctions';
+
+export const staleAnswersLimit: number = Millisecs.FIVEMINUTES;
 
 const useStyles = makeStyles({
     root: {
