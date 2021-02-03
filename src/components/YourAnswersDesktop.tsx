@@ -124,7 +124,7 @@ const yourAnwersStyle = makeStyles({
     bottomCardOpen: {
         display: 'flex',
         flexDirection: 'row',
-        overflowY: 'hidden',
+        overflowY: 'scroll',
         height: '100%'
     }
 });
