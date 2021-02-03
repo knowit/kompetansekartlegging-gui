@@ -8,6 +8,7 @@ import { Form } from './Form';
 import { MenuButton, Panel } from './Content';
 import { AlertNotification, AlertType } from './AlertNotification';
 import ProgressBar from './ProgressBar';
+import { BlockInfo } from './BlockInfo';
 
 
 const cardCornerRadius: number = 40;
@@ -86,7 +87,8 @@ const yourAnswersStyleMobile = makeStyles({
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        alignItems: 'center'
 
     },
     graphHolder: {
@@ -96,7 +98,9 @@ const yourAnswersStyleMobile = makeStyles({
         // background: KnowitColors.creme,
     },
     editButton: {
+        width: "25%",
         fontWeight: 'bold',
+        fontSize: '12px',
         margin: 5,
         padding: 10,
         borderRadius: 18,
@@ -228,6 +232,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
             <div className={props.activePanel === Panel.MyAnswers ? (props.collapseMobileCategories ? style.answerBoxScrolled : style.answerBox) : style.hidden}>                     
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
+                        <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
                         <Button className={style.editButton} onClick={() => props.setAnswerEditMode(true)}>Endre svar</Button>
                         {/* <div className={style.catText} >{props.activeCategory}</div> */}
                     </div>

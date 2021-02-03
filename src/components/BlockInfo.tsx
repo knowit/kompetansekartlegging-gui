@@ -3,29 +3,34 @@ import { KnowitColors } from '../styles';
 import { QuestionAnswer } from '../types';
 import React, { Fragment } from 'react';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
+import ErrorOutlineRoundedIcon from '@material-ui/icons/ErrorOutlineRounded';
 import UpdateIcon from '@material-ui/icons/Update';
 import { staleAnswersLimit } from './AlertNotification';
 
 
 const useStyles = makeStyles({
+    root: {
+        width: '70%'
+    },
     blockOK: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
+        fontWeight: 'normal',
         alignItems: 'center',
-        padding: 15,
+        padding: 5,
         color: KnowitColors.darkBrown
     },
     blockAlert: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        padding: 15,
+        padding: 5,
+        fontWeight: 'bold',
         color: KnowitColors.fuchsia
     },
     warningText: {
         fontFamily: 'Arial',
-        fontWeight: 'normal',
-        fontSize: '16px',
+        fontSize: '14px',
         marginLeft: 10,
         color: KnowitColors.darkBrown
     },
@@ -69,17 +74,26 @@ export const BlockInfo = (props: {questions: QuestionAnswer[] | undefined}) => {
     
     if (now - timeOfOldestQuestion != 0) {
         if (timeDiff > staleAnswersLimit) {
-            return  <div className={classes.blockAlert}>
-                        <UpdateIcon/>
-                        <div className={classes.warningText}>{`Det har gått ${timeBetweenString(timeOfOldestQuestion, now, TimeType.MINUTES)} siden blokken ble oppdatert!`}</div>                
+            return  <div className={classes.root}>
+                        <div className={classes.blockAlert}>
+                            <UpdateIcon/>
+                            <div className={classes.warningText}>{`Det har gått ${timeBetweenString(timeOfOldestQuestion, now, TimeType.MINUTES)} siden blokken ble oppdatert!`}</div>                
+                        </div>
                     </div>;
         } else {
-            return  <div className={classes.blockOK}>
-                        <CheckCircleOutlineRoundedIcon/>
-                        <div className={classes.warningText}>{`Blokken ble sist oppdatert ${new Date(timeOfOldestQuestion).toLocaleDateString('no-NO')}`}</div>                
+            return  <div className={classes.root}>
+                        <div className={classes.blockOK}>
+                            <CheckCircleOutlineRoundedIcon/>
+                            <div className={classes.warningText}>{`Blokken ble sist oppdatert ${new Date(timeOfOldestQuestion).toLocaleDateString('no-NO')}`}</div>                
+                        </div>
                     </div>;
         }
     } else {
-        return <Fragment/>;
+        return  <div className={classes.root}>
+                    <div className={classes.blockAlert}>
+                        <ErrorOutlineRoundedIcon/>
+                        <div className={classes.warningText}>{`Blokken har ikke blitt fylt ut ennå!`}</div>                
+                    </div>
+                </div>;
     }
 }
