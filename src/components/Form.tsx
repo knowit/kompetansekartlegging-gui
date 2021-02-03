@@ -21,7 +21,8 @@ const FormStyleDesktop = makeStyles({
     blockButtons: {
         padding: 20,
         display: 'flex',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        marginBottom: 50
     },
     submitButton: {
         paddingLeft: 20,
@@ -71,7 +72,9 @@ const FormStyleMobile = makeStyles({
         display: 'flex',
         flexDirection: 'column-reverse',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 50
+
     },
     submitButton: {
         margin: 10,

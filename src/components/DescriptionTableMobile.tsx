@@ -13,7 +13,7 @@ const DescTableStyle = makeStyles({
         maxHeight: '100%',
         display: 'flex',
         flexDirection: 'column',
-
+        color: KnowitColors.darkBrown
     },
     scaleRow: {
         height: '50%',

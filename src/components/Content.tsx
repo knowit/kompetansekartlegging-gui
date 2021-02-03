@@ -84,9 +84,11 @@ const contentStyle = makeStyles({
         '&:hover': {
             background: KnowitColors.white
         },
+        textTransform: "none"
     },
     menuButtonActive: {
         background: KnowitColors.white,
+        marginRight: -2
     },
     menuButtonText: {
         fontSize: 15,
@@ -94,7 +96,8 @@ const contentStyle = makeStyles({
         width: '100%',
         marginLeft: 10,
         fontWeight: 'bold',
-        display: 'flex'
+        display: 'flex',
+        color: KnowitColors.darkBrown
     },
     menuButtonCategoryText: {
         fontSize: 12,
@@ -501,12 +504,12 @@ const Content = ({...props}: ContentProps) => {
                 return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
             })
         },
-        { text: "Test", buttonType: MenuButton.Other },
-        { text: "Parent", buttonType: MenuButton.GroupLeader, subButtons: [
-            { text: "Child 1", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
-            { text: "Child 2", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
-            { text: "Child 3", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
-        ]},
+        // { text: "Test", buttonType: MenuButton.Other },
+        // { text: "Parent", buttonType: MenuButton.GroupLeader, subButtons: [
+        //     { text: "Child 1", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
+        //     { text: "Child 2", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
+        //     { text: "Child 3", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
+        // ]},
     ]
 
 

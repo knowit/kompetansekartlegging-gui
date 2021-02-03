@@ -14,6 +14,7 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
         marginRight: '20px',
         marginBottom: '20px',
         backgroundColor: KnowitColors.beige,
+        color: KnowitColors.darkBrown,
         position: 'absolute',
         bottom: '0px',
         right: '0px',
@@ -75,6 +76,7 @@ const floatingScaleDescButtonStyleMobile = makeStyles({
         zIndex: 101,
         // borderRadius: '50px 50px 0px 0px',
         backgroundColor: KnowitColors.beige,
+        color: KnowitColors.darkBrown
         // boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.25)'
     },
     closeButton: {

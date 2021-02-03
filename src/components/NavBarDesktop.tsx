@@ -38,6 +38,10 @@ const navbarStyles = makeStyles((theme) => ({
     dropdownMenuButton: {
         marginLeft: "auto"
     },
+    dropdownMenu: {
+        backgroundColor: KnowitColors.beige,
+        color: KnowitColors.darkBrown
+    },
     userPicture: {
         margin: "5px",
         width: "44px",
@@ -164,7 +168,7 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                                 >
                                 <Paper>
                                     <ClickAwayListener onClickAway={handleClose}>
-                                    <MenuList autoFocusItem={avatarMenuOpen} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                                    <MenuList autoFocusItem={avatarMenuOpen} id="menu-list-grow" onKeyDown={handleListKeyDown} className={style.dropdownMenu}>
                                         <MenuItem onClick={handleDisplayAnswers}>Vis alle lagrede svar</MenuItem>
                                         <MenuItem onClick={handleDeleteAnswers}>Slett alle svar</MenuItem>
                                         <MenuItem onClick={handleCloseSignout}>Logg ut</MenuItem>

@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     label: {
         fill: KnowitColors.darkBrown,
         fontFamily: "Arial",
-        fontSize: "18px",
+        fontSize: "24px",
         fontWeight: "bold",
         textAnchor: "start",
         opacity: 1
@@ -80,7 +80,7 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
                     ticks={[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12]}
                     tick={renderCustomAxisTicks()}
                 />
-                <YAxis width={200} dataKey="name" type="category" interval={0}/>
+                <YAxis width={200} dataKey="name" type="category" interval={0} tick={{fill: KnowitColors.darkBrown}}/>
                 <Tooltip content={RenderCustomTooltip(classes)}/>
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen} />
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen} />
