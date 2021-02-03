@@ -189,6 +189,7 @@ export const Form = ({...props}: FormProps) => {
         // TODO pending other PR: check isCategorySubmitted so new user form isn't generated when nothing has changed
         props.updateAnswer(props.activeCategory, sliderValues.current);
         props.createUserForm();
+        props.scrollToTop();
     }
 
     const handleClickProceed = async () => {
