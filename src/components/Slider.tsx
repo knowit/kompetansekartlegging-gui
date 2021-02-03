@@ -47,6 +47,8 @@ const ValueSlider = withStyles({
         marginLeft: -2,
         alignSelf: 'center'
     },
+    markActive: {
+    },
     '@global': {
         'span:nth-child(4)': {
             height: 30,
@@ -100,6 +102,8 @@ const ValueSliderMobile = withStyles({
         marginTop: -3,
         marginLeft: -2,
         alignSelf: 'center'
+    },
+    markActive: {
     },
     '@global': {
         'span:nth-child(4)': {
