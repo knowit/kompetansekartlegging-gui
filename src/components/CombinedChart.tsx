@@ -106,7 +106,7 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
 // };
 
 const renderCustomAxisTicks = () => {
-    return ( {...props}:TickProps ) => {
+    return ({ ...props }: TickProps) => {
         let isKnowledge = true;
         let iconNumber = props.payload.value;
         if (props.payload.value >= chartSplitAt) {
@@ -114,13 +114,18 @@ const renderCustomAxisTicks = () => {
             isKnowledge = false;
         }
         return (
-            <svg x={props.x-12} y={props.y-24} width={24} height={24} fill={KnowitColors.darkBrown}>
+            <foreignObject
+                x={props.x - 12}
+                y={props.y - 24}
+                width={24}
+                height={24}
+                style={{color: KnowitColors.darkBrown}}
+            >
                 {GetIcon(isKnowledge, Math.round(iconNumber))};
-            </svg>
-            
+            </foreignObject>
         );
     };
-}
+};
 
 const RenderCustomTooltip = (classes: any) => {
     return ({...props}: ToolTipProps) => {
