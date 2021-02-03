@@ -11,7 +11,13 @@ const numTicks = 5;
 const chartSplitAt = numTicks + 2;
 const iconSize = 18;
 
-const pageEntryLimit = 6;
+const getMaxColumnsForWidth = () => {
+    const scalingFactor = 50;
+    let width = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    return Math.floor(width / scalingFactor);
+}
+
+const maxColumnsPerPage = getMaxColumnsForWidth();
 
 const useStyles = makeStyles({
     tooltip: {
@@ -97,11 +103,19 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
     const createPagedData = (): ChartData[][] => {
         let pagedData: ChartData[][] = [];
         let items = props.chartData.length;
+        let balancedColumnsPerPage;
+        if (items > maxColumnsPerPage) {
+            let numPages = Math.ceil(items / maxColumnsPerPage);
+            balancedColumnsPerPage = Math.floor(items / numPages);
+            console.log("max numpages balanced " + maxColumnsPerPage + " " + numPages + " " + balancedColumnsPerPage);
+        } else {
+            balancedColumnsPerPage = maxColumnsPerPage;
+        }
         let i = 0;
         while(items > 0) {
-            pagedData.push(props.chartData.slice(i, i + pageEntryLimit))
-            i += pageEntryLimit;
-            items -= pageEntryLimit;
+            pagedData.push(props.chartData.slice(i, i + balancedColumnsPerPage))
+            i += balancedColumnsPerPage;
+            items -= balancedColumnsPerPage;
         }
         return pagedData;
     }
@@ -201,7 +215,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                     <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
                 </BarChart>
             </ResponsiveContainer>
-            {(pageEntryLimit < props.chartData.length) ? <div onClick={handleChangePageClick} >{createPager()}</div> : ""}
+            {(maxColumnsPerPage < props.chartData.length) ? <div onClick={handleChangePageClick} >{createPager()}</div> : ""}
         </div>
     );
 };
