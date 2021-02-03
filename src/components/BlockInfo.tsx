@@ -6,6 +6,7 @@ import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutline
 import ErrorOutlineRoundedIcon from '@material-ui/icons/ErrorOutlineRounded';
 import UpdateIcon from '@material-ui/icons/Update';
 import { staleAnswersLimit } from './AlertNotification';
+import { QuestionAnswerSharp } from '@material-ui/icons';
 
 
 const useStyles = makeStyles({
@@ -60,9 +61,19 @@ export const BlockInfo = (props: {questions: QuestionAnswer[] | undefined}) => {
         }
     }
 
-    let answeredQuestions =  props.questions?.filter(question => 
+    let questions = props.questions ?? [];
+
+    let answeredQuestions =  questions.filter(question => 
         question.motivation != -1 && question.knowledge != -1 
     );
+
+    if (questions.length > answeredQuestions.length)
+        return  <div className={classes.root}>
+                    <div className={classes.blockAlert}>
+                        <ErrorOutlineRoundedIcon/>
+                        <div className={classes.warningText}>{`Blokken er ikke ferdig utfylt!`}</div>                
+                    </div>
+                </div>;
 
     let now = Date.now();
     var timeOfOldestQuestion = now;
@@ -71,28 +82,18 @@ export const BlockInfo = (props: {questions: QuestionAnswer[] | undefined}) => {
             timeOfOldestQuestion = question.updatedAt;
     });
     let timeDiff = now - timeOfOldestQuestion;
-    
-    if (now - timeOfOldestQuestion != 0) {
-        if (timeDiff > staleAnswersLimit) {
-            return  <div className={classes.root}>
-                        <div className={classes.blockAlert}>
-                            <UpdateIcon/>
-                            <div className={classes.warningText}>{`Det har gått ${timeBetweenString(timeOfOldestQuestion, now, TimeType.MINUTES)} siden blokken ble oppdatert!`}</div>                
-                        </div>
-                    </div>;
-        } else {
-            return  <div className={classes.root}>
-                        <div className={classes.blockOK}>
-                            <CheckCircleOutlineRoundedIcon/>
-                            <div className={classes.warningText}>{`Blokken ble sist oppdatert ${new Date(timeOfOldestQuestion).toLocaleDateString('no-NO')}`}</div>                
-                        </div>
-                    </div>;
-        }
-    } else {
+    if (timeDiff > staleAnswersLimit) {
         return  <div className={classes.root}>
                     <div className={classes.blockAlert}>
-                        <ErrorOutlineRoundedIcon/>
-                        <div className={classes.warningText}>{`Blokken har ikke blitt fylt ut ennå!`}</div>                
+                        <UpdateIcon/>
+                        <div className={classes.warningText}>{`Det har gått ${timeBetweenString(timeOfOldestQuestion, now, TimeType.MINUTES)} siden blokken ble oppdatert!`}</div>                
+                    </div>
+                </div>;
+    } else {
+        return  <div className={classes.root}>
+                    <div className={classes.blockOK}>
+                        <CheckCircleOutlineRoundedIcon/>
+                        <div className={classes.warningText}>{`Blokken ble sist oppdatert ${new Date(timeOfOldestQuestion).toLocaleDateString('no-NO')}`}</div>                
                     </div>
                 </div>;
     }
