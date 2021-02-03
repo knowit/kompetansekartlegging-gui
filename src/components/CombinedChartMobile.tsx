@@ -106,7 +106,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
         let balancedColumnsPerPage;
         if (items > maxColumnsPerPage) {
             let numPages = Math.ceil(items / maxColumnsPerPage);
-            balancedColumnsPerPage = Math.floor(items / numPages);
+            balancedColumnsPerPage = Math.ceil(items / numPages);
         } else {
             balancedColumnsPerPage = maxColumnsPerPage;
         }
