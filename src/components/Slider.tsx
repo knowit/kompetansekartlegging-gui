@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { roundDecimals } from "../helperFunctions";
 // import { ValueSlider } from '../styles';
 import { SliderProps } from "../types";
 import * as helper from '../helperFunctions';
 import { KnowitColors } from "../styles";
-import { withStyles, Slider as CoreSlider } from "@material-ui/core";
+import { withStyles, Slider as CoreSlider, Theme, makeStyles } from "@material-ui/core";
+import { render } from "@testing-library/react";
 
 const ValueSlider = withStyles({
     thumb: {
@@ -45,10 +46,6 @@ const ValueSlider = withStyles({
         marginTop: -3,
         marginLeft: -2,
         alignSelf: 'center'
-    },
-    markActive: {
-        opacity: 1,
-        backgroundColor: KnowitColors.black,
     },
     '@global': {
         'span:nth-child(4)': {
@@ -104,10 +101,6 @@ const ValueSliderMobile = withStyles({
         marginLeft: -2,
         alignSelf: 'center'
     },
-    markActive: {
-        opacity: 1,
-        backgroundColor: KnowitColors.darkGreen,
-    },
     '@global': {
         'span:nth-child(4)': {
             height: 20,
@@ -132,6 +125,17 @@ const ValueSliderMobile = withStyles({
         display: 'flex'
     }
 }, {name: 'MuiSlider'}) (CoreSlider);
+
+interface StyleProps {
+    markColor: string;
+}
+
+const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
+    markActive: props => ({
+        opacity: 1,
+        backgroundColor: props.markColor,
+    })
+}));
 
 const marks = new Array(51).fill(undefined).map((v, i) => { return { value: (i / 10) || 0 } });
 // [
@@ -159,30 +163,37 @@ const Slider = ({ ...props }: SliderProps) => {
         setSliderValue(props.value);
     },[]);
 
-    return (
-        (!props.isMobile) ?
-            <ValueSlider
-                // valueLabelDisplay="on"
-                // valueLabelFormat={value => roundDecimals(value, 1)}
-                value={sliderValue}
-                onChange={sliderChanged}
-                onChangeCommitted={sliderCommitted}
-                step={0.1}
-                max={5}
-                marks={marks}
-            /> 
-        :
-            <ValueSliderMobile
-            // valueLabelDisplay="on"
-            // valueLabelFormat={value => roundDecimals(value, 1)}
-            value={sliderValue}
-            onChange={sliderChanged}
-            onChangeCommitted={sliderCommitted}
-            step={0.1}
-            max={5}
-            marks={marks}
-            /> 
-    );
+    const markActiveSelector: StyleProps = (sliderValue == -1) ? { markColor: KnowitColors.white } : { markColor: KnowitColors.black} ;
+
+    const classes = useStyles(markActiveSelector);
+
+        return (
+            (!props.isMobile) ?
+                <ValueSlider
+                    // valueLabelDisplay="on"
+                    // valueLabelFormat={value => roundDecimals(value, 1)}
+                    value={sliderValue}
+                    onChange={sliderChanged}
+                    onChangeCommitted={sliderCommitted}
+                    step={0.1}
+                    max={5}
+                    marks={marks}
+                    classes={classes}
+                /> 
+
+            :
+                <ValueSliderMobile
+                    // valueLabelDisplay="on"
+                    // valueLabelFormat={value => roundDecimals(value, 1)}
+                    value={sliderValue}
+                    onChange={sliderChanged}
+                    onChangeCommitted={sliderCommitted}
+                    step={0.1}
+                    max={5}
+                    marks={marks}
+                    classes={classes}
+                /> 
+        );
 };
 
 export default Slider;
