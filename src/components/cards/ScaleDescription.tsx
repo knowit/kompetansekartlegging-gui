@@ -3,7 +3,6 @@ import React from 'react';
 import { KnowitColors } from '../../styles';
 import { ScaleDescriptionProps } from '../../types';
 import CloseIcon from '@material-ui/icons/Close';
-import DescriptionTable from '../DescriptionTable';
 import { makeStyles } from '@material-ui/core';
 import DescriptionTableMobile from '../DescriptionTableMobile';
 import { Panel } from '../Content';
@@ -84,7 +83,7 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
     return (
         props.isMobile ? 
             <div className={props.activePanel === Panel.ScaleDescription ? style.mobile : style.hidden}>
-                <DescriptionTableMobile />
+                <DescriptionTableMobile onClose={buttonClick} />
             </div> 
         :
         // TODO: Put this in a desktop component
@@ -106,10 +105,6 @@ export const ScaleDescription = ({...props}: ScaleDescriptionProps) => {
                         />
                     ) : null}
             </div>
-            {/* {props.commonCardProps.active ? */}
-            {props.activePanel === Panel.ScaleDescription ?
-                <DescriptionTable/>
-            : ""}
             
         </div>
     );
