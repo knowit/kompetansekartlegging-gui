@@ -13,7 +13,6 @@ const drawerWidth = 240;
 
 const navbarStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
-
     drawer: {
         // [theme.breakpoints.up('sm')]: {
         //   width: drawerWidth,
@@ -30,7 +29,7 @@ const navbarStyles = makeStyles((theme) => ({
         background: KnowitColors.greyGreen
     },
     menuButton: {
-        marginRight: theme.spacing(2),
+        marginRight: theme.spacing(1),
     },
     root: {
         flexGrow: 1,
@@ -147,7 +146,7 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
                         aria-label="menu" 
                         onClick={toggleDrawer(true)}
                     >
-                    <MenuIcon />
+                        <MenuIcon fontSize="large" />
                     </IconButton>
                     <Typography variant="h6" noWrap className={style.headerText}>
                         {navbarHeader()}

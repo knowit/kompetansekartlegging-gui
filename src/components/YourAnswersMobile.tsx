@@ -49,10 +49,10 @@ const yourAnswersStyleMobile = makeStyles({
     categoryList: {
         height: 'min-content',
         backgroundColor: KnowitColors.beige,
-        borderRadius: '0px 0px 35px 35px',
-        paddingBottom: '25px',
-        boxShadow: "0px 3px 0px grey",
-        marginBottom: "3px",
+        paddingBottom: '18px',
+        marginBottom: "4px",
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.15)",
+        borderRadius: "0px 0px 50px 50px",
     },
     navigationContainer: {
         width: '100%',
@@ -61,6 +61,7 @@ const yourAnswersStyleMobile = makeStyles({
         // zIndex: 1
     },
     navigationContainerScrolled: {
+        backgroundColor: "white",
         width: '100%',
         position: 'fixed',
         top: 56,
@@ -123,7 +124,9 @@ const yourAnswersStyleMobile = makeStyles({
     buttonText: {
         textTransform: 'none',
         textAlign: 'left',
-        justifyContent: 'left'
+        justifyContent: 'left',
+        fontSize: "14px",
+        lineHeight: "16px"
     },
     yourAnswersMobileContainer: {
         height: '100%',
@@ -138,11 +141,12 @@ const yourAnswersStyleMobile = makeStyles({
         },
         overflow: 'wrap',
         fontSize: 13,
-        fontWeight: 'bolder',
+        fontWeight: 'bold',
         border: 'none',
         justifyContent: 'left',
         borderRadius: '0px 17px 17px 0px',
-        width: 'fit-content' // todo denne kan tilbakestilles?
+        width: 'fit-content', // todo denne kan tilbakestilles?
+        padding: "10px 30px",
     },
 });
 
