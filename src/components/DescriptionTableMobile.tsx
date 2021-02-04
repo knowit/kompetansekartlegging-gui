@@ -1,51 +1,53 @@
-import React from 'react'
-import * as Icon from '../icons/iconController';
-import { makeStyles } from '@material-ui/core';
-import { KnowitColors } from '../styles';
-import CloseIcon from '@material-ui/icons/Close';
+import React from "react";
+import * as Icon from "../icons/iconController";
+import { makeStyles } from "@material-ui/core";
+import { KnowitColors } from "../styles";
+import IconButton from "@material-ui/core/IconButton";
+import SvgIcon from "@material-ui/core/SvgIcon";
 
+const CloseIcon = () => (
+    <SvgIcon>
+        <svg viewBox="0 0 32 32">
+            <path d="M21,18.5L18.5,21l11,10.9l2.5-2.5L21,18.5z" />
+            <path d="M2.5,0L0,2.5l11,10.9l2.5-2.5L2.5,0z" />
+            <path d="M29.5,0.1L0,29.5L2.5,32L32,2.6L29.5,0.1z" />
+        </svg>
+    </SvgIcon>
+);
 
 const DescTableStyle = makeStyles({
     root: {
-        width: '100%',
-        maxWidth: '100%',
-        height: '100%',
-        maxHeight: '100%',
-        display: 'flex',
-        flexDirection: 'column',
+        width: "100%",
+        maxWidth: "100%",
+        height: "100%",
+        maxHeight: "100%",
+        display: "flex",
+        flexDirection: "column",
         color: KnowitColors.darkBrown
     },
     scaleRow: {
-        height: '50%',
-        display: 'flex',
-        margin: 20,
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        alignContent: 'center',
+        margin: "15px 20px"
+    },
+    header: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center"
     },
     scaleTitle: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 2,
-        padding: 10,
-        fontWeight: 'bold',
-        width: '10%'
+        display: "flex",
+        fontSize: "18px",
+        lineHeight: "17px",
+        fontFamily: "Arial",
+        fontWeight: 700,
+        margin: "20px 0"
     },
-    containerMotivation: {
-        display: 'flex',
-        flex: 1,
-        flexGrow: 5,
-        flexDirection: 'column',
+    closeButton: {
+        color: "black"
     },
-    containerCompetence: {
-        display: 'flex',
-        flex: 1,
-        flexGrow: 5,
-        flexDirection: 'column',
-        padding: 5
-    },
-    bottom: {
-        display: 'flex'
+    container: {
+        display: "flex",
+        alignItems: "center",
+        margin: "5px 0"
     },
     iconArea: {
         height: 30,
@@ -55,92 +57,167 @@ const DescTableStyle = makeStyles({
         height: "100%"
     },
     textBlock: {
-        display: 'flex',
-        flexDirection: 'column'
+        display: "flex",
+        flexDirection: "column"
     },
     heading: {
-        textAlign: 'left',
+        textAlign: "left",
         fontSize: 10,
-        fontWeight: 'bold'
+        fontWeight: "bold"
     },
     text: {
-        textAlign: 'left',
+        textAlign: "left",
         fontSize: 10
-    },
-
-
+    }
 });
 
-
 type ScaleContainerProps = {
-    icon: JSX.Element,
-    heading: string,
-    text: string,
-    isMotivation: boolean
-}
+    icon: JSX.Element;
+    heading: string;
+    text: string;
+};
 
 type ScaleContainerObject = {
-    icon: JSX.Element,
-    heading: string,
-    text: string,
-}
+    icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    heading: string;
+    text: string;
+};
 
-export const DescriptionTableMobile = () => {
+// Possibly a better way to do this...
+const COMPETENCE: ScaleContainerObject[] = [
+    {
+        icon: Icon.K0,
+        heading: "Kjenner ikke til området",
+        text: ""
+    },
+    {
+        icon: Icon.K1,
+        heading: "Noe innsikt",
+        text:
+            "(Har noe innsikt i området, samt evne til å resonnere over eller løse oppgaver på et ikke-profesjonelt nivå innenfor området)"
+    },
+    {
+        icon: Icon.K2,
+        heading: "Potensielt brukbar kompetanse",
+        text:
+            "(Kompetanse som enten ikke er testet i oppdrag eller der man inntil videre trenger støtte fra andre i teamet)"
+    },
+    {
+        icon: Icon.K3,
+        heading: "Profesjonelt nivå",
+        text:
+            "(Har god kontroll og kan jobbe selvstendig med ikke-trivielle problemstillinger innenfor området)"
+    },
+    {
+        icon: Icon.K4,
+        heading: "Superstjerne",
+        text: "(Har særdeles god kontroll og en etablert posisjon på området)"
+    },
+    {
+        icon: Icon.K5,
+        heading: "Ekspert",
+        text:
+            "(En etterspurt spesialist, som fungerer som nyskapende eller strategisk kraft på området)"
+    }
+];
+
+const MOTIVATION: ScaleContainerObject[] = [
+    {
+        icon: Icon.M0,
+        heading: "Nei. Ønsker ikke å jobbe med dette",
+        text: ""
+    },
+    {
+        icon: Icon.M1,
+        heading: "Egentlig ikke. Ønsker svært lite å jobbe med",
+        text: ""
+    },
+    {
+        icon: Icon.M2,
+        heading: "Nja. Kan motvillig jobbe med dette",
+        text: ""
+    },
+    {
+        icon: Icon.M3,
+        heading: "OK. Ikke det jeg liker best, men helt i orden hvis jeg må",
+        text: ""
+    },
+    {
+        icon: Icon.M4,
+        heading: "Godt. Kjempefint å få jobbe med dette",
+        text: ""
+    },
+    {
+        icon: Icon.M5,
+        heading: "Perfekt. Dette er akkurat det jeg ønsker meg",
+        text: ""
+    }
+];
+
+type DescriptionTableMobileProps = {
+    onClose: React.MouseEventHandler<HTMLButtonElement>;
+};
+
+export const DescriptionTableMobile = ({
+    onClose
+}: DescriptionTableMobileProps) => {
     const style = DescTableStyle();
 
-    // Possibly a better way to do this...
-    const COMPETENCE : ScaleContainerObject[] = [
-        {icon: <Icon.K0 className={style.iconArea} />, heading: 'Kjenner ikke til området', text: ''}, 
-        {icon: <Icon.K1 className={style.iconArea} />, heading: 'Noe innsikt', text: '(Har noe innsikt i området, samt evne til å resonnere over eller løse oppgaver på et ikke-profesjonelt nivå innenfor området)'}, 
-        {icon: <Icon.K2 className={style.iconArea} />, heading: 'Potensielt brukbar kompetanse', text: '(Kompetanse som enten ikke er testet i oppdrag eller der man inntil videre trenger støtte fra andre i teamet)'}, 
-        {icon: <Icon.K3 className={style.iconArea} />, heading: 'Profesjonelt nivå', text: '(Har god kontroll og kan jobbe selvstendig med ikke-trivielle problemstillinger innenfor området)'}, 
-        {icon: <Icon.K4 className={style.iconArea} />, heading: 'Superstjerne', text: '(Har særdeles god kontroll og en etablert posisjon på området)'}, 
-        {icon: <Icon.K5 className={style.iconArea} />, heading: 'Ekspert', text: '(En etterspurt spesialist, som fungerer som nyskapende eller strategisk kraft på området)'}, 
-    ]
-
-    const MOTIVATION : ScaleContainerObject[] = [
-        {icon: <Icon.M0 className={style.iconArea} />, heading: 'Nei. Ønsker ikke å jobbe med dette', text: ''}, 
-        {icon: <Icon.M1 className={style.iconArea} />, heading: 'Egentlig ikke. Ønsker svært lite å jobbe med', text: ''}, 
-        {icon: <Icon.M2 className={style.iconArea} />, heading: 'Nja. Kan motvillig jobbe med dette', text: ''}, 
-        {icon: <Icon.M3 className={style.iconArea} />, heading: 'OK. Ikke det jeg liker best, men helt i orden hvis jeg må', text: ''}, 
-        {icon: <Icon.M4 className={style.iconArea} />, heading: 'Godt. Kjempefint å få jobbe med dette', text: ''}, 
-        {icon: <Icon.M5 className={style.iconArea} />, heading: 'Perfekt. Dette er akkurat det jeg ønsker meg', text: ''}, 
-    ]
-
-    const ScaleContainer = ({...props} : ScaleContainerProps) => (
-        <div className={props.isMotivation ? style.containerMotivation : style.containerCompetence}>
-            <div className={style.bottom}>
-                <div className={style.iconArea}>{props.icon}</div>
-                <div className={style.textBlock}>
-                    <div className={style.heading}>{props.heading}</div>
-                    <div className={style.text}>{props.text}</div>
-                </div>
-            </div>
-        </div>
-    )
-
-
-    return (
-        <div className={style.root}>
-            <div className={style.scaleRow}>
-                <div className={style.scaleTitle}>
-                    <div>KOMPETANSESKALA</div>
-                </div>
-                {
-                    COMPETENCE.map((obj) => (<ScaleContainer icon={obj.icon} heading={obj.heading} text={obj.text} isMotivation={false}/>))
-                }
-            </div>
-            <div className={style.scaleRow}>
-                <div className={style.scaleTitle}>
-                    <div>MOTIVASJONSSKALA</div>
-                </div>
-                {
-                    MOTIVATION.map((obj) => (<ScaleContainer icon={obj.icon} heading={obj.heading} text={obj.text} isMotivation={true}/>))
-                }
+    const ScaleContainer = ({ ...props }: ScaleContainerProps) => (
+        <div className={style.container}>
+            <div className={style.iconArea}>{props.icon}</div>
+            <div className={style.textBlock}>
+                <div className={style.heading}>{props.heading}</div>
+                <div className={style.text}>{props.text}</div>
             </div>
         </div>
     );
 
-}
+    return (
+        <div className={style.root}>
+            <div className={style.scaleRow}>
+                <header className={style.header}>
+                    <h2 className={style.scaleTitle}>KOMPETANSESKALA</h2>
+                    <IconButton
+                        aria-label="close"
+                        className={style.closeButton}
+                        onClick={onClose}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </header>
+
+                {COMPETENCE.map((obj, i) => {
+                    const Icon = obj.icon;
+                    return (
+                        <ScaleContainer
+                            key={`competence-${i}`}
+                            icon={<Icon className={style.iconArea} />}
+                            heading={obj.heading}
+                            text={obj.text}
+                        />
+                    );
+                })}
+            </div>
+
+            <div className={style.scaleRow}>
+                <header className={style.header}>
+                    <h2 className={style.scaleTitle}>MOTIVASJONSSKALA</h2>
+                </header>
+                {MOTIVATION.map((obj, i) => {
+                    const Icon = obj.icon;
+                    return (
+                        <ScaleContainer
+                            key={`motivation-${i}`}
+                            icon={<Icon className={style.iconArea} />}
+                            heading={obj.heading}
+                            text={obj.text}
+                        />
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
 
 export default DescriptionTableMobile;
