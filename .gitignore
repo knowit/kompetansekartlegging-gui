@@ -47,8 +47,8 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 src/API.ts
-src/graphql
 !src/graphql/custom-*
+.eslintcache
 
 .gitsecret/keys/random_seed
 !*.secret
@@ -56,3 +56,13 @@ amplify/team-provider-info.json
 
 
 todo
+ignoreFolder
+
+### WebStorm/Idea stuff ###
+.idea/inspectionProfiles/Project_Default.xml
+.idea/kompetansekartlegging-gui.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/.gitignore

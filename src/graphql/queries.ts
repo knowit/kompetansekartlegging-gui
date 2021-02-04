@@ -2,33 +2,53 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getFormDefinition = /* GraphQL */ `
+  query GetFormDefinition($id: ID!) {
+    getFormDefinition(id: $id) {
+      id
+      createdAt
+      sortKeyConstant
+      questions {
+        nextToken
+      }
+      updatedAt
+    }
+  }
+`;
+export const listFormDefinitions = /* GraphQL */ `
+  query ListFormDefinitions(
+    $filter: ModelFormDefinitionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFormDefinitions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        createdAt
+        sortKeyConstant
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getUserForm = /* GraphQL */ `
   query GetUserForm($id: ID!) {
     getUserForm(id: $id) {
       id
+      createdAt
+      owner
+      formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        sortKeyConstant
         updatedAt
       }
-      createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -41,17 +61,10 @@ export const listUserForms = /* GraphQL */ `
     listUserForms(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        questionAnswers {
-          nextToken
-        }
-        formDefinition {
-          id
-          createdAt
-          updatedAt
-        }
         createdAt
-        updatedAt
         owner
+        formDefinitionID
+        updatedAt
       }
       nextToken
     }
@@ -62,21 +75,20 @@ export const getQuestionAnswer = /* GraphQL */ `
     getQuestionAnswer(id: $id) {
       id
       userFormID
+      questionID
+      knowledge
+      motivation
       question {
         id
         text
         topic
         qid
         index
-        category
-        formDefinitions {
-          nextToken
-        }
+        formDefinitionID
+        categoryID
         createdAt
         updatedAt
       }
-      knowledge
-      motivation
       createdAt
       updatedAt
       owner
@@ -93,16 +105,7 @@ export const listQuestionAnswers = /* GraphQL */ `
       items {
         id
         userFormID
-        question {
-          id
-          text
-          topic
-          qid
-          index
-          category
-          createdAt
-          updatedAt
-        }
+        questionID
         knowledge
         motivation
         createdAt
@@ -121,16 +124,15 @@ export const getQuestion = /* GraphQL */ `
       topic
       qid
       index
-      category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
+      formDefinitionID
+      categoryID
+      category {
+        id
+        text
+        description
+        index
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -150,10 +152,8 @@ export const listQuestions = /* GraphQL */ `
         topic
         qid
         index
-        category
-        formDefinitions {
-          nextToken
-        }
+        formDefinitionID
+        categoryID
         createdAt
         updatedAt
       }
@@ -161,38 +161,86 @@ export const listQuestions = /* GraphQL */ `
     }
   }
 `;
-export const getFormDefinition = /* GraphQL */ `
-  query GetFormDefinition($id: ID!) {
-    getFormDefinition(id: $id) {
+export const getCategory = /* GraphQL */ `
+  query GetCategory($id: ID!) {
+    getCategory(id: $id) {
       id
-      questions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      text
+      description
+      index
       createdAt
       updatedAt
     }
   }
 `;
-export const listFormDefinitions = /* GraphQL */ `
-  query ListFormDefinitions(
+export const listCategorys = /* GraphQL */ `
+  query ListCategorys(
+    $filter: ModelCategoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCategorys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        text
+        description
+        index
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const formByCreatedAt = /* GraphQL */ `
+  query FormByCreatedAt(
+    $sortKeyConstant: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
     $filter: ModelFormDefinitionFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listFormDefinitions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    formByCreatedAt(
+      sortKeyConstant: $sortKeyConstant
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        sortKeyConstant
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const userFormByCreatedAt = /* GraphQL */ `
+  query UserFormByCreatedAt(
+    $owner: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFormFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userFormByCreatedAt(
+      owner: $owner
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        owner
+        formDefinitionID
         updatedAt
       }
       nextToken

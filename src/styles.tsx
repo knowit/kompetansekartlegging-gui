@@ -19,21 +19,6 @@ export const KnowitColors = {
     lightPink: "#F7E1DD"
 };
 
-export const IconPaths: string[] = [
-    "K_ingen.svg",
-    "K_noeInnsikt.svg",
-    "K_potesieltBrukbar.svg",
-    "K_profesjoneltNivå.svg",
-    "K_ekspert.svg",
-    "K_superstjerne.svg",
-    "M_nei.svg",
-    "M_egentligIkke.svg",
-    "M_nja.svg",
-    "M_ok.svg",
-    "M_godt.svg",
-    "M_perfekt.svg"
-];
-
 export const AppStyle = makeStyles({
     root: {
         display: 'flex',
@@ -63,35 +48,6 @@ export const FontSettings = makeStyles({
         fontSize: 8
     }
 });
-
-export const ValueSlider = withStyles({
-    thumb: {
-        height: 28,
-        width: 28,
-        backgroundColor: KnowitColors.lightGreen,
-        marginTop: -14,
-        marginLeft: -14
-    },
-    valueLabel: {
-        left: 'calc(-50% + 12px)',
-        top: '30%',
-        '& *': {
-            background: 'transparent',
-            color: KnowitColors.black,
-            fontWeight: "bold"
-        }
-    },
-    track: {
-        height: 2,
-        opacity: 1,
-        backgroundColor: KnowitColors.darkGreen
-    },
-    rail: {
-        height: 2,
-        opacity: 1,
-        backgroundColor: KnowitColors.darkGreen
-    }
-})(Slider);
 
 type ZProps = {
     zIndex: number;
@@ -136,7 +92,30 @@ export const CardStyle = makeStyles<Theme, ZProps>((theme: Theme) =>
             borderBottomLeftRadius: cardCornerRadius,
             borderBottomRightRadius: cardCornerRadius,
             zIndex: ({ zIndex }) => zIndex
-        }
+        },
+        bottomCardClosed: {
+            // position: 'relative',
+            //marginTop: cardCornerRadius,
+            // boxShadow: "0px 3px 2px grey",
+            // borderBottomLeftRadius: cardCornerRadius,
+            // borderBottomRightRadius: cardCornerRadius,
+            zIndex: ({ zIndex }) => zIndex,
+            // backgroundColor: KnowitColors.darkGreen
+        },
+        bottomCardOpen: {
+            position: 'relative',
+            marginTop: -cardCornerRadius,
+            display: 'flex',
+            flexDirection: 'row',
+            overflowY: 'auto',
+            // flexGrow: 1
+            height: '100%',
+            // boxShadow: "0px 3px 2px grey",
+            // borderBottomLeftRadius: cardCornerRadius,
+            // borderBottomRightRadius: cardCornerRadius,
+            zIndex: ({ zIndex }) => zIndex
+        },
+
     })
   );
 
@@ -150,6 +129,7 @@ export const OverviewStyle = makeStyles({
         height: '100%',
         width: '100%',
         display: 'flex',
+        overflowY: 'auto',
         justifyContent: 'center'
     },
     cardHeader: {

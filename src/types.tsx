@@ -1,27 +1,51 @@
-import { Dispatch, SetStateAction } from "react";
-
+import { MenuButton, Panel } from "./components/Content";
+import { AlertType } from "./components/AlertNotification";
 
 export type AnswerData = {
     questionId: string,
     topic: string,
     category: string,
     knowledge: number,
-    motivation: number
+    motivation: number,
+    updatedAt: number,
+    index: number
 };
 
 export type Answers = {
     [key: string]: AnswerData
 };
 
-export type QuestionData = {
+export type Question = {
     id: string,
+    qid: string | undefined,
+    createdAt: string,
     text: string,
     topic: string,
-    category: string
+    index: number,
+    category: {
+        id: string,
+        text: string,
+        description: string | undefined,
+        index: number | undefined
+    }
 };
 
-export type Questions = {
-    [key: string]: QuestionData
+export type QuestionAnswer = {
+    id: string,
+    qid: string | undefined,
+    createdAt: string,
+    text: string,
+    topic: string,
+    index: number,
+    category: {
+        id: string,
+        text: string,
+        description: string | undefined,
+        index: number | undefined
+    },
+    knowledge: number,
+    motivation: number,
+    updatedAt: number,
 };
 
 export type AggregatedAnswer = {
@@ -60,7 +84,7 @@ export type ResultData = {
 };
 
 export type AnsweredQuestion = {
-    question: QuestionData,
+    question: Question,
     answer: number,
     motivation: number
 };
@@ -71,56 +95,84 @@ export type TopicScoreWithIcon = {
     icon: number
 };
 
-// export interface FormDefinitionWithQuestions 
-//     extends Omit<Exclude<GetFormDefinitionWithQuestionsQuery["getFormDefinition"], null>, "__typename"> {}
-
 export type FormDefinitionWithQuestions = {
     data: {
         getFormDefinition: {
             id: String,
             questions: {
-                items: [
-                    {
-                        question: {
-                            id: string,
-                            text: string,
-                            topic: string,
-                            category: string,
-                        }
-                    }
-                ]
+                items: [Question]
             }
-        }
-    }
-}
-
-export type FormDefinition = {
-    getFormDefinition: {
-        id: String,
-        questions: {
-            items: [
-                {
-                    question: {
-                        id: string,
-                        text: string,
-                        topic: string,
-                        category: string,
-                        qid: string,
-                        index: number
-                    }
-                }
-            ]
         }
     }
 };
 
-export type UserAnswer = {
-    question: {
-        id: string
+export type CreateQuestionAnswerResult = {
+    batchCreateQuestionAnswer: {
+        status: string,
+        error: string,
+        failedInputs: [{
+            id: string,
+            userFormID: string,
+            questionID: string,
+            knowledge: number,
+            motivation: number,
+            environmentID: string,
+            formDefinitionID: string
+        }]
     }
+};
+
+export type Category = {
+    id: string,
+    text: string,
+    description: string,
+    createdAt: string,
+    index: number
+};
+
+export type FormDefinition = {
+    id: String,
+    createdAt: string,
+    questions: {
+        items: [Question]
+    }
+};
+
+export type FormDefinitionByCreatedAt = {
+    formByCreatedAt: {
+        nextToken: string,
+        items: [
+            FormDefinition
+        ]
+    }
+};
+
+export type UserFormByCreatedAt = {
+    userFormByCreatedAt: {
+        nextToken: string,
+        items: [
+            UserForm
+        ]
+    }
+};
+
+export type UserForm = {
+    id: string,
+    formDefinitionID: string,
+    nextToken: string,
+    questionAnswers: {
+        items: [
+            UserAnswer
+        ]
+    }
+}
+
+export type UserAnswer = {
     id: string,
     knowledge: number,
-    motivation: number
+    motivation: number,
+    updatedAt: string,
+    question: Question
 }
 
 export type ListedFormDefinition = {
@@ -162,17 +214,24 @@ export type UserFormList = {
     }
 };
 
-export type AnswerProps = {
+export type FormProps = {
     createUserForm: () => void,
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    submitAndProceed: () => void,
+    updateAnswer: (category: string, sliderMap: Map<string, SliderValues>) => void,
     formDefinition: FormDefinition | null,
-    answers: AnswerData[],
-    submitFeedback: string,
-    changeActiveCategory: (newCategoryIndex: string) => void,
+    questionAnswers: Map<string, QuestionAnswer[]>,
     categories: string[],
     activeCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
-    isCategorySubmitted: boolean
+    isMobile: boolean,
+    alerts: AlertState | undefined,
+    scrollToTop: () => void
+};
+
+export type CategoryProps = {
+    name: string,
+    children: JSX.Element[],
+    isMobile: boolean,
 };
 
 export type UserProps = {
@@ -185,7 +244,7 @@ export type StatsProps = {
 }
 
 export type FromAppProps = {
-    answerProps: AnswerProps,
+    answerProps: FormProps,
     statsProps: StatsProps,
     userProps: UserProps
 }
@@ -193,17 +252,22 @@ export type FromAppProps = {
 export type SliderProps = {
     sliderChanged: (newValue: number, motivation: boolean) => void,
     motivation: boolean,
-    value: number
+    value: number,
+    isMobile: boolean
 };
 
 export type QuestionProps = {
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    updateAnswer: (category: string, sliderMap: Map<string, SliderValues>) => void,
     topic: string,
     text: string,
     questionId: string,
     knowledgeDefaultValue: number,
     motivationDefaultValue: number,
-    setIsCategorySubmitted: (categorySubmitted: boolean) => void;
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
+    isMobile: boolean,
+    alerts: AlertState | undefined,
+    sliderValues: Map<string, SliderValues>,
+    setSliderValues: (questionId: string, values: SliderValues) => void
 };
 
 export type BatchCreatedQuestionAnswer = {
@@ -223,55 +287,90 @@ export type BatchCreatedQuestionAnswer = {
     }[]
 };
 
-//Types for new card functionality
-// export enum CardTypes {
-//     Overview = 0,
-//     ScaleDescription = 1,
-//     YourAnswer = 2
-// };
-
 export type OverviewProps = {
-    commonCardProps: CommonCardProps,
-    radarData: AnswerData[],
-    isAnswersSubmitted: boolean
+    activePanel: Panel,
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    categories: string[],
+    isMobile: boolean,
+    userAnswersLoaded: boolean
 };
 
 export type ScaleDescriptionProps = {
-    commonCardProps: CommonCardProps
+    activePanel: Panel,
+    isMobile: boolean
 };
 
 export type YourAnswerProps = {
-    commonCardProps: CommonCardProps,
+    activePanel: Panel,
+    setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     createUserForm: () => void,
-    updateAnswer: (qustionId: string, knowledgeValue: number, motivationValue: number) => void,
+    submitAndProceed: () => void,
+    updateAnswer: (category: string, sliderMap: Map<string, SliderValues>) => void,
     formDefinition: FormDefinition | null,
-    answers: AnswerData[],
-    submitFeedback: string,
+    questionAnswers: Map<string, QuestionAnswer[]>,
     changeActiveCategory: (newCategoryIndex: string) => void,
     categories: string[],
     activeCategory: string,
-    resetAnswers: () => void,
-    answerViewModeActive: (viewModeActive: boolean) => void,
-    answerViewMode: boolean
+    enableAnswerEditMode: () => void,
+    answerEditMode: boolean,
+    isMobile: boolean,
+    alerts: AlertState | undefined,
+    checkIfCategoryIsSubmitted:(buttonType: MenuButton, category?: string | undefined) => void,
+    collapseMobileCategories: boolean,
+    categoryNavRef:  React.MutableRefObject<HTMLInputElement | null>,
+    scrollToTop: () => void
 };
 
-type CommonCardProps = {
-    setActiveCard: (cardIndex: number, active: boolean) => void,
-    active: boolean,
-    index: number
+export interface AlertState {
+    qidMap: Map<string, Alert>,
+    categoryMap: Map<string, number>
+}
+
+export interface Alert {
+    type: AlertType,
+    message: string
+}
+
+export type HighlightsProps = {
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    isMobile: boolean
 };
 
-// export type User = {
-//     Session: string,
-//     attributes: {
-//         email: string,
-//         email_verified: boolean,
-//         identities: string,
-//         name: string,
-//         picture: string,
-//         sub: string
-//     }
-// }
+export type ResultDiagramProps = {
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    categories: string[],
+    isMobile: boolean
+};
+
+export type AnswerDiagramProps = {
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    activeCategory: string,
+    isMobile: boolean
+};
+
+export type NavBarProps = {
+    user: any,
+    callbackDelete: () => void,
+    setAnswerHistoryOpen: (answerHistoryOpen: boolean) => void,
+    isMobile: boolean
+};
+
+export type NavBarPropsDesktop = {
+    confirmDeleteUserdata: () => void,
+    displayAnswers: () => void,
+    signout: () => void,
+    userName: string,
+    userPicture: string,
+}
+
+export type NavBarPropsMobile = {
+    menuButtons : JSX.Element[],
+    activePanel: Panel,
+    userName: string,
+    userPicture: string,
+    signout: () => void,
+}
+
 
 export type AlertDialogProps = {
     setAlertDialogOpen: (alertDialogOpen: boolean) => void;
@@ -280,4 +379,52 @@ export type AlertDialogProps = {
     clickedCategory: string,
     setIsCategorySubmitted: (categorySubmitted: boolean) => void,
     resetAnswers: () => void,
+    isMobile: boolean,
+    leaveFormButtonClicked?: () => void
 };
+
+export type AnswerHistoryProps = {
+    setHistoryViewOpen: (historyViewOpen: boolean) => void,
+    historyViewOpen: boolean,
+    history: UserFormWithAnswers[],
+    formDefinition?: FormDefinition,
+    isMobile: boolean,
+};
+
+export type HistoryTreeViewProps = {
+    data: UserFormWithAnswers[]
+};
+
+export type ContentProps = {
+    user: any
+    setAnswerHistoryOpen: (historyViewOpen: boolean) => void,
+    answerHistoryOpen: boolean,
+    isMobile: boolean,
+    signout: () => void,
+    userName: string,
+    userPicture: string,
+
+};
+
+export type ChartData = {
+    name: string,
+    valueKnowledge: number[]
+    valueMotivation: number[]
+}
+
+export type CombinedChartProps = {
+    chartData: ChartData[],
+    className?: string
+};
+
+export type SliderValues = { //Used in form and question
+    knowledge: number,
+    motivation: number
+};
+
+export type ProgressProps = { //Used in form and question
+    alerts: AlertState | undefined,
+    totalQuestions: number
+};
+
+

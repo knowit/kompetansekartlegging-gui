@@ -2,33 +2,62 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateFormDefinition = /* GraphQL */ `
+  subscription OnCreateFormDefinition {
+    onCreateFormDefinition {
+      id
+      createdAt
+      sortKeyConstant
+      questions {
+        nextToken
+      }
+      updatedAt
+    }
+  }
+`;
+export const onUpdateFormDefinition = /* GraphQL */ `
+  subscription OnUpdateFormDefinition {
+    onUpdateFormDefinition {
+      id
+      createdAt
+      sortKeyConstant
+      questions {
+        nextToken
+      }
+      updatedAt
+    }
+  }
+`;
+export const onDeleteFormDefinition = /* GraphQL */ `
+  subscription OnDeleteFormDefinition {
+    onDeleteFormDefinition {
+      id
+      createdAt
+      sortKeyConstant
+      questions {
+        nextToken
+      }
+      updatedAt
+    }
+  }
+`;
 export const onCreateUserForm = /* GraphQL */ `
   subscription OnCreateUserForm($owner: String!) {
     onCreateUserForm(owner: $owner) {
       id
+      createdAt
+      owner
+      formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        sortKeyConstant
         updatedAt
       }
-      createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -36,29 +65,19 @@ export const onUpdateUserForm = /* GraphQL */ `
   subscription OnUpdateUserForm($owner: String!) {
     onUpdateUserForm(owner: $owner) {
       id
+      createdAt
+      owner
+      formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        sortKeyConstant
         updatedAt
       }
-      createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -66,29 +85,19 @@ export const onDeleteUserForm = /* GraphQL */ `
   subscription OnDeleteUserForm($owner: String!) {
     onDeleteUserForm(owner: $owner) {
       id
+      createdAt
+      owner
+      formDefinitionID
       questionAnswers {
-        items {
-          id
-          userFormID
-          knowledge
-          motivation
-          createdAt
-          updatedAt
-          owner
-        }
         nextToken
       }
       formDefinition {
         id
-        questions {
-          nextToken
-        }
         createdAt
+        sortKeyConstant
         updatedAt
       }
-      createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -97,21 +106,20 @@ export const onCreateQuestionAnswer = /* GraphQL */ `
     onCreateQuestionAnswer(owner: $owner) {
       id
       userFormID
+      questionID
+      knowledge
+      motivation
       question {
         id
         text
         topic
         qid
         index
-        category
-        formDefinitions {
-          nextToken
-        }
+        formDefinitionID
+        categoryID
         createdAt
         updatedAt
       }
-      knowledge
-      motivation
       createdAt
       updatedAt
       owner
@@ -123,21 +131,20 @@ export const onUpdateQuestionAnswer = /* GraphQL */ `
     onUpdateQuestionAnswer(owner: $owner) {
       id
       userFormID
+      questionID
+      knowledge
+      motivation
       question {
         id
         text
         topic
         qid
         index
-        category
-        formDefinitions {
-          nextToken
-        }
+        formDefinitionID
+        categoryID
         createdAt
         updatedAt
       }
-      knowledge
-      motivation
       createdAt
       updatedAt
       owner
@@ -149,21 +156,20 @@ export const onDeleteQuestionAnswer = /* GraphQL */ `
     onDeleteQuestionAnswer(owner: $owner) {
       id
       userFormID
+      questionID
+      knowledge
+      motivation
       question {
         id
         text
         topic
         qid
         index
-        category
-        formDefinitions {
-          nextToken
-        }
+        formDefinitionID
+        categoryID
         createdAt
         updatedAt
       }
-      knowledge
-      motivation
       createdAt
       updatedAt
       owner
@@ -178,16 +184,15 @@ export const onCreateQuestion = /* GraphQL */ `
       topic
       qid
       index
-      category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
+      formDefinitionID
+      categoryID
+      category {
+        id
+        text
+        description
+        index
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -202,16 +207,15 @@ export const onUpdateQuestion = /* GraphQL */ `
       topic
       qid
       index
-      category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
+      formDefinitionID
+      categoryID
+      category {
+        id
+        text
+        description
+        index
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -226,103 +230,13 @@ export const onDeleteQuestion = /* GraphQL */ `
       topic
       qid
       index
-      category
-      formDefinitions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateFormDefinition = /* GraphQL */ `
-  subscription OnCreateFormDefinition {
-    onCreateFormDefinition {
-      id
-      questions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateFormDefinition = /* GraphQL */ `
-  subscription OnUpdateFormDefinition {
-    onUpdateFormDefinition {
-      id
-      questions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteFormDefinition = /* GraphQL */ `
-  subscription OnDeleteFormDefinition {
-    onDeleteFormDefinition {
-      id
-      questions {
-        items {
-          id
-          formDefinitionID
-          questionID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateQuestionFormDefinitionConnection = /* GraphQL */ `
-  subscription OnCreateQuestionFormDefinitionConnection {
-    onCreateQuestionFormDefinitionConnection {
-      id
       formDefinitionID
-      questionID
-      question {
+      categoryID
+      category {
         id
         text
-        topic
-        qid
+        description
         index
-        category
-        formDefinitions {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      formDefinition {
-        id
-        questions {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -331,65 +245,37 @@ export const onCreateQuestionFormDefinitionConnection = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateQuestionFormDefinitionConnection = /* GraphQL */ `
-  subscription OnUpdateQuestionFormDefinitionConnection {
-    onUpdateQuestionFormDefinitionConnection {
+export const onCreateCategory = /* GraphQL */ `
+  subscription OnCreateCategory {
+    onCreateCategory {
       id
-      formDefinitionID
-      questionID
-      question {
-        id
-        text
-        topic
-        qid
-        index
-        category
-        formDefinitions {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      formDefinition {
-        id
-        questions {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      text
+      description
+      index
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteQuestionFormDefinitionConnection = /* GraphQL */ `
-  subscription OnDeleteQuestionFormDefinitionConnection {
-    onDeleteQuestionFormDefinitionConnection {
+export const onUpdateCategory = /* GraphQL */ `
+  subscription OnUpdateCategory {
+    onUpdateCategory {
       id
-      formDefinitionID
-      questionID
-      question {
-        id
-        text
-        topic
-        qid
-        index
-        category
-        formDefinitions {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      formDefinition {
-        id
-        questions {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      text
+      description
+      index
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteCategory = /* GraphQL */ `
+  subscription OnDeleteCategory {
+    onDeleteCategory {
+      id
+      text
+      description
+      index
       createdAt
       updatedAt
     }

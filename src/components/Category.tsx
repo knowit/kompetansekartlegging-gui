@@ -1,13 +1,10 @@
 import { makeStyles } from '@material-ui/core';
-import React, { Fragment } from 'react'
-import { KnowitColors } from '../styles'
+import React, { Fragment } from 'react';
+import { CategoryProps } from '../types';
 
-type CategoryProps = {
-    name: string,
-    children: JSX.Element[]
-};
 
-const CategoryStyle = makeStyles({
+
+const categoryStyle = makeStyles({
     categoryText: {
         fontSize: 22,
         fontWeight: 'bold'
@@ -15,13 +12,18 @@ const CategoryStyle = makeStyles({
 });
 
 export const Category = ({...props}: CategoryProps) => {
-    const style = CategoryStyle();
+    const style = categoryStyle();
 
     return (
         <Fragment>
-            <div className={style.categoryText}>
-                {props.name}
-            </div>
+            {
+                props.isMobile ? ""
+                : 
+                    <div className={style.categoryText}>
+                        {props.name}
+                    </div>
+            }
+            
             {props.children}
         </Fragment>
     )

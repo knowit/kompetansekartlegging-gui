@@ -1,63 +1,89 @@
-type UserForm
-  @model 
-  @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  questionAnswers: [QuestionAnswer] @connection(keyName: "byUserForm", fields: ["id"])
-  formDefinition: FormDefinition! @connection
+
+
+type FormDefinition @model 
+@key(name: "byCreatedAt", fields: ["sortKeyConstant", "createdAt"], queryField: "formByCreatedAt") {
+    id: ID!
+    createdAt: AWSDateTime!
+    sortKeyConstant: String!
+    questions: [Question] @connection(keyName: "byFormDefinition", fields: ["id"])
 }
 
-type QuestionAnswer 
-  @model 
-  @auth(rules: [{ allow: owner }])  
-  @key(name: "byUserForm", fields: ["userFormID"]) {
+type UserForm @model @auth(rules: [{ allow: owner }]) 
+@key(name: "byCreatedAt", fields: ["owner", "createdAt"], queryField: "userFormByCreatedAt") {
+    id: ID!
+    createdAt: AWSDateTime!
+    owner: String
+    formDefinitionID: ID!
+    questionAnswers: [QuestionAnswer]!
+        @connection(keyName: "byUserForm", fields: ["id"]) 
+    formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
+}
+
+type QuestionAnswer @model @auth(rules: [{ allow: owner }])
+@key(name: "byUserForm", fields: ["userFormID"]) {
     id: ID!
     userFormID: ID!
-    question: Question! @connection
+    questionID: ID!
     knowledge: Float!
     motivation: Float!
+    question: Question! @connection(fields: ["questionID"])
 }
 
-type Question
-  @model
-  {
+type Question @model 
+@key(name: "byFormDefinition", fields: ["formDefinitionID"]) {
     id: ID!
     text: String!
     topic: String!
     qid: String
     index: Int
-    category: String!
-    formDefinitions: [QuestionFormDefinitionConnection] @connection(keyName: "connectedQuestion", fields: ["id"])
-}
-
-type FormDefinition
-  @model {
-    id: ID!
-    questions: [QuestionFormDefinitionConnection] @connection(keyName: "connectedFormDefinition", fields: ["id"])
-}
-
-type QuestionFormDefinitionConnection
-  @model(queries: null) 
-  @key(name: "connectedFormDefinition", fields: ["formDefinitionID", "questionID"])
-  @key(name: "connectedQuestion", fields: ["questionID", "formDefinitionID"]) {
-    id: ID!
     formDefinitionID: ID!
+    categoryID: ID!
+    category: Category! @connection(fields: ["categoryID"])
+}
+
+type Category @model {
+    id: ID!
+    text: String!
+    description: String
+    index: Int
+}
+
+type CreateQuestionAnswerResult {
+    status: Int!
+    error: String
+    failedInputs: [CreateQuestionAnswerFailedInput]
+}
+
+type CreateQuestionAnswerFailedInput {
+    id: ID
+    userFormID: ID!
     questionID: ID!
-    question: Question! @connection(fields: ["questionID"])
-    formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
+    knowledge: Float!
+    motivation: Float!
+    environmentID: String!
+    formDefinitionID: String!
 }
 
 input CreateQuestionAnswerInput {
-  id: ID
-  userFormID: ID!
-  knowledge: Float!
-  motivation: Float!
-  questionAnswerQuestionId: ID!
+    id: ID
+    userFormID: ID!
+    questionID: ID!
+    knowledge: Float!
+    motivation: Float!
+    environmentID: String!
+    formDefinitionID: String!
 }
 
 input BatchTableEnvironmentInput {
-  envID: String!
+    envID: String!
 }
 
 type Mutation {
-  batchCreateQuestionAnswer(input: [CreateQuestionAnswerInput], env: BatchTableEnvironmentInput): [QuestionAnswer]
+    batchCreateQuestionAnswer(
+        input: [CreateQuestionAnswerInput]
+    ): CreateQuestionAnswerResult @function(name: "createUserformBatchLambda")
 }
+# batchCreateQuestionAnswerOld(
+#     input: [CreateQuestionAnswerInput]
+#     env: BatchTableEnvironmentInput
+# ): [QuestionAnswer] @function(name: "createUserformBatchLambda")

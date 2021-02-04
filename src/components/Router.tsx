@@ -19,7 +19,7 @@ const Router = ({...props}: FromAppProps) => {
                     <Page.UserPage {...props.userProps} />
                 </Route>
                 <Route path="/answer">
-                    <Page.AnswerPage {...props.answerProps} />
+                    {/* <Page.AnswerPage {...props.answerProps} /> */}
                 </Route>
                 <Route path="/stats">
                     <Page.StatsPage {...props.statsProps} />
