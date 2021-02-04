@@ -98,10 +98,8 @@ const loginStyle = makeStyles({
     },
     logo: {
         postion: 'absolute',
-        bottom: 300,
         zIndex: 5,
-        width: 80,
-        height: 80
+        width: 80
     },
     hidden: {
         display: 'none'
