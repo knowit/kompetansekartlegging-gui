@@ -90,7 +90,7 @@ const loginStyle = makeStyles({
         color: KnowitColors.darkBrown
     },
     dot: {
-        height: '0.5em',
+        height: '0.6em',
         width: '0.6em',
         borderRadius: '50%',
         marginRight: 10,
