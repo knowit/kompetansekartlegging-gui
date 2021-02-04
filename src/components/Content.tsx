@@ -79,8 +79,7 @@ const contentStyle = makeStyles({
         zIndex: 1
     },
     MenuButton: {
-        borderTopLeftRadius: cardCornerRadius,
-        borderBottomLeftRadius: cardCornerRadius,
+        borderRadius: `${cardCornerRadius}px 0 0 ${cardCornerRadius}px`,
         '&:hover': {
             background: KnowitColors.white
         },
