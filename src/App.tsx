@@ -16,6 +16,7 @@ import { Category } from './types'
 import {isMobile} from 'react-device-detect';
 import FloatingScaleDescButton from './components/FloatingScaleDescButton';
 import NavBarDesktop from './components/NavBarDesktop';
+import clsx from 'clsx';
 
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
@@ -37,7 +38,8 @@ const appStyle = makeStyles({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        height: '100vh'
+        height: '100vh',
+        overflowY: isMobile ? 'hidden' : 'auto'
     },
     content: {
         height: '100%',
