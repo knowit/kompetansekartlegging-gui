@@ -19,13 +19,13 @@ const yourAnswersStyleMobile = makeStyles({
         display: "none"
     },
     answerBox: {
-        display: 'flex',
+        // display: 'flex',
         flexDirection: 'column',
         height: '100%',
         width: '100%',
     },
     answerBoxScrolled: {
-        display: 'flex',
+        // display: 'flex',
         flexDirection: 'column',
         height: '100%',
         width: '100%',
@@ -126,7 +126,8 @@ const yourAnswersStyleMobile = makeStyles({
         justifyContent: 'left'
     },
     yourAnswersMobileContainer: {
-        height: '100%',
+        minHeight: '100vh',
+        marginBottom: 20,
     },
     menuButtonActive: {
         background: KnowitColors.white,
