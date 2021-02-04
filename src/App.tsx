@@ -193,7 +193,7 @@ const App = () => {
                     <FloatingScaleDescButton isMobile={isMobile}/>
                 </Fragment>
             :
-            <Login />
+            <Login isMobile={isMobile}/>
             }
         </div>
     );
