@@ -8,7 +8,7 @@ import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsAct
 import clsx from 'clsx';
 import { Millisecs } from '../helperFunctions';
 
-export const staleAnswersLimit: number = Millisecs.FIVEMINUTES;
+export const staleAnswersLimit: number = Millisecs.ONEDAY;
 
 const useStyles = makeStyles({
     root: {
