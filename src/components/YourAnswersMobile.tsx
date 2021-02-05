@@ -50,7 +50,7 @@ const yourAnswersStyleMobile = makeStyles({
         height: 'min-content',
         backgroundColor: KnowitColors.beige,
         paddingBottom: '18px',
-        marginBottom: "4px",
+        marginBottom: "8px",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.15)",
         borderRadius: "0px 0px 50px 50px",
     },
