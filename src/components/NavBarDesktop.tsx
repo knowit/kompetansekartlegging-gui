@@ -169,8 +169,9 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                                 <Paper>
                                     <ClickAwayListener onClickAway={handleClose}>
                                     <MenuList autoFocusItem={avatarMenuOpen} id="menu-list-grow" onKeyDown={handleListKeyDown} className={style.dropdownMenu}>
+                                        {/* Removed for user testing
                                         <MenuItem onClick={handleDisplayAnswers}>Vis alle lagrede svar</MenuItem>
-                                        <MenuItem onClick={handleDeleteAnswers}>Slett alle svar</MenuItem>
+                                        <MenuItem onClick={handleDeleteAnswers}>Slett alle svar</MenuItem> */}
                                         <MenuItem onClick={handleCloseSignout}>Logg ut</MenuItem>
                                     </MenuList>
                                     </ClickAwayListener>
