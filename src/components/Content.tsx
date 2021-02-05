@@ -47,6 +47,7 @@ export const contentStyleMobile = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'scroll',
+        overflowX: 'hidden',
         height: '100%'
     },
     panel: {
