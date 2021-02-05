@@ -127,7 +127,7 @@ const yourAnswersStyleMobile = makeStyles({
     },
     yourAnswersMobileContainer: {
         minHeight: '100vh',
-        marginBottom: 20,
+        marginBottom: 50,
     },
     menuButtonActive: {
         background: KnowitColors.white,
