@@ -43,7 +43,7 @@ export const contentStyleDesktop = makeStyles({
 });
 
 export const contentStyleMobile = makeStyles({
-    root: {
+    contentContainer: {
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'scroll',
@@ -58,7 +58,7 @@ export const contentStyleMobile = makeStyles({
 });
 
 const contentStyle = makeStyles({
-    root: {
+    contentContainer: {
         height: '100%',
         width: '100%',
         display: 'flex',
@@ -650,7 +650,7 @@ const Content = ({...props}: ContentProps) => {
 
     
     return (
-            <div className={props.isMobile ? mobileStyle.root : style.root} onScroll={() => handleScroll()} ref={mobileNavRef}>
+            <div className={props.isMobile ? mobileStyle.contentContainer : style.contentContainer} onScroll={() => handleScroll()} ref={mobileNavRef}>
                 {
                     props.isMobile ? 
                         <NavBarMobile 

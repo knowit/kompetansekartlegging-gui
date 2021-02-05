@@ -1,5 +1,5 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine, Brush } from 'recharts';
 import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
@@ -43,8 +43,10 @@ const useStyles = makeStyles({
     },
     chartContainer: {
         width: '100%',
-        height: '100%',
-        display: 'flex',
+        // height: '100%',
+        // minHeight: 300,
+        height: 410,
+        // display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
@@ -98,6 +100,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
 
     useEffect(() => {
         setChartPages(createPagedData());
+        console.log("CHARTS")
     }, [props.chartData]);
 
     const createPagedData = (): ChartData[][] => {
@@ -172,7 +175,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
     return (
         <div className={classes.chartContainer} {...swipeHandlers} >
             <ResponsiveContainer>     
-                <BarChart
+                <BarChart 
                     barGap={-10}
                     barSize={10}
                     maxBarSize={10}
