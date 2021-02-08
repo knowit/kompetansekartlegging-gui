@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     label: {
         fill: KnowitColors.darkBrown,
         fontFamily: "Arial",
-        fontSize: "24px",
+        fontSize: "22px",
         fontWeight: "bold",
         textAnchor: "start",
         opacity: 1
