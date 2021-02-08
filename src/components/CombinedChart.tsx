@@ -89,7 +89,10 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
                     tick={renderCustomAxisTicks()}
                 />
                 <YAxis width={200} dataKey="name" type="category" interval={0} tick={{fill: KnowitColors.darkBrown}}/>
-                <Tooltip content={RenderCustomTooltip(classes)}/>
+                <Tooltip
+                    content={RenderCustomTooltip(classes)}
+                    cursor={{ fill: KnowitColors.ecaluptus, opacity: 0.3 }}
+                />
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen} />
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen} />
                 <ReferenceLine x={0} stroke={KnowitColors.darkGreen}>
