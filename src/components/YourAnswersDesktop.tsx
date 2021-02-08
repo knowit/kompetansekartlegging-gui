@@ -135,6 +135,15 @@ const yourAnwersStyle = makeStyles({
         flexDirection: 'row',
         overflowY: 'scroll',
         height: '100%'
+    },
+    formHeader: {
+        marginTop: "30px",
+        marginLeft: "40px",
+        backgroundColor: "white",
+    },
+    categoryTitle: {
+        fontSize: 22,
+        fontWeight: "bold",
     }
 });
 
@@ -163,7 +172,12 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                     </div>
                 </div>
                 <div className={clsx(props.answerEditMode ? "" : style.hidden, style.progressForm)}>
-                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    <div className={style.formHeader}>
+                        <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                        <h2 className={style.categoryTitle}>
+                            {props.activeCategory}
+                        </h2>
+                    </div>
                     <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
                         <Form 
                             {...props}
