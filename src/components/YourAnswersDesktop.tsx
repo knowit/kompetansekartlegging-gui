@@ -17,10 +17,8 @@ const yourAnwersStyle = makeStyles({
         display: "none"
     },
     answerBox: {
-        display: 'flex',
-        flexDirection: 'row',
-        height: '100%',
-        width: '100%',
+        width: "100%",
+        height: "100%",
     },
     answerView: {
         marginRight: 10,
@@ -30,13 +28,11 @@ const yourAnwersStyle = makeStyles({
         background: KnowitColors.white,
     },
     form: {
-        width: '100%',
-        overflowY: 'auto',
-        height: '100%'
+        overflow: 'auto',
+        height: "calc(100% - 62px - 40px)", // 100% - height of form header - 40px padding
     },
     progressForm: {
-        width: '100%',
-        height: '100%'
+        height: "100%",
     },
     leftCard: {
         width: '20%'
@@ -54,12 +50,10 @@ const yourAnwersStyle = makeStyles({
     cardHeaderClosed: {
         display: "flex",
         height: 'max-content',
-
         paddingTop: cardCornerRadius,
         marginTop: -cardCornerRadius,
         boxShadow: '0px 3px 2px gray',
         borderRadius: '0px 0px 20px 20px',
-
         backgroundColor: KnowitColors.greyGreen
     },
     catHeader: {
@@ -88,7 +82,6 @@ const yourAnwersStyle = makeStyles({
     },
     editButton: {
         fontWeight: 'bold',
-
         margin: 5,
         padding: 10,
         width: 106,
@@ -131,9 +124,6 @@ const yourAnwersStyle = makeStyles({
         zIndex: zIndex
     },
     bottomCardOpen: {
-        display: 'flex',
-        flexDirection: 'row',
-        overflowY: 'scroll',
         height: '100%'
     },
     formHeader: {
