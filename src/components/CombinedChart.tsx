@@ -10,7 +10,7 @@ const chartSplitAt = numTicks + 2;
 const heightPerColumn = 50;
 
 const useStyles = makeStyles({
-    root: {
+    tooltipRoot: {
         backgroundColor: KnowitColors.white,
         paddingLeft: 10,
         paddingRight: 10,
@@ -24,6 +24,14 @@ const useStyles = makeStyles({
         fill: KnowitColors.darkBrown,
         fontFamily: "Arial",
         fontSize: "24px",
+        fontWeight: "bold",
+        textAnchor: "start",
+        opacity: 1
+    },
+    tooltipLabel: {
+        fill: KnowitColors.darkBrown,
+        fontFamily: "Arial",
+        fontSize: "16px",
         fontWeight: "bold",
         textAnchor: "start",
         opacity: 1
@@ -133,8 +141,8 @@ const RenderCustomTooltip = (classes: any) => {
             let knowledgeValue = props.payload[0]?.payload.valueKnowledge[1].toFixed(1);
             let motivationValue = (props.payload[1]?.payload.valueMotivation[1] - chartSplitAt).toFixed(1);
             return (
-                <div className={classes.root}>
-                    <p className={classes.label}>{props.label}</p>
+                <div className={classes.tooltipRoot}>
+                    <p className={classes.tooltipLabel}>{props.label}</p>
                     <p className={classes.knowledge}>
                         {`Kompetanse: ${knowledgeValue}`}
                     </p>
