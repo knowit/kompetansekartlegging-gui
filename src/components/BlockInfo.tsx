@@ -11,7 +11,7 @@ import { QuestionAnswerSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles({
     root: {
-        width: '70%'
+
     },
     blockOK: {
         display: 'flex',

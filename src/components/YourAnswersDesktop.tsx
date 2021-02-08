@@ -65,12 +65,21 @@ const yourAnwersStyle = makeStyles({
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems: 'center',
         height: '10%',
         width: '60%',
         margin: '10px',
         maxHeight: '50px'
+    },
+    blockInfo: {
+        width: '100%',
+        fontSize: '22px',
+        fontWeight: 'bold',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginLeft: 20
     },
     graphHolder: {
         width: '90%',
@@ -143,7 +152,10 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
-                        <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
+                        <div className={style.blockInfo}>
+                            {props.activeCategory}
+                            <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
+                        </div>
                         <Button className={style.editButton} onClick={() => props.enableAnswerEditMode()}>Fyll ut</Button>
                     </div>
                     <div className={style.graphHolder}>
