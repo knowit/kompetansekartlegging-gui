@@ -2,10 +2,8 @@ import { Button, makeStyles } from '@material-ui/core';
 import React, { Fragment, useRef } from 'react'
 import { KnowitColors } from '../styles';
 import { FormProps, SliderValues } from '../types';
-import { Category } from './Category';
 import Question from './Question';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
-import ProgressBar from './ProgressBar';
 
 const FormStyleDesktop = makeStyles({
     root: {
@@ -205,9 +203,7 @@ export const Form = ({...props}: FormProps) => {
         //     .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
             <Fragment>
-                <Category name={props.activeCategory} isMobile={props.isMobile}>
-                    {getQuestionsForCategory(undefined)}
-                </Category>
+                {getQuestionsForCategory(undefined)}
                 <div className={style.blockButtons}>
                     {props.categories.length > 0
                         ? <Button 

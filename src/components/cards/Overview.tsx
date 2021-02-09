@@ -15,21 +15,21 @@ const overviewStyle = makeStyles({
         width: "100%",
         backgroundColor: KnowitColors.white,
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
+        flexDirection: 'column'
     },
     radarPlot: {
         height: '100%',
         width: '100%',
+        maxWidth: 1200,
         display: 'flex',
         flexDirection: 'column',
     },
     highlightsContainer: {
-        width: '90%',
+        width: '100%',
         height: '60%',
         paddingTop: 30,
         paddingLeft: 50,
-        marginTop: 50
+        marginTop: 20
     },
     mobile: {
         height: '100%',
