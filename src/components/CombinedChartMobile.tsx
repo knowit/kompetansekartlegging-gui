@@ -204,9 +204,9 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                         tick={renderLabelTick}
                     />
                     {/* <Tooltip content={renderCustomTooltip(classes)}/> */}
-                    <Bar radius={[10, 10, 0, 0]} dataKey="valueKnowledge" fill={KnowitColors.lightGreen}/>
-                    <Bar radius={[10, 10, 0, 0]} dataKey="valueMotivation" fill={KnowitColors.greyGreen}/>
-                    <ReferenceLine y={0} stroke="green" >
+                    <Bar radius={[10, 10, 0, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen}/>
+                    <Bar radius={[10, 10, 0, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen}/>
+                    <ReferenceLine y={0} stroke={KnowitColors.darkGreen} >
                         <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>KOMPETANSE</Label>
                     </ReferenceLine>
                     <ReferenceLine y={0.1} stroke={KnowitColors.darkGreen} strokeWidth={1}></ReferenceLine>
