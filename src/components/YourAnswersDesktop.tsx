@@ -31,7 +31,7 @@ const yourAnwersStyle = makeStyles({
     },
     form: {
         width: '100%',
-        overflowY: 'auto',
+        // overflowY: 'auto',
         height: '100%'
     },
     progressForm: {
