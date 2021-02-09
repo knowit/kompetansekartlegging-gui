@@ -17,10 +17,11 @@ const FormStyleDesktop = makeStyles({
         borderRadius: 10
     },
     blockButtons: {
-        padding: 20,
+        width: '90%',
+        maxWidth: 1200,
         display: 'flex',
         justifyContent: 'space-around',
-        marginBottom: 50
+        margin: '30px 0px 50px'
     },
     submitButton: {
         paddingLeft: 20,
