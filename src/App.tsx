@@ -38,7 +38,8 @@ const appStyle = makeStyles({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        height: '100vh',
+        // height: '100vh',
+        height: isMobile ? 'auto' : '100vh',
         overflowY: isMobile ? 'hidden' : 'auto'
     },
     content: {
@@ -167,6 +168,10 @@ const App = () => {
         setAnswerHistoryOpen(true);
     };
 
+    window.onscroll(() => {
+        
+    })
+
     
     return (
         <div className={style.root}>
@@ -191,7 +196,7 @@ const App = () => {
                         signout={signout}
                         userName={userName}
                         userPicture={userPicture}
-                />
+                    />
                     <FloatingScaleDescButton isMobile={isMobile}/>
                 </Fragment>
             :

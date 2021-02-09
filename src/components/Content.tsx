@@ -46,7 +46,7 @@ export const contentStyleMobile = makeStyles({
     contentContainer: {
         display: 'flex',
         flexDirection: 'column',
-        overflowY: 'scroll',
+        // overflowY: 'scroll',
         overflowX: 'hidden',
         height: '100%'
     },
@@ -579,15 +579,26 @@ const Content = ({...props}: ContentProps) => {
     const [collapseMobileCategories, setCollapseMobileCategories] = useState<boolean>(false);
 
 
+    // const handleScroll = () => {
+    //     if (mobileNavRef.current?.scrollTop !== undefined && categoryNavRef.current?.clientHeight !== undefined) {
+    //         if (mobileNavRef.current?.scrollTop > categoryNavRef.current?.clientHeight-56) {
+    //             setCollapseMobileCategories(true)
+    //         } else {
+    //             setCollapseMobileCategories(false)
+    //         }
+    //     }
+    // }
     const handleScroll = () => {
-        if (mobileNavRef.current?.scrollTop !== undefined && categoryNavRef.current?.clientHeight !== undefined) {
-            if (mobileNavRef.current?.scrollTop > categoryNavRef.current?.clientHeight-56) {
+        debugger
+        if (categoryNavRef.current?.clientHeight !== undefined) {
+            if (window.scrollY > categoryNavRef.current?.clientHeight-56) {
                 setCollapseMobileCategories(true)
             } else {
                 setCollapseMobileCategories(false)
             }
         }
     }
+
 
     const scrollToTopMobile = () => {
         if (categoryNavRef.current?.clientHeight) {
