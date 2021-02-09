@@ -17,10 +17,8 @@ const yourAnwersStyle = makeStyles({
         display: "none"
     },
     answerBox: {
-        display: 'flex',
-        flexDirection: 'row',
-        height: '100%',
-        width: '100%',
+        width: "100%",
+        height: "100%",
     },
     answerView: {
         marginRight: 10,
@@ -31,12 +29,10 @@ const yourAnwersStyle = makeStyles({
     },
     form: {
         width: '100%',
-        // overflowY: 'auto',
-        height: '100%'
+        height: "calc(100% - 62px - 40px)", // 100% - height of form header - 40px padding
     },
     progressForm: {
-        width: '100%',
-        height: '100%'
+        height: "100%",
     },
     leftCard: {
         width: '20%'
@@ -54,12 +50,10 @@ const yourAnwersStyle = makeStyles({
     cardHeaderClosed: {
         display: "flex",
         height: 'max-content',
-
         paddingTop: cardCornerRadius,
         marginTop: -cardCornerRadius,
         boxShadow: '0px 3px 2px gray',
         borderRadius: '0px 0px 20px 20px',
-
         backgroundColor: KnowitColors.greyGreen
     },
     catHeader: {
@@ -88,7 +82,6 @@ const yourAnwersStyle = makeStyles({
     },
     editButton: {
         fontWeight: 'bold',
-
         margin: 5,
         padding: 10,
         width: 106,
@@ -133,9 +126,17 @@ const yourAnwersStyle = makeStyles({
     bottomCardOpen: {
         display: 'flex',
         flexDirection: 'row',
-        height: '100%',
         overflowY: 'scroll',
-
+        height: '100%'
+    },
+    formHeader: {
+        marginTop: "30px",
+        marginLeft: "40px",
+        backgroundColor: "white",
+    },
+    categoryTitle: {
+        fontSize: 22,
+        fontWeight: "bold",
     }
 });
 
@@ -164,7 +165,12 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                     </div>
                 </div>
                 <div className={clsx(props.answerEditMode ? "" : style.hidden, style.progressForm)}>
-                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    <div className={style.formHeader}>
+                        <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                        <h2 className={style.categoryTitle}>
+                            {props.activeCategory}
+                        </h2>
+                    </div>
                     <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
                         <Form 
                             {...props}

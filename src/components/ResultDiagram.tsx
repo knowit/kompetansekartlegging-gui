@@ -8,8 +8,7 @@ import Highlights from './Highlights';
 
 const graphStyle = makeStyles({
     resultDiagramContainer: {
-        width: '90%',
-        height: '60%',
+        width: '100%',
         paddingTop: 30
     },
     resultDiagramContainerMobile: {

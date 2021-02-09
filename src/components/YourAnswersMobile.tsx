@@ -10,10 +10,6 @@ import { AlertNotification, AlertType } from './AlertNotification';
 import ProgressBar from './ProgressBar';
 import { BlockInfo } from './BlockInfo';
 
-
-const cardCornerRadius: number = 40;
-// const zIndex: number = 10000;
-
 const yourAnswersStyleMobile = makeStyles({
     hidden: {
         display: "none"
@@ -149,6 +145,11 @@ const yourAnswersStyleMobile = makeStyles({
         width: 'fit-content', // todo denne kan tilbakestilles?
         padding: "10px 30px",
     },
+    formHeader: {
+        display: "flex",
+        padding: "10px",
+        justifyContent: 'center',
+    },
 });
 
 
@@ -230,7 +231,9 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                     </div>
                 </div>
                 <div className={clsx(props.answerEditMode ? "" : style.hidden)}>
-                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    <div className={style.formHeader}>
+                        <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    </div>
                 </div>
             </div>
             {/* <div className={props.commonCardProps.active ? style.answerBox : style.hidden}> */}
@@ -247,7 +250,9 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                 </div>
                 <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
                     {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
-                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    <div className={style.formHeader}>
+                        <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    </div>
                     <Form 
                         {...props}
                         isMobile={true}
