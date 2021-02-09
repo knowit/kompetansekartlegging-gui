@@ -207,12 +207,12 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                     <Bar radius={[10, 10, 0, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen}/>
                     <Bar radius={[10, 10, 0, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen}/>
                     <ReferenceLine y={0} stroke={KnowitColors.darkGreen} >
-                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>KOMPETANSE</Label>
+                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>MOTIVASJON</Label>
                     </ReferenceLine>
                     <ReferenceLine y={0.1} stroke={KnowitColors.darkGreen} strokeWidth={1}></ReferenceLine>
                     <ReferenceLine y={0} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
                     <ReferenceLine y={chartSplitAt} stroke={KnowitColors.darkGreen}>
-                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>MOTIVASJON</Label>
+                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>KOMPETANSE</Label>
                     </ReferenceLine>
                     <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
                 </BarChart>
@@ -224,11 +224,11 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
 
 const renderCustomAxisTicks = () => {
     return ( {...props}:TickProps ) => {
-        let isKnowledge = true;
+        let isKnowledge = false;
         let iconNumber = props.payload.value;
         if (props.payload.value >= chartSplitAt) {
             iconNumber -= chartSplitAt;
-            isKnowledge = false;
+            isKnowledge = true;
         }
         return (
             <svg x={props.x-iconSize} y={props.y-(iconSize/2)} width={iconSize} height={iconSize} fill="black">

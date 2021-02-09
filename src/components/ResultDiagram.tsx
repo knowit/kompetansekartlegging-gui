@@ -98,14 +98,17 @@ export default function ResultDiagram({...props}: ResultDiagramProps) {
         //console.log("overview AnswerData:", ansData);
         return ansData;
     };
-    
+
+    let knowledgeStart = props.isMobile ? 7 : 0;
+    let motivationStart = props.isMobile ? 0 : 7;
     let chartData: ChartData[] = answerData.map(
         (answer) => ({
             name: answer.category,
-            valueKnowledge: [0, answer.averageKnowledge],
-            valueMotivation: [7, 7 + answer.averageMotivation],
+            valueKnowledge: [knowledgeStart, knowledgeStart + ((answer.averageKnowledge === -1) ? 0 : answer.averageKnowledge)],
+            valueMotivation: [motivationStart, motivationStart + ((answer.averageMotivation === -1) ? 0 : answer.averageMotivation)],
         })
     )
+
 
     return (
         props.isMobile ?
