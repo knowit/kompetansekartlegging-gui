@@ -193,7 +193,7 @@ const App = () => {
 
     const scrollToTopMobile = () => {
         if (categoryNavRef.current?.clientHeight) {
-            mobileNavRef.current?.scroll(0, categoryNavRef.current?.clientHeight-50);
+            window.scroll(0, categoryNavRef.current?.clientHeight-50)
             setCollapseMobileCategories(true);
         }
     }
