@@ -18,7 +18,8 @@ const questionStyleDesktop = makeStyles({
         paddingRight: 5,
         backgroundColor: KnowitColors.white,
         borderRadius: 10,
-        width: '90%'
+        width: '90%',
+        maxWidth: 1200
     },
     topic: {
         display: 'flex',
