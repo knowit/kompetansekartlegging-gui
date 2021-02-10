@@ -39,6 +39,7 @@ const appStyle = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         // height: '100vh',
+         //height: 'calc(var(--vh, 1vh) * 100)',
         height: isMobile ? 'auto' : '100vh',
         overflowY: isMobile ? 'hidden' : 'visible'
     },
@@ -46,6 +47,13 @@ const appStyle = makeStyles({
         height: '100%',
         flexGrow: 1
     }
+});
+
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+window.addEventListener('resize', () => {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
 });
 
 const App = () => {

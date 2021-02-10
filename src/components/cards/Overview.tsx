@@ -32,7 +32,7 @@ const overviewStyle = makeStyles({
         marginTop: 20
     },
     mobile: {
-        height: '100%',
+        height: 'calc(var(--vh, 1vh) * 100)', //--vh from resize listener in App.tsx
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -81,9 +81,6 @@ const overviewStyle = makeStyles({
         display: 'none'
     }
 });
-
-  
-
 
 export const Overview = ({...props}: OverviewProps) => {
     const styles = overviewStyle();
