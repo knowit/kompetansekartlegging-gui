@@ -71,7 +71,7 @@ const FormStyleMobile = makeStyles({
         flexDirection: 'column-reverse',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 50
+        // marginBottom: 50
 
     },
     submitButton: {
