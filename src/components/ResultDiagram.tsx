@@ -12,7 +12,6 @@ const graphStyle = makeStyles({
         paddingTop: 30
     },
     resultDiagramContainerMobile: {
-        height: '60%',
         width: '90%',
     }
 });
