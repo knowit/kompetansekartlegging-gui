@@ -36,7 +36,7 @@ const overviewStyle = makeStyles({
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
-        // overflowY: 'auto',
+        overflowY: 'hidden',
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
