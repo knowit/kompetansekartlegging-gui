@@ -30,6 +30,7 @@ const yourAnwersStyle = makeStyles({
     form: {
         width: '100%',
         height: "calc(100% - 62px - 40px)", // 100% - height of form header - 40px padding
+        overflowY: 'auto'
     },
     progressForm: {
         height: "100%",
@@ -126,7 +127,7 @@ const yourAnwersStyle = makeStyles({
     bottomCardOpen: {
         display: 'flex',
         flexDirection: 'row',
-        overflowY: 'scroll',
+        // overflowY: 'scroll',
         height: '100%'
     },
     formHeader: {
