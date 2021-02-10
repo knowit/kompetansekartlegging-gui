@@ -318,7 +318,7 @@ export type YourAnswerProps = {
     checkIfCategoryIsSubmitted:(buttonType: MenuButton, category?: string | undefined) => void,
     collapseMobileCategories: boolean,
     categoryNavRef:  React.MutableRefObject<HTMLInputElement | null>,
-    scrollToTop: () => void
+    scrollToTop: () => void,
 };
 
 export interface AlertState {
@@ -403,6 +403,10 @@ export type ContentProps = {
     signout: () => void,
     userName: string,
     userPicture: string,
+    collapseMobileCategories: boolean,
+    categoryNavRef:  React.MutableRefObject<HTMLInputElement | null>,
+    scrollToTop: () => void,
+    mobileNavRef:  React.MutableRefObject<HTMLInputElement | null>,
 
 };
 

@@ -38,8 +38,9 @@ const appStyle = makeStyles({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        height: '100vh',
-        overflowY: isMobile ? 'hidden' : 'auto'
+        // height: '100vh',
+        height: isMobile ? 'auto' : '100vh',
+        overflowY: isMobile ? 'hidden' : 'visible'
     },
     content: {
         height: '100%',
@@ -167,6 +168,36 @@ const App = () => {
         setAnswerHistoryOpen(true);
     };
 
+
+    // SCROLL
+
+    const mobileNavRef = useRef<HTMLInputElement>(null);
+    const categoryNavRef = useRef<HTMLInputElement | null>(null)
+    const [collapseMobileCategories, setCollapseMobileCategories] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll)
+    })
+
+    const handleScroll = () => {
+        
+        if (categoryNavRef.current?.clientHeight !== undefined) {
+            if (window.scrollY > categoryNavRef.current?.clientHeight-56) {
+                setCollapseMobileCategories(true)
+            } else {
+                setCollapseMobileCategories(false)
+            }
+        }
+    }
+
+    const scrollToTopMobile = () => {
+        if (categoryNavRef.current?.clientHeight) {
+            window.scroll(0, categoryNavRef.current?.clientHeight-50)
+            setCollapseMobileCategories(true);
+        }
+    }
+
     
     return (
         <div className={style.root}>
@@ -191,7 +222,11 @@ const App = () => {
                         signout={signout}
                         userName={userName}
                         userPicture={userPicture}
-                />
+                        collapseMobileCategories={collapseMobileCategories}
+                        categoryNavRef={categoryNavRef}
+                        mobileNavRef={mobileNavRef}
+                        scrollToTop={scrollToTopMobile}
+                    />
                     <FloatingScaleDescButton isMobile={isMobile}/>
                 </Fragment>
             :

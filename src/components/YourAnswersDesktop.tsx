@@ -28,8 +28,9 @@ const yourAnwersStyle = makeStyles({
         background: KnowitColors.white,
     },
     form: {
-        overflow: 'auto',
+        width: '100%',
         height: "calc(100% - 62px - 40px)", // 100% - height of form header - 40px padding
+        overflowY: 'auto'
     },
     progressForm: {
         height: "100%",
@@ -124,6 +125,9 @@ const yourAnwersStyle = makeStyles({
         zIndex: zIndex
     },
     bottomCardOpen: {
+        display: 'flex',
+        flexDirection: 'row',
+        // overflowY: 'scroll',
         height: '100%'
     },
     formHeader: {
@@ -147,7 +151,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
     }
 
     return (
-        <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
+        <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)} >
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
@@ -168,7 +172,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                             {props.activeCategory}
                         </h2>
                     </div>
-                    <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
+                    <div className={clsx(props.answerEditMode ? "" : style.hidden, style.form)} ref={scrollRef} >
                         <Form 
                             {...props}
                             scrollToTop={scrollToTop}

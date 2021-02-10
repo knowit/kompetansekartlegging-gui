@@ -37,7 +37,7 @@ export const contentStyleDesktop = makeStyles({
     cardHolder: {
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         height: '100%'
     },
 });
@@ -46,7 +46,7 @@ export const contentStyleMobile = makeStyles({
     contentContainer: {
         display: 'flex',
         flexDirection: 'column',
-        overflowY: 'scroll',
+        // overflowY: 'scroll',
         overflowX: 'hidden',
         height: '100%'
     },
@@ -574,27 +574,21 @@ const Content = ({...props}: ContentProps) => {
         return listItems;
     }
 
-    const mobileNavRef = useRef<HTMLInputElement>(null);
-    const categoryNavRef = useRef<HTMLInputElement | null>(null)
-    const [collapseMobileCategories, setCollapseMobileCategories] = useState<boolean>(false);
 
 
-    const handleScroll = () => {
-        if (mobileNavRef.current?.scrollTop !== undefined && categoryNavRef.current?.clientHeight !== undefined) {
-            if (mobileNavRef.current?.scrollTop > categoryNavRef.current?.clientHeight-56) {
-                setCollapseMobileCategories(true)
-            } else {
-                setCollapseMobileCategories(false)
-            }
-        }
-    }
+    // const handleScroll = () => {
+    //     if (mobileNavRef.current?.scrollTop !== undefined && categoryNavRef.current?.clientHeight !== undefined) {
+    //         if (mobileNavRef.current?.scrollTop > categoryNavRef.current?.clientHeight-56) {
+    //             setCollapseMobileCategories(true)
+    //         } else {
+    //             setCollapseMobileCategories(false)
+    //         }
+    //     }
+    // }
+    
 
-    const scrollToTopMobile = () => {
-        if (categoryNavRef.current?.clientHeight) {
-            mobileNavRef.current?.scroll(0, categoryNavRef.current?.clientHeight-50);
-            setCollapseMobileCategories(true);
-        }
-    }
+
+    
 
     const enableAnswerEditMode = () => {
         setAnswersBeforeSubmitted(new Map(questionAnswers));
@@ -631,9 +625,9 @@ const Content = ({...props}: ContentProps) => {
                         isMobile={props.isMobile}
                         alerts={alerts}
                         checkIfCategoryIsSubmitted={checkIfCategoryIsSubmitted}
-                        collapseMobileCategories={collapseMobileCategories}
-                        categoryNavRef={categoryNavRef}
-                        scrollToTop={scrollToTopMobile}
+                        collapseMobileCategories={props.collapseMobileCategories}
+                        categoryNavRef={props.categoryNavRef}
+                        scrollToTop={props.scrollToTop}
                     />
                 );
             case Panel.GroupLeader:
@@ -649,9 +643,9 @@ const Content = ({...props}: ContentProps) => {
     };
 
 
-    
+    //onScroll={() => handleScroll()}
     return (
-            <div className={props.isMobile ? mobileStyle.contentContainer : style.contentContainer} onScroll={() => handleScroll()} ref={mobileNavRef}>
+            <div className={props.isMobile ? mobileStyle.contentContainer : style.contentContainer}  ref={props.mobileNavRef}>
                 {
                     props.isMobile ? 
                         <NavBarMobile 
