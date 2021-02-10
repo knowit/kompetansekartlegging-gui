@@ -10,7 +10,7 @@ import NavBar from './components/NavBar';
 import { Footer } from './components/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import Login from './components/Login';
-import { makeStyles } from '@material-ui/core';
+import { debounce, makeStyles } from '@material-ui/core';
 import * as qustomQueries from './graphql/custom-queries'
 import { Category } from './types'
 import {isMobile} from 'react-device-detect';
@@ -49,20 +49,32 @@ const appStyle = makeStyles({
     }
 });
 
-let vh = window.innerHeight * 0.01;
-document.documentElement.style.setProperty('--vh', `${vh}px`);
-window.addEventListener('resize', () => {
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-});
-
 const App = () => {
     const style = appStyle();
 
     const [user, setUser] = useState<any | null>(null);
     // const [customState, setCustomState] = useState<any | null>(null)
     const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false); // oppdaterer seg ikke på close
-    
+    const [dimensions, setDimensions] = useState({ 
+        height: window.innerHeight,
+        width: window.innerWidth
+    });
+
+    useEffect(() => {
+        const handleResize = debounce(() => {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            console.log("resize!")
+            setDimensions({
+                height: window.innerHeight,
+                width: window.innerWidth
+            })
+        }, 10);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
+
     useEffect(() => {
         Hub.listen('auth', ({ payload: { event, data } }) => {
             switch (event) {

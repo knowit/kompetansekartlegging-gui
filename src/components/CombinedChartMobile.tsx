@@ -17,8 +17,6 @@ const getMaxColumnsForWidth = () => {
     return Math.floor(width / scalingFactor);
 }
 
-const maxColumnsPerPage = getMaxColumnsForWidth();
-
 const useStyles = makeStyles({
     tooltip: {
         backgroundColor: KnowitColors.white,
@@ -97,6 +95,8 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
     const [currentPage, setCurrentPage] = useState(0);
 
     let classes = useStyles();
+    
+    const maxColumnsPerPage = getMaxColumnsForWidth();
 
     useEffect(() => {
         setChartPages(createPagedData());
