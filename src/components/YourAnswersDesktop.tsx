@@ -151,7 +151,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
     }
 
     return (
-        <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)} ref={scrollRef} >
+        <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)} >
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
@@ -172,7 +172,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                             {props.activeCategory}
                         </h2>
                     </div>
-                    <div className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
+                    <div className={clsx(props.answerEditMode ? "" : style.hidden, style.form)} ref={scrollRef} >
                         <Form 
                             {...props}
                             scrollToTop={scrollToTop}
