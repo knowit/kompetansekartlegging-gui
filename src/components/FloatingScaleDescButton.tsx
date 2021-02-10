@@ -68,7 +68,7 @@ const floatingScaleDescButtonStyleMobile = makeStyles({
         height: "35px",
     },
     fabMenu: {
-        position: "absolute",
+        position: "fixed",
         bottom: "0px",
         right: "0px",
         width: "100%",
