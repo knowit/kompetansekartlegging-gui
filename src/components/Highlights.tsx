@@ -19,10 +19,10 @@ const highlightsStyle = makeStyles({
     },
     rootMobile: {
         display: 'flex',
-        height: '40%',
         width: '100%',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingTop: '2vh'
     },
     title: {    
         textAlign: 'left',
@@ -43,7 +43,7 @@ const highlightsStyle = makeStyles({
         flexDirection: 'column',
         height: '100%',
         width: '80%',
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
     },
     block: {
         display: 'flex',
@@ -65,7 +65,8 @@ const highlightsStyle = makeStyles({
         paddingBottom: 10,
         paddingLeft: 30,
         fontFamily: 'Arial',
-        fontSize: 14
+        fontSize: 14,
+        color: KnowitColors.darkBrown,
     },
     list: {
         display: 'flex',

@@ -95,8 +95,8 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
     const navbarHeader = () => {
 
         switch (props.activePanel) {
-            case 0: return "Oversikt";
-            case 1: return "Dine svar";
+            case 0: return "OVERSIKT";
+            case 1: return "MINE SVAR";
             default: return ""
         }
     }

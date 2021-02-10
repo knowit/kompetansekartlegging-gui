@@ -73,8 +73,8 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
     let classes = useStyles();
 
     return (
-        <div className={classes.combinedChartContainer} style={{height: heightPerColumn * props.chartData.length + 90}}>
-        <ResponsiveContainer width='100%' height='100%'>     
+        <div className={classes.combinedChartContainer} >
+        <ResponsiveContainer width='100%' height={heightPerColumn * props.chartData.length + 90}>     
             <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 50, right: 50, bottom: 6, left: 50}}>
             <CartesianGrid horizontal={true} vertical={true} strokeDasharray="2 5"/>
                 <XAxis

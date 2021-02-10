@@ -500,8 +500,8 @@ const Content = ({...props}: ContentProps) => {
      *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
      */
     const buttonSetup = [
-        { text: "Oversikt", buttonType: MenuButton.Overview },
-        { text: "Mine Svar", buttonType: MenuButton.MyAnswers, subButtons: categories.map((cat) => {
+        { text: "OVERSIKT", buttonType: MenuButton.Overview },
+        { text: "MINE SVAR", buttonType: MenuButton.MyAnswers, subButtons: categories.map((cat) => {
                 return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
             })
         },
