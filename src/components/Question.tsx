@@ -119,7 +119,7 @@ const questionStyleMobile = makeStyles({
     },
     icon: {
         height: '100%',
-        fill: KnowitColors.darkGreen
+        fill: KnowitColors.darkBrown
     },
     smallBold: {
         fontSize: 14,
