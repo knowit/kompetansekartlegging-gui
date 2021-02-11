@@ -64,12 +64,11 @@ const App = () => {
         const handleResize = debounce(() => {
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
-            console.log("resize!")
             setDimensions({
                 height: window.innerHeight,
                 width: window.innerWidth
             })
-        }, 10);
+        }, 100);
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
