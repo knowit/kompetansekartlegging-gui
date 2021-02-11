@@ -53,9 +53,8 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
 const floatingScaleDescButtonStyleMobile = makeStyles({
     fab: {
         alignSelf: "flex-end",
-        width: "fit-content",
-        marginRight: "20px",
-        marginBottom: "20px",
+        marginRight: "10px",
+        marginBottom: "10px",
         backgroundColor: KnowitColors.beige,
         position: "fixed",
         bottom: "0px",
@@ -63,9 +62,8 @@ const floatingScaleDescButtonStyleMobile = makeStyles({
         fontFamily: "Arial",
         fontStyle: "normal",
         fontWeight: "bold",
-        fontSize: "11px",
+        fontSize: "15px",
         lineHeight: "13px",
-        height: "35px",
     },
     fabMenu: {
         position: "fixed",
@@ -114,15 +112,28 @@ const FloatingScaleDescButton = ({
                     />
                 </div>
             )}
-            <Fab
-                variant="extended"
-                className={style.fab}
-                onClick={() =>
-                    setScaleDescOpen((scaleDescOpen) => !scaleDescOpen)
-                }
-            >
-                Skalabeskrivelse
-            </Fab>
+            {isMobile ?
+                <Fab
+                    size="small"
+                    variant="round"
+                    className={style.fab}
+                    onClick={() =>
+                        setScaleDescOpen((scaleDescOpen) => !scaleDescOpen)
+                    }
+                >
+                    ?
+                </Fab>
+            :
+                <Fab
+                    variant="extended"
+                    className={style.fab}
+                    onClick={() =>
+                        setScaleDescOpen((scaleDescOpen) => !scaleDescOpen)
+                    }
+                >
+                    SKALABESKRIVELSE
+                </Fab>
+            }
         </>
     );
 };
