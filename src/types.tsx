@@ -1,5 +1,6 @@
 import { MenuButton, Panel } from "./components/Content";
 import { AlertType } from "./components/AlertNotification";
+import { Dispatch, SetStateAction } from "react";
 
 export type AnswerData = {
     questionId: string,
@@ -407,7 +408,7 @@ export type ContentProps = {
     categoryNavRef:  React.MutableRefObject<HTMLInputElement | null>,
     scrollToTop: () => void,
     mobileNavRef:  React.MutableRefObject<HTMLInputElement | null>,
-
+    setScaleDescOpen: Dispatch<SetStateAction<boolean>>,
 };
 
 export type ChartData = {

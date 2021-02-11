@@ -191,6 +191,7 @@ const Content = ({...props}: ContentProps) => {
             setActivePanel(Panel.MyAnswers)
             setAnswerEditMode(true);
             setUserAnswersLoaded(true)
+            props.setScaleDescOpen(true);
         }
         
         console.log("Last userform: ", lastUserForm);

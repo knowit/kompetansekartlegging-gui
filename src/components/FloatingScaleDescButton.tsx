@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Fab, makeStyles } from "@material-ui/core";
 import { KnowitColors } from "../styles";
 import DescriptionTable from "./DescriptionTable";
@@ -92,15 +92,18 @@ const floatingScaleDescButtonStyleMobile = makeStyles({
 
 type FloatingScaleDescButtonProps = {
     isMobile: boolean;
+    scaleDescOpen: boolean,
+    setScaleDescOpen: Dispatch<SetStateAction<boolean>>,
 };
 
 const FloatingScaleDescButton = ({
     isMobile,
+    scaleDescOpen,
+    setScaleDescOpen,
 }: FloatingScaleDescButtonProps) => {
     const style = isMobile
         ? floatingScaleDescButtonStyleMobile()
         : floatingScaleDescButtonStyleDesktop();
-    const [scaleDescOpen, setScaleDescOpen] = useState(false);
 
     return (
         <>

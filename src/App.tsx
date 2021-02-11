@@ -59,6 +59,7 @@ const App = () => {
         height: window.innerHeight,
         width: window.innerWidth
     });
+    const [scaleDescOpen, setScaleDescOpen] = useState(false);
 
     useEffect(() => {
         const handleResize = debounce(() => {
@@ -246,8 +247,13 @@ const App = () => {
                         categoryNavRef={categoryNavRef}
                         mobileNavRef={mobileNavRef}
                         scrollToTop={scrollToTopMobile}
+                        setScaleDescOpen={setScaleDescOpen}
                     />
-                    <FloatingScaleDescButton isMobile={isMobile}/>
+                    <FloatingScaleDescButton
+                        scaleDescOpen={scaleDescOpen}
+                        setScaleDescOpen={setScaleDescOpen}
+                        isMobile={isMobile}
+                    />
                 </Fragment>
             :
             <Login isMobile={isMobile}/>
