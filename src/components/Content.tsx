@@ -567,7 +567,7 @@ const Content = ({...props}: ContentProps) => {
                 >
                     <ListItemText primary={butt.text} />
                     {/* <div className={clsx(style.menuButtonText)}>{butt.text}</div> */}
-                    {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""}
+                    {(butt.buttonType === MenuButton.MyAnswers) ? getMainMenuAlertElement() : ""}
                 </ListItem>
             );
         });
