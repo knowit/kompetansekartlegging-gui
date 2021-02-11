@@ -58,13 +58,12 @@ const App = () => {
     useEffect(() => {
         const handleResize = debounce(() => {
             let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty("--vh", `${vh}px`);
-            console.log("resize!");
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
             setDimensions({
                 height: window.innerHeight,
-                width: window.innerWidth,
-            });
-        }, 10);
+                width: window.innerWidth
+            })
+        }, 100);
         handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);

@@ -22,10 +22,11 @@ const yourAnwersStyle = makeStyles({
     },
     answerView: {
         marginRight: 10,
-        width: '95%',
+        width: '100%',
         height: '100%',
         borderRadius: 10,
         background: KnowitColors.white,
+        overflowY: 'auto'
     },
     form: {
         width: '100%',

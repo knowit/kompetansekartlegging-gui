@@ -84,7 +84,7 @@ const yourAnswersStyleMobile = makeStyles({
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems: 'center'
 
     },
