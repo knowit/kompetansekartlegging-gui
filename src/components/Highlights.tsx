@@ -22,7 +22,8 @@ const highlightsStyle = makeStyles({
         width: '100%',
         flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: '2vh'
+        paddingTop: '2vh',
+        paddingBottom: 50
     },
     title: {    
         textAlign: 'left',
@@ -43,7 +44,7 @@ const highlightsStyle = makeStyles({
         flexDirection: 'column',
         height: '100%',
         width: '80%',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
     },
     block: {
         display: 'flex',

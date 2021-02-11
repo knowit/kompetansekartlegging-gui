@@ -32,13 +32,13 @@ const overviewStyle = makeStyles({
         marginTop: 20
     },
     mobile: {
-        height: 'calc(var(--vh, 1vh) * 100)', //--vh from resize listener in App.tsx
+        height: 'calc(var(--vh, 1vh) * 100 - 56)', //--vh from resize listener in App.tsx
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'hidden',
         justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     cardHeader: {
         display: "flex",
