@@ -23,7 +23,7 @@ const useStyles = makeStyles({
         paddingRight: '1vw'
     },
     bar: {
-        flexGrow: 100
+        flexGrow: 1
     }
 });
 
