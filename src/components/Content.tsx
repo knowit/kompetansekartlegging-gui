@@ -184,13 +184,13 @@ const Content = ({...props}: ContentProps) => {
         let lastUserFormAnswers;
         
         if (lastUserForm) {
-            lastUserFormAnswers = lastUserForm.questionAnswers.items
+            lastUserFormAnswers = lastUserForm.questionAnswers.items;
             setUserAnswers(lastUserFormAnswers);
-            setUserAnswersLoaded(true)
+            setUserAnswersLoaded(true);
         } else {
-            setActivePanel(Panel.MyAnswers)
+            setActivePanel(Panel.MyAnswers);
             setAnswerEditMode(true);
-            setUserAnswersLoaded(true)
+            setUserAnswersLoaded(true);
             props.setScaleDescOpen(true);
         }
         
