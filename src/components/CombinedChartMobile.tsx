@@ -100,7 +100,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
 
     useEffect(() => {
         setChartPages(createPagedData());
-        console.log("CHARTS")
+        setCurrentPage(0);
     }, [props.chartData]);
 
     const createPagedData = (): ChartData[][] => {
