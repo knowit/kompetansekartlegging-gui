@@ -129,13 +129,13 @@ const yourAnswersStyleMobile = makeStyles({
         marginBottom: 50,
     },
     menuButtonActive: {
-        backgroundColor: KnowitColors.white,
+        backgroundColor: KnowitColors.white + '!important',
         marginRight: -2
     },
     MenuButton: {
-        // '&:hover': {
-        //     background: KnowitColors.white
-        // },
+        '&:hover': {
+            backgroundColor: 'disable'
+        },
         overflow: 'wrap',
         fontSize: 13,
         fontWeight: 'bold',
