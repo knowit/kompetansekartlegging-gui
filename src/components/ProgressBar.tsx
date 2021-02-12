@@ -19,11 +19,11 @@ const useStyles = makeStyles({
         fontFamily: 'Arial',
         fontSize: '12px',
         fontWeight: 'bold',
-        paddingRight: "10px",
-        width: '5%'
+        width: 'fit-content',
+        paddingRight: '1vw'
     },
     bar: {
-        width: '95%'
+        flexGrow: 1
     }
 });
 
