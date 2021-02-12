@@ -74,7 +74,7 @@ const overviewStyle = makeStyles({
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        overflowY: 'auto',
+        overflow: 'hidden',
         height: '100%',
     },
     hidden: {
