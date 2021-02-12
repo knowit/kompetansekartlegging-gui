@@ -49,6 +49,7 @@ const highlightsStyle = makeStyles({
     block: {
         display: 'flex',
         width: '100%',
+        minHeight: barIconSize * 4,
         flexDirection: 'column',
     },
     heading: {

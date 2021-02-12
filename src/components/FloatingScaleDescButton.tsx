@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Fab, makeStyles } from "@material-ui/core";
 import { KnowitColors } from "../styles";
 import DescriptionTable from "./DescriptionTable";
@@ -53,9 +53,8 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
 const floatingScaleDescButtonStyleMobile = makeStyles({
     fab: {
         alignSelf: "flex-end",
-        width: "fit-content",
-        marginRight: "20px",
-        marginBottom: "20px",
+        marginRight: "10px",
+        marginBottom: "10px",
         backgroundColor: KnowitColors.beige,
         position: "fixed",
         bottom: "0px",
@@ -63,9 +62,8 @@ const floatingScaleDescButtonStyleMobile = makeStyles({
         fontFamily: "Arial",
         fontStyle: "normal",
         fontWeight: "bold",
-        fontSize: "11px",
+        fontSize: "15px",
         lineHeight: "13px",
-        height: "35px",
     },
     fabMenu: {
         position: "fixed",
@@ -94,15 +92,18 @@ const floatingScaleDescButtonStyleMobile = makeStyles({
 
 type FloatingScaleDescButtonProps = {
     isMobile: boolean;
+    scaleDescOpen: boolean,
+    setScaleDescOpen: Dispatch<SetStateAction<boolean>>,
 };
 
 const FloatingScaleDescButton = ({
     isMobile,
+    scaleDescOpen,
+    setScaleDescOpen,
 }: FloatingScaleDescButtonProps) => {
     const style = isMobile
         ? floatingScaleDescButtonStyleMobile()
         : floatingScaleDescButtonStyleDesktop();
-    const [scaleDescOpen, setScaleDescOpen] = useState(false);
 
     return (
         <>
@@ -114,15 +115,28 @@ const FloatingScaleDescButton = ({
                     />
                 </div>
             )}
-            <Fab
-                variant="extended"
-                className={style.fab}
-                onClick={() =>
-                    setScaleDescOpen((scaleDescOpen) => !scaleDescOpen)
-                }
-            >
-                Skalabeskrivelse
-            </Fab>
+            {isMobile ?
+                <Fab
+                    size="small"
+                    variant="round"
+                    className={style.fab}
+                    onClick={() =>
+                        setScaleDescOpen((scaleDescOpen) => !scaleDescOpen)
+                    }
+                >
+                    ?
+                </Fab>
+            :
+                <Fab
+                    variant="extended"
+                    className={style.fab}
+                    onClick={() =>
+                        setScaleDescOpen((scaleDescOpen) => !scaleDescOpen)
+                    }
+                >
+                    SKALABESKRIVELSE
+                </Fab>
+            }
         </>
     );
 };
