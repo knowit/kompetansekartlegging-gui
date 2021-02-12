@@ -320,6 +320,8 @@ export type YourAnswerProps = {
     collapseMobileCategories: boolean,
     categoryNavRef:  React.MutableRefObject<HTMLInputElement | null>,
     scrollToTop: () => void,
+    setCollapseMobileCategories: (collapseMobileCategories: boolean) => void,
+
 };
 
 export interface AlertState {
@@ -408,6 +410,7 @@ export type ContentProps = {
     categoryNavRef:  React.MutableRefObject<HTMLInputElement | null>,
     scrollToTop: () => void,
     mobileNavRef:  React.MutableRefObject<HTMLInputElement | null>,
+    setCollapseMobileCategories: (collapseMobileCategories: boolean) => void,
     setScaleDescOpen: Dispatch<SetStateAction<boolean>>,
 };
 
