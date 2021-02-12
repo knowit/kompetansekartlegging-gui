@@ -129,7 +129,7 @@ const yourAnswersStyleMobile = makeStyles({
         marginBottom: 50,
     },
     menuButtonActive: {
-        background: KnowitColors.white,
+        backgroundColor: KnowitColors.white,
         marginRight: -2
     },
     MenuButton: {
