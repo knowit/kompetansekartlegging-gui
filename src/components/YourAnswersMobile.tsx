@@ -147,7 +147,7 @@ const yourAnswersStyleMobile = makeStyles({
     },
     formHeader: {
         display: "flex",
-        padding: "10px",
+        padding: "5px 5px 10px 5px",
         justifyContent: 'center',
     },
 });
