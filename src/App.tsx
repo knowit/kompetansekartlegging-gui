@@ -231,11 +231,14 @@ const App = () => {
 
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
-    });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const handleScroll = () => {
-        if (categoryNavRef.current?.clientHeight !== undefined) {
-            if (window.scrollY > categoryNavRef.current?.clientHeight - 56) {
+        if (categoryNavRef.current?.clientHeight !== undefined ) {
+            let menuHeight = categoryNavRef.current?.clientHeight - 56;
+            // Makes sure there is enough content to collapse; stops glitchy drag-scrolling past content
+            if (document.body.clientHeight > window.innerHeight + menuHeight && window.scrollY > menuHeight) {
                 setCollapseMobileCategories(true);
             } else {
                 setCollapseMobileCategories(false);
