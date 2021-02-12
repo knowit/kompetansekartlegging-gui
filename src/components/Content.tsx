@@ -573,21 +573,6 @@ const Content = ({...props}: ContentProps) => {
 
         return listItems;
     }
-
-
-
-    // const handleScroll = () => {
-    //     if (mobileNavRef.current?.scrollTop !== undefined && categoryNavRef.current?.clientHeight !== undefined) {
-    //         if (mobileNavRef.current?.scrollTop > categoryNavRef.current?.clientHeight-56) {
-    //             setCollapseMobileCategories(true)
-    //         } else {
-    //             setCollapseMobileCategories(false)
-    //         }
-    //     }
-    // }
-    
-
-
     
 
     const enableAnswerEditMode = () => {
@@ -628,6 +613,7 @@ const Content = ({...props}: ContentProps) => {
                         collapseMobileCategories={props.collapseMobileCategories}
                         categoryNavRef={props.categoryNavRef}
                         scrollToTop={props.scrollToTop}
+                        setCollapseMobileCategories={props.setCollapseMobileCategories}
                     />
                 );
             case Panel.GroupLeader:

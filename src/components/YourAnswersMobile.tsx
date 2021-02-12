@@ -133,9 +133,9 @@ const yourAnswersStyleMobile = makeStyles({
         marginRight: -2
     },
     MenuButton: {
-        '&:hover': {
-            background: KnowitColors.white
-        },
+        // '&:hover': {
+        //     background: KnowitColors.white
+        // },
         overflow: 'wrap',
         fontSize: 13,
         fontWeight: 'bold',
@@ -208,6 +208,10 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
     useEffect(() => {
         console.log(props.collapseMobileCategories)
     },[props.collapseMobileCategories])
+
+    useEffect(() => {
+        props.setCollapseMobileCategories(false)
+    },[])
 
 
     return (

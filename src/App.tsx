@@ -246,6 +246,7 @@ const App = () => {
                         categoryNavRef={categoryNavRef}
                         mobileNavRef={mobileNavRef}
                         scrollToTop={scrollToTopMobile}
+                        setCollapseMobileCategories={setCollapseMobileCategories}
                     />
                     <FloatingScaleDescButton isMobile={isMobile}/>
                 </Fragment>
