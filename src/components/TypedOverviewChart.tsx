@@ -10,28 +10,74 @@ import { KnowitColors } from '../styles';
 const graphStyle = makeStyles({
     resultDiagramContainer: {
         width: '100%',
-        paddingTop: 30
+        paddingTop: 20
     },
     resultDiagramContainerMobile: {
         width: '90%',
     },
-    chartButton: {
-        position: 'absolute',
-        zIndex: 5,
-        top: '40px',
-        left: '100px',
-        width: '80px',
-        backgroundColor: KnowitColors.beige,
+    chartButtonMobile: {
+        position: 'fixed',
+        zIndex: 101, //Navbar has very high z-index
+        height: '30px',
+        borderRadius: '15px',
+        top: '15px',
+        right: '30px',
+        padding: '10px',
+        backgroundColor: KnowitColors.white,
         color: KnowitColors.darkBrown,
         fontWeight: 'bold',
-        fontSize: '12px'
+        fontSize: '14px',
+        '&:hover': {
+            backgroundColor: KnowitColors.white, 
+        }
+    },
+    chartButton: {
+        margin: '0px 20px 0px 20px',
+        width: '90px',
+        height: '30px',
+        borderRadius: '15px',
+        backgroundColor: KnowitColors.white,
+        color: KnowitColors.darkBrown,
+        fontWeight: 'normal',
+        fontSize: '14px',
+        border: 2,
+        borderStyle: 'solid',
+        borderColor: KnowitColors.lightGreen
+    },
+    chartButtonActive: {
+        margin: '0px 20px 0px 20px',
+        width: '90px',
+        height: '30px',
+        borderRadius: '15px',
+        backgroundColor: KnowitColors.lightGreen,
+        color: KnowitColors.darkBrown,
+        fontWeight: 'bold',
+        fontSize: '14px',
+        '&:hover': {
+            backgroundColor: KnowitColors.lightGreen, 
+        }
+    },
+    header: {
+        padding: '0px 0px 20px 30px',
+        display: 'flex',
+        alignItems: 'center',
+        maxWidth: 1200,
+        fontFamily: 'Arial',
+        fontSize: '22px',
+        fontWeight: 'bold'
+    },
+    buttonGroup: {
+        display: 'flex',
+        flexGrow: 1,
+        maxWidth: 900,
+        justifyContent: 'center'
     }
 });
 
 enum OverviewType {
-    AVERAGE = 'Snitt',
-    MEDIAN = 'Median',
-    HIGHEST = 'Topp'
+    AVERAGE = 'SNITT',
+    MEDIAN = 'MEDIAN',
+    HIGHEST = 'TOPP'
 }
 
 export default function TypedOverviewChart({...props}: ResultDiagramProps) {
@@ -167,10 +213,10 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
     );
 
 
-    const [view, setView] = React.useState(OverviewType.AVERAGE);
-    const handleChange = (event: React.UIEvent<HTMLElement>, nextType: OverviewType) => {
-      setView(nextType);
-    };
+    // const [view, setView] = React.useState(OverviewType.AVERAGE);
+    // const handleChange = (event: React.UIEvent<HTMLElement>, nextType: OverviewType) => {
+    //   setView(nextType);
+    // };
   
     const cycleChartType = () => {
         switch(currentType) {
@@ -185,20 +231,42 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
         }
     }
 
+    const selectChartType = (type: OverviewType) => {
+        setOverviewType(type);
+    }
+
+    const getButton = (type: OverviewType): JSX.Element => {
+        return (
+            <Button
+                className={(currentType === type) ? style.chartButtonActive : style.chartButton}
+                onClick={() => { selectChartType(type) }}
+            >
+                {type}
+            </Button>
+        )
+    }
+
     return (
         props.isMobile ?
             <div className={style.resultDiagramContainerMobile}>
-                <CombinedChartMobile chartData={chartData}/>
-            </div> 
-        :
-            <div className={style.resultDiagramContainer}>
                 <Button
-                    className={style.chartButton}
-                    variant='outlined'
+                    className={style.chartButtonMobile}
                     onClick={() => { cycleChartType() }}
                 >
                     {currentType}
                 </Button>
+                <CombinedChartMobile chartData={chartData}/>
+            </div> 
+        :
+            <div className={style.resultDiagramContainer}>
+                <div className={style.header}>
+                    OVERSIKT
+                    <div className={style.buttonGroup}>
+                        {getButton(OverviewType.HIGHEST)}
+                        {getButton(OverviewType.AVERAGE)}
+                        {getButton(OverviewType.MEDIAN)}
+                    </div>
+                </div>
                 <CombinedChart chartData={chartData}/>
             </div>
     );
