@@ -1,6 +1,7 @@
 import { MenuButton, Panel } from "./components/Content";
 import { AlertType } from "./components/AlertNotification";
 import { Dispatch, SetStateAction } from "react";
+import { OverviewType } from "./components/TypedOverviewChart";
 
 export type AnswerData = {
     questionId: string,
@@ -422,6 +423,8 @@ export type ChartData = {
 
 export type CombinedChartProps = {
     chartData: ChartData[],
+    type?: OverviewType,
+    topSubjects?: Map<string, {kTop: string, mTop: string}>,
     className?: string
 };
 

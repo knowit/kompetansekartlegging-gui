@@ -74,7 +74,7 @@ const graphStyle = makeStyles({
     }
 });
 
-enum OverviewType {
+export enum OverviewType {
     AVERAGE = 'SNITT',
     MEDIAN = 'MEDIAN',
     HIGHEST = 'TOPP'
@@ -85,6 +85,7 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
 
     const [answerData, setAnswerData] = useState<ResultData[]>([]);
     const [currentType, setOverviewType] = useState<OverviewType>(OverviewType.HIGHEST);
+    const [topSubjects, setTopSubjects] = useState<Map<string, {kTop: string, mTop: string}>>(new Map());
     
     useEffect(() => {
         recalculate();
@@ -183,14 +184,22 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
     const createHighestData = (): ResultData[] => {
         let ansData: ResultData[] = [];
         props.questionAnswers.forEach((questionAnswers, category) => {
+            let kTop: string = "";
+            let mTop: string = "";
             let reduced = questionAnswers
                 .reduce<{maxKnowledge: number, maxMotivation: number}>((acc, cur): {maxKnowledge: number, maxMotivation: number} => {
-                    acc.maxKnowledge = Math.max(acc.maxKnowledge, cur.knowledge);
-                    acc.maxMotivation = Math.max(acc.maxMotivation, cur.motivation);
+                    if (acc.maxKnowledge < cur.knowledge) {
+                        acc.maxKnowledge = cur.knowledge;
+                        kTop = cur.topic;
+                    }
+                    if (acc.maxMotivation < cur.motivation) {
+                        acc.maxMotivation = cur.motivation;
+                        mTop = cur.topic;
+                    }
                     return acc;
                 }, {
-                    maxKnowledge: 0,
-                    maxMotivation: 0
+                    maxKnowledge: -1,
+                    maxMotivation: -1
                 })
             ;
             ansData.push({
@@ -198,6 +207,7 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
                 aggKnowledge: reduced.maxKnowledge,
                 aggMotivation: reduced.maxMotivation
             });
+            topSubjects.set(category, {kTop: kTop, mTop: mTop});
         });
         return ansData;
     };
@@ -255,7 +265,7 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
                 >
                     {currentType}
                 </Button>
-                <CombinedChartMobile chartData={chartData}/>
+                <CombinedChartMobile chartData={chartData} type={currentType} topSubjects={topSubjects}/>
             </div> 
         :
             <div className={style.resultDiagramContainer}>
@@ -267,7 +277,7 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
                         {getButton(OverviewType.MEDIAN)}
                     </div>
                 </div>
-                <CombinedChart chartData={chartData}/>
+                <CombinedChart chartData={chartData} type={currentType} topSubjects={topSubjects}/>
             </div>
     );
 };
