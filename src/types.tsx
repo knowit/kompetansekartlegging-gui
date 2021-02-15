@@ -80,8 +80,8 @@ export type CalculationData = {
 
 export type ResultData = {
     category: string,
-    averageKnowledge: number,
-    averageMotivation: number
+    aggKnowledge: number,
+    aggMotivation: number
 };
 
 export type AnsweredQuestion = {

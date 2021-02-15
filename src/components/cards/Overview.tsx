@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { KnowitColors } from '../../styles';
 import { OverviewProps } from '../../types';
-import ResultDiagram from '../ResultDiagram';
+import TypedOverviewChart from '../TypedOverviewChart';
 import Highlights from '../Highlights';
 import { Panel } from '../Content';
 
@@ -95,7 +95,7 @@ export const Overview = ({...props}: OverviewProps) => {
         props.userAnswersLoaded ? 
             props.isMobile ? 
                 <div className={props.activePanel === Panel.Overview ? styles.mobile : styles.hidden}>
-                    <ResultDiagram isMobile={props.isMobile} questionAnswers={props.questionAnswers} categories={props.categories} />
+                    <TypedOverviewChart isMobile={props.isMobile} questionAnswers={props.questionAnswers} categories={props.categories} />
                     <Highlights isMobile={props.isMobile} questionAnswers={props.questionAnswers} />
                 </div> 
             :
@@ -104,7 +104,7 @@ export const Overview = ({...props}: OverviewProps) => {
             //     <div className={props.commonCardProps.active ? styles.radarPlot : styles.empty}>
             <div className={clsx(styles.root, props.activePanel === Panel.Overview ? styles.open : styles.closed)}>
                 <div className={props.activePanel === Panel.Overview ? styles.radarPlot : styles.empty}>
-                    <ResultDiagram isMobile={props.isMobile} questionAnswers={props.questionAnswers} categories={props.categories} />
+                    <TypedOverviewChart isMobile={props.isMobile} questionAnswers={props.questionAnswers} categories={props.categories} />
                     <div className={styles.highlightsContainer}>
                         <Highlights isMobile={props.isMobile} questionAnswers={props.questionAnswers} />
                     </div>
