@@ -76,7 +76,7 @@
             "qid": ""
         },
         {
-            "categoryText": "Mobil",
+            "categoryText": "Mo",
             "topic": "iOS",
             "text": "Realm, UIKit, SwiftUI, Best practice (bruksmønster, custom/default-components, etc.)",
             "index": null,
@@ -85,14 +85,14 @@
         {
             "categoryText": "Frontend",
             "topic": "React",
-            "text": "",
+            "text": "Rammeverk",
             "index": null,
             "qid": ""
         },
         {
             "categoryText": "Frontend",
             "topic": "Vue",
-            "text": "",
+            "text": "Rammeverk",
             "index": null,
             "qid": ""
         }

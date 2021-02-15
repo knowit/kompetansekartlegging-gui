@@ -42,12 +42,12 @@ type FormJSON = {
     ]
 }
 
-type FormType = {
-    topic: String;
-    category: String;
-    text: String;
-};
-const formDef: FormType[] = require("./Katalog - 2020 - Gammel.json");
+// type FormType = {
+//     topic: String;
+//     category: String;
+//     text: String;
+// };
+// const formDef: FormType[] = require("./Katalog - 2020 - Gammel.json");
 
 const appStyle = makeStyles({
     root: {
