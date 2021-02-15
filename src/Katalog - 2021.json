@@ -1,0 +1,100 @@
+{
+	"Categories": [
+        {
+            "text": "Design",
+            "description": "Design i Objectnet dekker et stort område som spenner fra produkt- og tjenestedesign gjennom interaksjonsdesign (IxD), brukeropplevelse (UX), grafisk design, designledelse og kunnskap om praktisk bruk av designmetodikk.",
+            "index": null
+        },
+        {
+            "text": "Mobil",
+            "description": "Utvikling av moderne native og kryssplattform apper til Android- og iOS-enheter.",
+            "index": null
+        },
+        {
+            "text": "Frontend",
+            "description": "Det som trengs for å få et HTML-basert brukergrensesnitt til å fungere – og å briljere.",
+            "index": null
+        },
+        {
+            "text": "Backend",
+            "description": "Fagområdet for backend er et kjerneområde i vår virksomhet. Funksjonaliteten i neste generasjons tjenestetilbud samt viktige fagsystemer lener seg på et solid grep om utvikling av funksjonalitet innenfor dette området.",
+            "index": null
+        },
+        {
+            "text": "AI og Data Engineering",
+            "description": "Maskinlæring og datadrevne IT- løsninger.",
+            "index": null
+        },
+        {
+            "text": "Cloud og DevOps",
+            "description": "Cloud, DevOps og Docker/Kubernetes. Erfaring med de mest utbredte skytilbyderne og deres produkter. Kunnskap om produkter, teknologier og arkitektur i vanlig bruk. Erfaring med utvikling og drifting av applikasjoner på en skytjeneste.",
+            "index": null
+        },
+        {
+            "text": "IoT og Hardware",
+            "description": "Bruk og design av fysiske, digitale enheter. Fysisk produksjon og digitalt håndverk.",
+            "index": null
+        },
+        {
+            "text": "Smidig metodikk og produktledelse",
+            "description": "Smidig metodikk og produktledelse",
+            "index": null
+        },
+        {
+            "text": "Salg og forretningsutvikling",
+            "description": "Rådgivning, analyse og salgsarbeid, kontraktshåndtering, tekniske tekster etc.",
+            "index": null
+        }
+    ],
+	"Questions": [
+        {
+            "categoryText": "Design",
+            "topic": "Tjenestedesign",
+            "text": "Her mener vi Tjenestedesign som en overordnet tilnærming for utvikling av helhetlige tjenester",
+            "index": null,
+            "qid": ""
+        },
+        {
+            "categoryText": "Design",
+            "topic": "Produktutvikling",
+            "text": "Her mener vi helheten av Produktutvikling som fagområde med forståelse av alle relevente underområder",
+            "index": null,
+            "qid": ""
+        },
+        {
+            "categoryText": "Design",
+            "topic": "Designledelse og metodikk",
+            "text": "Hvor godt kjenner du designledelse og -metodikk på overordnet og helhetlig nivå",
+            "index": null,
+            "qid": ""
+        },
+        {
+            "categoryText": "Mobil",
+            "topic": "Android",
+            "text": "Lifecycle, LiveData, ViewModel, Room, Dagger, Jetpack, Best practice (bruksmønster, custom/default-components, etc.)",
+            "index": null,
+            "qid": ""
+        },
+        {
+            "categoryText": "Mobil",
+            "topic": "iOS",
+            "text": "Realm, UIKit, SwiftUI, Best practice (bruksmønster, custom/default-components, etc.)",
+            "index": null,
+            "qid": ""
+        },
+        {
+            "categoryText": "Frontend",
+            "topic": "React",
+            "text": "",
+            "index": null,
+            "qid": ""
+        },
+        {
+            "categoryText": "Frontend",
+            "topic": "Vue",
+            "text": "",
+            "index": null,
+            "qid": ""
+        }
+    ]
+}
