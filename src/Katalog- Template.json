@@ -1,0 +1,18 @@
+{
+	"Categories": [
+        {
+            "text": "",
+            "description": "",
+            "index": "number | null"
+        }
+    ],
+	"Questions": [
+        {
+            "categoryText": "",
+            "topic": "",
+            "text": "",
+            "index": "number | null",
+            "qid": "string | null"
+        }
+    ]
+}
