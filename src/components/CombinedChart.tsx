@@ -77,7 +77,6 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
     const RenderCustomTooltip = (classes: any) => {
         let isTop = (props.type == OverviewType.HIGHEST && props.topSubjects);
         let topSubjects = props.topSubjects;
-        let chartData = props.chartData;
         return ({...props}: ToolTipProps) => {
             if (props.active && props.payload) {
                 let knowledgeValue = props.payload[0]?.payload.valueKnowledge[1].toFixed(1);
