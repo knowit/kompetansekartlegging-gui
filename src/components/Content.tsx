@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert, Question, Category, QuestionAnswer, SliderValues } from '../types';
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert, Question, Category, QuestionAnswer, SliderValues, FormDefinitionByCreatedAtPaginated, FormDefinitionPaginated } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
@@ -164,15 +164,38 @@ const Content = ({...props}: ContentProps) => {
     }
     
     const fetchLastFormDefinition = async () => {
-        let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAtt, customQueries.formByCreatedAtInputConsts);
-        if (currentForm.data) {
-            let formDef = currentForm.data.formByCreatedAt.items[0];
-            // console.log("FormDef:", formDef);
+        let nextToken: string | null = null;
+        let questions: Question[] = [];
+        let formDefPaginated: FormDefinitionPaginated = undefined;
+        do {
+            let currentForm: any = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(customQueries.formByCreatedAtPaginated, {...customQueries.formByCreatedAtInputConsts, nextToken: nextToken});
+            if (currentForm.data) {
+                if (typeof formDefPaginated === 'undefined') {
+                    formDefPaginated = currentForm.data.formByCreatedAt.items[0];
+                    questions = currentForm.data.formByCreatedAt.items[0].questions.items;
+                } else {
+                    questions = questions.concat(currentForm.data.formByCreatedAt.items[0].questions.items);
+                }
+            }
+            if (currentForm.data) nextToken = currentForm.data.formByCreatedAt.items[0].questions.nextToken;
+        } while (nextToken);
+        let formDef: FormDefinition;
+        if (formDefPaginated)
+            formDef = {
+                id: formDefPaginated.id,
+                createdAt: formDefPaginated.createdAt,
+                questions: {
+                    items: questions
+                }
+            };
+        if (formDef) {
+            console.log("FormDef:", formDef);
             setFormDefinition(formDef);
             let quAns = createQuestionAnswers(formDef);
             let userAnswers = await getUserAnswers();
             setFirstAnswers(quAns, userAnswers);
-            // console.log("Completed questuions");
+        } else {
+            console.log("Error loading form definition!");
         }
     };
     

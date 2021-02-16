@@ -136,9 +136,9 @@ export type FormDefinition = {
     id: String,
     createdAt: string,
     questions: {
-        items: [Question]
+        items: Question[]
     }
-};
+} | undefined;
 
 export type FormDefinitionByCreatedAt = {
     formByCreatedAt: {
@@ -148,6 +148,23 @@ export type FormDefinitionByCreatedAt = {
         ]
     }
 };
+
+export type FormDefinitionByCreatedAtPaginated = {
+    formByCreatedAt: {
+        items: [
+            FormDefinitionPaginated
+        ]
+    }
+};
+
+export type FormDefinitionPaginated = {
+    id: String,
+    createdAt: string,
+    questions: {
+        items: [Question],
+        nextToken: string
+    }
+} | undefined;
 
 export type UserFormByCreatedAt = {
     userFormByCreatedAt: {
