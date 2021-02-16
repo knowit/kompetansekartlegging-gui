@@ -114,6 +114,21 @@ const App = () => {
         // if(user) console.log("Username: ", user.username);
     }, [user]);
 
+    // hide body overflow to avoid doublescroll
+    const avoidBodyScrollWhenScaleDescOpenMobile = () => {
+        if (scaleDescOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+
+    useEffect(() => {
+        if (isMobile) {
+            avoidBodyScrollWhenScaleDescOpenMobile()
+        }
+    }, [scaleDescOpen])
+
     const sendFormDefinition = async () => {
         //Create a new formDefinition and get its id
         let formId = "";
