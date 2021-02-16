@@ -150,6 +150,11 @@ const yourAnswersStyleMobile = makeStyles({
         padding: "5px 5px 10px 5px",
         justifyContent: 'center',
     },
+    categoryDescriptionForm: {
+        margin: "5px 5px 5px 15px",
+        fontSize: 14,
+        fontStyle: 'italic'
+    }
 });
 
 
@@ -205,6 +210,15 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
         return buttons;
     }
 
+    const getCategoryDescription = () : string => {
+        // let categoryDesc = props.formDefinition?.questions.items.find(
+        //     q => q.category.text === props.activeCategory
+        // )
+        // return categoryDesc?.category.description ?? ""
+
+        return 'Design i Objectnet dekker et stort område som spenner fra produkt- og tjenestedesign gjennom interaksjonsdesign (IxD), brukeropplevelse (UX), grafisk design, designledelse og kunnskap om praktisk bruk av designmetodikk.	'
+    }
+
     useEffect(() => {
         console.log(props.collapseMobileCategories)
     },[props.collapseMobileCategories])
@@ -257,6 +271,7 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                     <div className={style.formHeader}>
                         <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
                     </div>
+                    <div className={style.categoryDescriptionForm}>{getCategoryDescription()}</div>
                     <Form 
                         {...props}
                         isMobile={true}
