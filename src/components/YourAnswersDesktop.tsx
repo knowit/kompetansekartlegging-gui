@@ -139,6 +139,18 @@ const yourAnwersStyle = makeStyles({
     categoryTitle: {
         fontSize: 22,
         fontWeight: "bold",
+    },
+    categoryDescription: {
+        margin: "30px 0px 30px 40px",
+        maxWidth: '60%',
+        minWidth: 800,
+        fontStyle: 'italic'
+    },
+    categoryDescriptionForm: {
+        margin: "0px 0px 10px 40px",
+        maxWidth: '60%',
+        minWidth: 800,
+        fontStyle: 'italic'
     }
 });
 
@@ -149,6 +161,13 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
 
     const scrollToTop = () => {
         scrollRef.current?.scroll(0,0);
+    }
+
+    const getCategoryDescription = () : string => {
+        let categoryDesc = props.formDefinition?.questions.items.find(
+            q => q.category.text === props.activeCategory
+        )
+        return categoryDesc?.category.description ?? ""
     }
 
     return (
@@ -162,6 +181,8 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                         </div>
                         <Button className={style.editButton} onClick={() => props.enableAnswerEditMode()}>Fyll ut</Button>
                     </div>
+                    <div className={style.categoryDescription}>{getCategoryDescription()}</div>
+
                     <div className={style.graphHolder}>
                         <AnswerDiagram questionAnswers={props.questionAnswers} activeCategory={props.activeCategory} isMobile={false}/>
                     </div>
@@ -173,7 +194,11 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                             {props.activeCategory}
                         </h2>
                     </div>
+
+
                     <div className={clsx(props.answerEditMode ? "" : style.hidden, style.form)} ref={scrollRef} >
+                        <div className={style.categoryDescriptionForm}>{getCategoryDescription()}</div>
+
                         <Form 
                             {...props}
                             scrollToTop={scrollToTop}
