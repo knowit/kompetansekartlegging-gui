@@ -19,14 +19,35 @@ awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 Amplify.configure(awsconfig);
 
-const showFormDefSendButton = false;
+const showFormDefSendButton = true;
+const currentFormJSON: FormJSON = require("./catalogs/Katalog - 2021.json");
 
-type FormType = {
-    topic: String;
-    category: String;
-    text: String;
-};
-const formDef: FormType[] = require("./form3.json");
+//JSON structure:
+type FormJSON = {
+    Categories: [
+        {
+            text: string,           //Name of the category
+            description: string,    //Description of the category, shown above all questions
+            index: number | null    //Used to sort the category, if null its sorted alphabetically last
+        }
+    ],
+    Questions: [
+        {
+            categoryText: string,   //The text of the category (use the strucure over) to link the question with. If text is typed wrong, the question will be ignored (for now atleast)
+            topic: string,          //Short worded description of the question (Java, C#, React...)
+            text: string,           //Description text for the specific question
+            index: number | null,   //Used to sort the question, if null its sorted alphabetically last
+            qid: string | null      //Used to link 2 categories for future history if a category is updated
+        }
+    ]
+}
+
+// type FormType = {
+//     topic: String;
+//     category: String;
+//     text: String;
+// };
+// const formDef: FormType[] = require("./Katalog - 2020 - Gammel.json");
 
 const appStyle = makeStyles({
     root: {
@@ -93,6 +114,90 @@ const App = () => {
     }, [user]);
 
     const sendFormDefinition = async () => {
+        //Create a new formDefinition and get its id
+        let formId = "";
+        try {
+            formId = (
+                await helper.callGraphQL<{ createFormDefinition: { id: String } }>(
+                    mutations.createFormDefinition,
+                    qustomQueries.createFormDefinitionInputConsts
+                )
+            ).data?.createFormDefinition.id as string || "";
+            console.log("Created form definition with id: ", formId);
+        } catch (err) {
+            console.error(err);
+            return;
+        }
+        
+        //Create the categories and collect the results (id, text)
+        let categories: Category[] = [];
+        for(const category of currentFormJSON.Categories) {
+            const input = {
+                text: category.text,
+                description: category.description,
+                index: category.index
+            };
+            const result = (
+                await helper.callGraphQL<{ createCategory: Category }>(
+                    mutations.createCategory,
+                    { input: input }
+                )
+            ).data?.createCategory;
+            if (result) {
+                console.log("Created categor: ", { category: category, input: input });
+                categories.push(result);
+            } else console.error("Failed to create category: ", { category: category, input: input })
+        }
+        
+        //Create questions mapping to the correct category
+        console.log("Start creating questions, wait for them to complete before reloading site....");
+        for(const question of currentFormJSON.Questions) {
+            const input = {
+                topic: question.topic,
+                text: question.text,
+                categoryID: categories.find(cat => cat.text === question.categoryText)?.id,
+                formDefinitionID: formId,
+                index: question.index,
+                qid: question.qid
+            };
+            if (input.categoryID && input.formDefinitionID) {
+                const newQuestion = await helper.callGraphQL(
+                    mutations.createQuestion,
+                    { input: input }
+                );
+                console.log("Created question: ", newQuestion);
+            } else {
+                console.error("ERROR: Missing required data for question: ", input);
+            }
+        }
+        console.log("Question creation completed!");
+        
+        /* OLD (LAST) WAY OF SENDING FORMDEF
+        
+        for (let i = 0; i < formDef.length; i++) {
+            let input = {
+                categoryID: categories.find(
+                    (cat) => cat.text === formDef[i].category
+                )?.id,
+                formDefinitionID: formId,
+                topic: formDef[i].topic,
+                text: formDef[i].text,
+            };
+            if (input.categoryID && input.formDefinitionID) {
+                let newQuestion = await helper.callGraphQL(
+                    mutations.createQuestion,
+                    { input: input }
+                );
+                console.log("Created question: ", newQuestion);
+            } else {
+                console.log(
+                    "ERROR: Missing required data for question: ",
+                    input
+                );
+            }
+        }
+        console.log("Question creation completed!");
+        
         // Get all categories, create categories that dont exists, create form def
 
         let categories: Category[] =
@@ -128,15 +233,9 @@ const App = () => {
             if (newCat) categories.push(newCat);
         }
         console.log("Total categories: ", categories);
-
-        let formId = (
-            await helper.callGraphQL<{ createFormDefinition: { id: String } }>(
-                mutations.createFormDefinition,
-                qustomQueries.createFormDefinitionInputConsts
-            )
-        ).data?.createFormDefinition.id;
-        console.log("Created form definition with id: ", formId);
-
+        
+        
+        
         console.log(
             "Start creating questions, wait for them to complete before reloading site...."
         );
@@ -163,6 +262,7 @@ const App = () => {
             }
         }
         console.log("Question creation completed!");
+        */
     };
 
     const deleteUserData = async () => {
