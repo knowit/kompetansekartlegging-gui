@@ -1,100 +1,1108 @@
 {
-	"Categories": [
+    "Categories":[
         {
-            "text": "Design",
-            "description": "Design i Objectnet dekker et stort område som spenner fra produkt- og tjenestedesign gjennom interaksjonsdesign (IxD), brukeropplevelse (UX), grafisk design, designledelse og kunnskap om praktisk bruk av designmetodikk.",
-            "index": null
+            "text":"Design",
+            "description":"Design i Objectnet dekker et stort område som spenner fra produkt- og tjenestedesign gjennom interaksjonsdesign (IxD), brukeropplevelse (UX), grafisk design, designledelse og kunnskap om praktisk bruk av designmetodikk.",
+            "index":1
         },
         {
-            "text": "Mobil",
-            "description": "Utvikling av moderne native og kryssplattform apper til Android- og iOS-enheter.",
-            "index": null
+            "text":"Mobil",
+            "description":"Utvikling av moderne native og kryssplattform apper til Android- og iOS-enheter.",
+            "index":2
         },
         {
-            "text": "Frontend",
-            "description": "Det som trengs for å få et HTML-basert brukergrensesnitt til å fungere – og å briljere.",
-            "index": null
+            "text":"Frontend",
+            "description":"Det som trengs for å få et HTML-basert brukergrensesnitt til å fungere – og å briljere.",
+            "index":3
         },
         {
-            "text": "Backend",
-            "description": "Fagområdet for backend er et kjerneområde i vår virksomhet. Funksjonaliteten i neste generasjons tjenestetilbud samt viktige fagsystemer lener seg på et solid grep om utvikling av funksjonalitet innenfor dette området.",
-            "index": null
+            "text":"Backend",
+            "description":"Fagområdet for backend er et kjerneområde i vår virksomhet. Funksjonaliteten i neste generasjons tjenestetilbud samt viktige fagsystemer lener seg på et solid grep om utvikling av funksjonalitet innenfor dette området.",
+            "index":4
         },
         {
-            "text": "AI og Data Engineering",
-            "description": "Maskinlæring og datadrevne IT- løsninger.",
-            "index": null
+            "text":"AI og Data Engineering",
+            "description":"Maskinlæring og datadrevne IT- løsninger.",
+            "index":5
         },
         {
-            "text": "Cloud og DevOps",
-            "description": "Cloud, DevOps og Docker/Kubernetes. Erfaring med de mest utbredte skytilbyderne og deres produkter. Kunnskap om produkter, teknologier og arkitektur i vanlig bruk. Erfaring med utvikling og drifting av applikasjoner på en skytjeneste.",
-            "index": null
+            "text":"Cloud og DevOps",
+            "description":"Cloud, DevOps og Docker/Kubernetes. Erfaring med de mest utbredte skytilbyderne og deres produkter. Kunnskap om produkter, teknologier og arkitektur i vanlig bruk. Erfaring med utvikling og drifting av applikasjoner på en skytjeneste.",
+            "index":6
         },
         {
-            "text": "IoT og Hardware",
-            "description": "Bruk og design av fysiske, digitale enheter. Fysisk produksjon og digitalt håndverk.",
-            "index": null
+            "text":"IoT og Hardware",
+            "description":"Bruk og design av fysiske, digitale enheter. Fysisk produksjon og digitalt håndverk.",
+            "index":7
         },
         {
-            "text": "Smidig metodikk og produktledelse",
-            "description": "Smidig metodikk og produktledelse",
-            "index": null
+            "text":"Smidig metodikk og produktledelse",
+            "description":"Smidig metodikk og produktledelse",
+            "index":8
         },
         {
-            "text": "Salg og forretningsutvikling",
-            "description": "Rådgivning, analyse og salgsarbeid, kontraktshåndtering, tekniske tekster etc.",
-            "index": null
+            "text":"Salg og forretningsutvikling",
+            "description":"Rådgivning, analyse og salgsarbeid, kontraktshåndtering, tekniske tekster etc.",
+            "index":9
         }
     ],
-	"Questions": [
+    "Questions":[
         {
-            "categoryText": "Design",
-            "topic": "Tjenestedesign",
-            "text": "Her mener vi Tjenestedesign som en overordnet tilnærming for utvikling av helhetlige tjenester",
-            "index": null,
-            "qid": ""
+            "categoryText":"Design",
+            "topic":"Tjenestedesign",
+            "text":"Her mener vi Tjenestedesign som en overordnet tilnærming for utvikling av helhetlige tjenester",
+            "index":1,
+            "qid":""
         },
         {
-            "categoryText": "Design",
-            "topic": "Produktutvikling",
-            "text": "Her mener vi helheten av Produktutvikling som fagområde med forståelse av alle relevente underområder",
-            "index": null,
-            "qid": ""
+            "categoryText":"Design",
+            "topic":"Produktutvikling",
+            "text":"Her mener vi helheten av Produktutvikling som fagområde med forståelse av alle relevente underområder",
+            "index":2,
+            "qid":""
         },
         {
-            "categoryText": "Design",
-            "topic": "Designledelse og metodikk",
-            "text": "Hvor godt kjenner du designledelse og -metodikk på overordnet og helhetlig nivå",
-            "index": null,
-            "qid": ""
+            "categoryText":"Design",
+            "topic":"Designledelse og metodikk",
+            "text":"Hvor godt kjenner du designledelse og -metodikk på overordnet og helhetlig nivå",
+            "index":3,
+            "qid":""
         },
         {
-            "categoryText": "Mobil",
-            "topic": "Android",
-            "text": "Lifecycle, LiveData, ViewModel, Room, Dagger, Jetpack, Best practice (bruksmønster, custom/default-components, etc.)",
-            "index": null,
-            "qid": ""
+            "categoryText":"Design",
+            "topic":"Interaksjonsdesign",
+            "text":"Interaksjonsdesign er et praktisk fagområde som inkluderer utvikling og design av brukergrensesnitt, i alle former og metodikk for å brukerteste en designs egnethet. mv.",
+            "index":4,
+            "qid":""
         },
         {
-            "categoryText": "Mo",
-            "topic": "iOS",
-            "text": "Realm, UIKit, SwiftUI, Best practice (bruksmønster, custom/default-components, etc.)",
-            "index": null,
-            "qid": ""
+            "categoryText":"Design",
+            "topic":"Wireframes og mockups",
+            "text":"Utvikling og bruk av wireframes og mockups som generelt verktøy for utvikling av interaksjonsdesign og grafisk design",
+            "index":5,
+            "qid":""
         },
         {
-            "categoryText": "Frontend",
-            "topic": "React",
-            "text": "Rammeverk",
-            "index": null,
-            "qid": ""
+            "categoryText":"Design",
+            "topic":"Grafisk design",
+            "text":"grafisk, og visuell, design er bruken av verktøy og designkompetanse for å faktisk gi form, farge og innhold til den konkrete utformingen av en tjeneste",
+            "index":6,
+            "qid":""
         },
         {
-            "categoryText": "Frontend",
-            "topic": "Vue",
-            "text": "Rammeverk",
-            "index": null,
-            "qid": ""
+            "categoryText":"Design",
+            "topic":"Tegneferdigheter",
+            "text":"Hvor flink er du til å tegne, faktisk skisse og tegne ut noe basert på en abstrakt idé eller beskrivelse",
+            "index":7,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Figma",
+            "text":"Hvor god er du i Figma eller tilsvarende verktøy",
+            "index":8,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Sketch",
+            "text":"Hvor god er du i Sketch eller tilsvarende verktøy",
+            "index":9,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Adobe illustrator",
+            "text":"Hvor god er du i Adobe Illustrator eller tilsvarende verktøy",
+            "index":10,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Adobe Photoshop",
+            "text":"Hvor god er du i Adobe Photoshop eller tilsvarende verktøy",
+            "index":11,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Andre tilsvarende verktøy",
+            "text":"Hvor godt kjenner du et eller flere andre verktøy som kan komplettere eller erstatte verktøyene over?",
+            "index":12,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Universell utforming, generelt",
+            "text":"Her mener vi kompetanse innen tilrettelegging, best praksis og generelle krav for tilgjengelige tjenester",
+            "index":13,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Universell utforming, WCAG 2.x",
+            "text":"Her mener vi kompetanse og kunnskap om WCAG 2.x standarden konkret, kravene dens og retningslinjene som følger",
+            "index":14,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Design Thinking metodikk",
+            "text":"Hvor godt kjenner du Design Thinking som metodikk, tilnærming og designrammeverk",
+            "index":15,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Design Sprint metodikk",
+            "text":"Hvor godt kjenner du Design Sprints som metodikk, tilnærming og idé-verktøy",
+            "index":16,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Double Diamond metodikk",
+            "text":"Hvor godt kjenner du Double Diamond, og tilsvarende metoder som metodikk og tilnærming",
+            "index":17,
+            "qid":""
+        },
+        {
+            "categoryText":"Design",
+            "topic":"Brukertesting generelt",
+            "text":"Hvor godt kjenner du brukerinvolvering og brukertesting som metode på generelt grunnlag",
+            "index":18,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Android",
+            "text":"Lifecycle, LiveData, ViewModel, Room, Dagger, Jetpack, Best practice (bruksmønster, custom/default-components, etc.)",
+            "index":19,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"iOS",
+            "text":"Realm, UIKit, SwiftUI, Best practice (bruksmønster, custom/default-components, etc.)",
+            "index":20,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Flutter",
+            "text":"Dart, BLOC-pattern",
+            "index":21,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"React Native",
+            "text":"",
+            "index":22,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Xamarin",
+            "text":"",
+            "index":23,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Arkitektur",
+            "text":"MVVM, MVC, MVP, VIPER",
+            "index":24,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Nettverk",
+            "text":"OkHttp, Retrofit, Swift Network, HttpsUrlConnection",
+            "index":25,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"REST-API-integrasjon",
+            "text":"Objectmapping",
+            "index":26,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Sikkerhet",
+            "text":"Biometrics, kryptering, keystore/keychain, nettverk",
+            "index":27,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Testing",
+            "text":"Automatiske UI tester, Unit-tester",
+            "index":28,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Kotlin",
+            "text":"Programmeringsspråket Kotlin for apputvikling",
+            "index":29,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Swift",
+            "text":"Programmeringsspråket Swift for apputvikling",
+            "index":30,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"Java",
+            "text":"Programmeringsspråket Java for apputvikling",
+            "index":31,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"ObjectiveC",
+            "text":"Programmeringsspråket ObjectiveC for apputvikling",
+            "index":32,
+            "qid":""
+        },
+        {
+            "categoryText":"Mobil",
+            "topic":"PWA",
+            "text":"Progressive Web Apps",
+            "index":33,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"React",
+            "text":"Rammeverk/bibliotek",
+            "index":34,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Vue",
+            "text":"Rammeverk/bibliotek",
+            "index":35,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Svelte",
+            "text":"Rammeverk/bibliotek",
+            "index":36,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Angular",
+            "text":"Rammeverk/bibliotek",
+            "index":37,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"HTML",
+            "text":"HTML (bygge sider uten å ty til JS).",
+            "index":38,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"CSS",
+            "text":"CSS og/eller et CSS-system som Less eller Sass.",
+            "index":39,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Typescript",
+            "text":"Typescript",
+            "index":40,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"JS uten dilldall",
+            "text":"JS uten rammeverk",
+            "index":41,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Bundlere",
+            "text":"Minst ett bundling-verktøy. (Webpack, Snowpack, Parcel, Rollup)",
+            "index":42,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Kjøreomgivelser",
+            "text":"Minst en kjøreomgivelse (runtime environment) basert på Javascript (Node, Deno)",
+            "index":43,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Enhets-/integrasjonstester",
+            "text":"Minst ett verktøy for enhetstesting, for eksempel Jest eller Mocha/Chai.",
+            "index":44,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Ende-til-ende-tester",
+            "text":"Minst ett verktøy for ende-til-ende-testing, for eksempel Cypress, Capybara eller Selenium Webdriver",
+            "index":45,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Mikro-frontend",
+            "text":"Mikro-frontender (se https://micro-frontends.org/)",
+            "index":46,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Web Assembly",
+            "text":"Webassembly (middels: Vet hva det er og hva fordelene med det er, topp: Kan kompilere til det fra et annet språk og bruke det i prosjekt).",
+            "index":47,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Automatiserte verktøy for kodekvalitet",
+            "text":"Automatiserte verktøy for å forhindre dårlig kodekvalitet i kodebasen (Eslint, SonarCloud, Prettier og så videre)",
+            "index":48,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Universell utforming",
+            "text":"Difis retningslinjer for universell utforming (altså Wcag 2.0).",
+            "index":49,
+            "qid":""
+        },
+        {
+            "categoryText":"Frontend",
+            "topic":"Datavisualisering",
+            "text":"Verktøy for datavisualisering (d3.js, Chart.js)",
+            "index":50,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Objektorientert programmering",
+            "text":"Objektorienterte konsepter og språk-konstruksjoner",
+            "index":51,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Funksjonell programmering",
+            "text":"Funksjonelle konsepter og språk-konstruksjoner",
+            "index":52,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Relasjonsdatabaser",
+            "text":"Relasjonsdatabaser som Postgres, Oracle o.l.",
+            "index":53,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"NoSQL - databaser",
+            "text":"NoSQL-databaser i utviklingsprosjekter",
+            "index":54,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Designprinsipper og patterns",
+            "text":"Prinsipper for organisering av kode og organisering av større programsystemer",
+            "index":55,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Applikasjonsarkitektur",
+            "text":"Arkitektur og teknologivalg rundt applikasjoner",
+            "index":56,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"API-design",
+            "text":"Type- og grensesnittdesign for APIer med teknologier som REST, gRPC, GraphQL eller SOAP",
+            "index":57,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Datamodellering og typeteori",
+            "text":"Bruk av typesystemer i utvikling, herunder modelldrevet utvikling, modellering av relasjonsdatabaser samt utvikling av objektorienterte typesystemer",
+            "index":58,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"JVM-baserte språk og biblioteker generelt",
+            "text":"Kjennskap til JVM og evne å utnytte denne og tilgrensende verktøy i løsninger",
+            "index":59,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Java",
+            "text":"Kunnskap om moderne praksis innen Java-utvikling, interoperabilitet med typiske rammeverk og biblioteker samt. pekepinner til hvordan løse typiske problemer",
+            "index":60,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Kotlin",
+            "text":"Programmeringsspråket Kotlin, hvordan bruke det til nyutvkikling og tilhørende populære rammeverk",
+            "index":61,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Scala",
+            "text":"Programmeringsspråket Scala, forstå konsepter og hvordan bruke det til nyutvkikling",
+            "index":62,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Clojure",
+            "text":"Programmeringsspråket Clojure, forstå konsepter og hvordan bruke det til nyutvkikling",
+            "index":63,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Systemspråk",
+            "text":"Systemspråk som C, Rust, C++ og anvendelse av disse mm",
+            "index":64,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Microsoft tech stack (C# og .NET)",
+            "text":"Utvikling av løsninger på Microsoft tecknologistack",
+            "index":65,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Python",
+            "text":"Programmeringsspråket Python",
+            "index":66,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Node backend",
+            "text":"Bruk av Node og Javascript/Typescript for å utvikle løsninger",
+            "index":67,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"KTor",
+            "text":"Rammeverk for Kotlin-applikasjoner",
+            "index":68,
+            "qid":""
+        },
+        {
+            "categoryText":"Backend",
+            "topic":"Spring Boot",
+            "text":"Rammeverk for applikasjoner i Java/JVM",
+            "index":69,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Jupyter Notebook",
+            "text":"Erfaring med notebooks for uforskende bruk av maskinlæring og dataananalyse",
+            "index":70,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Generering av treningsdata",
+            "text":"Kunnskap og/eller praktisk erfaring med å lage gode treningsdata",
+            "index":71,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Skybasert maskinlæring",
+            "text":"Kunnskap om bruk av maskinlæringsmekanismer i skytjenester som f.eks Azure/AWS/Google i tillegg til rene maskinlæringsprodukter som Azure Machine Learning, AWS Sagemaker, etc.",
+            "index":72,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Datainnlasting / ETL",
+            "text":"Henting og bearbeiding av data slik at det er tilgjengelig for maskinlæring",
+            "index":73,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Statistikk og matematikk",
+            "text":"Grunnleggende kunnskap om matematiske og/eller statistiske metoder som er relevant for maskinlæring",
+            "index":74,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Maskinlæringsalgoritmer",
+            "text":"Kunnskap og/eller erfaring med hvilke algoritmer som finnes og velge korrekt algoritme (gitt et problemområde)",
+            "index":75,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Maskinlæringsrammeverk",
+            "text":"Rammeverk som tensorflow, keras, pytorch, mm",
+            "index":76,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Python eller R for ML",
+            "text":"Bruk av Python og/eller R for maskinlæring",
+            "index":77,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"ML Edge Computing",
+            "text":"Bruk av ML direkte på IoT-enheter",
+            "index":78,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"MLOps",
+            "text":"Kjennskap til prinsipper om MLOps og CI/CD for maskinlæringpipelines",
+            "index":79,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"TensorFlow",
+            "text":"Kunnskap og/ eller erfaring med TensorFlow",
+            "index":80,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Keras",
+            "text":"Kunnskap og/ eller erfaring med Keras",
+            "index":81,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"xgboost",
+            "text":"Kunnskap og/ eller erfaring med XGBoost",
+            "index":82,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"pytorch",
+            "text":"Kunnskap og/ eller erfaring med pytorch",
+            "index":83,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Nevrale nettverk",
+            "text":"Kjennskap til hvordan nevrale nettverk fungerer, hvordan man bruker dem og i hvilke situasjoner de når best ytelse",
+            "index":84,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Julia",
+            "text":"Erfaring med programmering i Julia (mange mener dette er det nye python i ML)",
+            "index":85,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Feature Engineering",
+            "text":"Preprosessering av data til bruk i maskinlæringsalgoritmer (her henter man mest mtp performance for modell)",
+            "index":86,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"SQL",
+            "text":"Når man jobber med mye data må man ofte jobbe direkte mot database / datawarehouse og da er SQL essensielt",
+            "index":87,
+            "qid":""
+        },
+        {
+            "categoryText":"AI og Data Engineering",
+            "topic":"Validering av modeller",
+            "text":"Forstå kjente output metrics for performance, i tillegg til å kunne forstå svakheter og styrker av modellen i henhold til domenet.",
+            "index":88,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Kubernetes",
+            "text":"Docker, Kubernetes GKE, ECS el.lign.",
+            "index":89,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"AWS",
+            "text":"Amazon Web Services",
+            "index":90,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"GCP",
+            "text":"Google Cloud Plattform",
+            "index":91,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Azure",
+            "text":"Microsoft Azure",
+            "index":92,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"IBM Cloud",
+            "text":"IBM Cloud",
+            "index":93,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Køtjenester",
+            "text":"Apache Kafka, RabbitMQ, MQTT, AMQP eller lignende",
+            "index":94,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Terraform",
+            "text":"Terraform, Vagrant, Github Actions eller andre infrastructure-as-code verktøy",
+            "index":95,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"GDPR og Personvern",
+            "text":"Kunnskap om lovlig bruk av persondata, den norske personvernloven, GDPR og retningslinjene fra datatilsynet, digitaliseringsdirektoratet og EDPB",
+            "index":96,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Skynettverk",
+            "text":"Oppsett og sikring av nettverk i sky",
+            "index":97,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Dokumentdatabaser",
+            "text":"Redis, MongoDB, Cassandre eller andre NoSQL-databaser",
+            "index":98,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Jenkins eller andre CI-verktøy",
+            "text":"Jenkins eller andre kodebaserte CI-tjenester som CircleCI, Github Actions, Travis osv",
+            "index":99,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Serverless",
+            "text":"AWS Lambda, Google Cloud functions el.lign.",
+            "index":100,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Mikrotjenestearkitektur",
+            "text":"Mikrotjenester, SRP, utskilling av tjenester fra monolitter",
+            "index":101,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Systemmonitorering",
+            "text":"Loggsøk, Metrics, Traceability og alarmering",
+            "index":102,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Driftskostnader",
+            "text":"'Hva ting koster' grovt sett, hvordan minimere kostnader",
+            "index":103,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Asynkron og eventbasert prosessering",
+            "text":"Asynkron prosessering og købasert infrastruktur",
+            "index":104,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Databasedrift",
+            "text":"Databaser, ikke nødvendigvis på sky",
+            "index":105,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"CI/CD",
+            "text":"Utvikling og bruk av CI/CD-pipelines",
+            "index":106,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Hybridsky",
+            "text":"Interaksjon mellom tjeneter på sky og på lokalt datasenter eller lignende",
+            "index":107,
+            "qid":""
+        },
+        {
+            "categoryText":"Cloud og DevOps",
+            "topic":"Data flow",
+            "text":"Dataflyt i mikrotjenestearkitektur med forskjellige køer og databaser",
+            "index":108,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"NB-IoT",
+            "text":"Narrowband Internet of Things (NB-IoT) - trådløs mobilkommunikasjon for IoT- enheter",
+            "index":109,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"3D-printing, prototyping og annen produksjon",
+            "text":"Produksjon av fysiske gjenstander med 3D- printer, laserkutter, CNC m.m.",
+            "index":110,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"Loddebolt",
+            "text":"Bruk av loddebolt til lavspent elektronikk",
+            "index":111,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"Kretskort",
+            "text":"Design og bruk og kvalitetssikring av kretskort, mikrokontrollere og sensorkomponenter. Bruk av designverktøy som Eagle, Fritzing o.l.",
+            "index":112,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"IoT-infrastruktur i skyen",
+            "text":"Oppsett av løsninger for IoT nettverk i skyen, uavhengig av hvilken skyleverandør",
+            "index":113,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"C++",
+            "text":"Programmering i C++ for mikrokontrollere",
+            "index":114,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"Arduino",
+            "text":"Programmering mot Arduino- enheter eller annen bruk av Arduino-rammeverket",
+            "index":115,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"ESP32",
+            "text":"Programmering mot ESP32/ ESP8266 ved bruk av IDF eller Arduinorammeverket",
+            "index":116,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"FPGA",
+            "text":"Design og bruk av FPGA (Field-programmable gate array)",
+            "index":117,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"platform.io",
+            "text":"Utvikling ved hjelp av platform.io",
+            "index":118,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"MongooseOS",
+            "text":"Programmering i MongooseOS (Operating System for the Internet of Things)",
+            "index":119,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"MQTT",
+            "text":"MQTT som protokoll og infrastruktur for meldinger (pub/sub)",
+            "index":120,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"Micropython",
+            "text":"Programmering i Python for mikrokontrollere",
+            "index":121,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"CAD",
+            "text":"Design av 3D-modeller for produksjon ved hjelp av Blender, Fusion 365, FreeCAD o.l.",
+            "index":122,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"Sensorer og eksterne enheter",
+            "text":"Integrasjon mot analoge og digitale sensorer. Kommunkasjon over I2C, SPI m.m.",
+            "index":123,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"SBC (f.eks Raspberry Pi)",
+            "text":"Bruk og utvikling på små maskiner som Raspberry Pi",
+            "index":124,
+            "qid":""
+        },
+        {
+            "categoryText":"IoT og Hardware",
+            "topic":"Elektronikk svakstrøm",
+            "text":"Bruk og design av eletroniske kretser (svakstrøm)",
+            "index":125,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Smidig metodikk",
+            "text":"Smidige prinsipper og forskjellige smidige metoder og teknikker som Scrum, Kanban, Design Thinking, Lean Startup, OKR mm.",
+            "index":126,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Teamledelse",
+            "text":"Lede og koordinere arbeidet i et smidig utviklingsteam. Fungere i en rolle som team lead.",
+            "index":127,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Smidige organisasjoner",
+            "text":"Kunnskap om hva som kjennetegner effektive smidige organisasjoner og hvordan man setter sammen gode autonome produkt- og utviklingsteam",
+            "index":128,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Teambuilding",
+            "text":"Hvordan gjennomføre vellykket teambuilding og godt samarbeidsklima i team",
+            "index":129,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Smidig coaching",
+            "text":"Bistå enkeltpersoner, team og organsasjonsenheter i innføring eller forbedring av smidige prosesser.",
+            "index":130,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Opplæring i smidig",
+            "text":"Opplæring av team og organisasjoner i smidig metodikk.",
+            "index":131,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Scrum master",
+            "text":"Rollen som scrum master et smidig utviklingsteam som organiserer arbeidet etter Scrum eller med Scrum-elementer.",
+            "index":132,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Produkteier",
+            "text":"Rollen som produkteier for et smidig utviklings - eller produktteam.",
+            "index":133,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Kanban fasilitator",
+            "text":"Rollen som fasilitator for en Kanban-prosess.",
+            "index":134,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"OKR",
+            "text":"Objectives and Key Results, en smidig metodikk for å sette visjon, og velge konkrete målbare resultater",
+            "index":135,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Fasilitering",
+            "text":"Fasilitering av workshops og møter for team og organisasjoner",
+            "index":136,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Personalledelse",
+            "text":"Ledelse og oppfølging av enkeltpersoner. Lover og regler for arbeidsliv og personaloppfølging.",
+            "index":137,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Produktledelse",
+            "text":"Lede planleggingen, prioriteringen og gjennomføring av produktutvikling.",
+            "index":138,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Konfliktløsning",
+            "text":"Teknikker for konfliktløsning. Hva som kjennetegner et godt arbeidsmiljø.",
+            "index":139,
+            "qid":""
+        },
+        {
+            "categoryText":"Smidig metodikk og produktledelse",
+            "topic":"Verktøy",
+            "text":"Regneark, Jira, Confluence, Trello, Miro og andre tilsvarende verktøy.",
+            "index":140,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Teknologiledelse og organisering",
+            "text":"Evne til å organisere en utviklingsavdeling, team, eller annen selvstendig ingeniør-, utviklings- eller innovasjonsenhet. Etablere styrings- og koordineringsrutiner på tvers av flere parallelle utviklingsløp med gjensidige avhengigheter. Legge til rette for hensiktsmessige utviklingsprosesser, med balansert fokus på hastighet, funksjonalitet, skalerbarhet, vedlikeholdbarhet og kvalitet.",
+            "index":141,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Anskaffelser og sourcing",
+            "text":"Legge til rette for hensiktsmessig organisering av anskaffelsesprosesser og sourcingstrategi for teknologianskaffelser. Nearshoring.",
+            "index":142,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Rådgivning og pre-salg",
+            "text":"Evne å analysere og komme med skisser til handlingsplaner, råd samt å gi presentasjoner av problemområder som er aktuelle for kunder.",
+            "index":143,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Tilbudsarbeid",
+            "text":"Evne å analysere problemstillinger i et tilbud, bidra til å sette sammen ressurser for å svare dette ut og sette riktige priser, betingelser og kontraktsform.",
+            "index":144,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Prosjektstyring med kontraktsoppfølging",
+            "text":"Evne å håndtere planlegging og oppfølging av prosjekter med gitt scope og budsjett. Forståelse for de vanligste kontraktsformene ved prosjektgjennomføring, herunder varianter av Statens standardavtaler i flere generasjoner, samt forstå hvilke krav til endringshåndtering og dokumentasjon som følger av disse kontraktene.",
+            "index":145,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Porteføljestyring",
+            "text":"Erfaring med å koordinere og prioritere parallelle produkt- og tjenesteutviklingsløp i sammenheng. Evne til å se konsekvensen av, og forstå risiko ved, forretningsmessige, økonomiske, strategiske og personalmessige prioriteringer på tvers. Erfaring med ROS-analyse (Risiko og sårbarhet), SWOT (Strength, Weakness, Opportunities and Threats) og Gap analyse. Evne til å forstå, visualisere og kommunisere kompliserte oversikter og sammenhenger.",
+            "index":146,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Strategisk ledelse",
+            "text":"",
+            "index":147,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Markedsforståelse",
+            "text":"Forståelse for drivere i markedet. Hva tenker kundene på? Hva er de opptatt av? Hvilke endrinegr er i ferd med å skje? Hva er premissgivere for endringene?",
+            "index":148,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Domeneforståelse",
+            "text":"Forståelse og kunnskap i et domene og verdikjedene innenfor domenet",
+            "index":149,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Produktutvikling",
+            "text":"Hva skal til for å lage et produkt? Støttemiddelapparat? Utfordringer for startuos mv. Helpemidler. Finansiering",
+            "index":150,
+            "qid":""
+        },
+        {
+            "categoryText":"Salg og forretningsutvikling",
+            "topic":"Arkitektur",
+            "text":"Løsningsarkitektur, virksomhetsarkitektur, sikkerhetsakitektur, transisjonsarkitektur/migrasjonsarkitektur - dette hører kanskje ikke hjemme her, men vi finner det ikke noe annet sted heller.",
+            "index":151,
+            "qid":""
         }
     ]
 }
