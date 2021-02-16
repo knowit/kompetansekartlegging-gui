@@ -47,7 +47,7 @@ const alertDialogStyles = makeStyles({
         fontWeight: 'bold',
         marginTop: '4px',
         marginLeft: '8px'
-    }
+    },
 });
 
 
@@ -70,7 +70,9 @@ export const AlertDialog = ({ ...props }: AlertDialogProps) => {
                 onClose={handleStayInForm}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-            >
+                PaperProps={{
+                    style: { borderRadius: 30 }
+                }}            >
                 <DialogTitle id="alert-dialog-title" className={style.dialogTitle}>
                     <ErrorIcon fontSize='large' className={style.errorIcon}></ErrorIcon>
                     <div className={style.dialogTitleText}>Obs! Svarene dine er ikke lagret.</div>
