@@ -167,12 +167,12 @@ const Content = ({...props}: ContentProps) => {
         let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAt>(customQueries.formByCreatedAtt, customQueries.formByCreatedAtInputConsts);
         if (currentForm.data) {
             let formDef = currentForm.data.formByCreatedAt.items[0];
-            console.log("FormDef:", formDef);
+            // console.log("FormDef:", formDef);
             setFormDefinition(formDef);
             let quAns = createQuestionAnswers(formDef);
             let userAnswers = await getUserAnswers();
             setFirstAnswers(quAns, userAnswers);
-            console.log("Completed questuions");
+            // console.log("Completed questuions");
         }
     };
     
@@ -197,12 +197,12 @@ const Content = ({...props}: ContentProps) => {
             }
         }
         
-        console.log("Last userform: ", lastUserForm);
+        // console.log("Last userform: ", lastUserForm);
         return lastUserForm?.questionAnswers.items;
     };
     
     const createQuestionAnswers = (formDef: FormDefinition) => {
-        console.log("Creating questionAnswers with ", formDef);
+        // console.log("Creating questionAnswers with ", formDef);
         if (!formDef) return new Map();
         let categories = formDef.questions.items
             .map(item => item.category)
@@ -242,7 +242,7 @@ const Content = ({...props}: ContentProps) => {
                 });
             quAnsMap.set(cat.text, quAns);
         });
-        console.log(`Sorted questionAnswerMap: `, quAnsMap);
+        // console.log(`Sorted questionAnswerMap: `, quAnsMap);
         return quAnsMap;
     };
     
@@ -319,9 +319,9 @@ const Content = ({...props}: ContentProps) => {
         //         });
         //     })
         // });
-        console.log("question answer input: ", quAnsInput);
+        // console.log("question answer input: ", quAnsInput);
         let result = (await helper.callBatchGraphQL<CreateQuestionAnswerResult>(customQueries.batchCreateQuestionAnswer2, { input: quAnsInput}, "QuestionAnswer")).map(result => result.data?.batchCreateQuestionAnswer);
-        console.log("Result: ", result);
+        // console.log("Result: ", result);
         if(!result || result.length === 0) {
             return;
         }
@@ -368,7 +368,7 @@ const Content = ({...props}: ContentProps) => {
     }, []);
 
     useEffect(() => {
-        console.log("userAnswers")
+        // console.log("userAnswers")
         // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
         setAnswersBeforeSubmitted(new Map(questionAnswers));
     }, [userAnswers]);
