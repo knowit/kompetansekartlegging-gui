@@ -164,11 +164,10 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
     }
 
     const getCategoryDescription = () : string => {
-        // let categoryDesc = props.formDefinition?.questions.items.find(
-        //     q => q.category.text === props.activeCategory
-        // )
-        // return categoryDesc?.category.description ?? ""
-        return 'Design i Objectnet dekker et stort område som spenner fra produkt- og tjenestedesign gjennom interaksjonsdesign (IxD), brukeropplevelse (UX), grafisk design, designledelse og kunnskap om praktisk bruk av designmetodikk.	'
+        let categoryDesc = props.formDefinition?.questions.items.find(
+            q => q.category.text === props.activeCategory
+        )
+        return categoryDesc?.category.description ?? ""
     }
 
     return (
