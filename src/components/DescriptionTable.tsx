@@ -74,12 +74,12 @@ const DescTableStyle = makeStyles({
     },
     heading: {
         textAlign: "left",
-        fontSize: 10,
+        fontSize: 12,
         fontWeight: "bold",
     },
     text: {
         textAlign: "left",
-        fontSize: 10,
+        fontSize: 12,
     },
 });
 
@@ -98,70 +98,70 @@ type ScaleContainerObject = {
 // Possibly a better way to do this...
 const COMPETENCE: ScaleContainerObject[] = [
     {
-        icon: Icon.K0,
-        heading: "Kjenner ikke til området",
-        text: "",
+        icon: Icon.K5,
+        heading: "Superstjerne",
+        text: "En etterspurt spesialist, som fungerer som nyskapende eller strategisk kraft på området",
     },
     {
-        icon: Icon.K1,
-        heading: "Noe innsikt",
-        text:
-            "(Har noe innsikt i området, samt evne til å resonnere over eller løse oppgaver på et ikke-profesjonelt nivå innenfor området)",
-    },
-    {
-        icon: Icon.K2,
-        heading: "Potensielt brukbar kompetanse",
-        text:
-            "(Kompetanse som enten ikke er testet i oppdrag eller der man inntil videre trenger støtte fra andre i teamet)",
+        icon: Icon.K4,
+        heading: "Ekspert",
+        text: "Har særdeles god kontroll og en etablert posisjon på området",
     },
     {
         icon: Icon.K3,
         heading: "Profesjonelt nivå",
         text:
-            "(Har god kontroll og kan jobbe selvstendig med ikke-trivielle problemstillinger innenfor området)",
+            "Har god kontroll og kan jobbe selvstendig med ikke-trivielle problemstillinger innenfor området",
     },
     {
-        icon: Icon.K4,
-        heading: "Superstjerne",
-        text: "(Har særdeles god kontroll og en etablert posisjon på området)",
-    },
-    {
-        icon: Icon.K5,
-        heading: "Ekspert",
+        icon: Icon.K2,
+        heading: "Potensielt brukbar kompetanse",
         text:
-            "(En etterspurt spesialist, som fungerer som nyskapende eller strategisk kraft på området)",
+            "Kompetanse som enten ikke er testet i oppdrag eller der man inntil videre trenger støtte fra andre i teamet",
+    },
+    
+    {
+        icon: Icon.K1,
+        heading: "Noe innsikt",
+        text:
+            "Har noe innsikt i området, samt evne til å resonnere over eller løse oppgaver på et ikke-profesjonelt nivå innenfor området",
+    },
+    {
+        icon: Icon.K0,
+        heading: "Kjenner ikke til området",
+        text: "",
     },
 ];
 
 const MOTIVATION: ScaleContainerObject[] = [
     {
-        icon: Icon.M0,
-        heading: "Nei. Ønsker ikke å jobbe med dette",
-        text: "",
-    },
-    {
-        icon: Icon.M1,
-        heading: "Egentlig ikke. Ønsker svært lite å jobbe med",
-        text: "",
-    },
-    {
-        icon: Icon.M2,
-        heading: "Nja. Kan motvillig jobbe med dette",
-        text: "",
-    },
-    {
-        icon: Icon.M3,
-        heading: "OK. Ikke det jeg liker best, men helt i orden hvis jeg må",
+        icon: Icon.M5,
+        heading: "Ildsjel. Jeg brenner for dette.",
         text: "",
     },
     {
         icon: Icon.M4,
-        heading: "Godt. Kjempefint å få jobbe med dette",
+        heading: "Godt. Dette er det jeg ønsker å jobbe med.",
         text: "",
     },
     {
-        icon: Icon.M5,
-        heading: "Perfekt. Dette er akkurat det jeg ønsker meg",
+        icon: Icon.M3,
+        heading: "Nysgjerring. Dette vil jeg lære mer om.",
+        text: "",
+    },
+    {
+        icon: Icon.M2,
+        heading: "Tja. Kan hvis det er behov.",
+        text: "",
+    },
+    {
+        icon: Icon.M1,
+        heading: "Nøytral. Ingen formening.",
+        text: "",
+    },
+    {
+        icon: Icon.M0,
+        heading: "Nei. Dette vil jeg ikke jobbe med.",
         text: "",
     },
 ];

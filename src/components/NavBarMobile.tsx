@@ -65,9 +65,7 @@ const navbarStyles = makeStyles((theme) => ({
         width: "44px",
         height: "44px",
     },
-    headerText: {
-        fontWeight: 700,
-    },
+
     listContainer: {
         width: 250,
         height: '90%'
@@ -80,6 +78,7 @@ const navbarStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         flex: '1',
+        fontWeight: 700
     }
 }));
 
@@ -148,9 +147,9 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
                     >
                         <MenuIcon fontSize="large" />
                     </IconButton>
-                    <Typography variant="h6" noWrap className={style.headerText}>
+                    {/* <Typography variant="h6" noWrap> */}
                         {navbarHeader()}
-                    </Typography>
+                    {/* </Typography> */}
                 </Toolbar> 
             </AppBar>
             <SwipeableDrawer
