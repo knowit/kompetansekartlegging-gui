@@ -74,12 +74,12 @@ const DescTableStyle = makeStyles({
     },
     heading: {
         textAlign: "left",
-        fontSize: 10,
+        fontSize: 12,
         fontWeight: "bold",
     },
     text: {
         textAlign: "left",
-        fontSize: 10,
+        fontSize: 12,
     },
 });
 
