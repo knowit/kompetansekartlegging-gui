@@ -19,7 +19,7 @@ awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 Amplify.configure(awsconfig);
 
-const showFormDefSendButton = true;
+const showFormDefSendButton = false;
 const currentFormJSON: FormJSON = require("./catalogs/Katalog - 2021.json");
 
 //JSON structure:
