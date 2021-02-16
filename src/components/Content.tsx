@@ -111,7 +111,7 @@ const contentStyle = makeStyles({
         background: KnowitColors.white,
         height: '100%',
         width: '80%'
-    }
+    },
 });
 
 const Content = ({...props}: ContentProps) => {
@@ -565,11 +565,9 @@ const Content = ({...props}: ContentProps) => {
             listItems.push(
                 <ListItem
                     key={butt.text}
-                    className={clsx(style.MenuButton)}
                     onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, undefined)}}
                 >
-                    <ListItemText primary={butt.text} />
-                    {/* <div className={clsx(style.menuButtonText)}>{butt.text}</div> */}
+                    {butt.text}
                     {(butt.buttonType === MenuButton.MyAnswers) ? getMainMenuAlertElement() : ""}
                 </ListItem>
             );
