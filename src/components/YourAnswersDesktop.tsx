@@ -143,7 +143,14 @@ const yourAnwersStyle = makeStyles({
     categoryDescription: {
         margin: "30px 0px 30px 40px",
         maxWidth: '60%',
-        minWidth: 800
+        minWidth: 800,
+        fontStyle: 'italic'
+    },
+    categoryDescriptionForm: {
+        margin: "0px 0px 10px 40px",
+        maxWidth: '60%',
+        minWidth: 800,
+        fontStyle: 'italic'
     }
 });
 
@@ -157,10 +164,11 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
     }
 
     const getCategoryDescription = () : string => {
-        let categoryDesc = props.formDefinition?.questions.items.find(
-            q => q.category.text === props.activeCategory
-        )
-        return categoryDesc?.category.description ?? ""
+        // let categoryDesc = props.formDefinition?.questions.items.find(
+        //     q => q.category.text === props.activeCategory
+        // )
+        // return categoryDesc?.category.description ?? ""
+        return 'Design i Objectnet dekker et stort område som spenner fra produkt- og tjenestedesign gjennom interaksjonsdesign (IxD), brukeropplevelse (UX), grafisk design, designledelse og kunnskap om praktisk bruk av designmetodikk.	'
     }
 
     return (
@@ -190,7 +198,7 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
 
 
                     <div className={clsx(props.answerEditMode ? "" : style.hidden, style.form)} ref={scrollRef} >
-                        <div className={style.categoryDescription}>{getCategoryDescription()}</div>
+                        <div className={style.categoryDescriptionForm}>{getCategoryDescription()}</div>
 
                         <Form 
                             {...props}
