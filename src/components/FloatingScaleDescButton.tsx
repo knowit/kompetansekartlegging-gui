@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { Fab, makeStyles } from "@material-ui/core";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Fab, Tooltip, makeStyles } from "@material-ui/core";
 import { KnowitColors } from "../styles";
 import DescriptionTable from "./DescriptionTable";
 
@@ -94,16 +94,38 @@ type FloatingScaleDescButtonProps = {
     isMobile: boolean;
     scaleDescOpen: boolean,
     setScaleDescOpen: Dispatch<SetStateAction<boolean>>,
+    firstTimeLogin: boolean,
 };
+
+type ConditionalWrapProps = {
+    condition: boolean,
+    wrap: (children: JSX.Element) => JSX.Element,
+    children: JSX.Element,
+}
+
+const ConditionalWrap = ({condition, wrap, children} : ConditionalWrapProps) => condition ? wrap(children) : children;
 
 const FloatingScaleDescButton = ({
     isMobile,
     scaleDescOpen,
     setScaleDescOpen,
+    firstTimeLogin,
 }: FloatingScaleDescButtonProps) => {
     const style = isMobile
         ? floatingScaleDescButtonStyleMobile()
         : floatingScaleDescButtonStyleDesktop();
+
+    const [showTooltip, setShowTooltip] = useState(firstTimeLogin)
+    useEffect(() => {
+        if (firstTimeLogin) {
+            setTimeout(() => setShowTooltip(false), 5000);
+        }
+    }, [firstTimeLogin])
+
+    const handleMobileFabClick = () => {
+        setShowTooltip(false);
+        setScaleDescOpen((scaleDescOpen) => !scaleDescOpen);
+    }
 
     return (
         <>
@@ -116,16 +138,24 @@ const FloatingScaleDescButton = ({
                 </div>
             )}
             {isMobile ?
-                <Fab
-                    size="small"
-                    variant="round"
-                    className={style.fab}
-                    onClick={() =>
-                        setScaleDescOpen((scaleDescOpen) => !scaleDescOpen)
-                    }
-                >
-                    ?
-                </Fab>
+             <ConditionalWrap condition={firstTimeLogin} wrap={children =>
+                 <Tooltip
+                     title="Trykk her for å se hva ikonene betyr!"
+                     open={showTooltip}
+                     arrow
+                 >
+                     {children}
+                 </Tooltip>
+             }>
+                 <Fab
+                     size="small"
+                     variant="round"
+                     className={style.fab}
+                     onClick={handleMobileFabClick}
+                 >
+                     ?
+                 </Fab>
+             </ConditionalWrap>
             :
                 <Fab
                     variant="extended"
