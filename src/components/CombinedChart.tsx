@@ -4,13 +4,14 @@ import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveC
 import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
 import { CombinedChartProps } from '../types';
+import { OverviewType } from './TypedOverviewChart';
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;
 const heightPerColumn = 50;
 
 const useStyles = makeStyles({
-    root: {
+    tooltipRoot: {
         backgroundColor: KnowitColors.white,
         paddingLeft: 10,
         paddingRight: 10,
@@ -23,7 +24,15 @@ const useStyles = makeStyles({
     label: {
         fill: KnowitColors.darkBrown,
         fontFamily: "Arial",
-        fontSize: "24px",
+        fontSize: "20px",
+        fontWeight: "bold",
+        textAnchor: "start",
+        opacity: 1
+    },
+    tooltipLabel: {
+        fill: KnowitColors.darkBrown,
+        fontFamily: "Arial",
+        fontSize: "16px",
         fontWeight: "bold",
         textAnchor: "start",
         opacity: 1
@@ -40,6 +49,7 @@ const useStyles = makeStyles({
     },
     combinedChartContainer: {
         width: '100%',
+        maxWidth: 1200,
         // height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -64,8 +74,31 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
 
     let classes = useStyles();
 
+    const RenderCustomTooltip = (classes: any) => {
+        let isTop = (props.type == OverviewType.HIGHEST && props.topSubjects);
+        let topSubjects = props.topSubjects;
+        return ({...props}: ToolTipProps) => {
+            if (props.active && props.payload) {
+                let knowledgeValue = props.payload[0]?.payload.valueKnowledge[1].toFixed(1);
+                let motivationValue = (props.payload[1]?.payload.valueMotivation[1] - chartSplitAt).toFixed(1);
+                return (
+                    <div className={classes.tooltipRoot}>
+                        <p className={classes.tooltipLabel}>{props.label}</p>
+                        <p className={classes.knowledge}>
+                            {`${isTop ? topSubjects?.get(props.label)?.kTop : "Kompetanse"}: ${knowledgeValue}`}
+                        </p>
+                        <p className={classes.motivation}>
+                            {`${isTop ? topSubjects?.get(props.label)?.mTop : "Motivasjon"}: ${motivationValue}`}
+                        </p>
+                </div>
+            );
+        }
+        return null;
+        }
+    };
+
     return (
-        <div className={classes.combinedChartContainer}>
+        <div className={classes.combinedChartContainer} >
         <ResponsiveContainer width='100%' height={heightPerColumn * props.chartData.length + 90}>     
             <BarChart barGap={-15} barSize={15} maxBarSize={15} layout="vertical" data={props.chartData} margin={{top: 50, right: 50, bottom: 6, left: 50}}>
             <CartesianGrid horizontal={true} vertical={true} strokeDasharray="2 5"/>
@@ -81,7 +114,10 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
                     tick={renderCustomAxisTicks()}
                 />
                 <YAxis width={200} dataKey="name" type="category" interval={0} tick={{fill: KnowitColors.darkBrown}}/>
-                <Tooltip content={RenderCustomTooltip(classes)}/>
+                <Tooltip
+                    content={RenderCustomTooltip(classes)}
+                    cursor={{ fill: KnowitColors.ecaluptus, opacity: 0.3 }}
+                />
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen} />
                 <Bar radius={[0, 10, 10, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen} />
                 <ReferenceLine x={0} stroke={KnowitColors.darkGreen}>
@@ -125,27 +161,6 @@ const renderCustomAxisTicks = () => {
             </foreignObject>
         );
     };
-};
-
-const RenderCustomTooltip = (classes: any) => {
-    return ({...props}: ToolTipProps) => {
-        if (props.active && props.payload) {
-            let knowledgeValue = props.payload[0]?.payload.valueKnowledge[1].toFixed(1);
-            let motivationValue = (props.payload[1]?.payload.valueMotivation[1] - chartSplitAt).toFixed(1);
-            return (
-                <div className={classes.root}>
-                    <p className={classes.label}>{props.label}</p>
-                    <p className={classes.knowledge}>
-                        {`Kompetanse: ${knowledgeValue}`}
-                    </p>
-                    <p className={classes.motivation}>
-                        {`Motivasjon: ${motivationValue}`}
-                    </p>
-            </div>
-        );
-    }
-    return null;
-    }
 };
 
 type BarLabelProps = {

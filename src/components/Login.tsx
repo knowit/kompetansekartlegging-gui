@@ -7,7 +7,7 @@ import { ReactComponent as KnowitLogo } from '../Logotype-Knowit-Digital-white 1
 
 const loginStyle = makeStyles({
     container: {
-        height: '100vh',
+        height: 'calc(var(--vh, 1vh) * 100)',
         width: '100vw',
         position: "relative",
         fontFamily: 'Arial',

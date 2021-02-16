@@ -8,23 +8,22 @@ import LinearProgress, { LinearProgressProps } from '@material-ui/core/LinearPro
 const useStyles = makeStyles({
     root: {
         display: 'flex',
-        position: 'relative',
-        alignSelf: 'center',
-        alignItems: 'center',
         justifyContent: 'center',
-        width: '90%',
+        alignItems: 'center',
+        width: '75%',
+        maxWidth: 1000,
         backgroundColor: 'white',
-        padding: 10,
         zIndex: 1
     },
     percentage: {
         fontFamily: 'Arial',
-        fontSize: '10px',
+        fontSize: '12px',
         fontWeight: 'bold',
-        width: '5%'
+        width: 'fit-content',
+        paddingRight: '1vw'
     },
     bar: {
-        width: '80%'
+        flexGrow: 1
     }
 });
 

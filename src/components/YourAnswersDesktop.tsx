@@ -17,26 +17,24 @@ const yourAnwersStyle = makeStyles({
         display: "none"
     },
     answerBox: {
-        display: 'flex',
-        flexDirection: 'row',
-        height: '100%',
-        width: '100%',
+        width: "100%",
+        height: "100%",
     },
     answerView: {
         marginRight: 10,
-        width: '95%',
+        width: '100%',
         height: '100%',
         borderRadius: 10,
         background: KnowitColors.white,
+        overflowY: 'auto'
     },
     form: {
         width: '100%',
-        overflowY: 'auto',
-        height: '100%'
+        height: "calc(100% - 62px - 40px)", // 100% - height of form header - 40px padding
+        overflowY: 'auto'
     },
     progressForm: {
-        width: '100%',
-        height: '100%'
+        height: "100%",
     },
     leftCard: {
         width: '20%'
@@ -54,23 +52,30 @@ const yourAnwersStyle = makeStyles({
     cardHeaderClosed: {
         display: "flex",
         height: 'max-content',
-
         paddingTop: cardCornerRadius,
         marginTop: -cardCornerRadius,
         boxShadow: '0px 3px 2px gray',
         borderRadius: '0px 0px 20px 20px',
-
         backgroundColor: KnowitColors.greyGreen
     },
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems: 'center',
         height: '10%',
         width: '60%',
         margin: '10px',
         maxHeight: '50px'
+    },
+    blockInfo: {
+        width: '100%',
+        fontSize: '22px',
+        fontWeight: 'bold',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginLeft: 20
     },
     graphHolder: {
         width: '90%',
@@ -79,7 +84,6 @@ const yourAnwersStyle = makeStyles({
     },
     editButton: {
         fontWeight: 'bold',
-
         margin: 5,
         padding: 10,
         width: 106,
@@ -124,8 +128,29 @@ const yourAnwersStyle = makeStyles({
     bottomCardOpen: {
         display: 'flex',
         flexDirection: 'row',
-        overflowY: 'scroll',
+        // overflowY: 'scroll',
         height: '100%'
+    },
+    formHeader: {
+        marginTop: "30px",
+        marginLeft: "40px",
+        backgroundColor: "white",
+    },
+    categoryTitle: {
+        fontSize: 22,
+        fontWeight: "bold",
+    },
+    categoryDescription: {
+        margin: "30px 0px 30px 40px",
+        maxWidth: '60%',
+        minWidth: 800,
+        fontStyle: 'italic'
+    },
+    categoryDescriptionForm: {
+        margin: "0px 0px 10px 40px",
+        maxWidth: '60%',
+        minWidth: 800,
+        fontStyle: 'italic'
     }
 });
 
@@ -138,21 +163,42 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
         scrollRef.current?.scroll(0,0);
     }
 
+    const getCategoryDescription = () : string => {
+        let categoryDesc = props.formDefinition?.questions.items.find(
+            q => q.category.text === props.activeCategory
+        )
+        return categoryDesc?.category.description ?? ""
+    }
+
     return (
-        <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)}>
+        <div className={clsx(props.activePanel === Panel.MyAnswers ? style.bottomCardOpen : style.bottomCardClosed)} >
             <div className={props.activePanel === Panel.MyAnswers ? style.answerBox : style.hidden}>                  
                 <div className={clsx(props.answerEditMode ? style.hidden : "", style.answerView)}>
                     <div className={style.catHeader}>
-                        <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
+                        <div className={style.blockInfo}>
+                            {props.activeCategory}
+                            <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
+                        </div>
                         <Button className={style.editButton} onClick={() => props.enableAnswerEditMode()}>Fyll ut</Button>
                     </div>
+                    <div className={style.categoryDescription}>{getCategoryDescription()}</div>
+
                     <div className={style.graphHolder}>
                         <AnswerDiagram questionAnswers={props.questionAnswers} activeCategory={props.activeCategory} isMobile={false}/>
                     </div>
                 </div>
                 <div className={clsx(props.answerEditMode ? "" : style.hidden, style.progressForm)}>
-                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
-                    <div ref={scrollRef} className={clsx(props.answerEditMode ? "" : style.hidden, style.form)}>
+                    <div className={style.formHeader}>
+                        <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                        <h2 className={style.categoryTitle}>
+                            {props.activeCategory}
+                        </h2>
+                    </div>
+
+
+                    <div className={clsx(props.answerEditMode ? "" : style.hidden, style.form)} ref={scrollRef} >
+                        <div className={style.categoryDescriptionForm}>{getCategoryDescription()}</div>
+
                         <Form 
                             {...props}
                             scrollToTop={scrollToTop}

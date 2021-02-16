@@ -11,7 +11,7 @@ import { QuestionAnswerSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles({
     root: {
-        width: '70%'
+
     },
     blockOK: {
         display: 'flex',
@@ -86,7 +86,7 @@ export const BlockInfo = (props: {questions: QuestionAnswer[] | undefined}) => {
         return  <div className={classes.root}>
                     <div className={classes.blockAlert}>
                         <UpdateIcon/>
-                        <div className={classes.warningText}>{`Det har gått ${timeBetweenString(timeOfOldestQuestion, now, TimeType.MINUTES)} siden blokken ble oppdatert!`}</div>                
+                        <div className={classes.warningText}>{`Det har gått ${timeBetweenString(timeOfOldestQuestion, now, TimeType.DAYS)} siden blokken ble oppdatert!`}</div>                
                     </div>
                 </div>;
     } else {

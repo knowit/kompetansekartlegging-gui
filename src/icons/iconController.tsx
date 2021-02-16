@@ -4,12 +4,14 @@ import { ReactComponent as K3 } from "../icons/K - blomst.svg"
 import { ReactComponent as K2 } from "../icons/K - knopp.svg"
 import { ReactComponent as K1 } from "../icons/K - spire.svg"
 import { ReactComponent as K0 } from "../icons/K - fro.svg"
+
 import { ReactComponent as M5 } from "../icons/M - perfekt.svg"
 import { ReactComponent as M4 } from "../icons/M - godt.svg"
-import { ReactComponent as M3 } from "../icons/M - ok.svg"
-import { ReactComponent as M2 } from "../icons/M - nja.svg"
-import { ReactComponent as M1 } from "../icons/M - egentlig ikke.svg"
+import { ReactComponent as M3 } from "../icons/M - onsker erfaring.svg"
+import { ReactComponent as M2 } from "../icons/M - vedbehov.svg"
+import { ReactComponent as M1 } from "../icons/M - nja.svg"
 import { ReactComponent as M0 } from "../icons/M - nei.svg"
+
 import React, { Fragment } from "react";
 import { Tooltip } from "@material-ui/core"
 
@@ -20,18 +22,18 @@ const getIconDescription = (knowledge: boolean, level: number): string => {
             case 1: return "Noe innsikt";
             case 2: return "Potensielt brukbar kompetanse";
             case 3: return "Profesjonelt nivå";
-            case 4: return "Superstjerne";
-            case 5: return "Ekspert";
+            case 4: return "Ekspert";
+            case 5: return "Superstjerne";
             default: return "";
         }
     }
     switch(level) {
-        case 0: return "Egentlig ikke. Ønsker svært lite å jobbe med";
-        case 1: return "Egentlig ikke. Ønsker svært lite å jobbe med";
-        case 2: return "Nja. Kan motvillig jobbe med dette";
-        case 3: return "OK. Ikke det jeg liker best, men helt i orden hvis jeg må";
-        case 4: return "Godt. Kjempefint å få jobbe med dette";
-        case 5: return "Perfekt. Dette er akkurat det jeg ønsker meg";
+        case 0: return "Nei. Dette vil jeg ikke jobbe med.";
+        case 1: return "Nøytral. Ingen formening.";
+        case 2: return "Tja. Kan hvis det er behov.";
+        case 3: return "Nysgjerring. Dette vil jeg lære mer om.";
+        case 4: return "Godt. Dette er det jeg ønsker å jobbe med.";
+        case 5: return "Ildsjel. Jeg brenner for dette.";
         default: return "";
     }
 };

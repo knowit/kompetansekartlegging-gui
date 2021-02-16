@@ -5,12 +5,14 @@ import { CombinedChartMobile } from './CombinedChartMobile';
 
 export default function AnswerDiagram({ ...props }: AnswerDiagramProps) {
     
+    let knowledgeStart = props.isMobile ? 7 : 0;
+    let motivationStart = props.isMobile ? 0 : 7;
     let chartData: ChartData[] = props.questionAnswers.get(props.activeCategory)
         ?.map(quAns => {
             return {
                 name: quAns.topic,
-                valueKnowledge: [0, (quAns.knowledge === -1) ? 0 : quAns.knowledge],
-                valueMotivation: [7, 7 + ((quAns.motivation === -1) ? 0 : quAns.motivation)],
+                valueKnowledge: [knowledgeStart, knowledgeStart + ((quAns.knowledge === -1) ? 0 : quAns.knowledge)],
+                valueMotivation: [motivationStart, motivationStart + ((quAns.motivation === -1) ? 0 : quAns.motivation)],
             }
         }) || [];
 

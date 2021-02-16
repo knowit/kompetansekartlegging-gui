@@ -13,7 +13,6 @@ const drawerWidth = 240;
 
 const navbarStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
-
     drawer: {
         // [theme.breakpoints.up('sm')]: {
         //   width: drawerWidth,
@@ -30,7 +29,7 @@ const navbarStyles = makeStyles((theme) => ({
         background: KnowitColors.greyGreen
     },
     menuButton: {
-        marginRight: theme.spacing(2),
+        marginRight: theme.spacing(1),
     },
     root: {
         flexGrow: 1,
@@ -66,9 +65,7 @@ const navbarStyles = makeStyles((theme) => ({
         width: "44px",
         height: "44px",
     },
-    headerText: {
-        fontWeight: 700,
-    },
+
     listContainer: {
         width: 250,
         height: '90%'
@@ -81,6 +78,7 @@ const navbarStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         flex: '1',
+        fontWeight: 700
     }
 }));
 
@@ -96,8 +94,8 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
     const navbarHeader = () => {
 
         switch (props.activePanel) {
-            case 0: return "Oversikt";
-            case 1: return "Dine svar";
+            case 0: return "OVERSIKT";
+            case 1: return "MINE SVAR";
             default: return ""
         }
     }
@@ -147,11 +145,11 @@ const NavBarMobile = ({...props}: NavBarPropsMobile) => {
                         aria-label="menu" 
                         onClick={toggleDrawer(true)}
                     >
-                    <MenuIcon />
+                        <MenuIcon fontSize="large" />
                     </IconButton>
-                    <Typography variant="h6" noWrap className={style.headerText}>
+                    {/* <Typography variant="h6" noWrap> */}
                         {navbarHeader()}
-                    </Typography>
+                    {/* </Typography> */}
                 </Toolbar> 
             </AppBar>
             <SwipeableDrawer

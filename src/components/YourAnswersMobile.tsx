@@ -10,22 +10,18 @@ import { AlertNotification, AlertType } from './AlertNotification';
 import ProgressBar from './ProgressBar';
 import { BlockInfo } from './BlockInfo';
 
-
-const cardCornerRadius: number = 40;
-// const zIndex: number = 10000;
-
 const yourAnswersStyleMobile = makeStyles({
     hidden: {
         display: "none"
     },
     answerBox: {
-        display: 'flex',
+        // display: 'flex',
         flexDirection: 'column',
         height: '100%',
         width: '100%',
     },
     answerBoxScrolled: {
-        display: 'flex',
+        // display: 'flex',
         flexDirection: 'column',
         height: '100%',
         width: '100%',
@@ -49,10 +45,10 @@ const yourAnswersStyleMobile = makeStyles({
     categoryList: {
         height: 'min-content',
         backgroundColor: KnowitColors.beige,
-        borderRadius: '0px 0px 35px 35px',
-        paddingBottom: '25px',
-        boxShadow: "0px 3px 0px grey",
-        marginBottom: "3px",
+        paddingBottom: '18px',
+        marginBottom: "8px",
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.15)",
+        borderRadius: "0px 0px 50px 50px",
     },
     navigationContainer: {
         width: '100%',
@@ -61,6 +57,7 @@ const yourAnswersStyleMobile = makeStyles({
         // zIndex: 1
     },
     navigationContainerScrolled: {
+        backgroundColor: "white",
         width: '100%',
         position: 'fixed',
         top: 56,
@@ -87,7 +84,7 @@ const yourAnswersStyleMobile = makeStyles({
     catHeader: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems: 'center'
 
     },
@@ -123,27 +120,41 @@ const yourAnswersStyleMobile = makeStyles({
     buttonText: {
         textTransform: 'none',
         textAlign: 'left',
-        justifyContent: 'left'
+        justifyContent: 'left',
+        fontSize: "14px",
+        lineHeight: "16px"
     },
     yourAnswersMobileContainer: {
-        height: '100%',
+        minHeight: '100vh',
+        marginBottom: 50,
     },
     menuButtonActive: {
-        background: KnowitColors.white,
+        backgroundColor: KnowitColors.white + '!important',
         marginRight: -2
     },
     MenuButton: {
         '&:hover': {
-            background: KnowitColors.white
+            backgroundColor: 'disable'
         },
         overflow: 'wrap',
         fontSize: 13,
-        fontWeight: 'bolder',
+        fontWeight: 'bold',
         border: 'none',
         justifyContent: 'left',
         borderRadius: '0px 17px 17px 0px',
-        width: 'fit-content' // todo denne kan tilbakestilles?
+        width: 'fit-content', // todo denne kan tilbakestilles?
+        padding: "10px 30px",
     },
+    formHeader: {
+        display: "flex",
+        padding: "5px 5px 10px 5px",
+        justifyContent: 'center',
+    },
+    categoryDescriptionForm: {
+        margin: "5px 5px 5px 15px",
+        fontSize: 14,
+        fontStyle: 'italic'
+    }
 });
 
 
@@ -199,9 +210,20 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
         return buttons;
     }
 
+    const getCategoryDescription = () : string => {
+        let categoryDesc = props.formDefinition?.questions.items.find(
+            q => q.category.text === props.activeCategory
+        )
+        return categoryDesc?.category.description ?? ""
+    }
+
     useEffect(() => {
         console.log(props.collapseMobileCategories)
     },[props.collapseMobileCategories])
+
+    useEffect(() => {
+        props.setCollapseMobileCategories(false)
+    },[])
 
 
     return (
@@ -225,7 +247,9 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                     </div>
                 </div>
                 <div className={clsx(props.answerEditMode ? "" : style.hidden)}>
-                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    <div className={style.formHeader}>
+                        <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    </div>
                 </div>
             </div>
             {/* <div className={props.commonCardProps.active ? style.answerBox : style.hidden}> */}
@@ -242,7 +266,10 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
                 </div>
                 <div className={clsx(props.answerEditMode ? "box" : style.hidden, style.form)}>
                     {/* <Button onClick={() => props.answerViewModeActive(true)}>TEMP</Button> */}
-                    <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    <div className={style.formHeader}>
+                        <ProgressBar alerts={props.alerts} totalQuestions={props.formDefinition?.questions.items.length ?? 0}/>
+                    </div>
+                    <div className={style.categoryDescriptionForm}>{getCategoryDescription()}</div>
                     <Form 
                         {...props}
                         isMobile={true}

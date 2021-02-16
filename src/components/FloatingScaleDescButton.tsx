@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Fab, makeStyles } from "@material-ui/core";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Fab, Tooltip, makeStyles } from "@material-ui/core";
 import { KnowitColors } from "../styles";
-import DescriptionTableMobile from "./DescriptionTableMobile";
+import DescriptionTable from "./DescriptionTable";
 
 const floatingScaleDescButtonStyleDesktop = makeStyles({
     fab: {
@@ -11,7 +11,7 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
         marginBottom: "20px",
         backgroundColor: KnowitColors.beige,
         color: KnowitColors.darkBrown,
-        position: "absolute",
+        position: "fixed",
         bottom: "0px",
         right: "0px",
         fontFamily: "Arial",
@@ -19,7 +19,7 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
         fontWeight: "bold",
         fontSize: "11px",
         lineHeight: "13px",
-        height: "35px"
+        height: "35px",
     },
     fabMenu: {
         position: "absolute",
@@ -31,94 +31,142 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
         borderRadius: "50px 50px 50px 50px",
         backgroundColor: KnowitColors.beige,
         width: "400px",
+        // viewport height - headerbar height - bottom margin height - other spacing
+	maxHeight: "calc(100vh - 66px - 55px - 20px)",
+        overflow: "auto",
         boxShadow:
-            "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)"
+            "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)",
     },
     closeButton: {
         marginTop: "15px",
         marginRight: "20px",
         "&:hover": {
-            color: KnowitColors.darkGreen
+            color: KnowitColors.darkGreen,
         },
         float: "right",
         position: "absolute",
         right: "0px",
-        top: "0px"
-    }
+        top: "0px",
+    },
 });
 
 const floatingScaleDescButtonStyleMobile = makeStyles({
     fab: {
         alignSelf: "flex-end",
-        width: "fit-content",
-        marginRight: "20px",
-        marginBottom: "20px",
+        marginRight: "10px",
+        marginBottom: "10px",
         backgroundColor: KnowitColors.beige,
-        position: "absolute",
+        position: "fixed",
         bottom: "0px",
         right: "0px",
         fontFamily: "Arial",
         fontStyle: "normal",
         fontWeight: "bold",
-        fontSize: "11px",
+        fontSize: "15px",
         lineHeight: "13px",
-        height: "35px"
     },
     fabMenu: {
-        position: "absolute",
+        position: "fixed",
         bottom: "0px",
         right: "0px",
         width: "100%",
         height: "100%",
         zIndex: 101,
-        // borderRadius: '50px 50px 0px 0px',
         backgroundColor: KnowitColors.beige,
-        color: KnowitColors.darkBrown
-        // boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.25)'
+        color: KnowitColors.darkBrown,
+        boxShadow: "0px -4px 4px rgba(0, 0, 0, 0.15)",
+        borderRadius: "50px 50px 0px 0px",
     },
     closeButton: {
         marginTop: "10px",
         marginRight: "15px",
         "&:hover": {
-            color: KnowitColors.darkGreen
+            color: KnowitColors.darkGreen,
         },
         float: "right",
         position: "absolute",
         right: "0px",
-        top: "0px"
-    }
+        top: "0px",
+    },
 });
 
 type FloatingScaleDescButtonProps = {
     isMobile: boolean;
+    scaleDescOpen: boolean,
+    setScaleDescOpen: Dispatch<SetStateAction<boolean>>,
+    firstTimeLogin: boolean,
 };
 
+type ConditionalWrapProps = {
+    condition: boolean,
+    wrap: (children: JSX.Element) => JSX.Element,
+    children: JSX.Element,
+}
+
+const ConditionalWrap = ({condition, wrap, children} : ConditionalWrapProps) => condition ? wrap(children) : children;
+
 const FloatingScaleDescButton = ({
-    isMobile
+    isMobile,
+    scaleDescOpen,
+    setScaleDescOpen,
+    firstTimeLogin,
 }: FloatingScaleDescButtonProps) => {
     const style = isMobile
         ? floatingScaleDescButtonStyleMobile()
         : floatingScaleDescButtonStyleDesktop();
-    const [scaleDescOpen, setScaleDescOpen] = useState(false);
+
+    const [showTooltip, setShowTooltip] = useState(firstTimeLogin)
+    useEffect(() => {
+        if (firstTimeLogin) {
+            setTimeout(() => setShowTooltip(false), 5000);
+        }
+    }, [firstTimeLogin])
+
+    const handleMobileFabClick = () => {
+        setShowTooltip(false);
+        setScaleDescOpen((scaleDescOpen) => !scaleDescOpen);
+    }
 
     return (
         <>
             {scaleDescOpen && (
                 <div className={style.fabMenu}>
-                    <DescriptionTableMobile
+                    <DescriptionTable
                         onClose={() => setScaleDescOpen(false)}
+                        isMobile={isMobile}
                     />
                 </div>
             )}
-            <Fab
-                variant="extended"
-                className={style.fab}
-                onClick={() =>
-                    setScaleDescOpen((scaleDescOpen) => !scaleDescOpen)
-                }
-            >
-                Skalabeskrivelse
-            </Fab>
+            {isMobile ?
+             <ConditionalWrap condition={firstTimeLogin} wrap={children =>
+                 <Tooltip
+                     title="Trykk her for å se hva ikonene betyr!"
+                     open={showTooltip}
+                     arrow
+                 >
+                     {children}
+                 </Tooltip>
+             }>
+                 <Fab
+                     size="small"
+                     variant="round"
+                     className={style.fab}
+                     onClick={handleMobileFabClick}
+                 >
+                     ?
+                 </Fab>
+             </ConditionalWrap>
+            :
+                <Fab
+                    variant="extended"
+                    className={style.fab}
+                    onClick={() =>
+                        setScaleDescOpen((scaleDescOpen) => !scaleDescOpen)
+                    }
+                >
+                    SKALABESKRIVELSE
+                </Fab>
+            }
         </>
     );
 };

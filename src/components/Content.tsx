@@ -37,16 +37,17 @@ export const contentStyleDesktop = makeStyles({
     cardHolder: {
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         height: '100%'
     },
 });
 
 export const contentStyleMobile = makeStyles({
-    root: {
+    contentContainer: {
         display: 'flex',
         flexDirection: 'column',
-        overflowY: 'scroll',
+        // overflowY: 'scroll',
+        overflowX: 'hidden',
         height: '100%'
     },
     panel: {
@@ -58,7 +59,7 @@ export const contentStyleMobile = makeStyles({
 });
 
 const contentStyle = makeStyles({
-    root: {
+    contentContainer: {
         height: '100%',
         width: '100%',
         display: 'flex',
@@ -79,8 +80,7 @@ const contentStyle = makeStyles({
         zIndex: 1
     },
     MenuButton: {
-        borderTopLeftRadius: cardCornerRadius,
-        borderBottomLeftRadius: cardCornerRadius,
+        borderRadius: `${cardCornerRadius}px 0 0 ${cardCornerRadius}px`,
         '&:hover': {
             background: KnowitColors.white
         },
@@ -111,7 +111,7 @@ const contentStyle = makeStyles({
         background: KnowitColors.white,
         height: '100%',
         width: '80%'
-    }
+    },
 });
 
 const Content = ({...props}: ContentProps) => {
@@ -184,13 +184,17 @@ const Content = ({...props}: ContentProps) => {
         let lastUserFormAnswers;
         
         if (lastUserForm) {
-            lastUserFormAnswers = lastUserForm.questionAnswers.items
+            lastUserFormAnswers = lastUserForm.questionAnswers.items;
             setUserAnswers(lastUserFormAnswers);
-            setUserAnswersLoaded(true)
+            setUserAnswersLoaded(true);
         } else {
-            setActivePanel(Panel.MyAnswers)
+            setActivePanel(Panel.MyAnswers);
             setAnswerEditMode(true);
-            setUserAnswersLoaded(true)
+            setUserAnswersLoaded(true);
+            props.setFirstTimeLogin(true);
+            if (!props.isMobile) {
+                props.setScaleDescOpen(true);
+            }
         }
         
         console.log("Last userform: ", lastUserForm);
@@ -500,8 +504,8 @@ const Content = ({...props}: ContentProps) => {
      *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
      */
     const buttonSetup = [
-        { text: "Oversikt", buttonType: MenuButton.Overview },
-        { text: "Mine Svar", buttonType: MenuButton.MyAnswers, subButtons: categories.map((cat) => {
+        { text: "OVERSIKT", buttonType: MenuButton.Overview },
+        { text: "MINE SVAR", buttonType: MenuButton.MyAnswers, subButtons: categories.map((cat) => {
                 return { text: cat, buttonType: MenuButton.Category, activePanel: Panel.MyAnswers }
             })
         },
@@ -561,40 +565,17 @@ const Content = ({...props}: ContentProps) => {
             listItems.push(
                 <ListItem
                     key={butt.text}
-                    className={clsx(style.MenuButton)}
                     onClick={() => { checkIfCategoryIsSubmitted(butt.buttonType, undefined)}}
                 >
-                    <ListItemText primary={butt.text} />
-                    {/* <div className={clsx(style.menuButtonText)}>{butt.text}</div> */}
-                    {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""}
+                    {butt.text}
+                    {(butt.buttonType === MenuButton.MyAnswers) ? getMainMenuAlertElement() : ""}
                 </ListItem>
             );
         });
 
         return listItems;
     }
-
-    const mobileNavRef = useRef<HTMLInputElement>(null);
-    const categoryNavRef = useRef<HTMLInputElement | null>(null)
-    const [collapseMobileCategories, setCollapseMobileCategories] = useState<boolean>(false);
-
-
-    const handleScroll = () => {
-        if (mobileNavRef.current?.scrollTop !== undefined && categoryNavRef.current?.clientHeight !== undefined) {
-            if (mobileNavRef.current?.scrollTop > categoryNavRef.current?.clientHeight-56) {
-                setCollapseMobileCategories(true)
-            } else {
-                setCollapseMobileCategories(false)
-            }
-        }
-    }
-
-    const scrollToTopMobile = () => {
-        if (categoryNavRef.current?.clientHeight) {
-            mobileNavRef.current?.scroll(0, categoryNavRef.current?.clientHeight-50);
-            setCollapseMobileCategories(true);
-        }
-    }
+    
 
     const enableAnswerEditMode = () => {
         setAnswersBeforeSubmitted(new Map(questionAnswers));
@@ -631,9 +612,10 @@ const Content = ({...props}: ContentProps) => {
                         isMobile={props.isMobile}
                         alerts={alerts}
                         checkIfCategoryIsSubmitted={checkIfCategoryIsSubmitted}
-                        collapseMobileCategories={collapseMobileCategories}
-                        categoryNavRef={categoryNavRef}
-                        scrollToTop={scrollToTopMobile}
+                        collapseMobileCategories={props.collapseMobileCategories}
+                        categoryNavRef={props.categoryNavRef}
+                        scrollToTop={props.scrollToTop}
+                        setCollapseMobileCategories={props.setCollapseMobileCategories}
                     />
                 );
             case Panel.GroupLeader:
@@ -649,9 +631,9 @@ const Content = ({...props}: ContentProps) => {
     };
 
 
-    
+    //onScroll={() => handleScroll()}
     return (
-            <div className={props.isMobile ? mobileStyle.root : style.root} onScroll={() => handleScroll()} ref={mobileNavRef}>
+            <div className={props.isMobile ? mobileStyle.contentContainer : style.contentContainer}  ref={props.mobileNavRef}>
                 {
                     props.isMobile ? 
                         <NavBarMobile 

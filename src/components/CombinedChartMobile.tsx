@@ -1,5 +1,5 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine, Brush } from 'recharts';
 import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
@@ -16,8 +16,6 @@ const getMaxColumnsForWidth = () => {
     let width = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
     return Math.floor(width / scalingFactor);
 }
-
-const maxColumnsPerPage = getMaxColumnsForWidth();
 
 const useStyles = makeStyles({
     tooltip: {
@@ -43,8 +41,10 @@ const useStyles = makeStyles({
     },
     chartContainer: {
         width: '100%',
-        height: '100%',
-        display: 'flex',
+        // height: '100%',
+        // minHeight: 300,
+        height: 410,
+        // display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
@@ -95,9 +95,12 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
     const [currentPage, setCurrentPage] = useState(0);
 
     let classes = useStyles();
+    
+    const maxColumnsPerPage = getMaxColumnsForWidth();
 
     useEffect(() => {
         setChartPages(createPagedData());
+        setCurrentPage(0);
     }, [props.chartData]);
 
     const createPagedData = (): ChartData[][] => {
@@ -172,7 +175,7 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
     return (
         <div className={classes.chartContainer} {...swipeHandlers} >
             <ResponsiveContainer>     
-                <BarChart
+                <BarChart 
                     barGap={-10}
                     barSize={10}
                     maxBarSize={10}
@@ -201,15 +204,15 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
                         tick={renderLabelTick}
                     />
                     {/* <Tooltip content={renderCustomTooltip(classes)}/> */}
-                    <Bar radius={[10, 10, 0, 0]} dataKey="valueKnowledge" fill={KnowitColors.lightGreen}/>
-                    <Bar radius={[10, 10, 0, 0]} dataKey="valueMotivation" fill={KnowitColors.greyGreen}/>
-                    <ReferenceLine y={0} stroke="green" >
-                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>KOMPETANSE</Label>
+                    <Bar radius={[10, 10, 0, 0]} dataKey="valueKnowledge" fill={KnowitColors.darkGreen}/>
+                    <Bar radius={[10, 10, 0, 0]} dataKey="valueMotivation" fill={KnowitColors.lightGreen}/>
+                    <ReferenceLine y={0} stroke={KnowitColors.darkGreen} >
+                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>MOTIVASJON</Label>
                     </ReferenceLine>
                     <ReferenceLine y={0.1} stroke={KnowitColors.darkGreen} strokeWidth={1}></ReferenceLine>
                     <ReferenceLine y={0} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
                     <ReferenceLine y={chartSplitAt} stroke={KnowitColors.darkGreen}>
-                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>MOTIVASJON</Label>
+                        <Label position="insideTopRight" fontSize={12} fontWeight="bold" fill={KnowitColors.darkBrown}>KOMPETANSE</Label>
                     </ReferenceLine>
                     <ReferenceLine y={chartSplitAt-0.1} stroke={KnowitColors.creme} strokeWidth={3}></ReferenceLine>
                 </BarChart>
@@ -221,11 +224,11 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
 
 const renderCustomAxisTicks = () => {
     return ( {...props}:TickProps ) => {
-        let isKnowledge = true;
+        let isKnowledge = false;
         let iconNumber = props.payload.value;
         if (props.payload.value >= chartSplitAt) {
             iconNumber -= chartSplitAt;
-            isKnowledge = false;
+            isKnowledge = true;
         }
         return (
             <svg x={props.x-iconSize} y={props.y-(iconSize/2)} width={iconSize} height={iconSize} fill="black">

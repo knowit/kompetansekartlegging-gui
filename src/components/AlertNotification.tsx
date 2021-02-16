@@ -8,7 +8,8 @@ import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsAct
 import clsx from 'clsx';
 import { Millisecs } from '../helperFunctions';
 
-export const staleAnswersLimit: number = Millisecs.FIVEMINUTES;
+// Time passed before answers are flagged as stale and alerts are displayed
+export const staleAnswersLimit: number = Millisecs.THREEMONTHS;
 
 const useStyles = makeStyles({
     root: {

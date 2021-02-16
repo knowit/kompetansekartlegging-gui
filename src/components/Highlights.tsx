@@ -9,23 +9,21 @@ import clsx from 'clsx';
 const barIconSize = 24;
 const barIconSizeMobile = 20;
 
-const topicWrapScaler = Math.round(window.innerWidth / 25);
-const maxTopicStringLength = Math.max(15, topicWrapScaler);
-
 const highlightsStyle = makeStyles({
     root: {
         display: 'flex',
         height: '40%',
-        width: '80%',
+        width: '100%',
         flexDirection: 'column',
         alignItems: 'flex-start'
     },
     rootMobile: {
         display: 'flex',
-        height: '40%',
         width: '100%',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingTop: '2vh',
+        paddingBottom: 50
     },
     title: {    
         textAlign: 'left',
@@ -46,11 +44,12 @@ const highlightsStyle = makeStyles({
         flexDirection: 'column',
         height: '100%',
         width: '80%',
-        justifyContent: 'center'
+        justifyContent: 'flex-start',
     },
     block: {
         display: 'flex',
         width: '100%',
+        minHeight: barIconSize * 4,
         flexDirection: 'column',
     },
     heading: {
@@ -68,7 +67,8 @@ const highlightsStyle = makeStyles({
         paddingBottom: 10,
         paddingLeft: 30,
         fontFamily: 'Arial',
-        fontSize: 14
+        fontSize: 14,
+        color: KnowitColors.darkBrown,
     },
     list: {
         display: 'flex',
@@ -181,6 +181,19 @@ export default function Highlights({...props }: HighlightsProps) {
     
     const shortlistCutoff: number = 2.0;
     const maxInList: number = 4;
+
+    const maxLengthByWidth = (minNumLetters: number) => {
+        const width = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        let factor = 27; //Scaling factor
+        let desktopPanelWidth = 0;
+        if (!props.isMobile) {
+            factor = 60; //Scaling factor for desktop
+            desktopPanelWidth = 0.2 * width; //Menu panel is 20% of width (Content.tsx)
+        }
+        const topicWrapScaler = Math.round((width - desktopPanelWidth) / factor);
+        return Math.max(minNumLetters, topicWrapScaler);
+    }
+    const maxTopicStringLength = maxLengthByWidth(8);
 
     useEffect(() => {
         generateShortlist();

@@ -2,10 +2,8 @@ import { Button, makeStyles } from '@material-ui/core';
 import React, { Fragment, useRef } from 'react'
 import { KnowitColors } from '../styles';
 import { FormProps, SliderValues } from '../types';
-import { Category } from './Category';
 import Question from './Question';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
-import ProgressBar from './ProgressBar';
 
 const FormStyleDesktop = makeStyles({
     root: {
@@ -19,10 +17,11 @@ const FormStyleDesktop = makeStyles({
         borderRadius: 10
     },
     blockButtons: {
-        padding: 20,
+        width: '90%',
+        maxWidth: 1200,
         display: 'flex',
         justifyContent: 'space-around',
-        marginBottom: 50
+        margin: '30px 0px 50px'
     },
     submitButton: {
         paddingLeft: 20,
@@ -73,7 +72,7 @@ const FormStyleMobile = makeStyles({
         flexDirection: 'column-reverse',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 50
+        // marginBottom: 50
 
     },
     submitButton: {
@@ -205,9 +204,7 @@ export const Form = ({...props}: FormProps) => {
         //     .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
             <Fragment>
-                <Category name={props.activeCategory} isMobile={props.isMobile}>
-                    {getQuestionsForCategory(undefined)}
-                </Category>
+                {getQuestionsForCategory(undefined)}
                 <div className={style.blockButtons}>
                     {props.categories.length > 0
                         ? <Button 

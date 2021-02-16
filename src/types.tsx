@@ -1,5 +1,7 @@
 import { MenuButton, Panel } from "./components/Content";
 import { AlertType } from "./components/AlertNotification";
+import { Dispatch, SetStateAction } from "react";
+import { OverviewType } from "./components/TypedOverviewChart";
 
 export type AnswerData = {
     questionId: string,
@@ -79,8 +81,8 @@ export type CalculationData = {
 
 export type ResultData = {
     category: string,
-    averageKnowledge: number,
-    averageMotivation: number
+    aggKnowledge: number,
+    aggMotivation: number
 };
 
 export type AnsweredQuestion = {
@@ -318,7 +320,9 @@ export type YourAnswerProps = {
     checkIfCategoryIsSubmitted:(buttonType: MenuButton, category?: string | undefined) => void,
     collapseMobileCategories: boolean,
     categoryNavRef:  React.MutableRefObject<HTMLInputElement | null>,
-    scrollToTop: () => void
+    scrollToTop: () => void,
+    setCollapseMobileCategories: (collapseMobileCategories: boolean) => void,
+
 };
 
 export interface AlertState {
@@ -403,7 +407,13 @@ export type ContentProps = {
     signout: () => void,
     userName: string,
     userPicture: string,
-
+    collapseMobileCategories: boolean,
+    categoryNavRef:  React.MutableRefObject<HTMLInputElement | null>,
+    scrollToTop: () => void,
+    mobileNavRef:  React.MutableRefObject<HTMLInputElement | null>,
+    setCollapseMobileCategories: (collapseMobileCategories: boolean) => void,
+    setScaleDescOpen: Dispatch<SetStateAction<boolean>>,
+    setFirstTimeLogin: Dispatch<SetStateAction<boolean>>,
 };
 
 export type ChartData = {
@@ -414,6 +424,8 @@ export type ChartData = {
 
 export type CombinedChartProps = {
     chartData: ChartData[],
+    type?: OverviewType,
+    topSubjects?: Map<string, {kTop: string, mTop: string}>,
     className?: string
 };
 
