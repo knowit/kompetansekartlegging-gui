@@ -75,6 +75,7 @@ const App = () => {
         width: window.innerWidth,
     });
     const [scaleDescOpen, setScaleDescOpen] = useState(false);
+    const [firstTimeLogin, setFirstTimeLogin] = useState(false);
 
     useEffect(() => {
         const handleResize = debounce(() => {
@@ -388,10 +389,12 @@ const App = () => {
                         scrollToTop={scrollToTopMobile}
                         setCollapseMobileCategories={setCollapseMobileCategories}
                         setScaleDescOpen={setScaleDescOpen}
+                        setFirstTimeLogin={setFirstTimeLogin}
                     />
                     <FloatingScaleDescButton
                         scaleDescOpen={scaleDescOpen}
                         setScaleDescOpen={setScaleDescOpen}
+                        firstTimeLogin={firstTimeLogin}
                         isMobile={isMobile}
                     />
                 </Fragment>

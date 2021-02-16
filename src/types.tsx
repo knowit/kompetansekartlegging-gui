@@ -413,6 +413,7 @@ export type ContentProps = {
     mobileNavRef:  React.MutableRefObject<HTMLInputElement | null>,
     setCollapseMobileCategories: (collapseMobileCategories: boolean) => void,
     setScaleDescOpen: Dispatch<SetStateAction<boolean>>,
+    setFirstTimeLogin: Dispatch<SetStateAction<boolean>>,
 };
 
 export type ChartData = {
