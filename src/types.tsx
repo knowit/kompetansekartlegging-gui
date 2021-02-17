@@ -138,7 +138,7 @@ export type FormDefinition = {
     questions: {
         items: Question[]
     }
-} | undefined;
+};
 
 export type FormDefinitionByCreatedAt = {
     formByCreatedAt: {
