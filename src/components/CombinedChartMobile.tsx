@@ -1,11 +1,12 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine, Brush } from 'recharts';
+import { useEffect, useState } from 'react';
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Label, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { GetIcon } from '../icons/iconController';
 import { KnowitColors } from '../styles';
 import { ChartData, CombinedChartProps } from '../types';
 import { wrapString } from '../helperFunctions';
 import { useSwipeable } from "react-swipeable";
+import { OverviewType } from './TypedOverviewChart';
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;
@@ -93,15 +94,35 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
 
     const [chartPages, setChartPages] = useState<ChartData[][]>([]);
     const [currentPage, setCurrentPage] = useState(0);
+    const [currentType, setCurrentType] = useState<OverviewType>();
 
     let classes = useStyles();
     
     const maxColumnsPerPage = getMaxColumnsForWidth();
 
     useEffect(() => {
+        if (currentType !== props.type) { // New data and type has changed
+            if (typeof currentType === 'undefined') {
+                setCurrentType(props.type);
+                setCurrentPage(0);
+            } else {
+                if (typeof props.type === 'undefined') {
+                    setCurrentType(props.type);
+                    setCurrentPage(0);
+                } else { // Previous type was defined, now new type: RETAIN PAGE
+                    setCurrentType(props.type);
+                }
+            }
+        } else { // New data and type has NOT changed
+            setCurrentPage(0);
+        }
+        setChartPages(createPagedData());
+    }, [props.chartData]);
+
+    useEffect(() => {
         setChartPages(createPagedData());
         setCurrentPage(0);
-    }, [props.chartData]);
+    }, [maxColumnsPerPage])
 
     const createPagedData = (): ChartData[][] => {
         let pagedData: ChartData[][] = [];
