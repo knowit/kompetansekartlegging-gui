@@ -153,18 +153,17 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
 
     const createMedianData = (): ResultData[] => {
         let ansData: ResultData[] = [];
+        let getMedian = (numbers: number[]): number => {
+            let mid = Math.floor(numbers.length / 2);
+            numbers.sort();
+            console.log("numbers?", numbers.length)
+            return (numbers.length % 2 === 1) ? numbers[mid] : (numbers[mid - 1] + numbers[mid]) / 2;
+        }
         props.questionAnswers.forEach((questionAnswers, category) => {
             if (questionAnswers.length > 0) {
-                let mid = Math.floor(questionAnswers.length / 2);
-                let medianKnowledge, medianMotivation;
-                let sortK = questionAnswers.sort((qa1, qa2) => qa1.knowledge - qa2.motivation);
-                medianKnowledge = (sortK.length % 2 === 1)
-                    ? sortK[mid].knowledge
-                    : (sortK[mid - 1].knowledge + sortK[mid].knowledge) / 2;
-                let sortM = questionAnswers.sort((qa1, qa2) => qa1.motivation - qa2.motivation);
-                medianMotivation = (sortM.length % 2 === 1)
-                    ? sortM[mid].motivation
-                    : (sortM[mid - 1].motivation + sortM[mid].motivation) / 2;
+                let medianKnowledge = getMedian(questionAnswers.map(qa => qa.knowledge).filter(n => n >= 0));
+                console.log("Motivation")
+                let medianMotivation = getMedian(questionAnswers.map(qa => qa.motivation).filter(n => n >= 0));
                 ansData.push({
                     category: category,
                     aggKnowledge: medianKnowledge,
