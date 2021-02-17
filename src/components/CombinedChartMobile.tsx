@@ -101,8 +101,6 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
     const maxColumnsPerPage = getMaxColumnsForWidth();
 
     useEffect(() => {
-        console.log("curr", currentType)
-        console.log("new", props.type)
         if (currentType !== props.type) { // New data and type has changed
             if (typeof currentType === 'undefined') {
                 setCurrentType(props.type);
@@ -120,6 +118,11 @@ export const CombinedChartMobile = ( {...props}: CombinedChartProps ) => {
         }
         setChartPages(createPagedData());
     }, [props.chartData]);
+
+    useEffect(() => {
+        setChartPages(createPagedData());
+        setCurrentPage(0);
+    }, [maxColumnsPerPage])
 
     const createPagedData = (): ChartData[][] => {
         let pagedData: ChartData[][] = [];
