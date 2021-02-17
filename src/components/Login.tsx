@@ -118,9 +118,9 @@ const Login = (props: {isMobile: boolean}) => {
             </div>
             <div className={style.frontDiv}>
                 <div className={style.headlineAlign}>
-                    <div className={props.isMobile ? style.headlineMobile : style.headline}>
+                    <h1 className={props.isMobile ? style.headlineMobile : style.headline}>
                         <div className={style.dot}/>Kompetansekartlegging
-                    </div>
+                    </h1>
                 </div>
                 <div className={style.buttonAlign}>
                     <Button
