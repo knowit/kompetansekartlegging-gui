@@ -138,7 +138,7 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
                 <AppBar position="static">
                     <Toolbar className={style.header}>
                         <div className={style.logo}><KnowitLogo/></div>
-                        <div className={style.title}>Kompetansekartlegging</div>
+                        <h1 className={style.title}>Kompetansekartlegging</h1>
 
                         {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}
                         <div className={style.dropdownMenuButton}>
