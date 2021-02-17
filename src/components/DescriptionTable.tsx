@@ -21,13 +21,15 @@ const DescTableStyle = makeStyles({
         width: "100%",
         maxWidth: "100%",
         height: "100%",
-        maxHeight: "100%",
+        maxHeight: "inherit",
+        borderRadius: "inherit",
         display: "flex",
         flexDirection: "column",
         color: KnowitColors.darkBrown,
     },
     overflowContainer: {
         overflow: "auto",
+        borderRadius: "inherit",
     },
     scaleRow: {
         margin: "15px 20px",
@@ -211,7 +213,7 @@ export const DescriptionTable = ({
                 </div>
             )}
 
-            <div className={clsx({[style.overflowContainer]: isMobile})}>
+            <div className={style.overflowContainer}>
                 <div className={style.scaleRow}>
                     <header className={style.header}>
                         <h2 className={style.scaleTitle}>Kompetanseskala</h2>
