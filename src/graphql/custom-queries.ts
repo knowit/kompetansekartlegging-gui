@@ -130,6 +130,50 @@ export const formByCreatedAtt = /* GraphQL */ `
   }
 `;
 
+export const formByCreatedAtPaginated = /* GraphQL */ `
+  query FormByCreatedAtPaginated(
+    $sortKeyConstant: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelFormDefinitionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    formByCreatedAt(
+      sortKeyConstant: $sortKeyConstant
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+    ) {
+      items {
+        id
+        createdAt
+        questions(
+          nextToken: $nextToken
+        ) {
+          items {
+            category {
+              id
+              text
+              description
+              index
+            }
+            index
+            id
+            createdAt
+            text
+            topic
+            qid
+          }
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
+
 export const userFormByCreatedAtInputConsts = {
   limit: 1,
   sortDirection: ModelSortDirection.DESC,
