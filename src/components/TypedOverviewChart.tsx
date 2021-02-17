@@ -83,7 +83,7 @@ export enum OverviewType {
 export default function TypedOverviewChart({...props}: ResultDiagramProps) {
     const style = graphStyle();
 
-    const [answerData, setAnswerData] = useState<ResultData[]>([]);
+    const [chartData, setChartData] = useState<ChartData[]>([]);
     const [currentType, setOverviewType] = useState<OverviewType>(OverviewType.HIGHEST);
     const [topSubjects, setTopSubjects] = useState<Map<string, {kTop: string, mTop: string}>>(new Map());
     
@@ -96,16 +96,27 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
     }, [currentType]);
 
     const recalculate = () => {
+        let answerData: ResultData[] = [];
         switch(currentType) {
             case OverviewType.AVERAGE:
-                setAnswerData(createAverageData());
+                answerData = createAverageData();
                 break;
             case OverviewType.MEDIAN:
-                setAnswerData(createMedianData());
+                answerData = createMedianData();
                 break;
             case OverviewType.HIGHEST:
-                setAnswerData(createHighestData());
+                answerData = createHighestData();
         }
+        let knowledgeStart = props.isMobile ? 7 : 0;
+        let motivationStart = props.isMobile ? 0 : 7;
+        let data: ChartData[] = answerData.map(
+            (answer) => ({
+                name: answer.category,
+                valueKnowledge: [knowledgeStart, knowledgeStart + ((answer.aggKnowledge === -1) ? 0 : answer.aggKnowledge)],
+                valueMotivation: [motivationStart, motivationStart + ((answer.aggMotivation === -1) ? 0 : answer.aggMotivation)],
+            })
+        );
+        setChartData(data);
     }
 
     type ReduceValue = {
@@ -212,22 +223,6 @@ export default function TypedOverviewChart({...props}: ResultDiagramProps) {
         return ansData;
     };
 
-    let knowledgeStart = props.isMobile ? 7 : 0;
-    let motivationStart = props.isMobile ? 0 : 7;
-    let chartData: ChartData[] = answerData.map(
-        (answer) => ({
-            name: answer.category,
-            valueKnowledge: [knowledgeStart, knowledgeStart + ((answer.aggKnowledge === -1) ? 0 : answer.aggKnowledge)],
-            valueMotivation: [motivationStart, motivationStart + ((answer.aggMotivation === -1) ? 0 : answer.aggMotivation)],
-        })
-    );
-
-
-    // const [view, setView] = React.useState(OverviewType.AVERAGE);
-    // const handleChange = (event: React.UIEvent<HTMLElement>, nextType: OverviewType) => {
-    //   setView(nextType);
-    // };
-  
     const cycleChartType = () => {
         switch(currentType) {
             case OverviewType.AVERAGE:
