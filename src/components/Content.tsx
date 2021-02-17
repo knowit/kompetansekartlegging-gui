@@ -168,7 +168,7 @@ const Content = ({...props}: ContentProps) => {
         let questions: Question[] = [];
         let formDefPaginated: FormDefinitionPaginated = undefined;
         do {
-            let currentForm = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(customQueries.formByCreatedAtPaginated, {...customQueries.formByCreatedAtInputConsts, nextToken: nextToken});
+            let currentForm: any = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(customQueries.formByCreatedAtPaginated, {...customQueries.formByCreatedAtInputConsts, nextToken: nextToken});
             if (currentForm.data && currentForm.data.formByCreatedAt.items[0]) {
                 if (typeof formDefPaginated === 'undefined') {
                     formDefPaginated = currentForm.data.formByCreatedAt.items[0];
