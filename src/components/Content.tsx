@@ -169,15 +169,15 @@ const Content = ({...props}: ContentProps) => {
         let formDefPaginated: FormDefinitionPaginated = undefined;
         do {
             let currentForm: any = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(customQueries.formByCreatedAtPaginated, {...customQueries.formByCreatedAtInputConsts, nextToken: nextToken});
-            if (currentForm.data) {
+            if (currentForm.data && currentForm.data.formByCreatedAt.items[0]) {
                 if (typeof formDefPaginated === 'undefined') {
                     formDefPaginated = currentForm.data.formByCreatedAt.items[0];
                     questions = currentForm.data.formByCreatedAt.items[0].questions.items;
                 } else {
                     questions = questions.concat(currentForm.data.formByCreatedAt.items[0].questions.items);
                 }
+                nextToken = currentForm.data.formByCreatedAt.items[0].questions.nextToken;
             }
-            if (currentForm.data) nextToken = currentForm.data.formByCreatedAt.items[0].questions.nextToken;
         } while (nextToken);
         let formDef: FormDefinition;
         if (formDefPaginated)
