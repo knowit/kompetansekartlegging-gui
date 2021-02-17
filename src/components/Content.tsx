@@ -179,21 +179,19 @@ const Content = ({...props}: ContentProps) => {
                 nextToken = currentForm.data.formByCreatedAt.items[0].questions.nextToken;
             }
         } while (nextToken);
-        let formDef: FormDefinition;
-        if (formDefPaginated)
-            formDef = {
-                id: formDefPaginated.id,
-                createdAt: formDefPaginated.createdAt,
-                questions: {
-                    items: questions
-                }
-            };
-        if (formDef) {
-            console.log("FormDef:", formDef);
-            setFormDefinition(formDef);
-            let quAns = createQuestionAnswers(formDef);
-            let userAnswers = await getUserAnswers();
-            setFirstAnswers(quAns, userAnswers);
+        if (formDefPaginated) {
+            let formDef: FormDefinition = {
+                    id: formDefPaginated.id,
+                    createdAt: formDefPaginated.createdAt,
+                    questions: {
+                        items: questions
+                    }
+                };
+                console.log("FormDef:", formDef);
+                setFormDefinition(formDef);
+                let quAns = createQuestionAnswers(formDef);
+                let userAnswers = await getUserAnswers();
+                setFirstAnswers(quAns, userAnswers);
         } else {
             console.log("Error loading form definition!");
         }
