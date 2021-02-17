@@ -12,6 +12,7 @@ import { AlertDialog } from './AlertDialog';
 import { AlertNotification, AlertType, staleAnswersLimit } from './AlertNotification';
 import NavBarMobile from './NavBarMobile';
 import { AnswerHistory } from './AnswerHistory';
+import lodash from 'lodash';
 
 const cardCornerRadius: number = 40;
 
@@ -285,6 +286,7 @@ const Content = ({...props}: ContentProps) => {
             }))
         });
         setQuestionAnswers(newMap);
+        setAnswersBeforeSubmitted(lodash.cloneDeep(newMap));
     };
     
     const updateAnswer = (category: string, sliderMap: Map<string, SliderValues>): void => {
@@ -304,8 +306,7 @@ const Content = ({...props}: ContentProps) => {
     
     const createUserForm = async () => {
         setIsCategorySubmitted(true)
-        // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
-        setAnswersBeforeSubmitted(new Map(questionAnswers));
+        setAnswersBeforeSubmitted(lodash.cloneDeep(questionAnswers));
         setAnswerEditMode(false);
         if(!formDefinition) {
             console.error("Missing formDefinition!");
@@ -361,8 +362,7 @@ const Content = ({...props}: ContentProps) => {
     };
 
     const resetAnswers = () => {
-        // setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
-        setQuestionAnswers(new Map(answersBeforeSubmitted));
+        setQuestionAnswers(lodash.cloneDeep(answersBeforeSubmitted));
     }
 
     const submitAndProceed = () => {
@@ -387,12 +387,6 @@ const Content = ({...props}: ContentProps) => {
     useEffect(() => {
         fetchLastFormDefinition();
     }, []);
-
-    useEffect(() => {
-        // console.log("userAnswers")
-        // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
-        setAnswersBeforeSubmitted(new Map(questionAnswers));
-    }, [userAnswers]);
 
     useEffect(() => {
         if (props.answerHistoryOpen) {
@@ -599,7 +593,7 @@ const Content = ({...props}: ContentProps) => {
     
 
     const enableAnswerEditMode = () => {
-        setAnswersBeforeSubmitted(new Map(questionAnswers));
+        setAnswersBeforeSubmitted(lodash.cloneDeep(questionAnswers));
         setAnswerEditMode(true);
     }
 
