@@ -82,8 +82,8 @@ const floatingScaleDescButtonStyleMobile = makeStyles({
         fontFamily: "Arial",
         fontStyle: "normal",
         fontWeight: "bold",
-        fontSize: "15px",
-        lineHeight: "13px",
+        fontSize: "18px",
+        lineHeight: "16px",
     },
     fabMenu: {
         position: "fixed",
@@ -169,7 +169,7 @@ const FloatingScaleDescButton = ({
                  </Tooltip>
              }>
                  <Fab
-                     size="small"
+                     size="medium"
                      variant="round"
                      className={style.fab}
                      onClick={handleMobileFabClick}
