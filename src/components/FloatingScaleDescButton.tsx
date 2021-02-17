@@ -9,7 +9,7 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
         width: "fit-content",
         marginRight: "20px",
         marginBottom: "20px",
-        backgroundColor: KnowitColors.beige,
+        backgroundColor: KnowitColors.lightGreen,
         color: KnowitColors.darkBrown,
         position: "fixed",
         bottom: "0px",
@@ -24,16 +24,15 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
     fabMenu: {
         position: "absolute",
         alignSelf: "flex-end",
-        marginRight: "60px",
+        marginRight: "20px",
         marginBottom: "10px",
         bottom: "55px",
         right: "0px",
-        borderRadius: "50px 50px 50px 50px",
-        backgroundColor: KnowitColors.beige,
+        borderRadius: "50px 50px 0px 50px",
+        backgroundColor: KnowitColors.lightGreen,
         width: "400px",
         // viewport height - headerbar height - bottom margin height - other spacing
 	maxHeight: "calc(100vh - 66px - 55px - 20px)",
-        overflow: "auto",
         boxShadow:
             "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)",
     },
@@ -48,14 +47,35 @@ const floatingScaleDescButtonStyleDesktop = makeStyles({
         right: "0px",
         top: "0px",
     },
+    arrow: {
+        width: "25px",
+        height: "12.5px",
+        position: "absolute",
+        top: "100%",
+        right: "5%",
+        transform: "translateX(-50%)",
+        overflow: "hidden",
+        "&:after": {
+            content: '""',
+            position: "absolute",
+            width: "10px",
+            height: "10px",
+            background: KnowitColors.lightGreen,
+            transform: "translateX(-50%) translateY(-50%) rotate(45deg)",
+            top: "0",
+            left: "50%",
+            boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.50)",
+        },
+    }
 });
 
 const floatingScaleDescButtonStyleMobile = makeStyles({
+    arrow: {},
     fab: {
         alignSelf: "flex-end",
         marginRight: "10px",
         marginBottom: "10px",
-        backgroundColor: KnowitColors.beige,
+        backgroundColor: KnowitColors.lightGreen,
         position: "fixed",
         bottom: "0px",
         right: "0px",
@@ -72,7 +92,7 @@ const floatingScaleDescButtonStyleMobile = makeStyles({
         width: "100%",
         height: "100%",
         zIndex: 101,
-        backgroundColor: KnowitColors.beige,
+        backgroundColor: KnowitColors.lightGreen,
         color: KnowitColors.darkBrown,
         boxShadow: "0px -4px 4px rgba(0, 0, 0, 0.15)",
         borderRadius: "50px 50px 0px 0px",
@@ -131,10 +151,11 @@ const FloatingScaleDescButton = ({
         <>
             {scaleDescOpen && (
                 <div className={style.fabMenu}>
-                    <DescriptionTable
-                        onClose={() => setScaleDescOpen(false)}
-                        isMobile={isMobile}
-                    />
+                        <DescriptionTable
+                            onClose={() => setScaleDescOpen(false)}
+                            isMobile={isMobile}
+                        />
+                    <div className={style.arrow}></div>
                 </div>
             )}
             {isMobile ?
