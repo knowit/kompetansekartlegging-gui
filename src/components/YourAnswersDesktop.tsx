@@ -141,7 +141,7 @@ const yourAnwersStyle = makeStyles({
         fontWeight: "bold",
     },
     categoryDescription: {
-        margin: "30px 0px 30px 40px",
+        margin: "30px 0px 30px 30px",
         maxWidth: '60%',
         minWidth: 800,
         fontStyle: 'italic'
