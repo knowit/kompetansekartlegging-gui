@@ -57,7 +57,6 @@ const useStyles = makeStyles({
         alignItems: 'center',
         fontWeight: "bold",
         fontSize: '15px',
-        marginBottom: 50
     },
     '@global': {
         'g.recharts-cartesian-grid-horizontal > line:last-child': {
