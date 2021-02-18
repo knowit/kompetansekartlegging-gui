@@ -204,14 +204,14 @@ export default function Highlights({...props }: HighlightsProps) {
         let shortlistKnowledge: TopicScoreWithIcon[] = [];
         props.questionAnswers.forEach((quAns, cat) => {
             quAns.forEach(answer => {
-                if (answer.knowledge > shortlistCutoff) {
+                if (answer.knowledge >= shortlistCutoff) {
                     shortlistKnowledge.push({
                         topic: answer.topic,
                         score: answer.knowledge,
                         icon: Math.floor(answer.knowledge)
                     });
                 }
-                if (answer.motivation > shortlistCutoff) {
+                if (answer.motivation >= shortlistCutoff) {
                     shortlistMotivation.push({
                         topic: answer.topic,
                         score: answer.motivation,
