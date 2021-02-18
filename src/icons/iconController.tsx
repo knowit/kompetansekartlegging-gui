@@ -12,7 +12,7 @@ import { ReactComponent as M2 } from "../icons/M - vedbehov.svg"
 import { ReactComponent as M1 } from "../icons/M - nja.svg"
 import { ReactComponent as M0 } from "../icons/M - nei.svg"
 
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Tooltip } from "@material-ui/core"
 
 const getIconDescription = (knowledge: boolean, level: number): string => {
@@ -39,6 +39,7 @@ const getIconDescription = (knowledge: boolean, level: number): string => {
 };
 
 const CreateHover = (knowledge: boolean, level: number, className?: string, key?: number): JSX.Element => {
+
     let element: JSX.Element = <Fragment />;
     if(knowledge){
         switch(level){
@@ -59,8 +60,18 @@ const CreateHover = (knowledge: boolean, level: number, className?: string, key?
             case 5: element = <M5 className={className} />; break;
         }
     }
-    return <Tooltip key={key ? key : null} title={getIconDescription(knowledge, level)}>{element}</Tooltip>;
+
+    return <ClickableTooltip key={key} knowledge={knowledge} level={level} element={element} />;
 };
+
+const ClickableTooltip = (props: {key?: number, knowledge: boolean, level: number, element: JSX.Element}) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const handleClick = () => {
+        setIsOpen(true);
+        setTimeout(() => setIsOpen(false), 2000);
+    }
+    return <Tooltip onClick={handleClick} open={isOpen} disableTouchListener={false} key={props.key ? props.key : null} title={getIconDescription(props.knowledge, props.level)}>{props.element}</Tooltip>;
+}
 
 export {K0, K1, K2, K3, K4, K5, M0, M1, M2, M3, M4, M5}
 
