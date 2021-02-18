@@ -187,7 +187,7 @@ const Content = ({...props}: ContentProps) => {
                         items: questions
                     }
                 };
-                console.log("FormDef:", formDef);
+                // console.log("FormDef:", formDef);
                 setFormDefinition(formDef);
                 let quAns = createQuestionAnswers(formDef);
                 let userAnswers = await getUserAnswers();
