@@ -64,17 +64,21 @@ const yourAnwersStyle = makeStyles({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '10%',
-        width: '60%',
+        width: '95%',
+        maxWidth: 1100,
         margin: '10px',
         maxHeight: '50px'
     },
+    infoButtonGroup: {
+        width: '50%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     blockInfo: {
-        width: '100%',
+        width: 'fit-content',
         fontSize: '22px',
         fontWeight: 'bold',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
         marginLeft: 20
     },
     graphHolder: {
@@ -141,7 +145,7 @@ const yourAnwersStyle = makeStyles({
         fontWeight: "bold",
     },
     categoryDescription: {
-        margin: "30px 0px 30px 40px",
+        margin: "30px 0px 30px 30px",
         maxWidth: '60%',
         minWidth: 800,
         fontStyle: 'italic'
@@ -177,9 +181,11 @@ export const YourAnswersDesktop = ({ ...props }: YourAnswerProps) => {
                     <div className={style.catHeader}>
                         <div className={style.blockInfo}>
                             {props.activeCategory}
-                            <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
                         </div>
-                        <Button className={style.editButton} onClick={() => props.enableAnswerEditMode()}>Fyll ut</Button>
+                        <div className={style.infoButtonGroup}>
+                            <BlockInfo questions={props.questionAnswers.get(props.activeCategory)}/>
+                            <Button className={style.editButton} onClick={() => props.enableAnswerEditMode()}>Fyll ut</Button>
+                        </div>
                     </div>
                     <div className={style.categoryDescription}>{getCategoryDescription()}</div>
 

@@ -285,6 +285,7 @@ const Content = ({...props}: ContentProps) => {
             }))
         });
         setQuestionAnswers(newMap);
+        setAnswersBeforeSubmitted(new Map(newMap));
     };
     
     const updateAnswer = (category: string, sliderMap: Map<string, SliderValues>): void => {

@@ -24,7 +24,8 @@ const alertDialogStyles = makeStyles({
     },
     buttonText: {
         fontWeight: 'bold',
-        textTransform: 'none'
+        textTransform: 'none',
+        lineHeight: 1
     },
     errorIcon: {
         fill: KnowitColors.fuchsia,
@@ -36,7 +37,7 @@ const alertDialogStyles = makeStyles({
     },
     alertButtons: {
         justifyContent: 'space-evenly',
-        marginBottom: '10px'
+        marginBottom: '10px' 
     },
     dialogTitle: {
         '& h2': {
