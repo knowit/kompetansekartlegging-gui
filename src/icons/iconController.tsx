@@ -38,7 +38,15 @@ const getIconDescription = (knowledge: boolean, level: number): string => {
     }
 };
 
-const CreateHover = (knowledge: boolean, level: number, className?: string, key?: number): JSX.Element => {
+const CreateHover = (
+    knowledge: boolean,
+    level: number,
+    className?: string,
+    key?: number,
+    isMobile?: boolean,
+    onClick?: () => void,
+    isOpen?: boolean
+): JSX.Element => {
     let element: JSX.Element = <Fragment />;
     if(knowledge){
         switch(level){
@@ -59,23 +67,61 @@ const CreateHover = (knowledge: boolean, level: number, className?: string, key?
             case 5: element = <M5 className={className} />; break;
         }
     }
-    return <Tooltip key={key ? key : null} title={getIconDescription(knowledge, level)}>{element}</Tooltip>;
+
+    return isMobile ? (
+        <Tooltip
+            onClick={onClick}
+            open={isOpen}
+            disableTouchListener={false}
+            key={key ? key : null}
+            title={getIconDescription(knowledge, level)}
+        >
+            {element}
+        </Tooltip>
+    ) : (
+        <Tooltip key={key} title={getIconDescription(knowledge, level)}>
+            {element}
+        </Tooltip>
+    );
 };
 
-export {K0, K1, K2, K3, K4, K5, M0, M1, M2, M3, M4, M5}
+export { K0, K1, K2, K3, K4, K5, M0, M1, M2, M3, M4, M5 };
 
-export const GetIcons = (knowledge: boolean, className?: string): JSX.Element[] => {
-    let els = [
-        CreateHover(knowledge, 0, className, 0),
-        CreateHover(knowledge, 1, className, 1),
-        CreateHover(knowledge, 2, className, 2),
-        CreateHover(knowledge, 3, className, 3),
-        CreateHover(knowledge, 4, className, 4),
-        CreateHover(knowledge, 5, className, 5)
-    ];
+export const GetIcons = (
+    knowledge: boolean,
+    isMobile: boolean,
+    className?: string
+): JSX.Element[] => {
+    const [active, setActive] = useState<number | null>(null);
+    const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+    const onClick = (id: number) => () => {
+        setActive(id);
+    };
+
+    useEffect(() => {
+        if (timeoutId) clearTimeout(timeoutId);
+        let timerId = setTimeout(() => setActive(null), 2000);
+        setTimeoutId(timerId);
+    }, [active]);
+
+    let els = [0, 1, 2, 3, 4, 5].map((ind) =>
+        CreateHover(
+            knowledge,
+            ind,
+            className,
+            ind,
+            isMobile,
+            onClick(ind),
+            active == ind
+        )
+    );
     return els;
 };
 
-export const GetIcon = (knowledge: boolean, level: number, className?: string): JSX.Element => {
+export const GetIcon = (
+    knowledge: boolean,
+    level: number,
+    className?: string
+): JSX.Element => {
     return CreateHover(knowledge, level, className);
 };

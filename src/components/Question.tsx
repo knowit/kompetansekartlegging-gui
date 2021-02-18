@@ -175,7 +175,7 @@ const Question = ({...props}: QuestionProps) => {
                 <div className={clsx(style.largeBold)}>KOMPETANSE</div>
                 <div className={style.sliderArea}>
                     <div className={style.iconArea}>
-                        {Icon.GetIcons(true, style.icon)}
+                        {Icon.GetIcons(true, props.isMobile, style.icon )}
                     </div>
                     <div className={style.slider}>
                         <Slider
@@ -191,7 +191,7 @@ const Question = ({...props}: QuestionProps) => {
                 <div className={clsx(style.largeBold)}>MOTIVASJON</div>
                 <div className={style.sliderArea}>
                     <div className={style.iconArea}>
-                        {Icon.GetIcons(false, style.icon)}
+                        {Icon.GetIcons(false,  props.isMobile, style.icon)}
                     </div>
                     <div className={style.slider}>
                         <Slider
