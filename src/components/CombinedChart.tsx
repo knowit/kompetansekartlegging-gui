@@ -1,4 +1,5 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import { stringify } from 'querystring';
 import React from 'react';
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Label, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { GetIcon } from '../icons/iconController';
@@ -55,7 +56,7 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         alignItems: 'center',
         fontWeight: "bold",
-        fontSize: '15px'
+        fontSize: '15px',
     },
     '@global': {
         'g.recharts-cartesian-grid-horizontal > line:last-child': {
@@ -75,6 +76,12 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
     let classes = useStyles();
 
     const RenderCustomTooltip = (classes: any) => {
+        const validate = (msg: string | undefined) => {
+            if (msg === "")
+                return "Ikke besvart"
+            else
+                return msg
+        }
         let isTop = (props.type == OverviewType.HIGHEST && props.topSubjects);
         let topSubjects = props.topSubjects;
         return ({...props}: ToolTipProps) => {
@@ -85,10 +92,10 @@ export const CombinedChart = ( {...props}: CombinedChartProps ) => {
                     <div className={classes.tooltipRoot}>
                         <p className={classes.tooltipLabel}>{props.label}</p>
                         <p className={classes.knowledge}>
-                            {`${isTop ? topSubjects?.get(props.label)?.kTop : "Kompetanse"}: ${knowledgeValue}`}
+                            {`${isTop ? validate(topSubjects?.get(props.label)?.kTop) : "Kompetanse"}: ${knowledgeValue}`}
                         </p>
                         <p className={classes.motivation}>
-                            {`${isTop ? topSubjects?.get(props.label)?.mTop : "Motivasjon"}: ${motivationValue}`}
+                            {`${isTop ? validate(topSubjects?.get(props.label)?.mTop) : "Motivasjon"}: ${motivationValue}`}
                         </p>
                 </div>
             );

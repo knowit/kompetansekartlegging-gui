@@ -29,7 +29,8 @@ const overviewStyle = makeStyles({
         height: '60%',
         paddingTop: 30,
         paddingLeft: 50,
-        marginTop: 20
+        marginTop: 20,
+        paddingBottom: 50
     },
     mobile: {
         height: 'calc(var(--vh, 1vh) * 100 - 56)', //--vh from resize listener in App.tsx
@@ -74,7 +75,8 @@ const overviewStyle = makeStyles({
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        overflowY: 'scroll',
+        overflowX: 'hidden',
         height: '100%',
     },
     hidden: {
