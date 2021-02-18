@@ -30,7 +30,7 @@ const overviewStyle = makeStyles({
         paddingTop: 30,
         paddingLeft: 50,
         marginTop: 20,
-        marginBottom: 30
+        paddingBottom: 50
     },
     mobile: {
         height: 'calc(var(--vh, 1vh) * 100 - 56)', //--vh from resize listener in App.tsx
