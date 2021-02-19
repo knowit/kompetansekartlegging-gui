@@ -191,7 +191,7 @@ const Content = ({...props}: ContentProps) => {
                             items: questions
                         }
                     };
-                    console.log("FormDef:", formDef);
+                    // console.log("FormDef:", formDef);
                     setFormDefinition(formDef);
                     let quAns = createQuestionAnswers(formDef);
                     let userAnswers = await getUserAnswers(formDef);
@@ -210,7 +210,6 @@ const Content = ({...props}: ContentProps) => {
         let questionAnswers: UserAnswer[] = [];
         let paginatedUserform: UserFormPaginated | undefined; // The userform response has pagination on questionAnswers, with nextToken; see types
         do {
-            console.log(nextToken);
             let response: any = (await helper.callGraphQL<UserFormByCreatedAtPaginated>
                 (customQueries.customUserFormByCreatedAt, { ...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username, nextToken: nextToken })).data?.userFormByCreatedAt.items[0];
             
@@ -226,12 +225,12 @@ const Content = ({...props}: ContentProps) => {
         } while (nextToken);
      
         if (paginatedUserform && paginatedUserform.formDefinitionID === formDef?.id) {
-            console.log("Found user form!");
+            // console.log("Found user form!", paginatedUserform);
             setUserAnswers(questionAnswers);
             setUserAnswersLoaded(true);
             return questionAnswers
         } else {
-            console.log("Found no user form!");
+            // console.log("Found no user form!", paginatedUserform);
             setActivePanel(Panel.MyAnswers);
             setAnswerEditMode(true);
             setUserAnswersLoaded(true);
