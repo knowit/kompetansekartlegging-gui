@@ -194,12 +194,13 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
-      nextToken: $nextToken
     ) {
       items {
         id
         formDefinitionID
-        questionAnswers {
+        questionAnswers(
+          nextToken: $nextToken,
+        ) {
           items {
             id
             knowledge
@@ -217,9 +218,9 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
               }
             }
           }
+          nextToken,
         }
       }
-      nextToken
     }
   }
 `;
