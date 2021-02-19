@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert, Question, Category, QuestionAnswer, SliderValues, FormDefinitionByCreatedAtPaginated, FormDefinitionPaginated } from '../types';
+import { AnswerData, ContentProps, FormDefinition, FormDefinitionByCreatedAt, UserAnswer, UserFormWithAnswers, UserFormByCreatedAt, UserForm, CreateQuestionAnswerResult, AlertState , Alert, Question, Category, QuestionAnswer, SliderValues, FormDefinitionByCreatedAtPaginated, FormDefinitionPaginated, UserFormPaginated, UserFormByCreatedAtPaginated } from '../types';
 import * as helper from '../helperFunctions';
 import * as customQueries from '../graphql/custom-queries';
 import { Overview } from './cards/Overview';
@@ -167,18 +167,23 @@ const Content = ({...props}: ContentProps) => {
         let nextToken: string | null = null;
         let questions: Question[] = [];
         let formDefPaginated: FormDefinitionPaginated = undefined;
-        do {
-            let currentForm: any = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(customQueries.formByCreatedAtPaginated, {...customQueries.formByCreatedAtInputConsts, nextToken: nextToken});
-            if (currentForm.data && currentForm.data.formByCreatedAt.items[0]) {
-                if (typeof formDefPaginated === 'undefined') {
-                    formDefPaginated = currentForm.data.formByCreatedAt.items[0];
-                    questions = currentForm.data.formByCreatedAt.items[0].questions.items;
-                } else {
-                    questions = questions.concat(currentForm.data.formByCreatedAt.items[0].questions.items);
+        try {
+            do {
+                let currentForm: any = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(customQueries.formByCreatedAtPaginated, {...customQueries.formByCreatedAtInputConsts, nextToken: nextToken});
+                if (currentForm.data && currentForm.data.formByCreatedAt.items[0]) {
+                    if (typeof formDefPaginated === 'undefined') {
+                        formDefPaginated = currentForm.data.formByCreatedAt.items[0];
+                        questions = currentForm.data.formByCreatedAt.items[0].questions.items;
+                    } else {
+                        questions = questions.concat(currentForm.data.formByCreatedAt.items[0].questions.items);
+                    }
+                    nextToken = currentForm.data.formByCreatedAt.items[0].questions.nextToken;
                 }
-                nextToken = currentForm.data.formByCreatedAt.items[0].questions.nextToken;
-            }
-        } while (nextToken);
+            } while (nextToken);
+        } catch(e) {
+            console.error("GraphQL error while fetching form definition", e);
+        }
+
         if (formDefPaginated) {
             let formDef: FormDefinition = {
                     id: formDefPaginated.id,
@@ -190,25 +195,42 @@ const Content = ({...props}: ContentProps) => {
                 console.log("FormDef:", formDef);
                 setFormDefinition(formDef);
                 let quAns = createQuestionAnswers(formDef);
-                let userAnswers = await getUserAnswers();
+                let userAnswers = await getUserAnswers(formDef);
                 setFirstAnswers(quAns, userAnswers);
         } else {
             console.log("Error loading form definition!");
         }
+        console.log("paginated", formDefinition);
     };
     
-    const getUserAnswers = async() => {
+    const getUserAnswers = async (formDef: FormDefinition) => {
         if (!props.user) return console.error("User not found when getting useranswers");
-        let lastUserForm: UserForm | undefined = (await helper.callGraphQL<UserFormByCreatedAt>
-            (customQueries.customUserFormByCreatedAt, { ...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username })).data?.userFormByCreatedAt.items[0];
-         
-        let lastUserFormAnswers;
-        
-        if (lastUserForm) {
-            lastUserFormAnswers = lastUserForm.questionAnswers.items;
-            setUserAnswers(lastUserFormAnswers);
+        let nextToken: string | null = null;
+        let questionAnswers: UserAnswer[] = [];
+        let paginatedUserform: UserFormPaginated | undefined;
+        do {
+            console.log(nextToken);
+            let response: any = (await helper.callGraphQL<UserFormByCreatedAtPaginated>
+                (customQueries.customUserFormByCreatedAt, { ...customQueries.userFormByCreatedAtInputConsts, owner: props.user.username, nextToken: nextToken })).data?.userFormByCreatedAt.items[0];
+            
+            if (response && response.questionAnswers.items) {
+                if (typeof paginatedUserform === 'undefined') {
+                    paginatedUserform = response;
+                    questionAnswers = response.questionAnswers.items;
+                } else {
+                    questionAnswers = questionAnswers.concat(response.questionAnswers.items);
+                }
+                nextToken = response.questionAnswers.nextToken;
+            }
+        } while (nextToken);
+     
+        if (paginatedUserform && paginatedUserform.formDefinitionID === formDef?.id) {
+            console.log("Found user form!");
+            setUserAnswers(questionAnswers);
             setUserAnswersLoaded(true);
+            return questionAnswers
         } else {
+            console.log("Found no user form!");
             setActivePanel(Panel.MyAnswers);
             setAnswerEditMode(true);
             setUserAnswersLoaded(true);
@@ -218,8 +240,7 @@ const Content = ({...props}: ContentProps) => {
             }
         }
         
-        console.log("Last userform: ", lastUserForm);
-        return lastUserForm?.questionAnswers.items;
+        return []; // Either could not load userform or no user form exists for current form definition
     };
     
     const createQuestionAnswers = (formDef: FormDefinition) => {
@@ -652,8 +673,23 @@ const Content = ({...props}: ContentProps) => {
         return <div></div>;
     };
 
+    const showSetAllQuestionsMaxButton = false;
 
-    //onScroll={() => handleScroll()}
+    const setAllQuestionsMax = () => {
+        categories.forEach((category) => {
+            let newAnswers: QuestionAnswer[] = questionAnswers.get(category)
+            ?.map(quAns => {
+                return {
+                    ...quAns,
+                    knowledge: 5,
+                    motivation: 5,
+                    updatedAt: Date.now()
+                }
+            }) || [];
+            setQuestionAnswers(new Map(questionAnswers.set(category, newAnswers)));
+        })
+    }
+
     return (
             <div className={props.isMobile ? mobileStyle.contentContainer : style.contentContainer}  ref={props.mobileNavRef}>
                 {
@@ -667,7 +703,14 @@ const Content = ({...props}: ContentProps) => {
 
                         /> 
                     : <div className={style.menu}>{setupDesktopMenu()}</div>
-                } 
+                }
+                {showSetAllQuestionsMaxButton ? (
+                    <button onClick={() => setAllQuestionsMax()}>
+                        Max all questions
+                    </button>
+                ) : (
+                    ""
+                )}
                 <div className={props.isMobile ? mobileStyle.panel : style.panel}>{setupPanel()}</div>
                 <AlertDialog
                     setAlertDialogOpen={setAlertDialogOpen}

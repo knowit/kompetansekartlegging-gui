@@ -186,6 +186,23 @@ export type UserForm = {
     }
 }
 
+export type UserFormByCreatedAtPaginated = {
+    userFormByCreatedAt: {
+        items: [
+            UserFormPaginated
+        ]
+    }
+};
+
+export type UserFormPaginated = {
+    id: string,
+    formDefinitionID: string,
+    questionAnswers: {
+        nextToken: string,
+        items: UserAnswer[]
+    }
+}
+
 export type UserAnswer = {
     id: string,
     knowledge: number,
