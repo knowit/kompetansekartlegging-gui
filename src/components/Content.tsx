@@ -168,7 +168,7 @@ const Content = ({...props}: ContentProps) => {
     const fetchLastFormDefinition = async () => {
         let nextToken: string | null = null;
         let questions: Question[] = [];
-        let formDefPaginated: FormDefinitionPaginated = undefined;
+        let formDefPaginated: FormDefinitionPaginated = undefined; // The form definition response has pagination on questions, with nextToken; see types
         try {
             do {
                 let currentForm: any = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(customQueries.formByCreatedAtPaginated, {...customQueries.formByCreatedAtInputConsts, nextToken: nextToken});
@@ -208,7 +208,7 @@ const Content = ({...props}: ContentProps) => {
         if (!props.user) return console.error("User not found when getting useranswers");
         let nextToken: string | null = null;
         let questionAnswers: UserAnswer[] = [];
-        let paginatedUserform: UserFormPaginated | undefined;
+        let paginatedUserform: UserFormPaginated | undefined; // The userform response has pagination on questionAnswers, with nextToken; see types
         do {
             console.log(nextToken);
             let response: any = (await helper.callGraphQL<UserFormByCreatedAtPaginated>
