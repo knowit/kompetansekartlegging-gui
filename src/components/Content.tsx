@@ -200,7 +200,6 @@ const Content = ({...props}: ContentProps) => {
         } else {
             console.log("Error loading form definition!");
         }
-        console.log("paginated", formDefinition);
     };
     
     const getUserAnswers = async (formDef: FormDefinition) => {

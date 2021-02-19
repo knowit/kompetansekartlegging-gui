@@ -199,7 +199,7 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
         id
         formDefinitionID
         questionAnswers(
-          nextToken: $nextToken
+          nextToken: $nextToken,
         ) {
           items {
             id
@@ -218,6 +218,7 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
               }
             }
           }
+          nextToken,
         }
       }
     }
