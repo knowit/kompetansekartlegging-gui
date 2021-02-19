@@ -180,25 +180,25 @@ const Content = ({...props}: ContentProps) => {
                     nextToken = currentForm.data.formByCreatedAt.items[0].questions.nextToken;
                 }
             } while (nextToken);
+            
+            if (formDefPaginated) {
+                let formDef: FormDefinition = {
+                        id: formDefPaginated.id,
+                        createdAt: formDefPaginated.createdAt,
+                        questions: {
+                            items: questions
+                        }
+                    };
+                    console.log("FormDef:", formDef);
+                    setFormDefinition(formDef);
+                    let quAns = createQuestionAnswers(formDef);
+                    let userAnswers = await getUserAnswers(formDef);
+                    setFirstAnswers(quAns, userAnswers);
+            } else {
+                console.log("Error loading form definition!");
+            }
         } catch(e) {
-            console.error("GraphQL error while fetching form definition", e);
-        }
-
-        if (formDefPaginated) {
-            let formDef: FormDefinition = {
-                    id: formDefPaginated.id,
-                    createdAt: formDefPaginated.createdAt,
-                    questions: {
-                        items: questions
-                    }
-                };
-                console.log("FormDef:", formDef);
-                setFormDefinition(formDef);
-                let quAns = createQuestionAnswers(formDef);
-                let userAnswers = await getUserAnswers(formDef);
-                setFirstAnswers(quAns, userAnswers);
-        } else {
-            console.log("Error loading form definition!");
+            console.error("GraphQL error while fetching form definition and user answers!");
         }
     };
     
