@@ -15,6 +15,8 @@ import { AnswerHistory } from './AnswerHistory';
 
 const cardCornerRadius: number = 40;
 
+const showSetAllQuestionsMaxButton = false;
+
 export enum Panel {
     Overview,
     MyAnswers,
@@ -198,7 +200,7 @@ const Content = ({...props}: ContentProps) => {
                 console.log("Error loading form definition!");
             }
         } catch(e) {
-            console.error("GraphQL error while fetching form definition and user answers!");
+            console.error("GraphQL error while fetching form definition and user answers!", e);
         }
     };
     
@@ -671,8 +673,6 @@ const Content = ({...props}: ContentProps) => {
         }
         return <div></div>;
     };
-
-    const showSetAllQuestionsMaxButton = false;
 
     const setAllQuestionsMax = () => {
         categories.forEach((category) => {
