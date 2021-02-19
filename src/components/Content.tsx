@@ -199,6 +199,7 @@ const Content = ({...props}: ContentProps) => {
             } else {
                 console.log("Error loading form definition!");
             }
+
         } catch(e) {
             console.error("GraphQL error while fetching form definition and user answers!", e);
         }
@@ -241,10 +242,11 @@ const Content = ({...props}: ContentProps) => {
         }
         
         return []; // Either could not load userform or no user form exists for current form definition
+
     };
     
     const createQuestionAnswers = (formDef: FormDefinition) => {
-        console.log("Creating questionAnswers with ", formDef);
+        // console.log("Creating questionAnswers with ", formDef);
         if (!formDef) return new Map();
         let categories = formDef.questions.items
             .map(item => item.category)
@@ -284,7 +286,7 @@ const Content = ({...props}: ContentProps) => {
                 });
             quAnsMap.set(cat.text, quAns);
         });
-        console.log(`Sorted questionAnswerMap: `, quAnsMap);
+        // console.log(`Sorted questionAnswerMap: `, quAnsMap);
         return quAnsMap;
     };
     
@@ -362,9 +364,9 @@ const Content = ({...props}: ContentProps) => {
         //         });
         //     })
         // });
-        console.log("question answer input: ", quAnsInput);
+        // console.log("question answer input: ", quAnsInput);
         let result = (await helper.callBatchGraphQL<CreateQuestionAnswerResult>(customQueries.batchCreateQuestionAnswer2, { input: quAnsInput}, "QuestionAnswer")).map(result => result.data?.batchCreateQuestionAnswer);
-        console.log("Result: ", result);
+        // console.log("Result: ", result);
         if(!result || result.length === 0) {
             return;
         }
@@ -411,7 +413,7 @@ const Content = ({...props}: ContentProps) => {
     }, []);
 
     useEffect(() => {
-        console.log("userAnswers")
+        // console.log("userAnswers")
         // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
         setAnswersBeforeSubmitted(new Map(questionAnswers));
     }, [userAnswers]);
