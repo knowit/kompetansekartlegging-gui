@@ -12,8 +12,9 @@ import { ReactComponent as M2 } from "../icons/M - vedbehov.svg"
 import { ReactComponent as M1 } from "../icons/M - nja.svg"
 import { ReactComponent as M0 } from "../icons/M - nei.svg"
 
-import React, { Fragment } from "react";
-import { Tooltip } from "@material-ui/core"
+import React, { Fragment, useState } from "react";
+import { makeStyles, Tooltip } from "@material-ui/core"
+import { KnowitColors } from "../styles"
 
 const getIconDescription = (knowledge: boolean, level: number): string => {
     if(knowledge){
@@ -39,6 +40,7 @@ const getIconDescription = (knowledge: boolean, level: number): string => {
 };
 
 const CreateHover = (knowledge: boolean, level: number, className?: string, key?: number): JSX.Element => {
+
     let element: JSX.Element = <Fragment />;
     if(knowledge){
         switch(level){
@@ -59,8 +61,64 @@ const CreateHover = (knowledge: boolean, level: number, className?: string, key?
             case 5: element = <M5 className={className} />; break;
         }
     }
+
     return <Tooltip key={key ? key : null} title={getIconDescription(knowledge, level)}>{element}</Tooltip>;
 };
+
+const CreateClickable = (knowledge: boolean, level: number, className?: string, key?: number): JSX.Element => {
+
+    let element: JSX.Element = <Fragment />;
+    if(knowledge){
+        switch(level){
+            case 0: element = <K0 className={className} />; break;
+            case 1: element = <K1 className={className} />; break;
+            case 2: element = <K2 className={className} />; break;
+            case 3: element = <K3 className={className} />; break;
+            case 4: element = <K4 className={className} />; break;
+            case 5: element = <K5 className={className} />; break;
+        }
+    } else {
+        switch(level){
+            case 0: element = <M0 className={className} />; break;
+            case 1: element = <M1 className={className} />; break;
+            case 2: element = <M2 className={className} />; break;
+            case 3: element = <M3 className={className} />; break;
+            case 4: element = <M4 className={className} />; break;
+            case 5: element = <M5 className={className} />; break;
+        }
+    }
+
+    return <ClickableTooltip key={`${getIconDescription(knowledge, level)}-${key}`} knowledge={knowledge} level={level} element={element} />;
+};
+
+const useStyles = makeStyles(theme => ({
+    tooltip: {
+        backgroundColor: KnowitColors.white,
+        padding: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
+        opacity: 0.9,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderStyle: "solid",
+        color: KnowitColors.darkBrown,
+        borderColor: KnowitColors.darkBrown
+    },
+}));
+
+const ClickableTooltip = (props: {knowledge: boolean, level: number, element: JSX.Element}) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const handleClick = () => {
+        setIsOpen(true);
+        setTimeout(() => setIsOpen(false), 2000);
+    }
+
+    const classes = useStyles();
+
+    const desc = getIconDescription(props.knowledge, props.level);
+
+    return <Tooltip classes={classes} onClick={handleClick} placement={"top"} open={isOpen} disableTouchListener={false} title={desc}>{props.element}</Tooltip>;
+}
 
 export {K0, K1, K2, K3, K4, K5, M0, M1, M2, M3, M4, M5}
 
@@ -76,6 +134,22 @@ export const GetIcons = (knowledge: boolean, className?: string): JSX.Element[] 
     return els;
 };
 
-export const GetIcon = (knowledge: boolean, level: number, className?: string): JSX.Element => {
+export const GetClickableIcons = (knowledge: boolean, className?: string): JSX.Element[] => {
+    let els = [
+        GetClickableIcon(knowledge, 0, className, 0),
+        GetClickableIcon(knowledge, 1, className, 1),
+        GetClickableIcon(knowledge, 2, className, 2),
+        GetClickableIcon(knowledge, 3, className, 3),
+        GetClickableIcon(knowledge, 4, className, 4),
+        GetClickableIcon(knowledge, 5, className, 5)
+    ];
+    return els;
+};
+
+export const GetIcon = (knowledge: boolean, level: number, className?: string, key?: number): JSX.Element => {
     return CreateHover(knowledge, level, className);
+};
+
+export const GetClickableIcon = (knowledge: boolean, level: number, className?: string, key?: number): JSX.Element => {
+    return CreateClickable(knowledge, level, className);
 };
