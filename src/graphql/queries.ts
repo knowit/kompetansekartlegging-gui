@@ -192,6 +192,72 @@ export const listCategorys = /* GraphQL */ `
     }
   }
 `;
+export const getGroup = /* GraphQL */ `
+  query GetGroup($id: ID!) {
+    getGroup(id: $id) {
+      id
+      groupLeaderID
+      groupLeader {
+        id
+        groupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listGroups = /* GraphQL */ `
+  query ListGroups(
+    $filter: ModelGroupFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        groupLeaderID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      groupID
+      group {
+        id
+        groupLeaderID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        groupID
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const formByCreatedAt = /* GraphQL */ `
   query FormByCreatedAt(
     $sortKeyConstant: String

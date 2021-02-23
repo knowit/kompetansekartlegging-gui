@@ -42,7 +42,7 @@ export const onDeleteFormDefinition = /* GraphQL */ `
   }
 `;
 export const onCreateUserForm = /* GraphQL */ `
-  subscription OnCreateUserForm($owner: String!) {
+  subscription OnCreateUserForm($owner: String) {
     onCreateUserForm(owner: $owner) {
       id
       createdAt
@@ -62,7 +62,7 @@ export const onCreateUserForm = /* GraphQL */ `
   }
 `;
 export const onUpdateUserForm = /* GraphQL */ `
-  subscription OnUpdateUserForm($owner: String!) {
+  subscription OnUpdateUserForm($owner: String) {
     onUpdateUserForm(owner: $owner) {
       id
       createdAt
@@ -82,7 +82,7 @@ export const onUpdateUserForm = /* GraphQL */ `
   }
 `;
 export const onDeleteUserForm = /* GraphQL */ `
-  subscription OnDeleteUserForm($owner: String!) {
+  subscription OnDeleteUserForm($owner: String) {
     onDeleteUserForm(owner: $owner) {
       id
       createdAt
@@ -102,7 +102,7 @@ export const onDeleteUserForm = /* GraphQL */ `
   }
 `;
 export const onCreateQuestionAnswer = /* GraphQL */ `
-  subscription OnCreateQuestionAnswer($owner: String!) {
+  subscription OnCreateQuestionAnswer($owner: String) {
     onCreateQuestionAnswer(owner: $owner) {
       id
       userFormID
@@ -127,7 +127,7 @@ export const onCreateQuestionAnswer = /* GraphQL */ `
   }
 `;
 export const onUpdateQuestionAnswer = /* GraphQL */ `
-  subscription OnUpdateQuestionAnswer($owner: String!) {
+  subscription OnUpdateQuestionAnswer($owner: String) {
     onUpdateQuestionAnswer(owner: $owner) {
       id
       userFormID
@@ -152,7 +152,7 @@ export const onUpdateQuestionAnswer = /* GraphQL */ `
   }
 `;
 export const onDeleteQuestionAnswer = /* GraphQL */ `
-  subscription OnDeleteQuestionAnswer($owner: String!) {
+  subscription OnDeleteQuestionAnswer($owner: String) {
     onDeleteQuestionAnswer(owner: $owner) {
       id
       userFormID
@@ -276,6 +276,102 @@ export const onDeleteCategory = /* GraphQL */ `
       text
       description
       index
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateGroup = /* GraphQL */ `
+  subscription OnCreateGroup {
+    onCreateGroup {
+      id
+      groupLeaderID
+      groupLeader {
+        id
+        groupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateGroup = /* GraphQL */ `
+  subscription OnUpdateGroup {
+    onUpdateGroup {
+      id
+      groupLeaderID
+      groupLeader {
+        id
+        groupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteGroup = /* GraphQL */ `
+  subscription OnDeleteGroup {
+    onDeleteGroup {
+      id
+      groupLeaderID
+      groupLeader {
+        id
+        groupID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
+      id
+      groupID
+      group {
+        id
+        groupLeaderID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
+      id
+      groupID
+      group {
+        id
+        groupLeaderID
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
+      id
+      groupID
+      group {
+        id
+        groupLeaderID
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }

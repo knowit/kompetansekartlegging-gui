@@ -262,6 +262,48 @@ export type DeleteCategoryInput = {
   id?: string | null,
 };
 
+export type CreateGroupInput = {
+  id?: string | null,
+  groupLeaderID: string,
+};
+
+export type ModelGroupConditionInput = {
+  groupLeaderID?: ModelStringInput | null,
+  and?: Array< ModelGroupConditionInput | null > | null,
+  or?: Array< ModelGroupConditionInput | null > | null,
+  not?: ModelGroupConditionInput | null,
+};
+
+export type UpdateGroupInput = {
+  id: string,
+  groupLeaderID?: string | null,
+};
+
+export type DeleteGroupInput = {
+  id?: string | null,
+};
+
+export type CreateUserInput = {
+  id: string,
+  groupID: string,
+};
+
+export type ModelUserConditionInput = {
+  groupID?: ModelIDInput | null,
+  and?: Array< ModelUserConditionInput | null > | null,
+  or?: Array< ModelUserConditionInput | null > | null,
+  not?: ModelUserConditionInput | null,
+};
+
+export type UpdateUserInput = {
+  id: string,
+  groupID?: string | null,
+};
+
+export type DeleteUserInput = {
+  id?: string | null,
+};
+
 export type ModelQuestionAnswerFilterInput = {
   id?: ModelIDInput | null,
   userFormID?: ModelIDInput | null,
@@ -294,6 +336,22 @@ export type ModelCategoryFilterInput = {
   and?: Array< ModelCategoryFilterInput | null > | null,
   or?: Array< ModelCategoryFilterInput | null > | null,
   not?: ModelCategoryFilterInput | null,
+};
+
+export type ModelGroupFilterInput = {
+  id?: ModelIDInput | null,
+  groupLeaderID?: ModelStringInput | null,
+  and?: Array< ModelGroupFilterInput | null > | null,
+  or?: Array< ModelGroupFilterInput | null > | null,
+  not?: ModelGroupFilterInput | null,
+};
+
+export type ModelUserFilterInput = {
+  id?: ModelStringInput | null,
+  groupID?: ModelIDInput | null,
+  and?: Array< ModelUserFilterInput | null > | null,
+  or?: Array< ModelUserFilterInput | null > | null,
+  not?: ModelUserFilterInput | null,
 };
 
 export type ListUserFormsWithAnswersQueryVariables = {
@@ -368,6 +426,47 @@ export type FormByCreatedAttQuery = {
           topic: string,
           qid: string | null,
         } | null > | null,
+      } | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type FormByCreatedAtPaginatedQueryVariables = {
+  sortKeyConstant?: string | null,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelFormDefinitionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type FormByCreatedAtPaginatedQuery = {
+  formByCreatedAt:  {
+    __typename: "ModelFormDefinitionConnection",
+    items:  Array< {
+      __typename: "FormDefinition",
+      id: string,
+      createdAt: string,
+      questions:  {
+        __typename: "ModelQuestionConnection",
+        items:  Array< {
+          __typename: "Question",
+          category:  {
+            __typename: "Category",
+            id: string,
+            text: string,
+            description: string | null,
+            index: number | null,
+          },
+          index: number | null,
+          id: string,
+          createdAt: string,
+          text: string,
+          topic: string,
+          qid: string | null,
+        } | null > | null,
+        nextToken: string | null,
       } | null,
     } | null > | null,
     nextToken: string | null,
@@ -831,6 +930,138 @@ export type DeleteCategoryMutation = {
   } | null,
 };
 
+export type CreateGroupMutationVariables = {
+  input: CreateGroupInput,
+  condition?: ModelGroupConditionInput | null,
+};
+
+export type CreateGroupMutation = {
+  createGroup:  {
+    __typename: "Group",
+    id: string,
+    groupLeaderID: string,
+    groupLeader:  {
+      __typename: "User",
+      id: string,
+      groupID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateGroupMutationVariables = {
+  input: UpdateGroupInput,
+  condition?: ModelGroupConditionInput | null,
+};
+
+export type UpdateGroupMutation = {
+  updateGroup:  {
+    __typename: "Group",
+    id: string,
+    groupLeaderID: string,
+    groupLeader:  {
+      __typename: "User",
+      id: string,
+      groupID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteGroupMutationVariables = {
+  input: DeleteGroupInput,
+  condition?: ModelGroupConditionInput | null,
+};
+
+export type DeleteGroupMutation = {
+  deleteGroup:  {
+    __typename: "Group",
+    id: string,
+    groupLeaderID: string,
+    groupLeader:  {
+      __typename: "User",
+      id: string,
+      groupID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateUserMutationVariables = {
+  input: CreateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type CreateUserMutation = {
+  createUser:  {
+    __typename: "User",
+    id: string,
+    groupID: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      groupLeaderID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserMutationVariables = {
+  input: UpdateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type UpdateUserMutation = {
+  updateUser:  {
+    __typename: "User",
+    id: string,
+    groupID: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      groupLeaderID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserMutationVariables = {
+  input: DeleteUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type DeleteUserMutation = {
+  deleteUser:  {
+    __typename: "User",
+    id: string,
+    groupID: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      groupLeaderID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type GetFormDefinitionQueryVariables = {
   id: string,
 };
@@ -1061,6 +1292,88 @@ export type ListCategorysQuery = {
   } | null,
 };
 
+export type GetGroupQueryVariables = {
+  id: string,
+};
+
+export type GetGroupQuery = {
+  getGroup:  {
+    __typename: "Group",
+    id: string,
+    groupLeaderID: string,
+    groupLeader:  {
+      __typename: "User",
+      id: string,
+      groupID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListGroupsQueryVariables = {
+  filter?: ModelGroupFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListGroupsQuery = {
+  listGroups:  {
+    __typename: "ModelGroupConnection",
+    items:  Array< {
+      __typename: "Group",
+      id: string,
+      groupLeaderID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetUserQueryVariables = {
+  id: string,
+};
+
+export type GetUserQuery = {
+  getUser:  {
+    __typename: "User",
+    id: string,
+    groupID: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      groupLeaderID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListUsersQueryVariables = {
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUsersQuery = {
+  listUsers:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      groupID: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
 export type FormByCreatedAtQueryVariables = {
   sortKeyConstant?: string | null,
   createdAt?: ModelStringKeyConditionInput | null,
@@ -1151,7 +1464,7 @@ export type OnDeleteFormDefinitionSubscription = {
 };
 
 export type OnCreateUserFormSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnCreateUserFormSubscription = {
@@ -1177,7 +1490,7 @@ export type OnCreateUserFormSubscription = {
 };
 
 export type OnUpdateUserFormSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnUpdateUserFormSubscription = {
@@ -1203,7 +1516,7 @@ export type OnUpdateUserFormSubscription = {
 };
 
 export type OnDeleteUserFormSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnDeleteUserFormSubscription = {
@@ -1229,7 +1542,7 @@ export type OnDeleteUserFormSubscription = {
 };
 
 export type OnCreateQuestionAnswerSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnCreateQuestionAnswerSubscription = {
@@ -1259,7 +1572,7 @@ export type OnCreateQuestionAnswerSubscription = {
 };
 
 export type OnUpdateQuestionAnswerSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnUpdateQuestionAnswerSubscription = {
@@ -1289,7 +1602,7 @@ export type OnUpdateQuestionAnswerSubscription = {
 };
 
 export type OnDeleteQuestionAnswerSubscriptionVariables = {
-  owner: string,
+  owner?: string | null,
 };
 
 export type OnDeleteQuestionAnswerSubscription = {
@@ -1421,6 +1734,108 @@ export type OnDeleteCategorySubscription = {
     text: string,
     description: string | null,
     index: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateGroupSubscription = {
+  onCreateGroup:  {
+    __typename: "Group",
+    id: string,
+    groupLeaderID: string,
+    groupLeader:  {
+      __typename: "User",
+      id: string,
+      groupID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateGroupSubscription = {
+  onUpdateGroup:  {
+    __typename: "Group",
+    id: string,
+    groupLeaderID: string,
+    groupLeader:  {
+      __typename: "User",
+      id: string,
+      groupID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteGroupSubscription = {
+  onDeleteGroup:  {
+    __typename: "Group",
+    id: string,
+    groupLeaderID: string,
+    groupLeader:  {
+      __typename: "User",
+      id: string,
+      groupID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUserSubscription = {
+  onCreateUser:  {
+    __typename: "User",
+    id: string,
+    groupID: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      groupLeaderID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUserSubscription = {
+  onUpdateUser:  {
+    __typename: "User",
+    id: string,
+    groupID: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      groupLeaderID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserSubscription = {
+  onDeleteUser:  {
+    __typename: "User",
+    id: string,
+    groupID: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      groupLeaderID: string,
+      createdAt: string,
+      updatedAt: string,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,

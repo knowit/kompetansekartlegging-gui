@@ -5,6 +5,22 @@
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false
+    },
+    "userPoolGroups": {
+      "service": "Cognito-UserPool-Groups",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "kompetansekartleggind11d7cce",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
+        }
+      ]
     }
   },
   "api": {

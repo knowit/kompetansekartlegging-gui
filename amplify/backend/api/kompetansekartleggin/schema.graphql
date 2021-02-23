@@ -8,7 +8,11 @@ type FormDefinition @model
     questions: [Question] @connection(keyName: "byFormDefinition", fields: ["id"])
 }
 
-type UserForm @model @auth(rules: [{ allow: owner }]) 
+type UserForm @model @auth(rules: [
+    { allow: owner },
+    { allow: groups, groups: ["admin"] },
+    { allow: groups, groups: ["groupLeader"], operations: [read] },
+])
 @key(name: "byCreatedAt", fields: ["owner", "createdAt"], queryField: "userFormByCreatedAt") {
     id: ID!
     createdAt: AWSDateTime!
@@ -19,7 +23,11 @@ type UserForm @model @auth(rules: [{ allow: owner }])
     formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
 }
 
-type QuestionAnswer @model @auth(rules: [{ allow: owner }])
+type QuestionAnswer @model @auth(rules: [
+    { allow: owner },
+    { allow: groups, groups: ["admin"] },
+    { allow: groups, groups: ["groupLeader"], operations: [read] },
+])
 @key(name: "byUserForm", fields: ["userFormID"]) {
     id: ID!
     userFormID: ID!
@@ -46,6 +54,18 @@ type Category @model {
     text: String!
     description: String
     index: Int
+}
+
+type Group @model {
+    id: ID!
+    groupLeaderID: String!
+    groupLeader: User! @connection(fields: ["groupLeaderID"])
+}
+
+type User @model {
+    id: String!
+    groupID: ID!
+    group: Group! @connection(fields: ["groupID"])
 }
 
 type CreateQuestionAnswerResult {
