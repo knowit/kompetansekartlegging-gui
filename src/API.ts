@@ -68,6 +68,81 @@ export type ModelStringInput = {
   size?: ModelSizeInput | null,
 };
 
+export type ModelUserFormConnection = {
+  __typename: "ModelUserFormConnection",
+  items?:  Array<UserForm | null > | null,
+  nextToken?: string | null,
+};
+
+export type UserForm = {
+  __typename: "UserForm",
+  id?: string,
+  createdAt?: string,
+  owner?: string | null,
+  formDefinitionID?: string,
+  questionAnswers?: ModelQuestionAnswerConnection,
+  formDefinition?: FormDefinition,
+  updatedAt?: string,
+};
+
+export type ModelQuestionAnswerConnection = {
+  __typename: "ModelQuestionAnswerConnection",
+  items?:  Array<QuestionAnswer | null > | null,
+  nextToken?: string | null,
+};
+
+export type QuestionAnswer = {
+  __typename: "QuestionAnswer",
+  id?: string,
+  userFormID?: string,
+  questionID?: string,
+  knowledge?: number,
+  motivation?: number,
+  question?: Question,
+  createdAt?: string,
+  updatedAt?: string,
+  owner?: string | null,
+};
+
+export type Question = {
+  __typename: "Question",
+  id?: string,
+  text?: string,
+  topic?: string,
+  qid?: string | null,
+  index?: number | null,
+  formDefinitionID?: string,
+  categoryID?: string,
+  category?: Category,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type Category = {
+  __typename: "Category",
+  id?: string,
+  text?: string,
+  description?: string | null,
+  index?: number | null,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type FormDefinition = {
+  __typename: "FormDefinition",
+  id?: string,
+  createdAt?: string,
+  sortKeyConstant?: string,
+  questions?: ModelQuestionConnection,
+  updatedAt?: string,
+};
+
+export type ModelQuestionConnection = {
+  __typename: "ModelQuestionConnection",
+  items?:  Array<Question | null > | null,
+  nextToken?: string | null,
+};
+
 export type ModelStringKeyConditionInput = {
   eq?: string | null,
   le?: string | null,
@@ -93,6 +168,12 @@ export type ModelFormDefinitionFilterInput = {
   not?: ModelFormDefinitionFilterInput | null,
 };
 
+export type ModelFormDefinitionConnection = {
+  __typename: "ModelFormDefinitionConnection",
+  items?:  Array<FormDefinition | null > | null,
+  nextToken?: string | null,
+};
+
 export type CreateQuestionAnswerInput = {
   id?: string | null,
   userFormID: string,
@@ -101,6 +182,24 @@ export type CreateQuestionAnswerInput = {
   motivation: number,
   environmentID: string,
   formDefinitionID: string,
+};
+
+export type CreateQuestionAnswerResult = {
+  __typename: "CreateQuestionAnswerResult",
+  status?: number,
+  error?: string | null,
+  failedInputs?:  Array<CreateQuestionAnswerFailedInput | null > | null,
+};
+
+export type CreateQuestionAnswerFailedInput = {
+  __typename: "CreateQuestionAnswerFailedInput",
+  id?: string | null,
+  userFormID?: string,
+  questionID?: string,
+  knowledge?: number,
+  motivation?: number,
+  environmentID?: string,
+  formDefinitionID?: string,
 };
 
 export type CreateFormDefinitionInput = {
@@ -274,6 +373,24 @@ export type ModelGroupConditionInput = {
   not?: ModelGroupConditionInput | null,
 };
 
+export type Group = {
+  __typename: "Group",
+  id?: string,
+  groupLeaderID?: string,
+  groupLeader?: User,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type User = {
+  __typename: "User",
+  id?: string,
+  groupID?: string,
+  group?: Group,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
 export type UpdateGroupInput = {
   id: string,
   groupLeaderID?: string | null,
@@ -338,12 +455,24 @@ export type ModelCategoryFilterInput = {
   not?: ModelCategoryFilterInput | null,
 };
 
+export type ModelCategoryConnection = {
+  __typename: "ModelCategoryConnection",
+  items?:  Array<Category | null > | null,
+  nextToken?: string | null,
+};
+
 export type ModelGroupFilterInput = {
   id?: ModelIDInput | null,
   groupLeaderID?: ModelStringInput | null,
   and?: Array< ModelGroupFilterInput | null > | null,
   or?: Array< ModelGroupFilterInput | null > | null,
   not?: ModelGroupFilterInput | null,
+};
+
+export type ModelGroupConnection = {
+  __typename: "ModelGroupConnection",
+  items?:  Array<Group | null > | null,
+  nextToken?: string | null,
 };
 
 export type ModelUserFilterInput = {
@@ -354,6 +483,12 @@ export type ModelUserFilterInput = {
   not?: ModelUserFilterInput | null,
 };
 
+export type ModelUserConnection = {
+  __typename: "ModelUserConnection",
+  items?:  Array<User | null > | null,
+  nextToken?: string | null,
+};
+
 export type ListUserFormsWithAnswersQueryVariables = {
   filter?: ModelUserFormFilterInput | null,
   limit?: number | null,
@@ -361,16 +496,16 @@ export type ListUserFormsWithAnswersQueryVariables = {
 };
 
 export type ListUserFormsWithAnswersQuery = {
-  listUserForms:  {
+  listUserForms?:  {
     __typename: "ModelUserFormConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "UserForm",
       id: string,
       createdAt: string,
       formDefinitionID: string,
-      questionAnswers:  {
+      questionAnswers?:  {
         __typename: "ModelQuestionAnswerConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "QuestionAnswer",
           id: string,
           knowledge: number,
@@ -388,7 +523,7 @@ export type ListUserFormsWithAnswersQuery = {
         } | null > | null,
       } | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -402,33 +537,33 @@ export type FormByCreatedAttQueryVariables = {
 };
 
 export type FormByCreatedAttQuery = {
-  formByCreatedAt:  {
+  formByCreatedAt?:  {
     __typename: "ModelFormDefinitionConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "FormDefinition",
       id: string,
       createdAt: string,
-      questions:  {
+      questions?:  {
         __typename: "ModelQuestionConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Question",
           category:  {
             __typename: "Category",
             id: string,
             text: string,
-            description: string | null,
-            index: number | null,
+            description?: string | null,
+            index?: number | null,
           },
-          index: number | null,
+          index?: number | null,
           id: string,
           createdAt: string,
           text: string,
           topic: string,
-          qid: string | null,
+          qid?: string | null,
         } | null > | null,
       } | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -442,34 +577,34 @@ export type FormByCreatedAtPaginatedQueryVariables = {
 };
 
 export type FormByCreatedAtPaginatedQuery = {
-  formByCreatedAt:  {
+  formByCreatedAt?:  {
     __typename: "ModelFormDefinitionConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "FormDefinition",
       id: string,
       createdAt: string,
-      questions:  {
+      questions?:  {
         __typename: "ModelQuestionConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "Question",
           category:  {
             __typename: "Category",
             id: string,
             text: string,
-            description: string | null,
-            index: number | null,
+            description?: string | null,
+            index?: number | null,
           },
-          index: number | null,
+          index?: number | null,
           id: string,
           createdAt: string,
           text: string,
           topic: string,
-          qid: string | null,
+          qid?: string | null,
         } | null > | null,
-        nextToken: string | null,
+        nextToken?: string | null,
       } | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -483,15 +618,15 @@ export type CustomUserFormByCreatedAtQueryVariables = {
 };
 
 export type CustomUserFormByCreatedAtQuery = {
-  userFormByCreatedAt:  {
+  userFormByCreatedAt?:  {
     __typename: "ModelUserFormConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "UserForm",
       id: string,
       formDefinitionID: string,
-      questionAnswers:  {
+      questionAnswers?:  {
         __typename: "ModelQuestionAnswerConnection",
-        items:  Array< {
+        items?:  Array< {
           __typename: "QuestionAnswer",
           id: string,
           knowledge: number,
@@ -506,14 +641,14 @@ export type CustomUserFormByCreatedAtQuery = {
               __typename: "Category",
               id: string,
               text: string,
-              description: string | null,
-              index: number | null,
+              description?: string | null,
+              index?: number | null,
             },
           },
         } | null > | null,
+        nextToken?: string | null,
       } | null,
     } | null > | null,
-    nextToken: string | null,
   } | null,
 };
 
@@ -522,13 +657,13 @@ export type BatchCreateQuestionAnswer2MutationVariables = {
 };
 
 export type BatchCreateQuestionAnswer2Mutation = {
-  batchCreateQuestionAnswer:  {
+  batchCreateQuestionAnswer?:  {
     __typename: "CreateQuestionAnswerResult",
     status: number,
-    error: string | null,
-    failedInputs:  Array< {
+    error?: string | null,
+    failedInputs?:  Array< {
       __typename: "CreateQuestionAnswerFailedInput",
-      id: string | null,
+      id?: string | null,
       userFormID: string,
       questionID: string,
       knowledge: number,
@@ -544,13 +679,13 @@ export type BatchCreateQuestionAnswerMutationVariables = {
 };
 
 export type BatchCreateQuestionAnswerMutation = {
-  batchCreateQuestionAnswer:  {
+  batchCreateQuestionAnswer?:  {
     __typename: "CreateQuestionAnswerResult",
     status: number,
-    error: string | null,
-    failedInputs:  Array< {
+    error?: string | null,
+    failedInputs?:  Array< {
       __typename: "CreateQuestionAnswerFailedInput",
-      id: string | null,
+      id?: string | null,
       userFormID: string,
       questionID: string,
       knowledge: number,
@@ -562,77 +697,77 @@ export type BatchCreateQuestionAnswerMutation = {
 };
 
 export type CreateFormDefinitionMutationVariables = {
-  input: CreateFormDefinitionInput,
+  input?: CreateFormDefinitionInput,
   condition?: ModelFormDefinitionConditionInput | null,
 };
 
 export type CreateFormDefinitionMutation = {
-  createFormDefinition:  {
+  createFormDefinition?:  {
     __typename: "FormDefinition",
     id: string,
     createdAt: string,
     sortKeyConstant: string,
-    questions:  {
+    questions?:  {
       __typename: "ModelQuestionConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     updatedAt: string,
   } | null,
 };
 
 export type UpdateFormDefinitionMutationVariables = {
-  input: UpdateFormDefinitionInput,
+  input?: UpdateFormDefinitionInput,
   condition?: ModelFormDefinitionConditionInput | null,
 };
 
 export type UpdateFormDefinitionMutation = {
-  updateFormDefinition:  {
+  updateFormDefinition?:  {
     __typename: "FormDefinition",
     id: string,
     createdAt: string,
     sortKeyConstant: string,
-    questions:  {
+    questions?:  {
       __typename: "ModelQuestionConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     updatedAt: string,
   } | null,
 };
 
 export type DeleteFormDefinitionMutationVariables = {
-  input: DeleteFormDefinitionInput,
+  input?: DeleteFormDefinitionInput,
   condition?: ModelFormDefinitionConditionInput | null,
 };
 
 export type DeleteFormDefinitionMutation = {
-  deleteFormDefinition:  {
+  deleteFormDefinition?:  {
     __typename: "FormDefinition",
     id: string,
     createdAt: string,
     sortKeyConstant: string,
-    questions:  {
+    questions?:  {
       __typename: "ModelQuestionConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     updatedAt: string,
   } | null,
 };
 
 export type CreateUserFormMutationVariables = {
-  input: CreateUserFormInput,
+  input?: CreateUserFormInput,
   condition?: ModelUserFormConditionInput | null,
 };
 
 export type CreateUserFormMutation = {
-  createUserForm:  {
+  createUserForm?:  {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    owner: string | null,
+    owner?: string | null,
     formDefinitionID: string,
-    questionAnswers:  {
+    questionAnswers?:  {
       __typename: "ModelQuestionAnswerConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     formDefinition:  {
       __typename: "FormDefinition",
@@ -646,20 +781,20 @@ export type CreateUserFormMutation = {
 };
 
 export type UpdateUserFormMutationVariables = {
-  input: UpdateUserFormInput,
+  input?: UpdateUserFormInput,
   condition?: ModelUserFormConditionInput | null,
 };
 
 export type UpdateUserFormMutation = {
-  updateUserForm:  {
+  updateUserForm?:  {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    owner: string | null,
+    owner?: string | null,
     formDefinitionID: string,
-    questionAnswers:  {
+    questionAnswers?:  {
       __typename: "ModelQuestionAnswerConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     formDefinition:  {
       __typename: "FormDefinition",
@@ -673,20 +808,20 @@ export type UpdateUserFormMutation = {
 };
 
 export type DeleteUserFormMutationVariables = {
-  input: DeleteUserFormInput,
+  input?: DeleteUserFormInput,
   condition?: ModelUserFormConditionInput | null,
 };
 
 export type DeleteUserFormMutation = {
-  deleteUserForm:  {
+  deleteUserForm?:  {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    owner: string | null,
+    owner?: string | null,
     formDefinitionID: string,
-    questionAnswers:  {
+    questionAnswers?:  {
       __typename: "ModelQuestionAnswerConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     formDefinition:  {
       __typename: "FormDefinition",
@@ -700,12 +835,12 @@ export type DeleteUserFormMutation = {
 };
 
 export type CreateQuestionAnswerMutationVariables = {
-  input: CreateQuestionAnswerInput,
+  input?: CreateQuestionAnswerInput,
   condition?: ModelQuestionAnswerConditionInput | null,
 };
 
 export type CreateQuestionAnswerMutation = {
-  createQuestionAnswer:  {
+  createQuestionAnswer?:  {
     __typename: "QuestionAnswer",
     id: string,
     userFormID: string,
@@ -717,8 +852,8 @@ export type CreateQuestionAnswerMutation = {
       id: string,
       text: string,
       topic: string,
-      qid: string | null,
-      index: number | null,
+      qid?: string | null,
+      index?: number | null,
       formDefinitionID: string,
       categoryID: string,
       createdAt: string,
@@ -726,17 +861,17 @@ export type CreateQuestionAnswerMutation = {
     },
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type UpdateQuestionAnswerMutationVariables = {
-  input: UpdateQuestionAnswerInput,
+  input?: UpdateQuestionAnswerInput,
   condition?: ModelQuestionAnswerConditionInput | null,
 };
 
 export type UpdateQuestionAnswerMutation = {
-  updateQuestionAnswer:  {
+  updateQuestionAnswer?:  {
     __typename: "QuestionAnswer",
     id: string,
     userFormID: string,
@@ -748,8 +883,8 @@ export type UpdateQuestionAnswerMutation = {
       id: string,
       text: string,
       topic: string,
-      qid: string | null,
-      index: number | null,
+      qid?: string | null,
+      index?: number | null,
       formDefinitionID: string,
       categoryID: string,
       createdAt: string,
@@ -757,17 +892,17 @@ export type UpdateQuestionAnswerMutation = {
     },
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type DeleteQuestionAnswerMutationVariables = {
-  input: DeleteQuestionAnswerInput,
+  input?: DeleteQuestionAnswerInput,
   condition?: ModelQuestionAnswerConditionInput | null,
 };
 
 export type DeleteQuestionAnswerMutation = {
-  deleteQuestionAnswer:  {
+  deleteQuestionAnswer?:  {
     __typename: "QuestionAnswer",
     id: string,
     userFormID: string,
@@ -779,8 +914,8 @@ export type DeleteQuestionAnswerMutation = {
       id: string,
       text: string,
       topic: string,
-      qid: string | null,
-      index: number | null,
+      qid?: string | null,
+      index?: number | null,
       formDefinitionID: string,
       categoryID: string,
       createdAt: string,
@@ -788,31 +923,31 @@ export type DeleteQuestionAnswerMutation = {
     },
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type CreateQuestionMutationVariables = {
-  input: CreateQuestionInput,
+  input?: CreateQuestionInput,
   condition?: ModelQuestionConditionInput | null,
 };
 
 export type CreateQuestionMutation = {
-  createQuestion:  {
+  createQuestion?:  {
     __typename: "Question",
     id: string,
     text: string,
     topic: string,
-    qid: string | null,
-    index: number | null,
+    qid?: string | null,
+    index?: number | null,
     formDefinitionID: string,
     categoryID: string,
     category:  {
       __typename: "Category",
       id: string,
       text: string,
-      description: string | null,
-      index: number | null,
+      description?: string | null,
+      index?: number | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -822,26 +957,26 @@ export type CreateQuestionMutation = {
 };
 
 export type UpdateQuestionMutationVariables = {
-  input: UpdateQuestionInput,
+  input?: UpdateQuestionInput,
   condition?: ModelQuestionConditionInput | null,
 };
 
 export type UpdateQuestionMutation = {
-  updateQuestion:  {
+  updateQuestion?:  {
     __typename: "Question",
     id: string,
     text: string,
     topic: string,
-    qid: string | null,
-    index: number | null,
+    qid?: string | null,
+    index?: number | null,
     formDefinitionID: string,
     categoryID: string,
     category:  {
       __typename: "Category",
       id: string,
       text: string,
-      description: string | null,
-      index: number | null,
+      description?: string | null,
+      index?: number | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -851,26 +986,26 @@ export type UpdateQuestionMutation = {
 };
 
 export type DeleteQuestionMutationVariables = {
-  input: DeleteQuestionInput,
+  input?: DeleteQuestionInput,
   condition?: ModelQuestionConditionInput | null,
 };
 
 export type DeleteQuestionMutation = {
-  deleteQuestion:  {
+  deleteQuestion?:  {
     __typename: "Question",
     id: string,
     text: string,
     topic: string,
-    qid: string | null,
-    index: number | null,
+    qid?: string | null,
+    index?: number | null,
     formDefinitionID: string,
     categoryID: string,
     category:  {
       __typename: "Category",
       id: string,
       text: string,
-      description: string | null,
-      index: number | null,
+      description?: string | null,
+      index?: number | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -880,63 +1015,63 @@ export type DeleteQuestionMutation = {
 };
 
 export type CreateCategoryMutationVariables = {
-  input: CreateCategoryInput,
+  input?: CreateCategoryInput,
   condition?: ModelCategoryConditionInput | null,
 };
 
 export type CreateCategoryMutation = {
-  createCategory:  {
+  createCategory?:  {
     __typename: "Category",
     id: string,
     text: string,
-    description: string | null,
-    index: number | null,
+    description?: string | null,
+    index?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
 export type UpdateCategoryMutationVariables = {
-  input: UpdateCategoryInput,
+  input?: UpdateCategoryInput,
   condition?: ModelCategoryConditionInput | null,
 };
 
 export type UpdateCategoryMutation = {
-  updateCategory:  {
+  updateCategory?:  {
     __typename: "Category",
     id: string,
     text: string,
-    description: string | null,
-    index: number | null,
+    description?: string | null,
+    index?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
 export type DeleteCategoryMutationVariables = {
-  input: DeleteCategoryInput,
+  input?: DeleteCategoryInput,
   condition?: ModelCategoryConditionInput | null,
 };
 
 export type DeleteCategoryMutation = {
-  deleteCategory:  {
+  deleteCategory?:  {
     __typename: "Category",
     id: string,
     text: string,
-    description: string | null,
-    index: number | null,
+    description?: string | null,
+    index?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
 export type CreateGroupMutationVariables = {
-  input: CreateGroupInput,
+  input?: CreateGroupInput,
   condition?: ModelGroupConditionInput | null,
 };
 
 export type CreateGroupMutation = {
-  createGroup:  {
+  createGroup?:  {
     __typename: "Group",
     id: string,
     groupLeaderID: string,
@@ -953,12 +1088,12 @@ export type CreateGroupMutation = {
 };
 
 export type UpdateGroupMutationVariables = {
-  input: UpdateGroupInput,
+  input?: UpdateGroupInput,
   condition?: ModelGroupConditionInput | null,
 };
 
 export type UpdateGroupMutation = {
-  updateGroup:  {
+  updateGroup?:  {
     __typename: "Group",
     id: string,
     groupLeaderID: string,
@@ -975,12 +1110,12 @@ export type UpdateGroupMutation = {
 };
 
 export type DeleteGroupMutationVariables = {
-  input: DeleteGroupInput,
+  input?: DeleteGroupInput,
   condition?: ModelGroupConditionInput | null,
 };
 
 export type DeleteGroupMutation = {
-  deleteGroup:  {
+  deleteGroup?:  {
     __typename: "Group",
     id: string,
     groupLeaderID: string,
@@ -997,12 +1132,12 @@ export type DeleteGroupMutation = {
 };
 
 export type CreateUserMutationVariables = {
-  input: CreateUserInput,
+  input?: CreateUserInput,
   condition?: ModelUserConditionInput | null,
 };
 
 export type CreateUserMutation = {
-  createUser:  {
+  createUser?:  {
     __typename: "User",
     id: string,
     groupID: string,
@@ -1019,12 +1154,12 @@ export type CreateUserMutation = {
 };
 
 export type UpdateUserMutationVariables = {
-  input: UpdateUserInput,
+  input?: UpdateUserInput,
   condition?: ModelUserConditionInput | null,
 };
 
 export type UpdateUserMutation = {
-  updateUser:  {
+  updateUser?:  {
     __typename: "User",
     id: string,
     groupID: string,
@@ -1041,12 +1176,12 @@ export type UpdateUserMutation = {
 };
 
 export type DeleteUserMutationVariables = {
-  input: DeleteUserInput,
+  input?: DeleteUserInput,
   condition?: ModelUserConditionInput | null,
 };
 
 export type DeleteUserMutation = {
-  deleteUser:  {
+  deleteUser?:  {
     __typename: "User",
     id: string,
     groupID: string,
@@ -1063,18 +1198,18 @@ export type DeleteUserMutation = {
 };
 
 export type GetFormDefinitionQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetFormDefinitionQuery = {
-  getFormDefinition:  {
+  getFormDefinition?:  {
     __typename: "FormDefinition",
     id: string,
     createdAt: string,
     sortKeyConstant: string,
-    questions:  {
+    questions?:  {
       __typename: "ModelQuestionConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     updatedAt: string,
   } | null,
@@ -1087,33 +1222,33 @@ export type ListFormDefinitionsQueryVariables = {
 };
 
 export type ListFormDefinitionsQuery = {
-  listFormDefinitions:  {
+  listFormDefinitions?:  {
     __typename: "ModelFormDefinitionConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "FormDefinition",
       id: string,
       createdAt: string,
       sortKeyConstant: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetUserFormQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetUserFormQuery = {
-  getUserForm:  {
+  getUserForm?:  {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    owner: string | null,
+    owner?: string | null,
     formDefinitionID: string,
-    questionAnswers:  {
+    questionAnswers?:  {
       __typename: "ModelQuestionAnswerConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     formDefinition:  {
       __typename: "FormDefinition",
@@ -1133,26 +1268,26 @@ export type ListUserFormsQueryVariables = {
 };
 
 export type ListUserFormsQuery = {
-  listUserForms:  {
+  listUserForms?:  {
     __typename: "ModelUserFormConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "UserForm",
       id: string,
       createdAt: string,
-      owner: string | null,
+      owner?: string | null,
       formDefinitionID: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetQuestionAnswerQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetQuestionAnswerQuery = {
-  getQuestionAnswer:  {
+  getQuestionAnswer?:  {
     __typename: "QuestionAnswer",
     id: string,
     userFormID: string,
@@ -1164,8 +1299,8 @@ export type GetQuestionAnswerQuery = {
       id: string,
       text: string,
       topic: string,
-      qid: string | null,
-      index: number | null,
+      qid?: string | null,
+      index?: number | null,
       formDefinitionID: string,
       categoryID: string,
       createdAt: string,
@@ -1173,7 +1308,7 @@ export type GetQuestionAnswerQuery = {
     },
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1184,9 +1319,9 @@ export type ListQuestionAnswersQueryVariables = {
 };
 
 export type ListQuestionAnswersQuery = {
-  listQuestionAnswers:  {
+  listQuestionAnswers?:  {
     __typename: "ModelQuestionAnswerConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "QuestionAnswer",
       id: string,
       userFormID: string,
@@ -1195,32 +1330,32 @@ export type ListQuestionAnswersQuery = {
       motivation: number,
       createdAt: string,
       updatedAt: string,
-      owner: string | null,
+      owner?: string | null,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetQuestionQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetQuestionQuery = {
-  getQuestion:  {
+  getQuestion?:  {
     __typename: "Question",
     id: string,
     text: string,
     topic: string,
-    qid: string | null,
-    index: number | null,
+    qid?: string | null,
+    index?: number | null,
     formDefinitionID: string,
     categoryID: string,
     category:  {
       __typename: "Category",
       id: string,
       text: string,
-      description: string | null,
-      index: number | null,
+      description?: string | null,
+      index?: number | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1236,35 +1371,35 @@ export type ListQuestionsQueryVariables = {
 };
 
 export type ListQuestionsQuery = {
-  listQuestions:  {
+  listQuestions?:  {
     __typename: "ModelQuestionConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "Question",
       id: string,
       text: string,
       topic: string,
-      qid: string | null,
-      index: number | null,
+      qid?: string | null,
+      index?: number | null,
       formDefinitionID: string,
       categoryID: string,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetCategoryQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetCategoryQuery = {
-  getCategory:  {
+  getCategory?:  {
     __typename: "Category",
     id: string,
     text: string,
-    description: string | null,
-    index: number | null,
+    description?: string | null,
+    index?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1277,27 +1412,27 @@ export type ListCategorysQueryVariables = {
 };
 
 export type ListCategorysQuery = {
-  listCategorys:  {
+  listCategorys?:  {
     __typename: "ModelCategoryConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "Category",
       id: string,
       text: string,
-      description: string | null,
-      index: number | null,
+      description?: string | null,
+      index?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetGroupQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetGroupQuery = {
-  getGroup:  {
+  getGroup?:  {
     __typename: "Group",
     id: string,
     groupLeaderID: string,
@@ -1320,25 +1455,25 @@ export type ListGroupsQueryVariables = {
 };
 
 export type ListGroupsQuery = {
-  listGroups:  {
+  listGroups?:  {
     __typename: "ModelGroupConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "Group",
       id: string,
       groupLeaderID: string,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type GetUserQueryVariables = {
-  id: string,
+  id?: string,
 };
 
 export type GetUserQuery = {
-  getUser:  {
+  getUser?:  {
     __typename: "User",
     id: string,
     groupID: string,
@@ -1361,16 +1496,16 @@ export type ListUsersQueryVariables = {
 };
 
 export type ListUsersQuery = {
-  listUsers:  {
+  listUsers?:  {
     __typename: "ModelUserConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "User",
       id: string,
       groupID: string,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -1384,16 +1519,16 @@ export type FormByCreatedAtQueryVariables = {
 };
 
 export type FormByCreatedAtQuery = {
-  formByCreatedAt:  {
+  formByCreatedAt?:  {
     __typename: "ModelFormDefinitionConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "FormDefinition",
       id: string,
       createdAt: string,
       sortKeyConstant: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -1407,57 +1542,57 @@ export type UserFormByCreatedAtQueryVariables = {
 };
 
 export type UserFormByCreatedAtQuery = {
-  userFormByCreatedAt:  {
+  userFormByCreatedAt?:  {
     __typename: "ModelUserFormConnection",
-    items:  Array< {
+    items?:  Array< {
       __typename: "UserForm",
       id: string,
       createdAt: string,
-      owner: string | null,
+      owner?: string | null,
       formDefinitionID: string,
       updatedAt: string,
     } | null > | null,
-    nextToken: string | null,
+    nextToken?: string | null,
   } | null,
 };
 
 export type OnCreateFormDefinitionSubscription = {
-  onCreateFormDefinition:  {
+  onCreateFormDefinition?:  {
     __typename: "FormDefinition",
     id: string,
     createdAt: string,
     sortKeyConstant: string,
-    questions:  {
+    questions?:  {
       __typename: "ModelQuestionConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     updatedAt: string,
   } | null,
 };
 
 export type OnUpdateFormDefinitionSubscription = {
-  onUpdateFormDefinition:  {
+  onUpdateFormDefinition?:  {
     __typename: "FormDefinition",
     id: string,
     createdAt: string,
     sortKeyConstant: string,
-    questions:  {
+    questions?:  {
       __typename: "ModelQuestionConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     updatedAt: string,
   } | null,
 };
 
 export type OnDeleteFormDefinitionSubscription = {
-  onDeleteFormDefinition:  {
+  onDeleteFormDefinition?:  {
     __typename: "FormDefinition",
     id: string,
     createdAt: string,
     sortKeyConstant: string,
-    questions:  {
+    questions?:  {
       __typename: "ModelQuestionConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     updatedAt: string,
   } | null,
@@ -1468,15 +1603,15 @@ export type OnCreateUserFormSubscriptionVariables = {
 };
 
 export type OnCreateUserFormSubscription = {
-  onCreateUserForm:  {
+  onCreateUserForm?:  {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    owner: string | null,
+    owner?: string | null,
     formDefinitionID: string,
-    questionAnswers:  {
+    questionAnswers?:  {
       __typename: "ModelQuestionAnswerConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     formDefinition:  {
       __typename: "FormDefinition",
@@ -1494,15 +1629,15 @@ export type OnUpdateUserFormSubscriptionVariables = {
 };
 
 export type OnUpdateUserFormSubscription = {
-  onUpdateUserForm:  {
+  onUpdateUserForm?:  {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    owner: string | null,
+    owner?: string | null,
     formDefinitionID: string,
-    questionAnswers:  {
+    questionAnswers?:  {
       __typename: "ModelQuestionAnswerConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     formDefinition:  {
       __typename: "FormDefinition",
@@ -1520,15 +1655,15 @@ export type OnDeleteUserFormSubscriptionVariables = {
 };
 
 export type OnDeleteUserFormSubscription = {
-  onDeleteUserForm:  {
+  onDeleteUserForm?:  {
     __typename: "UserForm",
     id: string,
     createdAt: string,
-    owner: string | null,
+    owner?: string | null,
     formDefinitionID: string,
-    questionAnswers:  {
+    questionAnswers?:  {
       __typename: "ModelQuestionAnswerConnection",
-      nextToken: string | null,
+      nextToken?: string | null,
     } | null,
     formDefinition:  {
       __typename: "FormDefinition",
@@ -1546,7 +1681,7 @@ export type OnCreateQuestionAnswerSubscriptionVariables = {
 };
 
 export type OnCreateQuestionAnswerSubscription = {
-  onCreateQuestionAnswer:  {
+  onCreateQuestionAnswer?:  {
     __typename: "QuestionAnswer",
     id: string,
     userFormID: string,
@@ -1558,8 +1693,8 @@ export type OnCreateQuestionAnswerSubscription = {
       id: string,
       text: string,
       topic: string,
-      qid: string | null,
-      index: number | null,
+      qid?: string | null,
+      index?: number | null,
       formDefinitionID: string,
       categoryID: string,
       createdAt: string,
@@ -1567,7 +1702,7 @@ export type OnCreateQuestionAnswerSubscription = {
     },
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1576,7 +1711,7 @@ export type OnUpdateQuestionAnswerSubscriptionVariables = {
 };
 
 export type OnUpdateQuestionAnswerSubscription = {
-  onUpdateQuestionAnswer:  {
+  onUpdateQuestionAnswer?:  {
     __typename: "QuestionAnswer",
     id: string,
     userFormID: string,
@@ -1588,8 +1723,8 @@ export type OnUpdateQuestionAnswerSubscription = {
       id: string,
       text: string,
       topic: string,
-      qid: string | null,
-      index: number | null,
+      qid?: string | null,
+      index?: number | null,
       formDefinitionID: string,
       categoryID: string,
       createdAt: string,
@@ -1597,7 +1732,7 @@ export type OnUpdateQuestionAnswerSubscription = {
     },
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1606,7 +1741,7 @@ export type OnDeleteQuestionAnswerSubscriptionVariables = {
 };
 
 export type OnDeleteQuestionAnswerSubscription = {
-  onDeleteQuestionAnswer:  {
+  onDeleteQuestionAnswer?:  {
     __typename: "QuestionAnswer",
     id: string,
     userFormID: string,
@@ -1618,8 +1753,8 @@ export type OnDeleteQuestionAnswerSubscription = {
       id: string,
       text: string,
       topic: string,
-      qid: string | null,
-      index: number | null,
+      qid?: string | null,
+      index?: number | null,
       formDefinitionID: string,
       categoryID: string,
       createdAt: string,
@@ -1627,26 +1762,26 @@ export type OnDeleteQuestionAnswerSubscription = {
     },
     createdAt: string,
     updatedAt: string,
-    owner: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateQuestionSubscription = {
-  onCreateQuestion:  {
+  onCreateQuestion?:  {
     __typename: "Question",
     id: string,
     text: string,
     topic: string,
-    qid: string | null,
-    index: number | null,
+    qid?: string | null,
+    index?: number | null,
     formDefinitionID: string,
     categoryID: string,
     category:  {
       __typename: "Category",
       id: string,
       text: string,
-      description: string | null,
-      index: number | null,
+      description?: string | null,
+      index?: number | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1656,21 +1791,21 @@ export type OnCreateQuestionSubscription = {
 };
 
 export type OnUpdateQuestionSubscription = {
-  onUpdateQuestion:  {
+  onUpdateQuestion?:  {
     __typename: "Question",
     id: string,
     text: string,
     topic: string,
-    qid: string | null,
-    index: number | null,
+    qid?: string | null,
+    index?: number | null,
     formDefinitionID: string,
     categoryID: string,
     category:  {
       __typename: "Category",
       id: string,
       text: string,
-      description: string | null,
-      index: number | null,
+      description?: string | null,
+      index?: number | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1680,21 +1815,21 @@ export type OnUpdateQuestionSubscription = {
 };
 
 export type OnDeleteQuestionSubscription = {
-  onDeleteQuestion:  {
+  onDeleteQuestion?:  {
     __typename: "Question",
     id: string,
     text: string,
     topic: string,
-    qid: string | null,
-    index: number | null,
+    qid?: string | null,
+    index?: number | null,
     formDefinitionID: string,
     categoryID: string,
     category:  {
       __typename: "Category",
       id: string,
       text: string,
-      description: string | null,
-      index: number | null,
+      description?: string | null,
+      index?: number | null,
       createdAt: string,
       updatedAt: string,
     },
@@ -1704,43 +1839,43 @@ export type OnDeleteQuestionSubscription = {
 };
 
 export type OnCreateCategorySubscription = {
-  onCreateCategory:  {
+  onCreateCategory?:  {
     __typename: "Category",
     id: string,
     text: string,
-    description: string | null,
-    index: number | null,
+    description?: string | null,
+    index?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
 export type OnUpdateCategorySubscription = {
-  onUpdateCategory:  {
+  onUpdateCategory?:  {
     __typename: "Category",
     id: string,
     text: string,
-    description: string | null,
-    index: number | null,
+    description?: string | null,
+    index?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
 export type OnDeleteCategorySubscription = {
-  onDeleteCategory:  {
+  onDeleteCategory?:  {
     __typename: "Category",
     id: string,
     text: string,
-    description: string | null,
-    index: number | null,
+    description?: string | null,
+    index?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
 export type OnCreateGroupSubscription = {
-  onCreateGroup:  {
+  onCreateGroup?:  {
     __typename: "Group",
     id: string,
     groupLeaderID: string,
@@ -1757,7 +1892,7 @@ export type OnCreateGroupSubscription = {
 };
 
 export type OnUpdateGroupSubscription = {
-  onUpdateGroup:  {
+  onUpdateGroup?:  {
     __typename: "Group",
     id: string,
     groupLeaderID: string,
@@ -1774,7 +1909,7 @@ export type OnUpdateGroupSubscription = {
 };
 
 export type OnDeleteGroupSubscription = {
-  onDeleteGroup:  {
+  onDeleteGroup?:  {
     __typename: "Group",
     id: string,
     groupLeaderID: string,
@@ -1791,7 +1926,7 @@ export type OnDeleteGroupSubscription = {
 };
 
 export type OnCreateUserSubscription = {
-  onCreateUser:  {
+  onCreateUser?:  {
     __typename: "User",
     id: string,
     groupID: string,
@@ -1808,7 +1943,7 @@ export type OnCreateUserSubscription = {
 };
 
 export type OnUpdateUserSubscription = {
-  onUpdateUser:  {
+  onUpdateUser?:  {
     __typename: "User",
     id: string,
     groupID: string,
@@ -1825,7 +1960,7 @@ export type OnUpdateUserSubscription = {
 };
 
 export type OnDeleteUserSubscription = {
-  onDeleteUser:  {
+  onDeleteUser?:  {
     __typename: "User",
     id: string,
     groupID: string,

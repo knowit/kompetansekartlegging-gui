@@ -101,7 +101,7 @@ input BatchTableEnvironmentInput {
 type Mutation {
     batchCreateQuestionAnswer(
         input: [CreateQuestionAnswerInput]
-    ): CreateQuestionAnswerResult @function(name: "createUserformBatchLambdaMaster")
+    ): CreateQuestionAnswerResult @function(name: "createUserformBatchLambda")
 }
 # batchCreateQuestionAnswerOld(
 #     input: [CreateQuestionAnswerInput]
