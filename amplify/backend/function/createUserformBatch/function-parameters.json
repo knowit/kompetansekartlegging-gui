@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "storage": {
+      "FormDefinition:@model(appsync)": [
+        "read"
+      ],
+      "UserForm:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "QuestionAnswer:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Question:@model(appsync)": [
+        "read"
+      ],
+      "Category:@model(appsync)": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "common",
+      "version": 1
+    }
+  ]
+}
