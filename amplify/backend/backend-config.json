@@ -38,6 +38,20 @@
           "additionalAuthenticationProviders": []
         }
       }
+    },
+    "externalAPI": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "externalAPI",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "function": {
@@ -46,6 +60,27 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
       "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "kompetansekartleggin",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "externalAPI": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "kompetansekartleggind11d7cce",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
         {
           "category": "api",
           "resourceName": "kompetansekartleggin",

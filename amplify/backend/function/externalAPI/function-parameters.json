@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "auth": {
+      "kompetansekartleggind11d7cce": [
+        "read"
+      ]
+    },
+    "storage": {
+      "FormDefinition:@model(appsync)": [
+        "read"
+      ],
+      "UserForm:@model(appsync)": [
+        "read"
+      ],
+      "QuestionAnswer:@model(appsync)": [
+        "read"
+      ],
+      "Question:@model(appsync)": [
+        "read"
+      ],
+      "Category:@model(appsync)": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
