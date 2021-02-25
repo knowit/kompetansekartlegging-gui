@@ -44,8 +44,6 @@ NOTE: Creating a sandbox environment should only be done if necessary as the ste
 - Update Environment table ID:
 	- Go to tables in [DynamoDB](https://eu-central-1.console.aws.amazon.com/dynamodb/home?region=eu-central-1#tables)
 	- Find a table from your newly created env. Tables are named: TableType-generatedid-envname, and open this table.
-	- Copy the string with the table's generated ID and envname, ie. "abc12356789-myenv"
-	- Open helperfunctions.ts > getEnvTableID, and paste the value as return value.
 - Authorize redirect URL:
 	- Open [Google Developer Console](https://console.developers.google.com/)
 	- Open Project "Kompetansekartlegging". If this cannot be found, access must be granted by asking drift.

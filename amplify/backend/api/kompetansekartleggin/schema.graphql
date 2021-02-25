@@ -1,5 +1,3 @@
-
-
 type FormDefinition @model 
 @key(name: "byCreatedAt", fields: ["sortKeyConstant", "createdAt"], queryField: "formByCreatedAt") {
     id: ID!
@@ -80,7 +78,6 @@ type CreateQuestionAnswerFailedInput {
     questionID: ID!
     knowledge: Float!
     motivation: Float!
-    environmentID: String!
     formDefinitionID: String!
 }
 
@@ -90,20 +87,11 @@ input CreateQuestionAnswerInput {
     questionID: ID!
     knowledge: Float!
     motivation: Float!
-    environmentID: String!
     formDefinitionID: String!
-}
-
-input BatchTableEnvironmentInput {
-    envID: String!
 }
 
 type Mutation {
     batchCreateQuestionAnswer(
         input: [CreateQuestionAnswerInput]
-    ): CreateQuestionAnswerResult @function(name: "createUserformBatchLambda")
+    ): CreateQuestionAnswerResult @function(name: "createUserformBatch-${env}")
 }
-# batchCreateQuestionAnswerOld(
-#     input: [CreateQuestionAnswerInput]
-#     env: BatchTableEnvironmentInput
-# ): [QuestionAnswer] @function(name: "createUserformBatchLambda")

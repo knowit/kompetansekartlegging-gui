@@ -13,7 +13,6 @@ export const batchCreateQuestionAnswer = /* GraphQL */ `
         questionID
         knowledge
         motivation
-        environmentID
         formDefinitionID
       }
     }

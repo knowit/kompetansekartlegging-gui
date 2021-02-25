@@ -180,7 +180,6 @@ export type CreateQuestionAnswerInput = {
   questionID: string,
   knowledge: number,
   motivation: number,
-  environmentID: string,
   formDefinitionID: string,
 };
 
@@ -198,7 +197,6 @@ export type CreateQuestionAnswerFailedInput = {
   questionID?: string,
   knowledge?: number,
   motivation?: number,
-  environmentID?: string,
   formDefinitionID?: string,
 };
 
@@ -668,7 +666,6 @@ export type BatchCreateQuestionAnswer2Mutation = {
       questionID: string,
       knowledge: number,
       motivation: number,
-      environmentID: string,
       formDefinitionID: string,
     } | null > | null,
   } | null,
@@ -690,7 +687,6 @@ export type BatchCreateQuestionAnswerMutation = {
       questionID: string,
       knowledge: number,
       motivation: number,
-      environmentID: string,
       formDefinitionID: string,
     } | null > | null,
   } | null,

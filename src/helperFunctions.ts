@@ -67,22 +67,9 @@ const splitArray = <T>(array: T[]): T[][] => {
     return splitArray;
 }
 
-const environmentIds = {
-    prod: "uzksv2pimzhptdrxsv2igytjvi-prod",
-    dev: "3hic5nngffevtfafcd62sdoece-dev",
-    testback: "zxk54jobi5cpxgf7jvdw53glsq-testback"
-}
-
-//For now: anytime using a backend environment, or lacking environment variables, the return must be set manually
-export const getEnvTableID = () => {
-    return environmentIds.dev;
-}
-
 /*
     Do a batch call with a querry and input variables.
     Basicly splits the incoming array of inputs, and dose a batch call for every size 25 array
-    
-    This function will be changed in the future because of removing the env variable
 */
 export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]}, table:string): Promise<GraphQLResult<T>[]> => {
     if(variables.input.length === 0) {
@@ -92,9 +79,8 @@ export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]},
 
     let split = splitArray(variables.input);
     let returnValue = [];
-    let envTableID = table + "-" + getEnvTableID();
     for (const element of split) {
-        returnValue.push(await API.graphql(graphqlOperation(query, {input: element, env: {envID: envTableID}})) as GraphQLResult<T>);
+        returnValue.push(await API.graphql(graphqlOperation(query, {input: element})) as GraphQLResult<T>);
     }
     return returnValue;
 };
