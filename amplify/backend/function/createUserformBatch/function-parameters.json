@@ -16,17 +16,8 @@
       ],
       "Question:@model(appsync)": [
         "read"
-      ],
-      "Category:@model(appsync)": [
-        "read"
       ]
     }
   },
-  "lambdaLayers": [
-    {
-      "type": "ProjectLayer",
-      "resourceName": "common",
-      "version": 1
-    }
-  ]
+  "lambdaLayers": []
 }

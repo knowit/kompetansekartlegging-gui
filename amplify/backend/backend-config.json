@@ -41,11 +41,6 @@
     }
   },
   "function": {
-    "common": {
-      "providerPlugin": "awscloudformation",
-      "service": "LambdaLayer",
-      "build": true
-    },
     "createUserformBatch": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -56,13 +51,6 @@
           "resourceName": "kompetansekartleggin",
           "attributes": [
             "GraphQLAPIIdOutput"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "common",
-          "attributes": [
-            "Arn"
           ]
         }
       ]

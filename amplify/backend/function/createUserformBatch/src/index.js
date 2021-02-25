@@ -1,6 +1,4 @@
 /* Amplify Params - DO NOT EDIT
-	API_KOMPETANSEKARTLEGGIN_CATEGORYTABLE_ARN
-	API_KOMPETANSEKARTLEGGIN_CATEGORYTABLE_NAME
 	API_KOMPETANSEKARTLEGGIN_FORMDEFINITIONTABLE_ARN
 	API_KOMPETANSEKARTLEGGIN_FORMDEFINITIONTABLE_NAME
 	API_KOMPETANSEKARTLEGGIN_GRAPHQLAPIIDOUTPUT
@@ -18,12 +16,12 @@ exports.handler = async (event) => {
     // TODO implement
     const response = {
         statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  }, 
-        body: JSON.stringify('Hello from Lambda!'),
+        //  Uncomment below to enable CORS requests
+        //  headers: {
+        //      "Access-Control-Allow-Origin": "*",
+        //      "Access-Control-Allow-Headers": "*"
+        //  },
+        body: JSON.stringify("Hello from Lambda!"),
     };
     return response;
 };
