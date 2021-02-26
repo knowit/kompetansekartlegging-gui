@@ -1,32 +1,50 @@
-type FormDefinition @model 
-@key(name: "byCreatedAt", fields: ["sortKeyConstant", "createdAt"], queryField: "formByCreatedAt") {
+type FormDefinition
+    @model
+    @key(
+        name: "byCreatedAt"
+        fields: ["sortKeyConstant", "createdAt"]
+        queryField: "formByCreatedAt"
+    ) {
     id: ID!
     createdAt: AWSDateTime!
     sortKeyConstant: String!
-    questions: [Question] @connection(keyName: "byFormDefinition", fields: ["id"])
+    questions: [Question]
+        @connection(keyName: "byFormDefinition", fields: ["id"])
 }
 
-type UserForm @model @auth(rules: [
-    { allow: owner },
-    { allow: groups, groups: ["admin"] },
-    { allow: groups, groups: ["groupLeader"], operations: [read] },
-])
-@key(name: "byCreatedAt", fields: ["owner", "createdAt"], queryField: "userFormByCreatedAt") {
+type UserForm
+    @model
+    @auth(
+        rules: [
+            { allow: owner }
+            { allow: groups, groups: ["admin"] }
+            { allow: groups, groups: ["groupLeader"], operations: [read] }
+        ]
+    )
+    @key(
+        name: "byCreatedAt"
+        fields: ["owner", "createdAt"]
+        queryField: "userFormByCreatedAt"
+    ) {
     id: ID!
     createdAt: AWSDateTime!
     owner: String
     formDefinitionID: ID!
     questionAnswers: [QuestionAnswer]!
-        @connection(keyName: "byUserForm", fields: ["id"]) 
+        @connection(keyName: "byUserForm", fields: ["id"])
     formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
 }
 
-type QuestionAnswer @model @auth(rules: [
-    { allow: owner },
-    { allow: groups, groups: ["admin"] },
-    { allow: groups, groups: ["groupLeader"], operations: [read] },
-])
-@key(name: "byUserForm", fields: ["userFormID"]) {
+type QuestionAnswer
+    @model
+    @auth(
+        rules: [
+            { allow: owner }
+            { allow: groups, groups: ["admin"] }
+            { allow: groups, groups: ["groupLeader"], operations: [read] }
+        ]
+    )
+    @key(name: "byUserForm", fields: ["userFormID"]) {
     id: ID!
     userFormID: ID!
     questionID: ID!
@@ -35,8 +53,9 @@ type QuestionAnswer @model @auth(rules: [
     question: Question! @connection(fields: ["questionID"])
 }
 
-type Question @model 
-@key(name: "byFormDefinition", fields: ["formDefinitionID"]) {
+type Question
+    @model
+    @key(name: "byFormDefinition", fields: ["formDefinitionID"]) {
     id: ID!
     text: String!
     topic: String!
@@ -54,19 +73,31 @@ type Category @model {
     index: Int
 }
 
-type Group @model @auth(rules: [
-    { allow: groups, groups: ["admin"] },
-    { allow: groups, groups: ["groupLeader"], operations: [read] },
-]) {
+type Group
+    @model
+    @auth(
+        rules: [
+            { allow: groups, groups: ["admin"] }
+            { allow: groups, groups: ["groupLeader"], operations: [read] }
+        ]
+    ) {
     id: ID!
     groupLeaderID: String!
     groupLeader: User! @connection(fields: ["groupLeaderID"])
 }
 
-type User @model @auth(rules: [
-    { allow: groups, groups: ["admin"] },
-    { allow: groups, groups: ["groupLeader"], operations: [create, read, update] },
-]) {
+type User
+    @model
+    @auth(
+        rules: [
+            { allow: groups, groups: ["admin"] }
+            {
+                allow: groups
+                groups: ["groupLeader"]
+                operations: [create, read, update]
+            }
+        ]
+    ) {
     id: String!
     groupID: ID!
     group: Group! @connection(fields: ["groupID"])

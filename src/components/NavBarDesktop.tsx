@@ -1,18 +1,33 @@
-
-import { AppBar, Button, Toolbar, Avatar, MenuItem, ClickAwayListener, Popper, Grow, Paper, MenuList } from '@material-ui/core';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { Auth } from 'aws-amplify';
-import React, { useEffect, useRef, useState } from 'react';
-import { KnowitColors } from '../styles';
-import { NavBarPropsDesktop } from '../types';
-import { ReactComponent as KnowitLogo } from '../Logotype-Knowit-Digital-white 1.svg';
-
+import {
+    AppBar,
+    Button,
+    Toolbar,
+    Avatar,
+    MenuItem,
+    ClickAwayListener,
+    Popper,
+    Grow,
+    Paper,
+    MenuList,
+} from "@material-ui/core";
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Auth } from "aws-amplify";
+import React, { useEffect, useRef, useState } from "react";
+import { KnowitColors } from "../styles";
+import { NavBarPropsDesktop } from "../types";
+import { ReactComponent as KnowitLogo } from "../Logotype-Knowit-Digital-white 1.svg";
 
 const navbarStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        zIndex: 100
+        zIndex: 100,
     },
     navigation: {
         flexGrow: 1,
@@ -21,10 +36,10 @@ const navbarStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     button: {
-        width: "100px"
+        width: "100px",
     },
     header: {
-        backgroundColor: KnowitColors.darkBrown
+        backgroundColor: KnowitColors.darkBrown,
     },
     userName: {
         margin: "5px",
@@ -36,31 +51,28 @@ const navbarStyles = makeStyles((theme) => ({
         color: KnowitColors.white,
     },
     dropdownMenuButton: {
-        marginLeft: "auto"
+        marginLeft: "auto",
     },
     dropdownMenu: {
         backgroundColor: KnowitColors.beige,
-        color: KnowitColors.darkBrown
+        color: KnowitColors.darkBrown,
     },
     userPicture: {
         margin: "5px",
         width: "44px",
         height: "44px",
     },
-    logo: {
-
-    },
+    logo: {},
     title: {
         fontFamily: "Arial",
         fontSize: "25px",
         fontStyle: "normal",
         fontWeight: "bold",
-        paddingLeft: 20
-    }
+        paddingLeft: 20,
+    },
 }));
 
-
-const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
+const NavBarDesktop = ({ ...props }: NavBarPropsDesktop) => {
     const [avatarMenuOpen, setAvatarMenuOpen] = useState<boolean>(false);
     // return focus to the button when we transitioned from !avatarMenuOpen -> avatarMenuOpen
     const avatarMenuPrevOpen = React.useRef(avatarMenuOpen);
@@ -69,145 +81,190 @@ const NavBarDesktop = ({...props}: NavBarPropsDesktop) => {
     const [deleteAlertOpen, setDeleteAlertOpen] = useState<boolean>(false);
     const anchorRef = useRef<HTMLButtonElement>(null);
 
-
     const handleToggle = () => {
         setAvatarMenuOpen((avatarMenuPrevOpen) => !avatarMenuPrevOpen);
     };
 
     const handleClose = (event: React.MouseEvent<EventTarget>) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
-          return;
+        if (
+            anchorRef.current &&
+            anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+            return;
         }
-        
+
         setAvatarMenuOpen(false);
     };
 
     function handleListKeyDown(event: React.KeyboardEvent) {
-        if (event.key === 'Tab') {
-          event.preventDefault();
-          setAvatarMenuOpen(false);
+        if (event.key === "Tab") {
+            event.preventDefault();
+            setAvatarMenuOpen(false);
         }
-      }
+    }
 
-      const handleCloseSignout = (event: React.MouseEvent<EventTarget>) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
-          return;
+    const handleCloseSignout = (event: React.MouseEvent<EventTarget>) => {
+        if (
+            anchorRef.current &&
+            anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+            return;
         }
-        
+
         props.signout();
     };
 
     const handleDeleteAnswers = (event: React.MouseEvent<EventTarget>) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
-          return;
+        if (
+            anchorRef.current &&
+            anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+            return;
         }
         setDeleteAlertOpen(true);
     };
 
     const handleCloseAlert = () => {
         setDeleteAlertOpen(false);
-      };
-
+    };
 
     const handleConfirmDelete = (event: React.MouseEvent<EventTarget>) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
-          return;
+        if (
+            anchorRef.current &&
+            anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+            return;
         }
         props.confirmDeleteUserdata();
         setDeleteAlertOpen(false);
     };
 
     const handleDisplayAnswers = (event: React.MouseEvent<EventTarget>) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
-          return;
+        if (
+            anchorRef.current &&
+            anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+            return;
         }
         props.displayAnswers();
         // setAvatarMenuOpen(false);
     };
 
-      useEffect(() => {
+    useEffect(() => {
         if (avatarMenuPrevOpen.current === true && avatarMenuOpen === false) {
-        anchorRef.current!.focus();
+            anchorRef.current!.focus();
         }
 
         avatarMenuPrevOpen.current = avatarMenuOpen;
     }, [avatarMenuOpen]);
 
     return (
-            <div className={style.root}>
-                <AppBar position="static">
-                    <Toolbar className={style.header}>
-                        <div className={style.logo}><KnowitLogo/></div>
-                        <h1 className={style.title}>Kompetansekartlegging</h1>
+        <div className={style.root}>
+            <AppBar position="static">
+                <Toolbar className={style.header}>
+                    <div className={style.logo}>
+                        <KnowitLogo />
+                    </div>
+                    <h1 className={style.title}>Kompetansekartlegging</h1>
 
-                        {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}
-                        <div className={style.dropdownMenuButton}>
-                            <Button 
-                                ref={anchorRef}
-                                aria-controls={avatarMenuOpen ? 'menu-list-grow' : undefined}
-                                aria-haspopup="true"
-                                onClick={handleToggle}
-                                aria-label="Toggle dropdownmenu"
-                            >
-                                <div className={style.userName}>{props.userName}</div>
-                                <Avatar className={style.userPicture} src={props.userPicture} alt="Profile Picture"
+                    {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}
+                    <div className={style.dropdownMenuButton}>
+                        <Button
+                            ref={anchorRef}
+                            aria-controls={
+                                avatarMenuOpen ? "menu-list-grow" : undefined
+                            }
+                            aria-haspopup="true"
+                            onClick={handleToggle}
+                            aria-label="Toggle dropdownmenu"
+                        >
+                            <div className={style.userName}>
+                                {props.userName}
+                            </div>
+                            <Avatar
+                                className={style.userPicture}
+                                src={props.userPicture}
+                                alt="Profile Picture"
                             />
-                            </Button>
-                            <Popper
-                                open={avatarMenuOpen}
-                                anchorEl={anchorRef.current}
-                                placement={"bottom-end"}
-                                role={undefined}
-                                transition
-                                disablePortal
-                            >
+                        </Button>
+                        <Popper
+                            open={avatarMenuOpen}
+                            anchorEl={anchorRef.current}
+                            placement={"bottom-end"}
+                            role={undefined}
+                            transition
+                            disablePortal
+                        >
                             {({ TransitionProps, placement }) => (
                                 <Grow
-                                {...TransitionProps}
-                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                    {...TransitionProps}
+                                    style={{
+                                        transformOrigin:
+                                            placement === "bottom"
+                                                ? "center top"
+                                                : "center bottom",
+                                    }}
                                 >
-                                <Paper>
-                                    <ClickAwayListener onClickAway={handleClose}>
-                                    <MenuList autoFocusItem={avatarMenuOpen} id="menu-list-grow" onKeyDown={handleListKeyDown} className={style.dropdownMenu}>
-                                        {/* Removed for user testing
+                                    <Paper>
+                                        <ClickAwayListener
+                                            onClickAway={handleClose}
+                                        >
+                                            <MenuList
+                                                autoFocusItem={avatarMenuOpen}
+                                                id="menu-list-grow"
+                                                onKeyDown={handleListKeyDown}
+                                                className={style.dropdownMenu}
+                                            >
+                                                {/* Removed for user testing
                                         <MenuItem onClick={handleDisplayAnswers}>Vis alle lagrede svar</MenuItem>
                                         <MenuItem onClick={handleDeleteAnswers}>Slett alle svar</MenuItem> */}
-                                        <MenuItem onClick={handleCloseSignout}>Logg ut</MenuItem>
-                                    </MenuList>
-                                    </ClickAwayListener>
-                                </Paper>
+                                                <MenuItem
+                                                    onClick={handleCloseSignout}
+                                                >
+                                                    Logg ut
+                                                </MenuItem>
+                                            </MenuList>
+                                        </ClickAwayListener>
+                                    </Paper>
                                 </Grow>
                             )}
-                            </Popper>
-                            <Dialog
-                                open={deleteAlertOpen}
-                                onClose={handleCloseAlert}
-                                aria-labelledby="dialogtitle"
-                                aria-describedby="dialogdescription"
-                            >
-                                <DialogTitle id="dialogtitle">
-                                    {"Ønsker du å slette svarene dine?"}
-                                </DialogTitle>
-                                <DialogContent>
+                        </Popper>
+                        <Dialog
+                            open={deleteAlertOpen}
+                            onClose={handleCloseAlert}
+                            aria-labelledby="dialogtitle"
+                            aria-describedby="dialogdescription"
+                        >
+                            <DialogTitle id="dialogtitle">
+                                {"Ønsker du å slette svarene dine?"}
+                            </DialogTitle>
+                            <DialogContent>
                                 <DialogContentText id="dialogdescription">
-                                    OBS: Dette vil slette alle innsendte og lagrede svar!
+                                    OBS: Dette vil slette alle innsendte og
+                                    lagrede svar!
                                 </DialogContentText>
-                                </DialogContent>
-                                <DialogActions>
-                                <Button onClick={handleConfirmDelete} color="primary">
+                            </DialogContent>
+                            <DialogActions>
+                                <Button
+                                    onClick={handleConfirmDelete}
+                                    color="primary"
+                                >
                                     Bekreft
                                 </Button>
-                                <Button onClick={handleCloseAlert} color="primary" autoFocus>
+                                <Button
+                                    onClick={handleCloseAlert}
+                                    color="primary"
+                                    autoFocus
+                                >
                                     Avbryt
                                 </Button>
-                                </DialogActions>
-                            </Dialog>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-            </div>
-        )
-}
+                            </DialogActions>
+                        </Dialog>
+                    </div>
+                </Toolbar>
+            </AppBar>
+        </div>
+    );
+};
 
-
-export default NavBarDesktop
+export default NavBarDesktop;

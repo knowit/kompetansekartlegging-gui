@@ -102,7 +102,8 @@ const COMPETENCE: ScaleContainerObject[] = [
     {
         icon: Icon.K5,
         heading: "Superstjerne",
-        text: "En etterspurt spesialist, som fungerer som nyskapende eller strategisk kraft på området",
+        text:
+            "En etterspurt spesialist, som fungerer som nyskapende eller strategisk kraft på området",
     },
     {
         icon: Icon.K4,
@@ -121,7 +122,7 @@ const COMPETENCE: ScaleContainerObject[] = [
         text:
             "Kompetanse som enten ikke er testet i oppdrag eller der man inntil videre trenger støtte fra andre i teamet",
     },
-    
+
     {
         icon: Icon.K1,
         heading: "Noe innsikt",
@@ -258,7 +259,6 @@ export const DescriptionTable = ({
                     })}
                 </div>
             </div>
-
         </div>
     );
 };

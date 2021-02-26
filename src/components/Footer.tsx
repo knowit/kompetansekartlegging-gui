@@ -9,5 +9,5 @@ export const Footer = () => {
                 </Toolbar>
             </AppBar> */}
         </div>
-    )
-}
+    );
+};

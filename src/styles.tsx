@@ -16,158 +16,154 @@ export const KnowitColors = {
     fuchsia: "#EA3FF3",
     burgunder: "#7A3E50",
     flamingo: "#F3C8BA",
-    lightPink: "#F7E1DD"
+    lightPink: "#F7E1DD",
 };
 
 export const AppStyle = makeStyles({
     root: {
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh'
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
     },
     content: {
-        height: '100%',
-        flexGrow: 1
-    }
+        height: "100%",
+        flexGrow: 1,
+    },
 });
 
 export const FontSettings = makeStyles({
     lighter: {
-        fontWeight: "lighter"
+        fontWeight: "lighter",
     },
     normal: {
-        fontWeight: "normal"
+        fontWeight: "normal",
     },
     bold: {
-        fontWeight: "bold"
+        fontWeight: "bold",
     },
     bolder: {
-        fontWeight: "bolder"
+        fontWeight: "bolder",
     },
     sizeSmall: {
-        fontSize: 8
-    }
+        fontSize: 8,
+    },
 });
 
 type ZProps = {
     zIndex: number;
-  };
+};
 
-export const CardStyle = makeStyles<Theme, ZProps>((theme: Theme) =>
-    ({
-        cardButton: {
-            fontWeight: "bold",
-            fontSize: 18,
-            padding: 10,
-            border: "none",
-            outline: "none",
-            backgroundColor: "transparent",
-            textAlign: "left",
-            paddingLeft: 50,
-            width: "100%"
-        },
-        cardHolder: {
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden',
-            height: '100%'
-                },
-        closed: {
-            position: 'relative',
-            marginTop: -cardCornerRadius,
-            boxShadow: "0px 3px 2px grey",
-            borderBottomLeftRadius: cardCornerRadius,
-            borderBottomRightRadius: cardCornerRadius,
-            zIndex: ({ zIndex }) => zIndex
-        },
-        open: {
-            position: 'relative',
-            marginTop: -cardCornerRadius,
-            display: 'flex',
-            flexDirection: 'column',
-            overflowY: 'auto',
-            // flexGrow: 1
-            height: '100%',
-            boxShadow: "0px 3px 2px grey",
-            borderBottomLeftRadius: cardCornerRadius,
-            borderBottomRightRadius: cardCornerRadius,
-            zIndex: ({ zIndex }) => zIndex
-        },
-        bottomCardClosed: {
-            // position: 'relative',
-            //marginTop: cardCornerRadius,
-            // boxShadow: "0px 3px 2px grey",
-            // borderBottomLeftRadius: cardCornerRadius,
-            // borderBottomRightRadius: cardCornerRadius,
-            zIndex: ({ zIndex }) => zIndex,
-            // backgroundColor: KnowitColors.darkGreen
-        },
-        bottomCardOpen: {
-            position: 'relative',
-            marginTop: -cardCornerRadius,
-            display: 'flex',
-            flexDirection: 'row',
-            overflowY: 'auto',
-            // flexGrow: 1
-            height: '100%',
-            // boxShadow: "0px 3px 2px grey",
-            // borderBottomLeftRadius: cardCornerRadius,
-            // borderBottomRightRadius: cardCornerRadius,
-            zIndex: ({ zIndex }) => zIndex
-        },
-
-    })
-  );
+export const CardStyle = makeStyles<Theme, ZProps>((theme: Theme) => ({
+    cardButton: {
+        fontWeight: "bold",
+        fontSize: 18,
+        padding: 10,
+        border: "none",
+        outline: "none",
+        backgroundColor: "transparent",
+        textAlign: "left",
+        paddingLeft: 50,
+        width: "100%",
+    },
+    cardHolder: {
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        height: "100%",
+    },
+    closed: {
+        position: "relative",
+        marginTop: -cardCornerRadius,
+        boxShadow: "0px 3px 2px grey",
+        borderBottomLeftRadius: cardCornerRadius,
+        borderBottomRightRadius: cardCornerRadius,
+        zIndex: ({ zIndex }) => zIndex,
+    },
+    open: {
+        position: "relative",
+        marginTop: -cardCornerRadius,
+        display: "flex",
+        flexDirection: "column",
+        overflowY: "auto",
+        // flexGrow: 1
+        height: "100%",
+        boxShadow: "0px 3px 2px grey",
+        borderBottomLeftRadius: cardCornerRadius,
+        borderBottomRightRadius: cardCornerRadius,
+        zIndex: ({ zIndex }) => zIndex,
+    },
+    bottomCardClosed: {
+        // position: 'relative',
+        //marginTop: cardCornerRadius,
+        // boxShadow: "0px 3px 2px grey",
+        // borderBottomLeftRadius: cardCornerRadius,
+        // borderBottomRightRadius: cardCornerRadius,
+        zIndex: ({ zIndex }) => zIndex,
+        // backgroundColor: KnowitColors.darkGreen
+    },
+    bottomCardOpen: {
+        position: "relative",
+        marginTop: -cardCornerRadius,
+        display: "flex",
+        flexDirection: "row",
+        overflowY: "auto",
+        // flexGrow: 1
+        height: "100%",
+        // boxShadow: "0px 3px 2px grey",
+        // borderBottomLeftRadius: cardCornerRadius,
+        // borderBottomRightRadius: cardCornerRadius,
+        zIndex: ({ zIndex }) => zIndex,
+    },
+}));
 
 export const OverviewStyle = makeStyles({
     root: {
-        maxHeight: '40%',
+        maxHeight: "40%",
         width: "100%",
-        backgroundColor: KnowitColors.white
+        backgroundColor: KnowitColors.white,
     },
     radarPlot: {
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        overflowY: 'auto',
-        justifyContent: 'center'
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        overflowY: "auto",
+        justifyContent: "center",
     },
     cardHeader: {
         display: "flex",
         marginTop: cardCornerRadius,
-        height: cardCornerRadius
+        height: cardCornerRadius,
     },
     closeButton: {
         marginTop: "3px",
         marginRight: "32px",
-        '&:hover': {
-            color: KnowitColors.darkGreen
-        }
+        "&:hover": {
+            color: KnowitColors.darkGreen,
+        },
     },
     empty: {
-        display: "none"
-    }
+        display: "none",
+    },
 });
-
 
 export const ScaleDescStyle = makeStyles({
     root: {
-        maxHeight: '32%',
+        maxHeight: "32%",
         width: "100%",
-        backgroundColor: KnowitColors.ecaluptus
+        backgroundColor: KnowitColors.ecaluptus,
     },
     cardHeader: {
         display: "flex",
         marginTop: cardCornerRadius,
-        height: cardCornerRadius
+        height: cardCornerRadius,
     },
     closeButton: {
         marginTop: "3px",
         marginRight: "32px",
-        '&:hover': {
-            color: KnowitColors.darkGreen
-        }
-    }
+        "&:hover": {
+            color: KnowitColors.darkGreen,
+        },
+    },
 });
 
 // export const AnswersStyle = makeStyles({
@@ -225,114 +221,106 @@ export const ScaleDescStyle = makeStyles({
 
 export const DescTableStyle = makeStyles({
     root: {
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: KnowitColors.ecaluptus
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: KnowitColors.ecaluptus,
     },
     scaleRow: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignContent: 'center'
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignContent: "center",
     },
     scaleTitle: {
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
         flexGrow: 2,
-        justifyContent: 'center',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        width: '10%'
+        justifyContent: "center",
+        fontWeight: "bold",
+        textAlign: "center",
+        width: "10%",
     },
     container: {
-        display: 'flex',
+        display: "flex",
         flex: 1,
         flexGrow: 5,
-        flexDirection: 'column',
-        padding: 5
+        flexDirection: "column",
+        padding: 5,
     },
     top: {
-        textAlign: 'center',
-        fontWeight: 'bold',
+        textAlign: "center",
+        fontWeight: "bold",
         fontSize: 10,
-        paddingBottom: 20
+        paddingBottom: 20,
     },
     bottom: {
-        display: 'flex'
+        display: "flex",
     },
     iconArea: {
         height: 30,
-        paddingRight: 5
+        paddingRight: 5,
     },
     icon: {
-        height: "100%"
+        height: "100%",
     },
     textBlock: {
-        display: 'flex',
-        flexDirection: 'column'
+        display: "flex",
+        flexDirection: "column",
     },
     heading: {
-        textAlign: 'left',
+        textAlign: "left",
         fontSize: 10,
-        fontWeight: 'bold'
+        fontWeight: "bold",
     },
     text: {
-        textAlign: 'left',
-        fontSize: 10
-    }
+        textAlign: "left",
+        fontSize: 10,
+    },
 });
 
 export const HighlightsStyle = makeStyles({
     root: {
-        display: 'flex',
-        width: '30%',
-        flexDirection: 'column'
+        display: "flex",
+        width: "30%",
+        flexDirection: "column",
     },
-    title: {    
-        textAlign: 'center',
-        fontWeight: 'bold',
-        paddingBottom: 20
+    title: {
+        textAlign: "center",
+        fontWeight: "bold",
+        paddingBottom: 20,
     },
-    container: { 
-        display: 'flex',
-        justifyContent: 'center'
+    container: {
+        display: "flex",
+        justifyContent: "center",
     },
     col: {
-        display: 'flex',
-        width: '40%',
-        flexDirection: 'column'
+        display: "flex",
+        width: "40%",
+        flexDirection: "column",
     },
     heading: {
-        textAlign: 'left',
-        paddingBottom: 10
+        textAlign: "left",
+        paddingBottom: 10,
     },
     list: {
-        display: 'flex',
-        flexDirection: 'column'
+        display: "flex",
+        flexDirection: "column",
     },
     listitem: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        paddingBottom: 5
+        display: "flex",
+        justifyContent: "space-between",
+        paddingBottom: 5,
     },
     icon: {
-        width: '15%',
-        fill: KnowitColors.darkBrown
+        width: "15%",
+        fill: KnowitColors.darkBrown,
     },
     topic: {
-        width: '80%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        fontSize: 12
-    }
+        width: "80%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        fontSize: 12,
+    },
 });
-
-
-
-
-
-
-
-

@@ -1,7 +1,7 @@
-import {API, graphqlOperation} from "aws-amplify";
-import {GraphQLResult} from "@aws-amplify/api";
+import { API, graphqlOperation } from "aws-amplify";
+import { GraphQLResult } from "@aws-amplify/api";
 import { Category, Question, UserFormList, UserFormWithAnswers } from "./types";
-import * as customQueries from './graphql/custom-queries';
+import * as customQueries from "./graphql/custom-queries";
 
 /*
     Used to call graphql queries and mutations.
@@ -11,13 +11,18 @@ import * as customQueries from './graphql/custom-queries';
     Use a type to describe what structure you want the result to be. The return type is a Promise, so use (await).data
         to extract the data within.
 */
-export const callGraphQL = async <T>(query: any, variables?: {} | undefined): Promise<GraphQLResult<T>> => {
-    return (await API.graphql(graphqlOperation(query, variables))) as GraphQLResult<T>;
+export const callGraphQL = async <T>(
+    query: any,
+    variables?: {} | undefined
+): Promise<GraphQLResult<T>> => {
+    return (await API.graphql(
+        graphqlOperation(query, variables)
+    )) as GraphQLResult<T>;
 };
 
 type SearchableItem = {
-    createdAt: string
-}
+    createdAt: string;
+};
 
 /*
     Get the last item in a array, based on the "createdAt" field. Used with results from graphql querries.
@@ -25,11 +30,13 @@ type SearchableItem = {
     Dont use this function anymore, it should be changed or removed because the query itself will grab the
         last item automaticly.
 */
-export const getLastItem = <T extends SearchableItem>(itemsArray?:T[]) => {
-    if(!itemsArray) return null;
-    let sortedArray = itemsArray.sort((a,b) => (Date.parse(a.createdAt) > Date.parse(b.createdAt)) ? -1 : 1);
+export const getLastItem = <T extends SearchableItem>(itemsArray?: T[]) => {
+    if (!itemsArray) return null;
+    let sortedArray = itemsArray.sort((a, b) =>
+        Date.parse(a.createdAt) > Date.parse(b.createdAt) ? -1 : 1
+    );
     return sortedArray[0];
-}
+};
 
 /*
     Gets all userforms in the database. Returned as an array.
@@ -40,13 +47,20 @@ export const listUserForms = async () => {
     let nextToken: string | null = null;
     let combinedUserForm: UserFormWithAnswers[] = [];
     do {
-        let userForms: UserFormList | undefined = (await callGraphQL<UserFormList>(customQueries.listUserFormsWithAnswers, {nextToken: nextToken})).data;
-        if(userForms && userForms.listUserForms.items.length > 0){
-            combinedUserForm = combinedUserForm.concat(userForms.listUserForms.items);
+        let userForms: UserFormList | undefined = (
+            await callGraphQL<UserFormList>(
+                customQueries.listUserFormsWithAnswers,
+                { nextToken: nextToken }
+            )
+        ).data;
+        if (userForms && userForms.listUserForms.items.length > 0) {
+            combinedUserForm = combinedUserForm.concat(
+                userForms.listUserForms.items
+            );
         }
-        if(userForms) nextToken = userForms.listUserForms.nextToken;
-    }while(nextToken); 
-    
+        if (userForms) nextToken = userForms.listUserForms.nextToken;
+    } while (nextToken);
+
     return combinedUserForm;
 };
 
@@ -61,18 +75,24 @@ const splitArray = <T>(array: T[]): T[][] => {
     let currentCount = 0;
     while (currentCount < array.length) {
         let availableNumber = Math.min(array.length - currentCount, 25);
-        splitArray.push(array.slice(currentCount, currentCount + availableNumber));
+        splitArray.push(
+            array.slice(currentCount, currentCount + availableNumber)
+        );
         currentCount += 25;
     }
     return splitArray;
-}
+};
 
 /*
     Do a batch call with a querry and input variables.
     Basicly splits the incoming array of inputs, and dose a batch call for every size 25 array
 */
-export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]}, table:string): Promise<GraphQLResult<T>[]> => {
-    if(variables.input.length === 0) {
+export const callBatchGraphQL = async <T>(
+    query: any,
+    variables: { input: any[] },
+    table: string
+): Promise<GraphQLResult<T>[]> => {
+    if (variables.input.length === 0) {
         console.error("Array size must be more than 0 in a batch mutation");
         return [];
     }
@@ -80,7 +100,11 @@ export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]},
     let split = splitArray(variables.input);
     let returnValue = [];
     for (const element of split) {
-        returnValue.push(await API.graphql(graphqlOperation(query, {input: element})) as GraphQLResult<T>);
+        returnValue.push(
+            (await API.graphql(
+                graphqlOperation(query, { input: element })
+            )) as GraphQLResult<T>
+        );
     }
     return returnValue;
 };
@@ -90,8 +114,14 @@ export const callBatchGraphQL = async <T>(query: any, variables: {input: any[]},
     - ValueToRound: The number u need to round.
     - DecimalCount: The number of decimals u want in the result.
 */
-export const roundDecimals = (valueToRound: number, decimalCount: number): number => {
-    return Math.round(valueToRound * Math.pow(10, decimalCount)) / Math.pow(10, decimalCount);
+export const roundDecimals = (
+    valueToRound: number,
+    decimalCount: number
+): number => {
+    return (
+        Math.round(valueToRound * Math.pow(10, decimalCount)) /
+        Math.pow(10, decimalCount)
+    );
 };
 
 /*
@@ -100,9 +130,13 @@ export const roundDecimals = (valueToRound: number, decimalCount: number): numbe
     - Min: The lowest value the input value can be (return this if value < min).
     - Max (Optional): The highest value the input value can be (return this if value > max).
 */
-export const clampNumber = (value: number, min: number, max?: number): number => {
+export const clampNumber = (
+    value: number,
+    min: number,
+    max?: number
+): number => {
     let newValue = value < min ? min : value;
-    if(max) newValue = value > max ? max : value;
+    if (max) newValue = value > max ? max : value;
     // console.log(`v:${value}, min:${min}, max:${max}, new:${newValue}`);
     return newValue;
 };
@@ -115,28 +149,37 @@ export const clampNumber = (value: number, min: number, max?: number): number =>
     If overflow == true, use regex to place lineshift between words that would go over the length limit.
         This dose not work that great if there is words in the string longer than length.
 */
-export const limitStringLength = (str: string, length: number, overflow: boolean = false): string[] => {
-    if(length <= 0) return [str];
-    if(overflow) return str.match(new RegExp("(?:\\s*)(.{1,"+ length +"})(?:\\s+|\\s*$)", "g")) || [];
-    if(length <= 3) return ["..."]
+export const limitStringLength = (
+    str: string,
+    length: number,
+    overflow: boolean = false
+): string[] => {
+    if (length <= 0) return [str];
+    if (overflow)
+        return (
+            str.match(
+                new RegExp("(?:\\s*)(.{1," + length + "})(?:\\s+|\\s*$)", "g")
+            ) || []
+        );
+    if (length <= 3) return ["..."];
     return [str.substring(0, length - 3) + "..."];
 };
 
 /**
  * Splits a long string into an array of shorter strings, with hyphens where "appropriate".
- * 
+ *
  * @param {string}  str          Input string.
- * @param {number}  maxLength    Maximum length of result strings.  
+ * @param {number}  maxLength    Maximum length of result strings.
  */
 
 export const wrapString = (str: string, maxLength: number): string[] => {
     let splitOnSpace = str.split(" ");
     let resultArray: string[] = [];
-    for (let i = 0; i < splitOnSpace.length; i++ ) {
+    for (let i = 0; i < splitOnSpace.length; i++) {
         let s = splitOnSpace[i];
         if (s.length > maxLength) {
-            let head = s.slice(0, s.length/2);
-            let tail = s.slice(s.length/2);
+            let head = s.slice(0, s.length / 2);
+            let tail = s.slice(s.length / 2);
             resultArray.push(head + "-");
             resultArray.push(tail);
         } else {
@@ -145,7 +188,7 @@ export const wrapString = (str: string, maxLength: number): string[] => {
                     resultArray.push(s + " " + splitOnSpace[i + 1]);
                     i++;
                 } else {
-                    resultArray.push(s); 
+                    resultArray.push(s);
                 }
             } else {
                 resultArray.push(s);
@@ -164,20 +207,25 @@ export const wrapString = (str: string, maxLength: number): string[] => {
     This function should be changed to take a single string too, so you dont have to use
         a array of strings every time.
 */
-export const addLeftPaddingToStringArray = (str: string[], padLength: number, padChar?: string): string[] => {
-    return str.map((value) => value.padStart(padLength, padChar))
+export const addLeftPaddingToStringArray = (
+    str: string[],
+    padLength: number,
+    padChar?: string
+): string[] => {
+    return str.map((value) => value.padStart(padLength, padChar));
 };
 
 //Can be made more advanced, but this s enought for current useage
 export const sortArray = <T>(array: T[]): T[] => {
-    return array
-        .sort((a: any, b: any) => { //using any to remove "Index not found on type T" error
-            if (a.index && b.index == null) return -1;
-            if (a.index == null && b.index) return 1;
-            if (a.index && b.index) return a.index - b.index;
-            if (a.index == null && b.index == null) return a.text.localeCompare(b.text);
-            return 0;
-        })
+    return array.sort((a: any, b: any) => {
+        //using any to remove "Index not found on type T" error
+        if (a.index && b.index == null) return -1;
+        if (a.index == null && b.index) return 1;
+        if (a.index && b.index) return a.index - b.index;
+        if (a.index == null && b.index == null)
+            return a.text.localeCompare(b.text);
+        return 0;
+    });
 };
 
 /*
@@ -218,8 +266,5 @@ export const Millisecs = {
     FIVEMINUTES: 300000,
     ONEDAY: 86400000,
     THREEDAYS: 259200000,
-    THREEMONTHS: 7889400000
-}
-
-
-
+    THREEMONTHS: 7889400000,
+};

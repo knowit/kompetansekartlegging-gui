@@ -1,36 +1,36 @@
-import { makeStyles } from '@material-ui/core';
-import { KnowitColors } from '../styles';
-import Tooltip from '@material-ui/core/Tooltip';
-import UpdateIcon from '@material-ui/icons/Update';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
-import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
-import clsx from 'clsx';
-import { Millisecs } from '../helperFunctions';
+import { makeStyles } from "@material-ui/core";
+import { KnowitColors } from "../styles";
+import Tooltip from "@material-ui/core/Tooltip";
+import UpdateIcon from "@material-ui/icons/Update";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import ErrorRoundedIcon from "@material-ui/icons/ErrorRounded";
+import NotificationsActiveOutlinedIcon from "@material-ui/icons/NotificationsActiveOutlined";
+import clsx from "clsx";
+import { Millisecs } from "../helperFunctions";
 
 // Time passed before answers are flagged as stale and alerts are displayed
 export const staleAnswersLimit: number = Millisecs.THREEMONTHS;
 
 const useStyles = makeStyles({
     root: {
-        display: 'flex',
-        alignItems: 'center',
-        position: 'relative',
-        marginLeft: 10
+        display: "flex",
+        alignItems: "center",
+        position: "relative",
+        marginLeft: 10,
     },
     alertBulb: {
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         backgroundColor: KnowitColors.fuchsia,
         color: KnowitColors.black,
-        fontWeight: 'bold',
+        fontWeight: "bold",
         fontSize: 11,
-        fontFamily: 'Arial'
+        fontFamily: "Arial",
     },
     bulbPositionAbsolute: {
-        position: 'absolute'
+        position: "absolute",
     },
     sizeAnswers: {
         height: 22,
@@ -39,17 +39,20 @@ const useStyles = makeStyles({
     sizeMenu: {
         height: 22,
         width: 22,
-    }
+    },
 });
 
 export enum AlertType {
     Incomplete,
     Outdated,
-    Multiple
+    Multiple,
 }
 
-export const AlertNotification = (props: { type: AlertType, message: string, size?: number}) => {
-
+export const AlertNotification = (props: {
+    type: AlertType;
+    message: string;
+    size?: number;
+}) => {
     const classes = useStyles();
 
     switch (props.type) {
@@ -57,7 +60,16 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
             return (
                 <div className={classes.root}>
                     <Tooltip title={props.message}>
-                        <div aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}>!</div>
+                        <div
+                            aria-label={props.message}
+                            className={clsx(
+                                classes.alertBulb,
+                                classes.bulbPositionAbsolute,
+                                classes.sizeAnswers
+                            )}
+                        >
+                            !
+                        </div>
                     </Tooltip>
                 </div>
             );
@@ -65,7 +77,14 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
             return (
                 <div className={classes.root}>
                     <Tooltip title={props.message}>
-                        <UpdateIcon aria-label={props.message} className={clsx(classes.alertBulb, classes.bulbPositionAbsolute, classes.sizeAnswers)}/>
+                        <UpdateIcon
+                            aria-label={props.message}
+                            className={clsx(
+                                classes.alertBulb,
+                                classes.bulbPositionAbsolute,
+                                classes.sizeAnswers
+                            )}
+                        />
                     </Tooltip>
                 </div>
             );
@@ -73,11 +92,21 @@ export const AlertNotification = (props: { type: AlertType, message: string, siz
             return (
                 <div className={classes.root}>
                     <Tooltip title={props.message}>
-                        <div aria-label={props.message} className={clsx(classes.alertBulb, classes.sizeMenu)}>
-                            {props.size != 0 ? props.size : <NotificationsActiveOutlinedIcon fontSize='small'/>}
+                        <div
+                            aria-label={props.message}
+                            className={clsx(
+                                classes.alertBulb,
+                                classes.sizeMenu
+                            )}
+                        >
+                            {props.size != 0 ? (
+                                props.size
+                            ) : (
+                                <NotificationsActiveOutlinedIcon fontSize="small" />
+                            )}
                         </div>
                     </Tooltip>
                 </div>
             );
     }
-}
+};
