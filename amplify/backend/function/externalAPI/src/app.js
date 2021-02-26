@@ -24,16 +24,15 @@ const { getCurrentInvoke } = require("@vendia/serverless-express");
 
 // db helpers
 const {
-    getAllFormDefs,
+    getNewestFormDef,
     getAllUsers,
     getAllCategories,
     getAllQuestionForFormDef,
-    getAnswersForUserForm,
     getAnswersForUser,
 } = require("./db");
 
 // general helpers
-const { getNewestItem } = require("./helpers");
+const { mapFromArray } = require("./helpers");
 
 // configure express
 const app = express();
@@ -54,31 +53,27 @@ router.get("/", (req, res) => {
 
 // returns: newest answers for all users
 router.get("/answers", async (req, res) => {
-    // Find all FormDefinitions.
-    const formDefs = await getAllFormDefs();
-
-    // Find the latest FormDefinition.
-    const lastFormDef = getNewestItem(formDefs.Items);
-    console.log(lastFormDef);
+    // Find the newest FormDefinition.
+    const newestFormDef = await getNewestFormDef();
+    console.log(newestFormDef);
+    if (!newestFormDef) {
+        res.status(500).json({
+            error: "could not get newest form definition",
+        });
+    }
 
     // Get all categories.
     const allCategories = await getAllCategories();
-    const categoryMap = allCategories.Items.reduce((map, category) => {
-        map[category.id] = category;
-        return map;
-    }, {});
+    const categoryMap = mapFromArray(allCategories.Items, "id");
     console.log(categoryMap);
 
     // Find all the questions belonging to the current FormDefinition.
-    const allQuestions = await getAllQuestionForFormDef(lastFormDef.id);
+    const allQuestions = await getAllQuestionForFormDef(newestFormDef.id);
     const allQuestionsWithCategory = allQuestions.Items.map((q) => ({
         ...q,
         category: categoryMap[q.categoryID].text,
     }));
-    const questionMap = allQuestionsWithCategory.reduce((map, question) => {
-        map[question.id] = question;
-        return map;
-    }, {});
+    const questionMap = mapFromArray(allQuestionsWithCategory, "id");
     console.log(questionMap);
 
     // Find all users.
@@ -88,7 +83,7 @@ router.get("/answers", async (req, res) => {
     // Find answers for the current form definition for each user.
     const userAnswers = await Promise.all(
         allUsers.Users.map((user) =>
-            getAnswersForUser(user, lastFormDef, questionMap)
+            getAnswersForUser(user, newestFormDef.id, questionMap)
         )
     );
 
@@ -99,14 +94,58 @@ router.get("/answers", async (req, res) => {
 
     console.log(nonEmptyUserAnswers);
     // Create response.
-    return res.json({ nonEmptyUserAnswers });
+    return res.json(nonEmptyUserAnswers);
 });
 
-// returns: all answers for given username
+// returns: all answers for the given username
 router.get("/answers/:username", (req, res) => {
+    const googleID = req.params.username;
+    if (!googleID) {
+        return res.status(422).json({
+            error: "missing URL parameter: 'username'",
+        });
+    }
+
     return res.status(404).json({
         error: "not implemented",
     });
+});
+
+// returns: answers for the newest form definition for the given username
+router.get("/answers/:username/newest", async (req, res) => {
+    const googleID = req.params.username;
+    if (!googleID) {
+        // 422 = Unprocessable Entity
+        return res.status(422).json({
+            error: "missing URL parameter: 'username'",
+        });
+    }
+
+    // Find the newest FormDefinition.
+    const newestFormDef = await getNewestFormDef();
+    if (!newestFormDef) {
+        res.status(500).json({
+            error: "could not get newest form definition",
+        });
+    }
+
+    const allCategories = await getAllCategories();
+    const categoryMap = mapFromArray(allCategories.Items, "id");
+    const allQuestions = await getAllQuestionForFormDef(newestFormDef.id);
+    const allQuestionsWithCategory = allQuestions.Items.map((q) => ({
+        ...q,
+        category: categoryMap[q.categoryID].text,
+    }));
+    const questionMap = mapFromArray(allQuestionsWithCategory, "id");
+
+    const user = { Username: googleID, Attributes: [] };
+    const answers = await getAnswersForUser(
+        user,
+        newestFormDef.id,
+        questionMap
+    );
+    console.log(answers);
+    return res.json(answers);
 });
 
 // The serverless-express library creates a server and listens on a Unix

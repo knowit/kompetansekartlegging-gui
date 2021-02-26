@@ -36,8 +36,8 @@ const getAnswersForUserForm = async (userFormID) => {
     return allAnswers.Items;
 };
 
-// Get newest answers for a user.
-const getAnswersForUser = async (user, lastFormDef, questionMap) => {
+// Get answers for a user given a form definition id.
+const getAnswersForUser = async (user, formDefinitionID, questionMap) => {
     const email = getUserAttribute(user, "email");
     const username = user.Username;
     console.log(user);
@@ -54,7 +54,7 @@ const getAnswersForUser = async (user, lastFormDef, questionMap) => {
             },
             ExpressionAttributeValues: {
                 ":username": username,
-                ":formDef": lastFormDef.id,
+                ":formDef": formDefinitionID,
             },
         })
         .promise();
@@ -106,6 +106,7 @@ const getAnswersForUser = async (user, lastFormDef, questionMap) => {
     return {
         username,
         email,
+        formDefinitionID,
         updatedAt: lastUserForm.updatedAt,
         answers: allQuestionsWithAnswers,
     };
@@ -165,7 +166,25 @@ const getAllFormDefs = async () => {
         .promise();
 };
 
+// Get the newest form definition.
+const getNewestFormDef = async () => {
+    const formDefs = await docClient
+        .query({
+            TableName: FORM_DEFINITION_TABLE_NAME,
+            IndexName: "byCreatedAt",
+            KeyConditionExpression: "sortKeyConstant = :v",
+            ExpressionAttributeValues: {
+                ":v": "formDefinitionConstant",
+            },
+            Limit: 1,
+            ScanIndexForward: false, // desc
+        })
+        .promise();
+    return formDefs.Items.length === 0 ? null : formDefs.Items[0];
+};
+
 module.exports = {
+    getNewestFormDef,
     getAllFormDefs,
     getAllUsers,
     getAllCategories,

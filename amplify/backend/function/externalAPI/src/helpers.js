@@ -34,9 +34,22 @@ const mapQuestionToAnswer = (questionMap, answer) => {
     };
 };
 
-// Get user attribute..
+// Get user attribute.
 const getUserAttribute = (user, attribute) => {
-    return user.Attributes.find((attr) => attr.Name === attribute).Value;
+    const attr = user.Attributes.find((attr) => attr.Name === attribute);
+    return attr ? attr.Value : null;
 };
 
-module.exports = { getNewestItem, mapQuestionToAnswer, getUserAttribute };
+// Create a hash map from an array.
+const mapFromArray = (xs, keyAttribute) =>
+    xs.reduce((map, item) => {
+        map[item[keyAttribute]] = item;
+        return map;
+    }, {});
+
+module.exports = {
+    getNewestItem,
+    mapQuestionToAnswer,
+    getUserAttribute,
+    mapFromArray,
+};
