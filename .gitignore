@@ -65,3 +65,4 @@ ignoreFolder
 .idea/vcs.xml
 .idea/codeStyles/codeStyleConfig.xml
 .idea/.gitignore
+.log/
