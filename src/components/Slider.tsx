@@ -1,6 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
-import { roundDecimals } from "../helperFunctions";
-// import { ValueSlider } from '../styles';
+import React, { useEffect, useState } from "react";
 import { SliderProps } from "../types";
 import * as helper from "../helperFunctions";
 import { KnowitColors } from "../styles";
@@ -10,7 +8,6 @@ import {
     Theme,
     makeStyles,
 } from "@material-ui/core";
-import { render } from "@testing-library/react";
 
 const ValueSlider = withStyles(
     {
@@ -22,24 +19,13 @@ const ValueSlider = withStyles(
             marginLeft: -14,
             opacity: 0,
         },
-        // valueLabel: {
-        //     left: 'calc(-50% + 12px)',
-        //     top: '30%',
-        //     '& *': {
-        //         background: 'transparent',
-        //         color: KnowitColors.black,
-        //         fontWeight: "bold"
-        //     }
-        // },
         track: {
             backgroundColor: KnowitColors.white,
             height: 15,
         },
         rail: {
-            // height: 2,
             opacity: 0,
             height: 15,
-            // backgroundColor: KnowitColors.darkGreen
         },
         mark: {
             backgroundColor: KnowitColors.white,
@@ -143,14 +129,14 @@ interface StyleProps {
     markColor: string;
 }
 
-const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) => ({
+const useStyles = makeStyles<Theme, StyleProps>((_theme: Theme) => ({
     markActive: (props) => ({
         opacity: 1,
         backgroundColor: props.markColor,
     }),
 }));
 
-const marks = new Array(51).fill(undefined).map((v, i) => {
+const marks = new Array(51).fill(undefined).map((_v, i) => {
     return { value: i / 10 || 0 };
 });
 // [
@@ -165,7 +151,7 @@ const marks = new Array(51).fill(undefined).map((v, i) => {
 const Slider = ({ ...props }: SliderProps) => {
     const [sliderValue, setSliderValue] = useState<number>(-1);
 
-    const sliderChanged = (event: any, newValue: number | number[]) => {
+    const sliderChanged = (_event: any, newValue: number | number[]) => {
         setSliderValue(newValue as number);
     };
 
@@ -179,10 +165,10 @@ const Slider = ({ ...props }: SliderProps) => {
 
     useEffect(() => {
         setSliderValue(props.value);
-    }, []);
+    }, [props.value, setSliderValue]);
 
     const markActiveSelector: StyleProps =
-        sliderValue == -1
+        sliderValue === -1
             ? { markColor: KnowitColors.white }
             : { markColor: KnowitColors.black };
 

@@ -1,18 +1,13 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
-    AnswerData,
     ContentProps,
     FormDefinition,
-    FormDefinitionByCreatedAt,
     UserAnswer,
     UserFormWithAnswers,
-    UserFormByCreatedAt,
-    UserForm,
     CreateQuestionAnswerResult,
     AlertState,
     Alert,
     Question,
-    Category,
     QuestionAnswer,
     SliderValues,
     FormDefinitionByCreatedAtPaginated,
@@ -25,7 +20,7 @@ import * as customQueries from "../graphql/custom-queries";
 import { Overview } from "./cards/Overview";
 import { YourAnswers } from "./cards/YourAnswers";
 import { CreateQuestionAnswerInput } from "../API";
-import { Button, ListItem, ListItemText, makeStyles } from "@material-ui/core";
+import { Button, ListItem, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { KnowitColors } from "../styles";
 import { AlertDialog } from "./AlertDialog";
@@ -140,13 +135,173 @@ const contentStyle = makeStyles({
     },
 });
 
+const updateCategoryAlerts = (
+    questionAnswers: Map<string, QuestionAnswer[]>,
+    setAlerts: React.Dispatch<React.SetStateAction<AlertState | undefined>>
+) => {
+    let msNow = Date.now();
+    let alerts = new Map<string, Alert>();
+    let catAlerts = new Map<string, number>();
+    questionAnswers.forEach((quAnsArr) => {
+        quAnsArr.forEach((quAns) => {
+            if (quAns.motivation === -1 || quAns.knowledge === -1) {
+                alerts.set(quAns.id, {
+                    type: AlertType.Incomplete,
+                    message: "Ubesvart!",
+                });
+                let numAlerts = catAlerts.get(quAns.category.text);
+                if (numAlerts)
+                    catAlerts.set(quAns.category.text, numAlerts + 1);
+                else catAlerts.set(quAns.category.text, 1);
+            } else if (msNow - quAns.updatedAt > staleAnswersLimit) {
+                alerts.set(quAns.id, {
+                    type: AlertType.Outdated,
+                    message: `Bør oppdateres! Sist besvart: ${
+                        new Date(quAns.updatedAt) //.toLocaleDateString('no-NO')
+                    }`,
+                });
+                let numAlerts = catAlerts.get(quAns.category.text);
+                if (numAlerts)
+                    catAlerts.set(quAns.category.text, numAlerts + 1);
+                else catAlerts.set(quAns.category.text, 1);
+            }
+        });
+    });
+    setAlerts({ qidMap: alerts, categoryMap: catAlerts });
+};
+
+const fetchLastFormDefinition = async (
+    setFormDefinition: React.Dispatch<
+        React.SetStateAction<FormDefinition | null>
+    >,
+    createQuestionAnswers: (arg0: FormDefinition) => Map<any, any>,
+    getUserAnswers: (arg0: FormDefinition) => Promise<void | UserAnswer[]>,
+    setFirstAnswers: (arg0: any, arg1: any) => void
+) => {
+    let nextToken: string | null = null;
+    let questions: Question[] = [];
+    let formDefPaginated: FormDefinitionPaginated = undefined; // The form definition response has pagination on questions, with nextToken; see types
+    try {
+        do {
+            let currentForm: any = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(
+                customQueries.formByCreatedAtPaginated,
+                {
+                    ...customQueries.formByCreatedAtInputConsts,
+                    nextToken: nextToken,
+                }
+            );
+            if (currentForm.data && currentForm.data.formByCreatedAt.items[0]) {
+                if (typeof formDefPaginated === "undefined") {
+                    formDefPaginated =
+                        currentForm.data.formByCreatedAt.items[0];
+                    questions =
+                        currentForm.data.formByCreatedAt.items[0].questions
+                            .items;
+                } else {
+                    questions = questions.concat(
+                        currentForm.data.formByCreatedAt.items[0].questions
+                            .items
+                    );
+                }
+                nextToken =
+                    currentForm.data.formByCreatedAt.items[0].questions
+                        .nextToken;
+            }
+        } while (nextToken);
+
+        if (formDefPaginated) {
+            let formDef: FormDefinition = {
+                id: formDefPaginated.id,
+                createdAt: formDefPaginated.createdAt,
+                questions: {
+                    items: questions,
+                },
+            };
+            // console.log("FormDef:", formDef);
+            setFormDefinition(formDef);
+            let quAns = createQuestionAnswers(formDef);
+            let userAnswers = await getUserAnswers(formDef);
+            setFirstAnswers(quAns, userAnswers);
+        } else {
+            console.log("Error loading form definition!");
+        }
+    } catch (e) {
+        console.error(
+            "GraphQL error while fetching form definition and user answers!",
+            e
+        );
+    }
+};
+
+const getUserAnswers = async (
+    formDef: FormDefinition,
+    user: any,
+    setUserAnswers: React.Dispatch<React.SetStateAction<UserAnswer[]>>,
+    setActivePanel: React.Dispatch<React.SetStateAction<Panel>>,
+    setUserAnswersLoaded: React.Dispatch<React.SetStateAction<boolean>>,
+    setAnswerEditMode: React.Dispatch<React.SetStateAction<boolean>>,
+    setFirstTimeLogin: React.Dispatch<React.SetStateAction<boolean>>,
+    setScaleDescOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    isMobile: boolean
+) => {
+    if (!user) return console.error("User not found when getting useranswers");
+    let nextToken: string | null = null;
+    let questionAnswers: UserAnswer[] = [];
+    let paginatedUserform: UserFormPaginated | undefined; // The userform response has pagination on questionAnswers, with nextToken; see types
+    do {
+        let response: any = (
+            await helper.callGraphQL<UserFormByCreatedAtPaginated>(
+                customQueries.customUserFormByCreatedAt,
+                {
+                    ...customQueries.userFormByCreatedAtInputConsts,
+                    owner: user.username,
+                    nextToken: nextToken,
+                }
+            )
+        ).data?.userFormByCreatedAt.items[0];
+
+        if (response && response.questionAnswers.items) {
+            if (typeof paginatedUserform === "undefined") {
+                paginatedUserform = response;
+                questionAnswers = response.questionAnswers.items;
+            } else {
+                questionAnswers = questionAnswers.concat(
+                    response.questionAnswers.items
+                );
+            }
+            nextToken = response.questionAnswers.nextToken;
+        }
+    } while (nextToken);
+
+    if (
+        paginatedUserform &&
+        paginatedUserform.formDefinitionID === formDef?.id
+    ) {
+        // console.log("Found user form!", paginatedUserform);
+        setUserAnswers(questionAnswers);
+        setUserAnswersLoaded(true);
+        return questionAnswers;
+    } else {
+        // console.log("Found no user form!", paginatedUserform);
+        setActivePanel(Panel.MyAnswers);
+        setAnswerEditMode(true);
+        setUserAnswersLoaded(true);
+        setFirstTimeLogin(true);
+        if (!isMobile) {
+            setScaleDescOpen(true);
+        }
+    }
+
+    return []; // Either could not load userform or no user form exists for current form definition
+};
+
 const Content = ({ ...props }: ContentProps) => {
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(
         null
     );
-    const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
+    const [, setUserAnswers] = useState<UserAnswer[]>([]); //Used only for getting data on load
     const [userAnswersLoaded, setUserAnswersLoaded] = useState(false);
-    const [submitFeedback, setSubmitFeedback] = useState<string>("");
+    // const [submitFeedback, setSubmitFeedback] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
     const [questionAnswers, setQuestionAnswers] = useState<
         Map<string, QuestionAnswer[]>
@@ -165,150 +320,6 @@ const Content = ({ ...props }: ContentProps) => {
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<AlertState>();
-
-    const updateCategoryAlerts = () => {
-        let msNow = Date.now();
-        let alerts = new Map<string, Alert>();
-        let catAlerts = new Map<string, number>();
-        questionAnswers.forEach((quAnsArr, cat) => {
-            quAnsArr.forEach((quAns) => {
-                if (quAns.motivation === -1 || quAns.knowledge === -1) {
-                    alerts.set(quAns.id, {
-                        type: AlertType.Incomplete,
-                        message: "Ubesvart!",
-                    });
-                    let numAlerts = catAlerts.get(quAns.category.text);
-                    if (numAlerts)
-                        catAlerts.set(quAns.category.text, numAlerts + 1);
-                    else catAlerts.set(quAns.category.text, 1);
-                } else if (msNow - quAns.updatedAt > staleAnswersLimit) {
-                    alerts.set(quAns.id, {
-                        type: AlertType.Outdated,
-                        message: `Bør oppdateres! Sist besvart: ${
-                            new Date(quAns.updatedAt) //.toLocaleDateString('no-NO')
-                        }`,
-                    });
-                    let numAlerts = catAlerts.get(quAns.category.text);
-                    if (numAlerts)
-                        catAlerts.set(quAns.category.text, numAlerts + 1);
-                    else catAlerts.set(quAns.category.text, 1);
-                }
-            });
-        });
-        setAlerts({ qidMap: alerts, categoryMap: catAlerts });
-    };
-
-    const fetchLastFormDefinition = async () => {
-        let nextToken: string | null = null;
-        let questions: Question[] = [];
-        let formDefPaginated: FormDefinitionPaginated = undefined; // The form definition response has pagination on questions, with nextToken; see types
-        try {
-            do {
-                let currentForm: any = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(
-                    customQueries.formByCreatedAtPaginated,
-                    {
-                        ...customQueries.formByCreatedAtInputConsts,
-                        nextToken: nextToken,
-                    }
-                );
-                if (
-                    currentForm.data &&
-                    currentForm.data.formByCreatedAt.items[0]
-                ) {
-                    if (typeof formDefPaginated === "undefined") {
-                        formDefPaginated =
-                            currentForm.data.formByCreatedAt.items[0];
-                        questions =
-                            currentForm.data.formByCreatedAt.items[0].questions
-                                .items;
-                    } else {
-                        questions = questions.concat(
-                            currentForm.data.formByCreatedAt.items[0].questions
-                                .items
-                        );
-                    }
-                    nextToken =
-                        currentForm.data.formByCreatedAt.items[0].questions
-                            .nextToken;
-                }
-            } while (nextToken);
-
-            if (formDefPaginated) {
-                let formDef: FormDefinition = {
-                    id: formDefPaginated.id,
-                    createdAt: formDefPaginated.createdAt,
-                    questions: {
-                        items: questions,
-                    },
-                };
-                // console.log("FormDef:", formDef);
-                setFormDefinition(formDef);
-                let quAns = createQuestionAnswers(formDef);
-                let userAnswers = await getUserAnswers(formDef);
-                setFirstAnswers(quAns, userAnswers);
-            } else {
-                console.log("Error loading form definition!");
-            }
-        } catch (e) {
-            console.error(
-                "GraphQL error while fetching form definition and user answers!",
-                e
-            );
-        }
-    };
-
-    const getUserAnswers = async (formDef: FormDefinition) => {
-        if (!props.user)
-            return console.error("User not found when getting useranswers");
-        let nextToken: string | null = null;
-        let questionAnswers: UserAnswer[] = [];
-        let paginatedUserform: UserFormPaginated | undefined; // The userform response has pagination on questionAnswers, with nextToken; see types
-        do {
-            let response: any = (
-                await helper.callGraphQL<UserFormByCreatedAtPaginated>(
-                    customQueries.customUserFormByCreatedAt,
-                    {
-                        ...customQueries.userFormByCreatedAtInputConsts,
-                        owner: props.user.username,
-                        nextToken: nextToken,
-                    }
-                )
-            ).data?.userFormByCreatedAt.items[0];
-
-            if (response && response.questionAnswers.items) {
-                if (typeof paginatedUserform === "undefined") {
-                    paginatedUserform = response;
-                    questionAnswers = response.questionAnswers.items;
-                } else {
-                    questionAnswers = questionAnswers.concat(
-                        response.questionAnswers.items
-                    );
-                }
-                nextToken = response.questionAnswers.nextToken;
-            }
-        } while (nextToken);
-
-        if (
-            paginatedUserform &&
-            paginatedUserform.formDefinitionID === formDef?.id
-        ) {
-            // console.log("Found user form!", paginatedUserform);
-            setUserAnswers(questionAnswers);
-            setUserAnswersLoaded(true);
-            return questionAnswers;
-        } else {
-            // console.log("Found no user form!", paginatedUserform);
-            setActivePanel(Panel.MyAnswers);
-            setAnswerEditMode(true);
-            setUserAnswersLoaded(true);
-            props.setFirstTimeLogin(true);
-            if (!props.isMobile) {
-                props.setScaleDescOpen(true);
-            }
-        }
-
-        return []; // Either could not load userform or no user form exists for current form definition
-    };
 
     const createQuestionAnswers = (formDef: FormDefinition) => {
         // console.log("Creating questionAnswers with ", formDef);
@@ -456,13 +467,6 @@ const Content = ({ ...props }: ContentProps) => {
         setAnswerEditMode(false);
     };
 
-    const fetchUserFormsAndOpenView = async () => {
-        // debugger
-        let allUserForms = await helper.listUserForms();
-        setAnswerLog(allUserForms);
-        props.setAnswerHistoryOpen(true);
-    };
-
     const resetAnswers = () => {
         // setAnswers(JSON.parse(JSON.stringify(answersBeforeSubmitted))) // json.parse to deep copy
         setQuestionAnswers(new Map(answersBeforeSubmitted));
@@ -485,26 +489,53 @@ const Content = ({ ...props }: ContentProps) => {
     }, [categories]);
 
     useEffect(() => {
-        updateCategoryAlerts();
+        updateCategoryAlerts(questionAnswers, setAlerts);
     }, [questionAnswers]);
 
     useEffect(() => {
-        fetchLastFormDefinition();
-    }, []);
+        fetchLastFormDefinition(
+            setFormDefinition,
+            createQuestionAnswers,
+            (formDef) =>
+                getUserAnswers(
+                    formDef,
+                    props.user,
+                    setUserAnswers,
+                    setActivePanel,
+                    setUserAnswersLoaded,
+                    setAnswerEditMode,
+                    props.setFirstTimeLogin,
+                    props.setScaleDescOpen,
+                    props.isMobile
+                ),
+            setFirstAnswers
+        );
+    }, [
+        props.user,
+        props.setFirstTimeLogin,
+        props.setScaleDescOpen,
+        props.isMobile,
+    ]);
 
     useEffect(() => {
-        // console.log("userAnswers")
-        // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
         setAnswersBeforeSubmitted(new Map(questionAnswers));
-    }, [userAnswers]);
+    }, [questionAnswers]);
 
+    const { answerHistoryOpen, setAnswerHistoryOpen } = props;
     useEffect(() => {
-        if (props.answerHistoryOpen) {
+        const fetchUserFormsAndOpenView = async () => {
+            // debugger
+            let allUserForms = await helper.listUserForms();
+            setAnswerLog(allUserForms);
+            setAnswerHistoryOpen(true);
+        };
+
+        if (answerHistoryOpen) {
             fetchUserFormsAndOpenView();
         } else {
-            props.setAnswerHistoryOpen(false);
+            setAnswerHistoryOpen(false);
         }
-    }, [props.answerHistoryOpen]);
+    }, [answerHistoryOpen, setAnswerHistoryOpen]);
 
     useEffect(() => {
         window.onbeforeunload = confirmExit;
@@ -603,18 +634,18 @@ const Content = ({ ...props }: ContentProps) => {
         return "";
     };
 
-    const getTotalAlertsElement = (): JSX.Element => {
-        let totalAlerts = alerts?.qidMap.size ?? 0;
-        if (totalAlerts > 0)
-            return (
-                <AlertNotification
-                    type={AlertType.Multiple}
-                    message="Totalt ubesvarte eller utdaterte spørsmål"
-                    size={totalAlerts}
-                />
-            );
-        else return <Fragment />;
-    };
+    // const getTotalAlertsElement = (): JSX.Element => {
+    //     let totalAlerts = alerts?.qidMap.size ?? 0;
+    //     if (totalAlerts > 0)
+    //         return (
+    //             <AlertNotification
+    //                 type={AlertType.Multiple}
+    //                 message="Totalt ubesvarte eller utdaterte spørsmål"
+    //                 size={totalAlerts}
+    //             />
+    //         );
+    //     else return <Fragment />;
+    // };
 
     const getMainMenuAlertElement = (): JSX.Element => {
         let totalAlerts = alerts?.qidMap.size ?? 0;

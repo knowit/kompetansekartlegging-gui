@@ -2,8 +2,6 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import "./App.css";
 import Amplify, { Auth, Hub } from "aws-amplify";
 import awsconfig from "./aws-exports";
-import * as mutations from "./graphql/mutations";
-import * as helper from "./helperFunctions";
 import Content from "./components/Content";
 import Login from "./components/Login";
 import { debounce, makeStyles } from "@material-ui/core";
@@ -20,8 +18,6 @@ const appStyle = makeStyles({
     root: {
         display: "flex",
         flexDirection: "column",
-        // height: '100vh',
-        //height: 'calc(var(--vh, 1vh) * 100)',
         height: isMobile ? "auto" : "100vh",
         overflowY: isMobile ? "hidden" : "visible",
     },
@@ -35,8 +31,7 @@ const App = () => {
     const style = appStyle();
 
     const [user, setUser] = useState<any | null>(null);
-    // const [customState, setCustomState] = useState<any | null>(null)
-    const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false); // oppdaterer seg ikke på close
+    const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     const [scaleDescOpen, setScaleDescOpen] = useState(false);
     const [firstTimeLogin, setFirstTimeLogin] = useState(false);
 
@@ -66,43 +61,16 @@ const App = () => {
             .catch(() => console.log("Not signed in"));
     }, []);
 
-    // hide body overflow to avoid doublescroll
-    const avoidBodyScrollWhenScaleDescOpenMobile = () => {
-        if (scaleDescOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
-    };
-
     useEffect(() => {
         if (isMobile) {
-            avoidBodyScrollWhenScaleDescOpenMobile();
+            // hide body overflow to avoid doublescroll
+            if (scaleDescOpen) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "";
+            }
         }
     }, [scaleDescOpen]);
-
-    const deleteUserData = async () => {
-        let allUserForms = await helper.listUserForms();
-        let deleteResult = [];
-        if (allUserForms.length > 0) {
-            for (let i = 0; i < allUserForms.length; i++) {
-                for (const answer of allUserForms[i].questionAnswers.items) {
-                    deleteResult.push(
-                        await helper.callGraphQL(
-                            mutations.deleteQuestionAnswer,
-                            { input: { id: answer.id } }
-                        )
-                    );
-                }
-                deleteResult.push(
-                    await helper.callGraphQL(mutations.deleteUserForm, {
-                        input: { id: allUserForms[i].id },
-                    })
-                );
-            }
-            console.log(deleteResult);
-        } else console.log("No Userforms active");
-    };
 
     // used to reference items in desktop navbar
     const [userName, setUserName] = useState<string>("");
@@ -124,11 +92,6 @@ const App = () => {
 
     const signout = () => {
         Auth.signOut();
-    };
-
-    // todo: trengs ikke...?
-    const confirmDeleteUserdata = () => {
-        deleteUserData();
     };
 
     const displayAnswers = () => {
@@ -176,7 +139,6 @@ const App = () => {
                 <Fragment>
                     {isMobile ? null : (
                         <NavBarDesktop
-                            confirmDeleteUserdata={confirmDeleteUserdata}
                             displayAnswers={displayAnswers}
                             signout={signout}
                             userName={userName}

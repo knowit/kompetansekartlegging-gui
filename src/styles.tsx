@@ -1,4 +1,4 @@
-import { makeStyles, Slider, withStyles, Theme } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
 export const cardCornerRadius: number = 40;
 

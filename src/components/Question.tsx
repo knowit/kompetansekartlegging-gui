@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import { QuestionProps } from "../types";
 import Slider from "./Slider";
 import { makeStyles } from "@material-ui/core";
 import { KnowitColors } from "../styles";
 import * as Icon from "../icons/iconController";
-import { AlertNotification, AlertType } from "./AlertNotification";
+import { AlertNotification } from "./AlertNotification";
 
 const questionStyleDesktop = makeStyles({
     root: {
@@ -132,9 +132,6 @@ const questionStyleMobile = makeStyles({
 });
 
 const Question = ({ ...props }: QuestionProps) => {
-    // const [knowledgeValue, setKnowledgeValue] = useState<number>(props.knowledgeDefaultValue);
-    // const [motivationValue, setMotivationValue] = useState<number>(props.motivationDefaultValue);
-
     const style = props.isMobile
         ? questionStyleMobile()
         : questionStyleDesktop();
@@ -160,11 +157,6 @@ const Question = ({ ...props }: QuestionProps) => {
             // props.updateAnswer(props.questionId, newValue, motivationValue);
         }
     };
-
-    // useEffect(() => {
-    //     setKnowledgeValue(props.knowledgeDefaultValue);
-    //     setMotivationValue(props.motivationDefaultValue);
-    // }, [props.knowledgeDefaultValue, props.motivationDefaultValue]);
 
     return (
         <div className={style.root}>

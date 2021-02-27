@@ -106,7 +106,7 @@ const FormStyleMobile = makeStyles({
     },
 });
 
-type Question = {
+type QuestionType = {
     id: string;
     text: string;
     topic: string;
@@ -126,7 +126,7 @@ export const Form = ({ ...props }: FormProps) => {
     };
 
     const getQuestionsForCategory = (
-        items: Question[] | undefined
+        _items: QuestionType[] | undefined
     ): JSX.Element[] => {
         //console.log("Props to make questions from: ", props.questionAnswers);
         let questionAnswers =
@@ -158,40 +158,6 @@ export const Form = ({ ...props }: FormProps) => {
                 }) || [];
         //console.log("Form question answers:", questionAnswers);
         return questionAnswers;
-        // return props.questions?.map(question => {
-        //     const answer = props.answers.find(a => a.questionId === question.id);
-        //     return <Question
-        //         key={question.id}
-        //         questionId={question.id}
-        //         topic={question.topic}
-        //         text={question.text}
-        //         updateAnswer={props.updateAnswer}
-        //         knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
-        //         motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
-        //         setIsCategorySubmitted={props.setIsCategorySubmitted}
-        //         isMobile={props.isMobile}
-        //         alerts={props.alerts}
-        //     />
-        // }) || [];
-        // let questions: JSX.Element[] = [];
-        // for(const item of items){
-        //     const answer = props.answers.find(a => a.questionId === item.id);
-        //     questions.push(
-        //         <Question
-        //             key={item.id}
-        //             questionId={item.id}
-        //             topic={item.topic}
-        //             text={item.text}
-        //             updateAnswer={props.updateAnswer}
-        //             knowledgeDefaultValue={answer ? (answer.knowledge ? answer.knowledge : 0) : -1}
-        //             motivationDefaultValue={answer ? (answer.motivation ? answer.motivation : 0) : -1}
-        //             setIsCategorySubmitted={props.setIsCategorySubmitted}
-        //             isMobile={props.isMobile}
-        //             alerts={props.alerts}
-        //         />
-        //     );
-        // };
-        // return questions;
     };
 
     const handleClickSubmit = async () => {

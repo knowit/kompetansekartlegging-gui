@@ -5,7 +5,6 @@ import {
     Typography,
     List,
     ListItem,
-    Avatar,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
@@ -14,8 +13,6 @@ import { NavBarPropsMobile } from "../types";
 import MenuIcon from "@material-ui/icons/Menu";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import { isIOS } from "react-device-detect";
-
-const drawerWidth = 240;
 
 const navbarStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,

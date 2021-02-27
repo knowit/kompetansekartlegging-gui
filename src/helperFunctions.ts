@@ -1,6 +1,6 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api";
-import { Category, Question, UserFormList, UserFormWithAnswers } from "./types";
+import { UserFormList, UserFormWithAnswers } from "./types";
 import * as customQueries from "./graphql/custom-queries";
 
 /*

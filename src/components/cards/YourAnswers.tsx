@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { YourAnswerProps } from "../../types";
 import { YourAnswersMobile } from "../YourAnswersMobile";
 import { YourAnswersDesktop } from "../YourAnswersDesktop";

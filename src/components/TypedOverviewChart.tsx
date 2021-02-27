@@ -80,6 +80,43 @@ export enum OverviewType {
     HIGHEST = "TOPP",
 }
 
+const recalculate = (
+    currentType: OverviewType,
+    createAverageData: () => ResultData[],
+    createMedianData: () => ResultData[],
+    createHighestData: () => ResultData[],
+    setChartData: React.Dispatch<React.SetStateAction<ChartData[]>>,
+    isMobile: boolean
+) => {
+    let answerData: ResultData[] = [];
+    switch (currentType) {
+        case OverviewType.AVERAGE:
+            answerData = createAverageData();
+            break;
+        case OverviewType.MEDIAN:
+            answerData = createMedianData();
+            break;
+        case OverviewType.HIGHEST:
+            answerData = createHighestData();
+    }
+    let knowledgeStart = isMobile ? 7 : 0;
+    let motivationStart = isMobile ? 0 : 7;
+    let data: ChartData[] = answerData.map((answer) => ({
+        name: answer.category,
+        valueKnowledge: [
+            knowledgeStart,
+            knowledgeStart +
+                (answer.aggKnowledge === -1 ? 0 : answer.aggKnowledge),
+        ],
+        valueMotivation: [
+            motivationStart,
+            motivationStart +
+                (answer.aggMotivation === -1 ? 0 : answer.aggMotivation),
+        ],
+    }));
+    setChartData(data);
+};
+
 export default function TypedOverviewChart({ ...props }: ResultDiagramProps) {
     const style = graphStyle();
 
@@ -87,47 +124,9 @@ export default function TypedOverviewChart({ ...props }: ResultDiagramProps) {
     const [currentType, setOverviewType] = useState<OverviewType>(
         OverviewType.HIGHEST
     );
-    const [topSubjects, setTopSubjects] = useState<
-        Map<string, { kTop: string; mTop: string }>
-    >(new Map());
-
-    useEffect(() => {
-        recalculate();
-    }, [props.questionAnswers]);
-
-    useEffect(() => {
-        recalculate();
-    }, [currentType]);
-
-    const recalculate = () => {
-        let answerData: ResultData[] = [];
-        switch (currentType) {
-            case OverviewType.AVERAGE:
-                answerData = createAverageData();
-                break;
-            case OverviewType.MEDIAN:
-                answerData = createMedianData();
-                break;
-            case OverviewType.HIGHEST:
-                answerData = createHighestData();
-        }
-        let knowledgeStart = props.isMobile ? 7 : 0;
-        let motivationStart = props.isMobile ? 0 : 7;
-        let data: ChartData[] = answerData.map((answer) => ({
-            name: answer.category,
-            valueKnowledge: [
-                knowledgeStart,
-                knowledgeStart +
-                    (answer.aggKnowledge === -1 ? 0 : answer.aggKnowledge),
-            ],
-            valueMotivation: [
-                motivationStart,
-                motivationStart +
-                    (answer.aggMotivation === -1 ? 0 : answer.aggMotivation),
-            ],
-        }));
-        setChartData(data);
-    };
+    const [topSubjects, setTopSubjects] = useState<Map<string, { kTop: string; mTop: string }>>(
+        new Map()
+    );
 
     type ReduceValue = {
         konwledgeCount: number;
@@ -138,116 +137,132 @@ export default function TypedOverviewChart({ ...props }: ResultDiagramProps) {
         motivationTotal: number;
     };
 
-    const createAverageData = (): ResultData[] => {
-        //data: ResultData[]
-        let ansData: ResultData[] = [];
-        props.questionAnswers.forEach((questionAnswers, category) => {
-            let reduced = questionAnswers.reduce<ReduceValue>(
-                (acc, cur): ReduceValue => {
-                    if (cur.knowledge >= 0) {
-                        acc.konwledgeCount = acc.konwledgeCount + 1;
-                        acc.knowledgeTotal = acc.knowledgeTotal + cur.knowledge;
-                        acc.knowledgeAverage =
-                            acc.knowledgeTotal / acc.konwledgeCount;
+    useEffect(() => {
+        const createAverageData = (): ResultData[] => {
+            //data: ResultData[]
+            let ansData: ResultData[] = [];
+            props.questionAnswers.forEach((questionAnswers, category) => {
+                let reduced = questionAnswers.reduce<ReduceValue>(
+                    (acc, cur): ReduceValue => {
+                        if (cur.knowledge >= 0) {
+                            acc.konwledgeCount = acc.konwledgeCount + 1;
+                            acc.knowledgeTotal =
+                                acc.knowledgeTotal + cur.knowledge;
+                            acc.knowledgeAverage =
+                                acc.knowledgeTotal / acc.konwledgeCount;
+                        }
+                        if (cur.motivation >= 0) {
+                            acc.motivationCount = acc.motivationCount + 1;
+                            acc.motivationTotal =
+                                acc.motivationTotal + cur.motivation;
+                            acc.motivationAverage =
+                                acc.motivationTotal / acc.motivationCount;
+                        }
+                        return acc;
+                    },
+                    {
+                        konwledgeCount: 0,
+                        knowledgeAverage: 0,
+                        knowledgeTotal: 0,
+                        motivationCount: 0,
+                        motivationAverage: 0,
+                        motivationTotal: 0,
                     }
-                    if (cur.motivation >= 0) {
-                        acc.motivationCount = acc.motivationCount + 1;
-                        acc.motivationTotal =
-                            acc.motivationTotal + cur.motivation;
-                        acc.motivationAverage =
-                            acc.motivationTotal / acc.motivationCount;
-                    }
-                    return acc;
-                },
-                {
-                    konwledgeCount: 0,
-                    knowledgeAverage: 0,
-                    knowledgeTotal: 0,
-                    motivationCount: 0,
-                    motivationAverage: 0,
-                    motivationTotal: 0,
-                }
-            );
-            ansData.push({
-                category: category,
-                aggKnowledge: roundDecimals(reduced.knowledgeAverage, 1),
-                aggMotivation: roundDecimals(reduced.motivationAverage, 1),
+                );
+                ansData.push({
+                    category: category,
+                    aggKnowledge: roundDecimals(reduced.knowledgeAverage, 1),
+                    aggMotivation: roundDecimals(reduced.motivationAverage, 1),
+                });
             });
-        });
-        return ansData;
-    };
-
-    const createMedianData = (): ResultData[] => {
-        let ansData: ResultData[] = [];
-        let getMedian = (numbers: number[]): number => {
-            let mid = Math.floor(numbers.length / 2);
-            numbers.sort();
-            return numbers.length % 2 === 1
-                ? numbers[mid]
-                : (numbers[mid - 1] + numbers[mid]) / 2;
+            return ansData;
         };
-        props.questionAnswers.forEach((questionAnswers, category) => {
-            if (questionAnswers.length > 0) {
-                let medianKnowledge = getMedian(
-                    questionAnswers
-                        .map((qa) => qa.knowledge)
-                        .filter((n) => n >= 0)
-                );
-                let medianMotivation = getMedian(
-                    questionAnswers
-                        .map((qa) => qa.motivation)
-                        .filter((n) => n >= 0)
-                );
-                ansData.push({
-                    category: category,
-                    aggKnowledge: medianKnowledge ? medianKnowledge : 0,
-                    aggMotivation: medianMotivation ? medianMotivation : 0,
-                });
-            } else {
-                ansData.push({
-                    category: category,
-                    aggKnowledge: 0,
-                    aggMotivation: 0,
-                });
-            }
-        });
-        return ansData;
-    };
 
-    const createHighestData = (): ResultData[] => {
-        let ansData: ResultData[] = [];
-        props.questionAnswers.forEach((questionAnswers, category) => {
-            let kTop: string = "";
-            let mTop: string = "";
-            let reduced = questionAnswers.reduce<{
-                maxKnowledge: number;
-                maxMotivation: number;
-            }>(
-                (acc, cur): { maxKnowledge: number; maxMotivation: number } => {
-                    if (acc.maxKnowledge < cur.knowledge) {
-                        acc.maxKnowledge = cur.knowledge;
-                        kTop = cur.topic;
-                    }
-                    if (acc.maxMotivation < cur.motivation) {
-                        acc.maxMotivation = cur.motivation;
-                        mTop = cur.topic;
-                    }
-                    return acc;
-                },
-                {
-                    maxKnowledge: -1,
-                    maxMotivation: -1,
+        const createMedianData = (): ResultData[] => {
+            let ansData: ResultData[] = [];
+            let getMedian = (numbers: number[]): number => {
+                let mid = Math.floor(numbers.length / 2);
+                numbers.sort();
+                return numbers.length % 2 === 1
+                    ? numbers[mid]
+                    : (numbers[mid - 1] + numbers[mid]) / 2;
+            };
+            props.questionAnswers.forEach((questionAnswers, category) => {
+                if (questionAnswers.length > 0) {
+                    let medianKnowledge = getMedian(
+                        questionAnswers
+                            .map((qa) => qa.knowledge)
+                            .filter((n) => n >= 0)
+                    );
+                    let medianMotivation = getMedian(
+                        questionAnswers
+                            .map((qa) => qa.motivation)
+                            .filter((n) => n >= 0)
+                    );
+                    ansData.push({
+                        category: category,
+                        aggKnowledge: medianKnowledge ? medianKnowledge : 0,
+                        aggMotivation: medianMotivation ? medianMotivation : 0,
+                    });
+                } else {
+                    ansData.push({
+                        category: category,
+                        aggKnowledge: 0,
+                        aggMotivation: 0,
+                    });
                 }
-            );
-            ansData.push({
-                category: category,
-                aggKnowledge: reduced.maxKnowledge,
-                aggMotivation: reduced.maxMotivation,
             });
-            topSubjects.set(category, { kTop: kTop, mTop: mTop });
-        });
-        return ansData;
-    };
+            return ansData;
+        };
+
+        const createHighestData = (): ResultData[] => {
+            let ansData: ResultData[] = [];
+            let newTopSubjects: Map<string, { kTop: string, mTop: string }> = new Map()
+            props.questionAnswers.forEach((questionAnswers, category) => {
+                let kTop: string = "";
+                let mTop: string = "";
+                let reduced = questionAnswers.reduce<{
+                    maxKnowledge: number;
+                    maxMotivation: number;
+                }>(
+                    (
+                        acc,
+                        cur
+                    ): { maxKnowledge: number; maxMotivation: number } => {
+                        if (acc.maxKnowledge < cur.knowledge) {
+                            acc.maxKnowledge = cur.knowledge;
+                            kTop = cur.topic;
+                        }
+                        if (acc.maxMotivation < cur.motivation) {
+                            acc.maxMotivation = cur.motivation;
+                            mTop = cur.topic;
+                        }
+                        return acc;
+                    },
+                    {
+                        maxKnowledge: -1,
+                        maxMotivation: -1,
+                    }
+                );
+                ansData.push({
+                    category: category,
+                    aggKnowledge: reduced.maxKnowledge,
+                    aggMotivation: reduced.maxMotivation,
+                });
+                newTopSubjects.set(category, { kTop: kTop, mTop: mTop });
+            });
+            setTopSubjects(newTopSubjects);
+            return ansData;
+        };
+        recalculate(
+            currentType,
+            createAverageData,
+            createMedianData,
+            createHighestData,
+            setChartData,
+            props.isMobile
+        );
+    }, [props.isMobile, props.questionAnswers, currentType, setChartData]);
 
     const cycleChartType = () => {
         switch (currentType) {

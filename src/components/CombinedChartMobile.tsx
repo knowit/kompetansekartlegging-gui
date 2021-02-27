@@ -102,7 +102,31 @@ const useStyles = makeStyles({
     },
 });
 
-export const CombinedChartMobile = ({ ...props }: CombinedChartProps) => {
+const createPagedData = (
+    chartData: ChartData[],
+    maxColumnsPerPage: number
+): ChartData[][] => {
+    let pagedData: ChartData[][] = [];
+    let items = chartData.length;
+    let balancedColumnsPerPage;
+    if (items > maxColumnsPerPage) {
+        let numPages = Math.ceil(items / maxColumnsPerPage);
+        balancedColumnsPerPage = Math.ceil(items / numPages);
+    } else {
+        balancedColumnsPerPage = maxColumnsPerPage;
+    }
+    let i = 0;
+    while (items > 0) {
+        pagedData.push(chartData.slice(i, i + balancedColumnsPerPage));
+        i += balancedColumnsPerPage;
+        items -= balancedColumnsPerPage;
+    }
+    return pagedData;
+};
+
+export const CombinedChartMobile = ({
+    ...props
+}: CombinedChartProps): JSX.Element => {
     const [chartPages, setChartPages] = useState<ChartData[][]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [currentType, setCurrentType] = useState<OverviewType>();
@@ -130,34 +154,13 @@ export const CombinedChartMobile = ({ ...props }: CombinedChartProps) => {
             // New data and type has NOT changed
             setCurrentPage(0);
         }
-        setChartPages(createPagedData());
-    }, [props.chartData]);
+        setChartPages(createPagedData(props.chartData, maxColumnsPerPage));
+    }, [props.chartData, currentType, props.type, maxColumnsPerPage]);
 
     useEffect(() => {
-        setChartPages(createPagedData());
+        setChartPages(createPagedData(props.chartData, maxColumnsPerPage));
         setCurrentPage(0);
-    }, [maxColumnsPerPage]);
-
-    const createPagedData = (): ChartData[][] => {
-        let pagedData: ChartData[][] = [];
-        let items = props.chartData.length;
-        let balancedColumnsPerPage;
-        if (items > maxColumnsPerPage) {
-            let numPages = Math.ceil(items / maxColumnsPerPage);
-            balancedColumnsPerPage = Math.ceil(items / numPages);
-        } else {
-            balancedColumnsPerPage = maxColumnsPerPage;
-        }
-        let i = 0;
-        while (items > 0) {
-            pagedData.push(
-                props.chartData.slice(i, i + balancedColumnsPerPage)
-            );
-            i += balancedColumnsPerPage;
-            items -= balancedColumnsPerPage;
-        }
-        return pagedData;
-    };
+    }, [props.chartData, maxColumnsPerPage]);
 
     const createPager = (): JSX.Element => {
         return (
@@ -205,8 +208,8 @@ export const CombinedChartMobile = ({ ...props }: CombinedChartProps) => {
     };
 
     const swipeHandlers = useSwipeable({
-        onSwipedLeft: (eventData) => changePageLeft(),
-        onSwipedRight: (eventData) => changePageRight(),
+        onSwipedLeft: (_eventData) => changePageLeft(),
+        onSwipedRight: (_eventData) => changePageRight(),
         ...swipeConfig,
     });
 
@@ -348,30 +351,30 @@ const renderLabelTick = ({ ...props }: TickLabelProps) => {
     );
 };
 
-const renderCustomTooltip = (classes: any) => {
-    return ({ ...props }: ToolTipProps) => {
-        if (props.active && props.payload) {
-            let knowledgeValue = props.payload[0]?.payload.valueKnowledge[1].toFixed(
-                1
-            );
-            let motivationValue = (
-                props.payload[1]?.payload.valueMotivation[1] - chartSplitAt
-            ).toFixed(1);
-            return (
-                <div className={classes.tooltip}>
-                    <p className={classes.label}>{props.label}</p>
-                    <p className={classes.knowledge}>
-                        {`Kompetanse: ${knowledgeValue}`}
-                    </p>
-                    <p className={classes.motivation}>
-                        {`Motivasjon: ${motivationValue}`}
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
-};
+// const renderCustomTooltip = (classes: any) => {
+//     return ({ ...props }: ToolTipProps) => {
+//         if (props.active && props.payload) {
+//             let knowledgeValue = props.payload[0]?.payload.valueKnowledge[1].toFixed(
+//                 1
+//             );
+//             let motivationValue = (
+//                 props.payload[1]?.payload.valueMotivation[1] - chartSplitAt
+//             ).toFixed(1);
+//             return (
+//                 <div className={classes.tooltip}>
+//                     <p className={classes.label}>{props.label}</p>
+//                     <p className={classes.knowledge}>
+//                         {`Kompetanse: ${knowledgeValue}`}
+//                     </p>
+//                     <p className={classes.motivation}>
+//                         {`Motivasjon: ${motivationValue}`}
+//                     </p>
+//                 </div>
+//             );
+//         }
+//         return null;
+//     };
+// };
 
 type TickProps = {
     knowledge: boolean;
@@ -392,9 +395,9 @@ type TickLabelProps = {
     };
 };
 
-type ToolTipProps = {
-    className: string;
-    active: boolean;
-    payload: any;
-    label: any;
-};
+// type ToolTipProps = {
+//     className: string;
+//     active: boolean;
+//     payload: any;
+//     label: any;
+// };

@@ -1,5 +1,4 @@
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import { stringify } from "querystring";
 import React from "react";
 import {
     BarChart,
@@ -89,7 +88,7 @@ export const CombinedChart = ({ ...props }: CombinedChartProps) => {
             if (msg === "") return "Ikke besvart";
             else return msg;
         };
-        let isTop = props.type == OverviewType.HIGHEST && props.topSubjects;
+        let isTop = props.type === OverviewType.HIGHEST && props.topSubjects;
         let topSubjects = props.topSubjects;
         return ({ ...props }: ToolTipProps) => {
             if (props.active && props.payload) {
@@ -236,13 +235,13 @@ const renderCustomAxisTicks = () => {
     };
 };
 
-type BarLabelProps = {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    value: string;
-};
+// type BarLabelProps = {
+//     x: number;
+//     y: number;
+//     width: number;
+//     height: number;
+//     value: string;
+// };
 
 type TickProps = {
     knowledge: boolean;

@@ -2,8 +2,6 @@ import { makeStyles } from "@material-ui/core";
 import { KnowitColors } from "../styles";
 import Tooltip from "@material-ui/core/Tooltip";
 import UpdateIcon from "@material-ui/icons/Update";
-import RefreshIcon from "@material-ui/icons/Refresh";
-import ErrorRoundedIcon from "@material-ui/icons/ErrorRounded";
 import NotificationsActiveOutlinedIcon from "@material-ui/icons/NotificationsActiveOutlined";
 import clsx from "clsx";
 import { Millisecs } from "../helperFunctions";
@@ -99,7 +97,7 @@ export const AlertNotification = (props: {
                                 classes.sizeMenu
                             )}
                         >
-                            {props.size != 0 ? (
+                            {props.size !== 0 ? (
                                 props.size
                             ) : (
                                 <NotificationsActiveOutlinedIcon fontSize="small" />

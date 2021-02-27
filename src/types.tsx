@@ -395,7 +395,6 @@ export type NavBarProps = {
 };
 
 export type NavBarPropsDesktop = {
-    confirmDeleteUserdata: () => void;
     displayAnswers: () => void;
     signout: () => void;
     userName: string;

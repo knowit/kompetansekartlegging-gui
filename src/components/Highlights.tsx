@@ -202,57 +202,40 @@ export default function Highlights({ ...props }: HighlightsProps) {
     const maxTopicStringLength = maxLengthByWidth(8);
 
     useEffect(() => {
+        const generateShortlist = () => {
+            let shortlistMotivation: TopicScoreWithIcon[] = [];
+            let shortlistKnowledge: TopicScoreWithIcon[] = [];
+            props.questionAnswers.forEach((quAns, _cat) => {
+                quAns.forEach((answer) => {
+                    if (answer.knowledge >= shortlistCutoff) {
+                        shortlistKnowledge.push({
+                            topic: answer.topic,
+                            score: answer.knowledge,
+                            icon: Math.floor(answer.knowledge),
+                        });
+                    }
+                    if (answer.motivation >= shortlistCutoff) {
+                        shortlistMotivation.push({
+                            topic: answer.topic,
+                            score: answer.motivation,
+                            icon: Math.floor(answer.motivation),
+                        });
+                    }
+                });
+            });
+            setKnowledgeAboveCutoff(
+                shortlistKnowledge
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, maxInList)
+            );
+            setMotivationAboveCutoff(
+                shortlistMotivation
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, maxInList)
+            );
+        };
         generateShortlist();
     }, [props.questionAnswers]);
-
-    const generateShortlist = () => {
-        let shortlistMotivation: TopicScoreWithIcon[] = [];
-        let shortlistKnowledge: TopicScoreWithIcon[] = [];
-        props.questionAnswers.forEach((quAns, cat) => {
-            quAns.forEach((answer) => {
-                if (answer.knowledge >= shortlistCutoff) {
-                    shortlistKnowledge.push({
-                        topic: answer.topic,
-                        score: answer.knowledge,
-                        icon: Math.floor(answer.knowledge),
-                    });
-                }
-                if (answer.motivation >= shortlistCutoff) {
-                    shortlistMotivation.push({
-                        topic: answer.topic,
-                        score: answer.motivation,
-                        icon: Math.floor(answer.motivation),
-                    });
-                }
-            });
-        });
-        // props.answers.forEach(ans => {
-        //     if (ans.knowledge > shortlistCutoff) {
-        //         shortlistKnowledge.push({
-        //             topic: ans.topic,
-        //             score: ans.knowledge,
-        //             icon: Math.floor(ans.knowledge)
-        //         });
-        //     }
-        //     if (ans.motivation > shortlistCutoff) {
-        //         shortlistMotivation.push({
-        //             topic: ans.topic,
-        //             score: ans.motivation,
-        //             icon: Math.floor(ans.motivation)
-        //         });
-        //     }
-        // });
-        setKnowledgeAboveCutoff(
-            shortlistKnowledge
-                .sort((a, b) => b.score - a.score)
-                .slice(0, maxInList)
-        );
-        setMotivationAboveCutoff(
-            shortlistMotivation
-                .sort((a, b) => b.score - a.score)
-                .slice(0, maxInList)
-        );
-    };
 
     const createMotivationHighlights = (): JSX.Element => {
         if (motivationAboveCutoff.length === 0) {

@@ -1,12 +1,11 @@
 import { makeStyles } from "@material-ui/core";
 import { KnowitColors } from "../styles";
 import { QuestionAnswer } from "../types";
-import React, { Fragment } from "react";
+import React from "react";
 import CheckCircleOutlineRoundedIcon from "@material-ui/icons/CheckCircleOutlineRounded";
 import ErrorOutlineRoundedIcon from "@material-ui/icons/ErrorOutlineRounded";
 import UpdateIcon from "@material-ui/icons/Update";
 import { staleAnswersLimit } from "./AlertNotification";
-import { QuestionAnswerSharp } from "@material-ui/icons";
 
 const useStyles = makeStyles({
     root: {},
@@ -68,7 +67,7 @@ export const BlockInfo = (props: {
     let questions = props.questions ?? [];
 
     let answeredQuestions = questions.filter(
-        (question) => question.motivation != -1 && question.knowledge != -1
+        (question) => question.motivation !== -1 && question.knowledge !== -1
     );
 
     if (questions.length > answeredQuestions.length)

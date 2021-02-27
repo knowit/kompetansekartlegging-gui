@@ -1,4 +1,4 @@
-import { Button, ButtonBase, makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import React, { useEffect } from "react";
 import { KnowitColors } from "../styles";
@@ -268,13 +268,10 @@ export const YourAnswersMobile = ({ ...props }: YourAnswerProps) => {
         return categoryDesc?.category.description ?? "";
     };
 
+    const { setCollapseMobileCategories } = props;
     useEffect(() => {
-        console.log(props.collapseMobileCategories);
-    }, [props.collapseMobileCategories]);
-
-    useEffect(() => {
-        props.setCollapseMobileCategories(false);
-    }, []);
+        setCollapseMobileCategories(false);
+    }, [setCollapseMobileCategories]);
 
     return (
         <div

@@ -18,7 +18,6 @@ import {
     DialogTitle,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Auth } from "aws-amplify";
 import React, { useEffect, useRef, useState } from "react";
 import { KnowitColors } from "../styles";
 import { NavBarPropsDesktop } from "../types";
@@ -114,41 +113,30 @@ const NavBarDesktop = ({ ...props }: NavBarPropsDesktop) => {
         props.signout();
     };
 
-    const handleDeleteAnswers = (event: React.MouseEvent<EventTarget>) => {
-        if (
-            anchorRef.current &&
-            anchorRef.current.contains(event.target as HTMLElement)
-        ) {
-            return;
-        }
-        setDeleteAlertOpen(true);
-    };
+    // const handleDeleteAnswers = (event: React.MouseEvent<EventTarget>) => {
+    //     if (
+    //         anchorRef.current &&
+    //         anchorRef.current.contains(event.target as HTMLElement)
+    //     ) {
+    //         return;
+    //     }
+    //     setDeleteAlertOpen(true);
+    // };
 
     const handleCloseAlert = () => {
         setDeleteAlertOpen(false);
     };
 
-    const handleConfirmDelete = (event: React.MouseEvent<EventTarget>) => {
-        if (
-            anchorRef.current &&
-            anchorRef.current.contains(event.target as HTMLElement)
-        ) {
-            return;
-        }
-        props.confirmDeleteUserdata();
-        setDeleteAlertOpen(false);
-    };
-
-    const handleDisplayAnswers = (event: React.MouseEvent<EventTarget>) => {
-        if (
-            anchorRef.current &&
-            anchorRef.current.contains(event.target as HTMLElement)
-        ) {
-            return;
-        }
-        props.displayAnswers();
-        // setAvatarMenuOpen(false);
-    };
+    // const handleDisplayAnswers = (event: React.MouseEvent<EventTarget>) => {
+    //     if (
+    //         anchorRef.current &&
+    //         anchorRef.current.contains(event.target as HTMLElement)
+    //     ) {
+    //         return;
+    //     }
+    //     props.displayAnswers();
+    //     // setAvatarMenuOpen(false);
+    // };
 
     useEffect(() => {
         if (avatarMenuPrevOpen.current === true && avatarMenuOpen === false) {
@@ -245,10 +233,7 @@ const NavBarDesktop = ({ ...props }: NavBarPropsDesktop) => {
                                 </DialogContentText>
                             </DialogContent>
                             <DialogActions>
-                                <Button
-                                    onClick={handleConfirmDelete}
-                                    color="primary"
-                                >
+                                <Button onClick={() => 1} color="primary">
                                     Bekreft
                                 </Button>
                                 <Button
