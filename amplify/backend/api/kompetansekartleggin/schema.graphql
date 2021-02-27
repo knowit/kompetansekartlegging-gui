@@ -82,8 +82,8 @@ type Group
         ]
     ) {
     id: ID!
-    groupLeaderID: String!
-    groupLeader: User! @connection(fields: ["groupLeaderID"])
+    groupLeaderUserID: ID!
+    groupLeader: User! @connection(fields: ["groupLeaderUserID"])
 }
 
 type User
@@ -97,8 +97,14 @@ type User
                 operations: [create, read, update]
             }
         ]
+    )
+    @key(
+        name: "byUsername"
+        fields: ["username"]
+        queryField: "usersByUsername"
     ) {
-    id: String!
+    id: ID!
+    username: String!
     groupID: ID!
     group: Group! @connection(fields: ["groupID"])
 }
