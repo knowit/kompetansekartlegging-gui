@@ -52,6 +52,27 @@
           ]
         }
       ]
+    },
+    "AdminQueries": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "kompetansekartleggind11d7cce",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "AdminQueries2bd53f73",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ]
     }
   },
   "function": {
@@ -86,6 +107,20 @@
           "resourceName": "kompetansekartleggin",
           "attributes": [
             "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "AdminQueries2bd53f73": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "kompetansekartleggind11d7cce",
+          "attributes": [
+            "UserPoolId"
           ]
         }
       ]
