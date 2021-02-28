@@ -8,6 +8,7 @@ import { debounce, makeStyles } from "@material-ui/core";
 import { isMobile } from "react-device-detect";
 import FloatingScaleDescButton from "./components/FloatingScaleDescButton";
 import NavBarDesktop from "./components/NavBarDesktop";
+import { UserRole } from "./types";
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -27,10 +28,25 @@ const appStyle = makeStyles({
     },
 });
 
+const hasRole = (role: string) => (user: any): boolean => {
+    const groups: Array<string> =
+        user?.signInUserSession?.idToken?.payload["cognito:groups"];
+    return groups?.includes(role);
+};
+const isAdmin = hasRole("admin");
+const isGroupLeader = hasRole("groupLeader");
+const userToRoles = (user: any): UserRole[] => {
+    let roles = [UserRole.NormalUser]
+    if (isAdmin(user)) roles.push(UserRole.Admin);
+    if (isGroupLeader(user)) roles.push(UserRole.GroupLeader);
+    return roles
+};
+
 const App = () => {
     const style = appStyle();
 
     const [user, setUser] = useState<any | null>(null);
+    const [roles, setRoles] = useState<UserRole[]>([UserRole.NormalUser]);
     const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     const [scaleDescOpen, setScaleDescOpen] = useState(false);
     const [firstTimeLogin, setFirstTimeLogin] = useState(false);
@@ -76,13 +92,13 @@ const App = () => {
     const [userName, setUserName] = useState<string>("");
     const [userPicture, setUserPicture] = useState<string>("");
 
-    // used to set username and userpicture
     useEffect(() => {
         if (user) {
             if (
                 typeof user != "undefined" &&
                 user.hasOwnProperty("attributes")
             ) {
+                setRoles(userToRoles(user));
                 let attributes = user.attributes;
                 setUserName(attributes.name);
                 setUserPicture(attributes.picture);
@@ -163,6 +179,7 @@ const App = () => {
                         }
                         setScaleDescOpen={setScaleDescOpen}
                         setFirstTimeLogin={setFirstTimeLogin}
+                        roles={roles}
                     />
                     <FloatingScaleDescButton
                         scaleDescOpen={scaleDescOpen}

@@ -14,12 +14,14 @@ import {
     FormDefinitionPaginated,
     UserFormPaginated,
     UserFormByCreatedAtPaginated,
+    UserRole,
 } from "../types";
 import * as helper from "../helperFunctions";
 import * as customQueries from "../graphql/custom-queries";
 import { Overview } from "./cards/Overview";
 import { YourAnswers } from "./cards/YourAnswers";
-import { CreateQuestionAnswerInput } from "../API";
+import { usersByGroup } from "../graphql/queries";
+import { CreateQuestionAnswerInput, User, UsersByGroupQuery } from "../API";
 import { Button, ListItem, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { KnowitColors } from "../styles";
@@ -31,6 +33,7 @@ import {
 } from "./AlertNotification";
 import NavBarMobile from "./NavBarMobile";
 import { AnswerHistory } from "./AnswerHistory";
+import { AdminPanel } from "./AdminPanel/";
 
 const cardCornerRadius: number = 40;
 
@@ -40,6 +43,7 @@ export enum Panel {
     Overview,
     MyAnswers,
     GroupLeader,
+    Admin,
     ScaleDescription,
     Other,
     None,
@@ -295,6 +299,23 @@ const getUserAnswers = async (
     return []; // Either could not load userform or no user form exists for current form definition
 };
 
+const getGroupMembers = async (groupID: string): Promise<User[]> => {
+    const usersGQ = await helper.callGraphQL<UsersByGroupQuery>(usersByGroup, {
+        groupID,
+    });
+
+    const users = usersGQ?.data?.usersByGroup?.items?.map(
+        (user) =>
+            ({
+                id: user?.id,
+                username: user?.username,
+                groupID: user?.groupID,
+            } as User)
+    );
+
+    return users || [];
+};
+
 const Content = ({ ...props }: ContentProps) => {
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(
         null
@@ -320,6 +341,7 @@ const Content = ({ ...props }: ContentProps) => {
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<AlertState>();
+    const [activeSubMenuItem, setActiveSubmenuItem] = useState<string>("");
 
     const createQuestionAnswers = (formDef: FormDefinition) => {
         // console.log("Creating questionAnswers with ", formDef);
@@ -634,19 +656,6 @@ const Content = ({ ...props }: ContentProps) => {
         return "";
     };
 
-    // const getTotalAlertsElement = (): JSX.Element => {
-    //     let totalAlerts = alerts?.qidMap.size ?? 0;
-    //     if (totalAlerts > 0)
-    //         return (
-    //             <AlertNotification
-    //                 type={AlertType.Multiple}
-    //                 message="Totalt ubesvarte eller utdaterte spørsmål"
-    //                 size={totalAlerts}
-    //             />
-    //         );
-    //     else return <Fragment />;
-    // };
-
     const getMainMenuAlertElement = (): JSX.Element => {
         let totalAlerts = alerts?.qidMap.size ?? 0;
         if (totalAlerts > 0)
@@ -678,8 +687,14 @@ const Content = ({ ...props }: ContentProps) => {
      *
      *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
      */
+    const isAdmin = props.roles.includes(UserRole.Admin);
+    const isGroupLeader = props.roles.includes(UserRole.GroupLeader);
+
+    useEffect(() => {
+        console.log(props.roles.map((r) => UserRole[r]));
+    }, [props.roles]);
     const buttonSetup = [
-        { text: "OVERSIKT", buttonType: MenuButton.Overview },
+        { text: "OVERSIKT", buttonType: MenuButton.Overview, show: true },
         {
             text: "MINE SVAR",
             buttonType: MenuButton.MyAnswers,
@@ -690,83 +705,88 @@ const Content = ({ ...props }: ContentProps) => {
                     activePanel: Panel.MyAnswers,
                 };
             }),
+            show: true,
         },
-        // { text: "Test", buttonType: MenuButton.Other },
-        // { text: "Parent", buttonType: MenuButton.GroupLeader, subButtons: [
-        //     { text: "Child 1", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
-        //     { text: "Child 2", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
-        //     { text: "Child 3", buttonType: MenuButton.LeaderCategory, activePanel: Panel.GroupLeader },
-        // ]},
+        {
+            text: "MIN GRUPPE",
+            buttonType: MenuButton.GroupLeader,
+            subButtons: [],
+            show: isGroupLeader,
+        },
     ];
 
     const setupDesktopMenu = (): JSX.Element[] => {
         let buttons: JSX.Element[] = [];
-        buttonSetup.forEach((butt) => {
-            buttons.push(
-                <Button
-                    key={butt.text}
-                    className={clsx(
-                        style.MenuButton,
-                        keepButtonActive(butt.buttonType)
-                    )}
-                    onClick={() => {
-                        checkIfCategoryIsSubmitted(butt.buttonType, undefined);
-                    }}
-                >
-                    <div className={clsx(style.menuButtonText)}>
-                        {butt.text}
-                        {butt.buttonType === MenuButton.MyAnswers
-                            ? getMainMenuAlertElement()
-                            : ""}
-                    </div>
-                    {/* {(butt.buttonType === MenuButton.MyAnswers) ? getTotalAlertsElement() : ""} */}
-                </Button>
-            );
-            if (butt.subButtons) {
-                butt.subButtons.forEach((butt, index) => {
-                    buttons.push(
-                        // TODO: IKKE CAPS
-                        <Button
-                            key={butt.text}
-                            className={clsx(
-                                style.MenuButton,
-                                activeCategory === butt.text
-                                    ? style.menuButtonActive
-                                    : "",
-                                activePanel === butt.activePanel
-                                    ? ""
-                                    : style.hideCategoryButtons
-                            )}
-                            onClick={() => {
-                                checkIfCategoryIsSubmitted(
-                                    butt.buttonType,
-                                    butt.text
-                                );
-                            }}
-                        >
-                            <div
+        buttonSetup
+            .filter((b) => b.show)
+            .forEach((butt) => {
+                buttons.push(
+                    <Button
+                        key={butt.text}
+                        className={clsx(
+                            style.MenuButton,
+                            keepButtonActive(butt.buttonType)
+                        )}
+                        onClick={() => {
+                            checkIfCategoryIsSubmitted(
+                                butt.buttonType,
+                                undefined
+                            );
+                        }}
+                    >
+                        <div className={clsx(style.menuButtonText)}>
+                            {butt.text}
+                            {butt.buttonType === MenuButton.MyAnswers
+                                ? getMainMenuAlertElement()
+                                : ""}
+                        </div>
+                    </Button>
+                );
+                if (butt.subButtons) {
+                    butt.subButtons.forEach((butt, index) => {
+                        buttons.push(
+                            <Button
+                                key={butt.text}
                                 className={clsx(
-                                    style.menuButtonText,
-                                    style.menuButtonCategoryText
+                                    style.MenuButton,
+                                    activeCategory === butt.text
+                                        ? style.menuButtonActive
+                                        : "",
+                                    activePanel === butt.activePanel
+                                        ? ""
+                                        : style.hideCategoryButtons
                                 )}
+                                onClick={() => {
+                                    checkIfCategoryIsSubmitted(
+                                        butt.buttonType,
+                                        butt.text
+                                    );
+                                }}
                             >
-                                {index + 1}. {butt.text}
-                                {alerts?.categoryMap.has(butt.text) ? (
-                                    <AlertNotification
-                                        type={AlertType.Multiple}
-                                        message="Ikke besvart eller utdaterte spørsmål i kategori"
-                                        size={alerts.categoryMap.get(butt.text)}
-                                    />
-                                ) : (
-                                    ""
-                                )}
-                            </div>
-                            {/* {alerts?.categoryMap.has(butt.text) ? <AlertNotification type={AlertType.Multiple} message="Ikke besvart eller utdaterte spørsmål i kategori" size={alerts.categoryMap.get(butt.text)}/> : ""} */}
-                        </Button>
-                    );
-                });
-            }
-        });
+                                <div
+                                    className={clsx(
+                                        style.menuButtonText,
+                                        style.menuButtonCategoryText
+                                    )}
+                                >
+                                    {index + 1}. {butt.text}
+                                    {alerts?.categoryMap.has(butt.text) ? (
+                                        <AlertNotification
+                                            type={AlertType.Multiple}
+                                            message="Ikke besvart eller utdaterte spørsmål i kategori"
+                                            size={alerts.categoryMap.get(
+                                                butt.text
+                                            )}
+                                        />
+                                    ) : (
+                                        ""
+                                    )}
+                                </div>
+                            </Button>
+                        );
+                    });
+                }
+            });
 
         return buttons;
     };
@@ -840,6 +860,8 @@ const Content = ({ ...props }: ContentProps) => {
                 );
             case Panel.GroupLeader:
                 return <div>Welcome to the "Group Leader" panel!</div>;
+            case Panel.Admin:
+                return <AdminPanel activeCategory={activeSubMenuItem} />;
             case Panel.Other:
                 return <div>Hello! This is the "Other" panel :D</div>;
         }
@@ -863,6 +885,69 @@ const Content = ({ ...props }: ContentProps) => {
         });
     };
 
+    type AdminMenuProps = {
+        show: boolean;
+        selected: boolean;
+    };
+    const AdminMenu = ({ show, selected }: AdminMenuProps) => {
+        if (!show) return null;
+
+        const items = [
+            {
+                text: "Rediger katalog",
+                disabled: true,
+            },
+            {
+                text: "Rediger gruppeledere",
+            },
+            {
+                text: "Rediger grupper",
+            },
+            {
+                text: "Rediger administratorer",
+            },
+        ];
+
+        return (
+            <>
+                <Button
+                    className={clsx(style.MenuButton, {
+                        [style.menuButtonActive]: selected,
+                    })}
+                    onClick={() => {
+                        // main pane is same as edit group leader pane atm
+                        setActiveSubmenuItem("Rediger gruppeledere");
+                        setActivePanel(Panel.Admin);
+                    }}
+                >
+                    <div className={clsx(style.menuButtonText)}>ADMIN</div>
+                </Button>
+
+                {selected &&
+                    items.map((cat) => (
+                        <Button
+                            key={cat.text}
+                            className={clsx(style.MenuButton, {
+                                [style.menuButtonActive]:
+                                    activeSubMenuItem === cat.text,
+                                [style.hideCategoryButtons]: cat.disabled,
+                            })}
+                            onClick={() => setActiveSubmenuItem(cat.text)}
+                        >
+                            <span
+                                className={clsx(
+                                    style.menuButtonText,
+                                    style.menuButtonCategoryText
+                                )}
+                            >
+                                {cat.text}
+                            </span>
+                        </Button>
+                    ))}
+            </>
+        );
+    };
+
     return (
         <div
             className={
@@ -881,7 +966,13 @@ const Content = ({ ...props }: ContentProps) => {
                     signout={props.signout}
                 />
             ) : (
-                <div className={style.menu}>{setupDesktopMenu()}</div>
+                <div className={style.menu}>
+                    {setupDesktopMenu()}
+                    <AdminMenu
+                        show={isAdmin}
+                        selected={activePanel === Panel.Admin}
+                    />
+                </div>
             )}
             {showSetAllQuestionsMaxButton ? (
                 <button onClick={() => setAllQuestionsMax()}>

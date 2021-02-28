@@ -432,6 +432,12 @@ export type HistoryTreeViewProps = {
     data: UserFormWithAnswers[];
 };
 
+export enum UserRole {
+    NormalUser,
+    Admin,
+    GroupLeader,
+}
+
 export type ContentProps = {
     user: any;
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void;
@@ -447,6 +453,7 @@ export type ContentProps = {
     setCollapseMobileCategories: (collapseMobileCategories: boolean) => void;
     setScaleDescOpen: Dispatch<SetStateAction<boolean>>;
     setFirstTimeLogin: Dispatch<SetStateAction<boolean>>;
+    roles: UserRole[];
 };
 
 export type ChartData = {
