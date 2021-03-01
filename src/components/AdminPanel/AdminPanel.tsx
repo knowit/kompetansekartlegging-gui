@@ -1,6 +1,7 @@
 import React from "react";
-import { EditGroupLeaders } from "./EditGroupLeaders";
-import style from "./AdminPanel.module.css"
+import EditGroupLeaders from "./EditGroupLeaders";
+import EditAdmins from "./EditAdmins";
+import style from "./AdminPanel.module.css";
 
 type AdminPanelProps = {
     activeCategory: string;
@@ -37,6 +38,7 @@ const AdminPanel = ({ activeCategory }: AdminPanelProps) => {
                 category === SubmenuCategory.EDIT_GROUP_LEADERS) && (
                 <EditGroupLeaders />
             )}
+            {category === SubmenuCategory.EDIT_ADMINS && <EditAdmins />}
         </div>
     );
 };

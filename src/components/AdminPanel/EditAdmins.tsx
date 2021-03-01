@@ -18,23 +18,18 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Typography from "@material-ui/core/Typography";
 
-import useApiGet from "./useApiGet";
-import {
-    listAllUsers,
-    listGroupLeaders,
-    removeGroupLeader,
-    addGroupLeader,
-} from "./adminApi";
-import { getAttribute } from "./helpers";
 import AddUserToGroupDialog from "./AddUserToGroupDialog";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
+import useApiGet from "./useApiGet";
+import { listAllUsers, listAdmins, removeAdmin, addAdmin } from "./adminApi";
+import { getAttribute } from "./helpers";
 
-const GroupLeader = (props: any) => {
-    const { groupLeader, deleteGroupLeader } = props;
-    const username = groupLeader.Username;
-    const name = getAttribute(groupLeader, "name");
-    const email = getAttribute(groupLeader, "email");
-    const picture = getAttribute(groupLeader, "picture");
+const Admin = (props: any) => {
+    const { admin, deleteAdmin } = props;
+    const username = admin.Username;
+    const name = getAttribute(admin, "name");
+    const email = getAttribute(admin, "email");
+    const picture = getAttribute(admin, "picture");
 
     return (
         <>
@@ -48,10 +43,7 @@ const GroupLeader = (props: any) => {
                 <TableCell>{email}</TableCell>
                 <TableCell>{username}</TableCell>
                 <TableCell>
-                    <IconButton
-                        edge="end"
-                        onClick={() => deleteGroupLeader(groupLeader)}
-                    >
+                    <IconButton edge="end" onClick={() => deleteAdmin(admin)}>
                         <DeleteIcon />
                     </IconButton>
                 </TableCell>
@@ -60,7 +52,7 @@ const GroupLeader = (props: any) => {
     );
 };
 
-const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
+const AdminTable = ({ admins, deleteAdmin }: any) => {
     return (
         <TableContainer component={Paper}>
             <Table>
@@ -74,11 +66,11 @@ const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {groupLeaders.map((gl: any) => (
-                        <GroupLeader
+                    {admins.map((gl: any) => (
+                        <Admin
                             key={gl.Username}
-                            groupLeader={gl}
-                            deleteGroupLeader={deleteGroupLeader}
+                            admin={gl}
+                            deleteAdmin={deleteAdmin}
                         />
                     ))}
                 </TableBody>
@@ -87,28 +79,26 @@ const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
     );
 };
 
-const EditGroupLeaders = () => {
-    const [dummy, setDummy] = useState(0); // used to refresh table; don't arrest me
-    const { result: groupLeaders, error, loading } = useApiGet({
-        getFn: listGroupLeaders,
+const EditAdmins = () => {
+    const [dummy, setDummy] = useState(0);
+    const { result: admins, error, loading } = useApiGet({
+        getFn: listAdmins,
         refreshCounter: dummy,
     });
-    const [showAddGroupLeader, setShowAddGroupLeader] = useState<boolean>(
-        false
-    );
-    const [groupLeaderToDelete, setGroupLeaderToDelete] = useState<any>();
+    const [showAddAdmin, setShowAddAdmin] = useState<boolean>(false);
+    const [adminToDelete, setAdminToDelete] = useState<any>();
 
-    const deleteGroupLeader = (user: any) => setGroupLeaderToDelete(user);
-    const deleteGroupLeaderConfirm = async () => {
-        await removeGroupLeader(groupLeaderToDelete);
-        setGroupLeaderToDelete(null);
+    const deleteAdmin = (user: any) => setAdminToDelete(user);
+    const deleteAdminConfirm = async () => {
+        await removeAdmin(adminToDelete);
+        setAdminToDelete(null);
         setDummy((dummy) => dummy + 1);
     };
-    const clearSelectedGroupLeader = () => setGroupLeaderToDelete(null);
-    const hideShowAddGroupLeader = () => setShowAddGroupLeader(false);
-    const addGroupLeaderConfirm = async (user: any) => {
-        await addGroupLeader(user);
-        setShowAddGroupLeader(false);
+    const clearSelectedAdmin = () => setAdminToDelete(null);
+    const hideShowAddAdmin = () => setShowAddAdmin(false);
+    const addAdminConfirm = async (user: any) => {
+        await addAdmin(user);
+        setShowAddAdmin(false);
         setDummy((dummy) => dummy + 1);
     };
 
@@ -116,55 +106,50 @@ const EditGroupLeaders = () => {
         <Container maxWidth="md" style={{ marginLeft: "0" }}>
             {error && <p>An error occured: {error}</p>}
             {loading && <CircularProgress />}
-            {!error && !loading && groupLeaders && (
+            {!error && !loading && admins && (
                 <>
                     <Card style={{ marginBottom: "24px" }} variant="outlined">
                         <CardContent>
                             <Typography color="textSecondary" gutterBottom>
-                                Rediger gruppeledere
+                                Rediger administratorer
                             </Typography>
-                            Gruppeledere har tilgang til sine egne gruppebarns
-                            svar. De kan også velge sine gruppebarn. På denne
-                            siden kan du legge til og fjerne gruppeledere.
+                            Administratorer har tilgang til alles svar. De kan
+                            også velge hvem som er gruppeledere og
+                            administratorer. På denne siden kan du legge til og
+                            fjerne gruppeledere.
                         </CardContent>
                     </Card>
-                    <GroupLeaderTable
-                        groupLeaders={groupLeaders}
-                        deleteGroupLeader={deleteGroupLeader}
-                    />
+                    <AdminTable admins={admins} deleteAdmin={deleteAdmin} />
                     <Button
                         variant="contained"
                         color="primary"
                         startIcon={<PersonAddIcon />}
                         style={{ marginTop: "24px" }}
-                        onClick={() => setShowAddGroupLeader(true)}
+                        onClick={() => setShowAddAdmin(true)}
                     >
-                        Legg til gruppeleder
+                        Legg til administrator
                     </Button>
                 </>
             )}
             <DeleteUserFromGroupDialog
-                open={!!groupLeaderToDelete}
-                onCancel={clearSelectedGroupLeader}
-                onConfirm={deleteGroupLeaderConfirm}
-                user={groupLeaderToDelete}
-                roleName="gruppeleder"
-            >
-                Husk å sette en ny gruppeleder for de gruppene brukeren var
-                ansvarlig for.
-            </DeleteUserFromGroupDialog>
-            {showAddGroupLeader && (
+                open={!!adminToDelete}
+                onCancel={clearSelectedAdmin}
+                onConfirm={deleteAdminConfirm}
+                user={adminToDelete}
+                roleName="administrator"
+            />
+            {showAddAdmin && (
                 <AddUserToGroupDialog
+                    open={showAddAdmin}
+                    currentUsersInGroup={admins}
                     userGetFn={listAllUsers}
-                    roleName="gruppeleder"
-                    open={showAddGroupLeader}
-                    currentUsersInGroup={groupLeaders}
-                    onCancel={hideShowAddGroupLeader}
-                    onConfirm={addGroupLeaderConfirm}
+                    onCancel={hideShowAddAdmin}
+                    onConfirm={addAdminConfirm}
+                    roleName="administrator"
                 />
             )}
         </Container>
     );
 };
 
-export default EditGroupLeaders;
+export default EditAdmins;
