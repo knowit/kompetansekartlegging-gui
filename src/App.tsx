@@ -49,6 +49,7 @@ const App = () => {
 
     const [user, setUser] = useState<any | null>(null);
     const [roles, setRoles] = useState<UserRole[]>([UserRole.NormalUser]);
+    const [showFab, setShowFab] = useState<boolean>(true);
     const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     const [scaleDescOpen, setScaleDescOpen] = useState(false);
     const [firstTimeLogin, setFirstTimeLogin] = useState(false);
@@ -183,13 +184,16 @@ const App = () => {
                             setScaleDescOpen={setScaleDescOpen}
                             setFirstTimeLogin={setFirstTimeLogin}
                             roles={roles}
+                            setShowFab={setShowFab}
                         />
-                        <FloatingScaleDescButton
-                            scaleDescOpen={scaleDescOpen}
-                            setScaleDescOpen={setScaleDescOpen}
-                            firstTimeLogin={firstTimeLogin}
-                            isMobile={isMobile}
-                        />
+                        {showFab && (
+                            <FloatingScaleDescButton
+                                scaleDescOpen={scaleDescOpen}
+                                setScaleDescOpen={setScaleDescOpen}
+                                firstTimeLogin={firstTimeLogin}
+                                isMobile={isMobile}
+                            />
+                        )}
                     </Fragment>
                 ) : (
                     <Login isMobile={isMobile} />

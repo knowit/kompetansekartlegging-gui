@@ -20,8 +20,7 @@ import * as helper from "../helperFunctions";
 import * as customQueries from "../graphql/custom-queries";
 import { Overview } from "./cards/Overview";
 import { YourAnswers } from "./cards/YourAnswers";
-import { usersByGroup } from "../graphql/queries";
-import { CreateQuestionAnswerInput, User, UsersByGroupQuery } from "../API";
+import { CreateQuestionAnswerInput } from "../API";
 import { Button, ListItem, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { KnowitColors } from "../styles";
@@ -297,29 +296,6 @@ const getUserAnswers = async (
     }
 
     return []; // Either could not load userform or no user form exists for current form definition
-};
-
-const getGroupMembers = async (groupID: string): Promise<User[]> => {
-    try {
-        const usersGQ = await helper.callGraphQL<UsersByGroupQuery>(
-            usersByGroup,
-            {
-                groupID,
-            }
-        );
-
-        const users = usersGQ?.data?.usersByGroup?.items?.map(
-            (user) =>
-                ({
-                    id: user?.id,
-                    groupID: user?.groupID,
-                } as User)
-        );
-
-        return users || [];
-    } catch (e) {
-        return [];
-    }
 };
 
 const Content = ({ ...props }: ContentProps) => {
@@ -618,6 +594,7 @@ const Content = ({ ...props }: ContentProps) => {
     };
 
     const menuButtonClicked = (buttonType: MenuButton, category?: string) => {
+        props.setShowFab(true);
         switch (buttonType) {
             case MenuButton.Overview:
                 setActivePanel(Panel.Overview);
@@ -629,13 +606,6 @@ const Content = ({ ...props }: ContentProps) => {
             case MenuButton.Category:
                 setActiveCategory(category || "");
                 setAnswerEditMode(false);
-                break;
-            case MenuButton.GroupLeader:
-                setActivePanel(Panel.GroupLeader);
-                if (category) setActiveCategory(category);
-                break;
-            case MenuButton.LeaderCategory:
-                setActiveCategory(category || "");
                 break;
             case MenuButton.Other:
                 setActivePanel(Panel.Other);
@@ -922,6 +892,7 @@ const Content = ({ ...props }: ContentProps) => {
                     })}
                     onClick={() => {
                         // main pane is same as edit group leader pane atm
+                        props.setShowFab(false);
                         setActiveSubmenuItem("Rediger gruppeledere");
                         setActivePanel(Panel.Admin);
                     }}

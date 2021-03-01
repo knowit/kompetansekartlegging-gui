@@ -454,6 +454,7 @@ export type ContentProps = {
     setScaleDescOpen: Dispatch<SetStateAction<boolean>>;
     setFirstTimeLogin: Dispatch<SetStateAction<boolean>>;
     roles: UserRole[];
+    setShowFab: Dispatch<SetStateAction<boolean>>;
 };
 
 export type ChartData = {

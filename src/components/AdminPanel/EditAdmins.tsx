@@ -37,7 +37,7 @@ const Admin = (props: any) => {
                 <TableCell>
                     <Avatar alt={name} src={picture} />
                 </TableCell>
-                <TableCell component="th" scope="row">
+                <TableCell>
                     {name}
                 </TableCell>
                 <TableCell>{email}</TableCell>

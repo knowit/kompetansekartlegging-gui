@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -27,7 +27,7 @@ const User = ({ user, selected, setSelectedUser }: any) => {
                 <TableCell>
                     <Avatar alt={name} src={picture} />
                 </TableCell>
-                <TableCell component="th" scope="row">
+                <TableCell>
                     {name}
                 </TableCell>
                 <TableCell>{email}</TableCell>
@@ -36,7 +36,6 @@ const User = ({ user, selected, setSelectedUser }: any) => {
         </>
     );
 };
-
 
 const UsersTable = ({ users, selectedUser, setSelectedUser }: any) => {
     const isSelected = (user: any) =>
@@ -51,7 +50,6 @@ const UsersTable = ({ users, selectedUser, setSelectedUser }: any) => {
                         <TableCell>Navn</TableCell>
                         <TableCell>Email</TableCell>
                         <TableCell>Brukernavn</TableCell>
-                        <TableCell />
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -69,4 +67,4 @@ const UsersTable = ({ users, selectedUser, setSelectedUser }: any) => {
     );
 };
 
-export default UsersTable
+export default UsersTable;

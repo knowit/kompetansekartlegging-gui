@@ -82,8 +82,7 @@ type Group
         ]
     ) {
     id: ID!
-    groupLeaderUserID: ID!
-    groupLeader: User! @connection(fields: ["groupLeaderUserID"])
+    groupLeaderUsername: String!
 }
 
 type User

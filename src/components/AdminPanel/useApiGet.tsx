@@ -8,7 +8,9 @@ const useApiGet = ({ getFn, refreshCounter, cmpFn = compareByName }: any) => {
 
     useEffect(() => {
         const f = async () => {
-            setLoading(true);
+            if (refreshCounter === 0) {
+                setLoading(true);
+            }
             const res = await getFn();
             if (res.result) {
                 if (cmpFn) {
@@ -19,7 +21,9 @@ const useApiGet = ({ getFn, refreshCounter, cmpFn = compareByName }: any) => {
             } else {
                 setError(res.error);
             }
-            setLoading(false);
+            if (refreshCounter === 0) {
+                setLoading(false);
+            }
         };
         f();
     }, [refreshCounter, getFn, cmpFn]);

@@ -8,22 +8,16 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-import { not, getAttribute } from "./helpers";
-import useApiGet from "./useApiGet";
 import UsersTable from "./UsersTable";
 
-const AddUserToGroupDialog = ({
+const AddGroupDialog = ({
     onCancel,
     onConfirm,
     open,
-    currentUsersInGroup,
-    userGetFn,
-    roleName,
+    groupLeaders,
+    error,
+    loading,
 }: any) => {
-    const { result: users, error, loading } = useApiGet({
-        getFn: userGetFn,
-        refreshCounter: 0,
-    });
     const [selectedUser, setSelectedUser] = useState<any>();
     const onSelect = (user: any) => {
         if (user === selectedUser) {
@@ -37,12 +31,14 @@ const AddUserToGroupDialog = ({
         <Dialog open={open} onClose={onCancel} fullWidth maxWidth="md">
             {error && <p>An error occured: {error}</p>}
             {loading && <CircularProgress />}
-            {!error && !loading && users && (
+            {!error && !loading && groupLeaders && (
                 <>
-                    <DialogTitle>Legg til {roleName}</DialogTitle>
+                    <DialogTitle>
+                        Velg gruppeleder til den nye gruppen
+                    </DialogTitle>
                     <DialogContent>
                         <UsersTable
-                            users={not(users, currentUsersInGroup)}
+                            users={groupLeaders}
                             selectedUser={selectedUser}
                             setSelectedUser={onSelect}
                         />
@@ -54,8 +50,7 @@ const AddUserToGroupDialog = ({
                     onClick={() => onConfirm(selectedUser)}
                     disabled={!selectedUser}
                 >
-                    Legg til{" "}
-                    {selectedUser && getAttribute(selectedUser, "name")}
+                    Lag gruppe
                 </Button>
                 <Button onClick={onCancel} color="primary" variant="contained">
                     Avbryt
@@ -65,4 +60,4 @@ const AddUserToGroupDialog = ({
     );
 };
 
-export default AddUserToGroupDialog;
+export default AddGroupDialog;
