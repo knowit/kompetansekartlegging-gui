@@ -38,6 +38,7 @@ const navbarStyles = makeStyles((theme) => ({
         width: "100px",
     },
     header: {
+        color: KnowitColors.white,
         backgroundColor: KnowitColors.darkBrown,
     },
     userName: {

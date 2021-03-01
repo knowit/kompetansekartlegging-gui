@@ -4,11 +4,13 @@ import Amplify, { Auth, Hub } from "aws-amplify";
 import awsconfig from "./aws-exports";
 import Content from "./components/Content";
 import Login from "./components/Login";
+import { ThemeProvider } from "@material-ui/core/styles";
 import { debounce, makeStyles } from "@material-ui/core";
 import { isMobile } from "react-device-detect";
 import FloatingScaleDescButton from "./components/FloatingScaleDescButton";
 import NavBarDesktop from "./components/NavBarDesktop";
 import { UserRole } from "./types";
+import theme from "./theme";
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -36,10 +38,10 @@ const hasRole = (role: string) => (user: any): boolean => {
 const isAdmin = hasRole("admin");
 const isGroupLeader = hasRole("groupLeader");
 const userToRoles = (user: any): UserRole[] => {
-    let roles = [UserRole.NormalUser]
+    let roles = [UserRole.NormalUser];
     if (isAdmin(user)) roles.push(UserRole.Admin);
     if (isGroupLeader(user)) roles.push(UserRole.GroupLeader);
-    return roles
+    return roles;
 };
 
 const App = () => {
@@ -150,48 +152,50 @@ const App = () => {
     };
 
     return (
-        <div className={style.root}>
-            {user ? (
-                <Fragment>
-                    {isMobile ? null : (
-                        <NavBarDesktop
-                            displayAnswers={displayAnswers}
+        <ThemeProvider theme={theme}>
+            <div className={style.root}>
+                {user ? (
+                    <Fragment>
+                        {isMobile ? null : (
+                            <NavBarDesktop
+                                displayAnswers={displayAnswers}
+                                signout={signout}
+                                userName={userName}
+                                userPicture={userPicture}
+                            />
+                        )}
+
+                        <Content
+                            user={user}
+                            setAnswerHistoryOpen={setAnswerHistoryOpen}
+                            answerHistoryOpen={answerHistoryOpen}
+                            isMobile={isMobile}
                             signout={signout}
                             userName={userName}
                             userPicture={userPicture}
+                            collapseMobileCategories={collapseMobileCategories}
+                            categoryNavRef={categoryNavRef}
+                            mobileNavRef={mobileNavRef}
+                            scrollToTop={scrollToTopMobile}
+                            setCollapseMobileCategories={
+                                setCollapseMobileCategories
+                            }
+                            setScaleDescOpen={setScaleDescOpen}
+                            setFirstTimeLogin={setFirstTimeLogin}
+                            roles={roles}
                         />
-                    )}
-
-                    <Content
-                        user={user}
-                        setAnswerHistoryOpen={setAnswerHistoryOpen}
-                        answerHistoryOpen={answerHistoryOpen}
-                        isMobile={isMobile}
-                        signout={signout}
-                        userName={userName}
-                        userPicture={userPicture}
-                        collapseMobileCategories={collapseMobileCategories}
-                        categoryNavRef={categoryNavRef}
-                        mobileNavRef={mobileNavRef}
-                        scrollToTop={scrollToTopMobile}
-                        setCollapseMobileCategories={
-                            setCollapseMobileCategories
-                        }
-                        setScaleDescOpen={setScaleDescOpen}
-                        setFirstTimeLogin={setFirstTimeLogin}
-                        roles={roles}
-                    />
-                    <FloatingScaleDescButton
-                        scaleDescOpen={scaleDescOpen}
-                        setScaleDescOpen={setScaleDescOpen}
-                        firstTimeLogin={firstTimeLogin}
-                        isMobile={isMobile}
-                    />
-                </Fragment>
-            ) : (
-                <Login isMobile={isMobile} />
-            )}
-        </div>
+                        <FloatingScaleDescButton
+                            scaleDescOpen={scaleDescOpen}
+                            setScaleDescOpen={setScaleDescOpen}
+                            firstTimeLogin={firstTimeLogin}
+                            isMobile={isMobile}
+                        />
+                    </Fragment>
+                ) : (
+                    <Login isMobile={isMobile} />
+                )}
+            </div>
+        </ThemeProvider>
     );
 };
 

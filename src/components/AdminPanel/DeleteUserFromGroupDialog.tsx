@@ -29,7 +29,7 @@ const DeleteUserFromGroupDialog = ({
             </DialogContent>
             <DialogActions>
                 <Button onClick={onConfirm}>Fjern</Button>
-                <Button onClick={onCancel} color="primary" variant="outlined">
+                <Button onClick={onCancel} color="primary" variant="contained">
                     Avbryt
                 </Button>
             </DialogActions>
