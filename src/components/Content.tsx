@@ -300,20 +300,26 @@ const getUserAnswers = async (
 };
 
 const getGroupMembers = async (groupID: string): Promise<User[]> => {
-    const usersGQ = await helper.callGraphQL<UsersByGroupQuery>(usersByGroup, {
-        groupID,
-    });
+    try {
+        const usersGQ = await helper.callGraphQL<UsersByGroupQuery>(
+            usersByGroup,
+            {
+                groupID,
+            }
+        );
 
-    const users = usersGQ?.data?.usersByGroup?.items?.map(
-        (user) =>
-            ({
-                id: user?.id,
-                username: user?.username,
-                groupID: user?.groupID,
-            } as User)
-    );
+        const users = usersGQ?.data?.usersByGroup?.items?.map(
+            (user) =>
+                ({
+                    id: user?.id,
+                    groupID: user?.groupID,
+                } as User)
+        );
 
-    return users || [];
+        return users || [];
+    } catch (e) {
+        return [];
+    }
 };
 
 const Content = ({ ...props }: ContentProps) => {

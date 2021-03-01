@@ -98,14 +98,8 @@ type User
             }
         ]
     )
-    @key(
-        name: "byUsername"
-        fields: ["username"]
-        queryField: "usersByUsername"
-    )
     @key(name: "byGroup", fields: ["groupID"], queryField: "usersByGroup") {
     id: ID!
-    username: String!
     groupID: ID!
     group: Group! @connection(fields: ["groupID"])
 }
