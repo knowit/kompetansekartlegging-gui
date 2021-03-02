@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import {
+    Panel,
     ContentProps,
     FormDefinition,
     UserAnswer,
@@ -7,13 +8,8 @@ import {
     CreateQuestionAnswerResult,
     AlertState,
     Alert,
-    Question,
     QuestionAnswer,
     SliderValues,
-    FormDefinitionByCreatedAtPaginated,
-    FormDefinitionPaginated,
-    UserFormPaginated,
-    UserFormByCreatedAtPaginated,
     UserRole,
 } from "../types";
 import * as helper from "../helperFunctions";
@@ -33,20 +29,17 @@ import {
 import NavBarMobile from "./NavBarMobile";
 import { AnswerHistory } from "./AnswerHistory";
 import { AdminPanel } from "./AdminPanel/";
+import { GroupLeaderMenu, GroupLeaderPanel } from "./GroupLeaderPanel/";
+import {
+    getUserAnswers,
+    fetchLastFormDefinition,
+    createQuestionAnswers,
+    setFirstAnswers,
+} from "./answersApi";
 
 const cardCornerRadius: number = 40;
 
 const showSetAllQuestionsMaxButton = false;
-
-export enum Panel {
-    Overview,
-    MyAnswers,
-    GroupLeader,
-    Admin,
-    ScaleDescription,
-    Other,
-    None,
-}
 
 export enum MenuButton {
     Overview,
@@ -173,131 +166,6 @@ const updateCategoryAlerts = (
     setAlerts({ qidMap: alerts, categoryMap: catAlerts });
 };
 
-const fetchLastFormDefinition = async (
-    setFormDefinition: React.Dispatch<
-        React.SetStateAction<FormDefinition | null>
-    >,
-    createQuestionAnswers: (arg0: FormDefinition) => Map<any, any>,
-    getUserAnswers: (arg0: FormDefinition) => Promise<void | UserAnswer[]>,
-    setFirstAnswers: (arg0: any, arg1: any) => void
-) => {
-    let nextToken: string | null = null;
-    let questions: Question[] = [];
-    let formDefPaginated: FormDefinitionPaginated = undefined; // The form definition response has pagination on questions, with nextToken; see types
-    try {
-        do {
-            let currentForm: any = await helper.callGraphQL<FormDefinitionByCreatedAtPaginated>(
-                customQueries.formByCreatedAtPaginated,
-                {
-                    ...customQueries.formByCreatedAtInputConsts,
-                    nextToken: nextToken,
-                }
-            );
-            if (currentForm.data && currentForm.data.formByCreatedAt.items[0]) {
-                if (typeof formDefPaginated === "undefined") {
-                    formDefPaginated =
-                        currentForm.data.formByCreatedAt.items[0];
-                    questions =
-                        currentForm.data.formByCreatedAt.items[0].questions
-                            .items;
-                } else {
-                    questions = questions.concat(
-                        currentForm.data.formByCreatedAt.items[0].questions
-                            .items
-                    );
-                }
-                nextToken =
-                    currentForm.data.formByCreatedAt.items[0].questions
-                        .nextToken;
-            }
-        } while (nextToken);
-
-        if (formDefPaginated) {
-            let formDef: FormDefinition = {
-                id: formDefPaginated.id,
-                createdAt: formDefPaginated.createdAt,
-                questions: {
-                    items: questions,
-                },
-            };
-            // console.log("FormDef:", formDef);
-            setFormDefinition(formDef);
-            let quAns = createQuestionAnswers(formDef);
-            let userAnswers = await getUserAnswers(formDef);
-            setFirstAnswers(quAns, userAnswers);
-        } else {
-            console.log("Error loading form definition!");
-        }
-    } catch (e) {
-        console.error(
-            "GraphQL error while fetching form definition and user answers!",
-            e
-        );
-    }
-};
-
-const getUserAnswers = async (
-    formDef: FormDefinition,
-    user: any,
-    setUserAnswers: React.Dispatch<React.SetStateAction<UserAnswer[]>>,
-    setActivePanel: React.Dispatch<React.SetStateAction<Panel>>,
-    setUserAnswersLoaded: React.Dispatch<React.SetStateAction<boolean>>,
-    setAnswerEditMode: React.Dispatch<React.SetStateAction<boolean>>,
-    setFirstTimeLogin: React.Dispatch<React.SetStateAction<boolean>>,
-    setScaleDescOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    isMobile: boolean
-) => {
-    if (!user) return console.error("User not found when getting useranswers");
-    let nextToken: string | null = null;
-    let questionAnswers: UserAnswer[] = [];
-    let paginatedUserform: UserFormPaginated | undefined; // The userform response has pagination on questionAnswers, with nextToken; see types
-    do {
-        let response: any = (
-            await helper.callGraphQL<UserFormByCreatedAtPaginated>(
-                customQueries.customUserFormByCreatedAt,
-                {
-                    ...customQueries.userFormByCreatedAtInputConsts,
-                    owner: user.username,
-                    nextToken: nextToken,
-                }
-            )
-        ).data?.userFormByCreatedAt.items[0];
-
-        if (response && response.questionAnswers.items) {
-            if (typeof paginatedUserform === "undefined") {
-                paginatedUserform = response;
-                questionAnswers = response.questionAnswers.items;
-            } else {
-                questionAnswers = questionAnswers.concat(
-                    response.questionAnswers.items
-                );
-            }
-            nextToken = response.questionAnswers.nextToken;
-        }
-    } while (nextToken);
-
-    if (
-        paginatedUserform &&
-        paginatedUserform.formDefinitionID === formDef?.id
-    ) {
-        // console.log("Found user form!", paginatedUserform);
-        setUserAnswers(questionAnswers);
-        setUserAnswersLoaded(true);
-        return questionAnswers;
-    } else {
-        // console.log("Found no user form!", paginatedUserform);
-        setActivePanel(Panel.MyAnswers);
-        setAnswerEditMode(true);
-        setUserAnswersLoaded(true);
-        setFirstTimeLogin(true);
-        if (!isMobile) {
-            setScaleDescOpen(true);
-        }
-    }
-
-    return []; // Either could not load userform or no user form exists for current form definition
-};
-
 const Content = ({ ...props }: ContentProps) => {
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(
         null
@@ -324,91 +192,6 @@ const Content = ({ ...props }: ContentProps) => {
     const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<AlertState>();
     const [activeSubMenuItem, setActiveSubmenuItem] = useState<string>("");
-
-    const createQuestionAnswers = (formDef: FormDefinition) => {
-        // console.log("Creating questionAnswers with ", formDef);
-        if (!formDef) return new Map();
-        let categories = formDef.questions.items
-            .map((item) => item.category)
-            .filter(
-                (category, index, array) =>
-                    array.findIndex((obj) => obj.text === category.text) ===
-                    index
-            )
-            .sort((a, b) => {
-                if (a.index && b.index == null) return -1;
-                if (a.index == null && b.index) return 1;
-                if (a.index && b.index) return a.index - b.index;
-                if (a.index == null && b.index == null)
-                    return a.text.localeCompare(b.text);
-                return 0;
-            });
-        setCategories(categories.map((cat) => cat.text));
-        let quAnsMap = new Map<string, QuestionAnswer[]>();
-        categories.forEach((cat) => {
-            let quAns: QuestionAnswer[] = formDef.questions.items
-                .filter((question) => question.category.id === cat.id)
-                .sort((a, b) => {
-                    if (a.index && b.index == null) return -1;
-                    if (a.index == null && b.index) return 1;
-                    if (a.index && b.index) return a.index - b.index;
-                    if (a.index == null && b.index == null)
-                        return a.topic.localeCompare(b.topic);
-                    return 0;
-                })
-                .map((qu) => {
-                    return {
-                        category: qu.category,
-                        createdAt: qu.createdAt,
-                        id: qu.id,
-                        index: qu.index,
-                        qid: qu.qid,
-                        text: qu.text,
-                        topic: qu.topic,
-                        knowledge: -1,
-                        motivation: -1,
-                        updatedAt: 0,
-                    };
-                });
-            quAnsMap.set(cat.text, quAns);
-        });
-        // console.log(`Sorted questionAnswerMap: `, quAnsMap);
-        return quAnsMap;
-    };
-
-    const setFirstAnswers = (
-        quAns: Map<string, QuestionAnswer[]>,
-        newUserAnswers: UserAnswer[] | void
-    ) => {
-        let newMap = new Map<string, QuestionAnswer[]>();
-        quAns.forEach((quAns, category) => {
-            newMap.set(
-                category,
-                quAns.map((questionAnswer) => {
-                    if (newUserAnswers) {
-                        let userAnswer = newUserAnswers.filter(
-                            (userAnswer) =>
-                                userAnswer.question.id === questionAnswer.id
-                        );
-                        if (userAnswer.length === 0) return questionAnswer;
-                        return {
-                            ...questionAnswer,
-                            knowledge: userAnswer[0]
-                                ? userAnswer[0].knowledge
-                                : questionAnswer.knowledge,
-                            motivation: userAnswer[0]
-                                ? userAnswer[0].motivation
-                                : questionAnswer.motivation,
-                            updatedAt: Date.parse(userAnswer[0].updatedAt) || 0,
-                        };
-                    }
-                    return questionAnswer;
-                })
-            );
-        });
-        setQuestionAnswers(newMap);
-        setAnswersBeforeSubmitted(new Map(newMap));
-    };
 
     const updateAnswer = (
         category: string,
@@ -499,7 +282,7 @@ const Content = ({ ...props }: ContentProps) => {
     useEffect(() => {
         fetchLastFormDefinition(
             setFormDefinition,
-            createQuestionAnswers,
+            (formDef) => createQuestionAnswers(formDef, setCategories),
             (formDef) =>
                 getUserAnswers(
                     formDef,
@@ -512,7 +295,13 @@ const Content = ({ ...props }: ContentProps) => {
                     props.setScaleDescOpen,
                     props.isMobile
                 ),
-            setFirstAnswers
+            (quAns, newUserAnswers) =>
+                setFirstAnswers(
+                    quAns,
+                    newUserAnswers,
+                    setQuestionAnswers,
+                    setAnswersBeforeSubmitted
+                )
         );
     }, [
         props.user,
@@ -666,9 +455,6 @@ const Content = ({ ...props }: ContentProps) => {
     const isAdmin = props.roles.includes(UserRole.Admin);
     const isGroupLeader = props.roles.includes(UserRole.GroupLeader);
 
-    useEffect(() => {
-        console.log(props.roles.map((r) => UserRole[r]));
-    }, [props.roles]);
     const buttonSetup = [
         { text: "OVERSIKT", buttonType: MenuButton.Overview, show: true },
         {
@@ -682,12 +468,6 @@ const Content = ({ ...props }: ContentProps) => {
                 };
             }),
             show: true,
-        },
-        {
-            text: "MIN GRUPPE",
-            buttonType: MenuButton.GroupLeader,
-            subButtons: [],
-            show: isGroupLeader,
         },
     ];
 
@@ -794,6 +574,7 @@ const Content = ({ ...props }: ContentProps) => {
         setAnswerEditMode(true);
     };
 
+    const [groupMembers, setGroupMembers] = useState<any>([]);
     const setupPanel = (): JSX.Element => {
         switch (activePanel) {
             case Panel.Overview:
@@ -835,7 +616,14 @@ const Content = ({ ...props }: ContentProps) => {
                     />
                 );
             case Panel.GroupLeader:
-                return <div>Welcome to the "Group Leader" panel!</div>;
+                return (
+                    <GroupLeaderPanel
+                        activeCategory={activeSubMenuItem}
+                        user={props.user}
+                        members={groupMembers}
+                        setMembers={setGroupMembers}
+                    />
+                );
             case Panel.Admin:
                 return <AdminPanel activeCategory={activeSubMenuItem} />;
             case Panel.Other:
@@ -945,6 +733,16 @@ const Content = ({ ...props }: ContentProps) => {
             ) : (
                 <div className={style.menu}>
                     {setupDesktopMenu()}
+                    <GroupLeaderMenu
+                        members={groupMembers}
+                        show={isGroupLeader}
+                        selected={activePanel === Panel.GroupLeader}
+                        user={props.user}
+                        setActivePanel={setActivePanel}
+                        setActiveSubmenuItem={setActiveSubmenuItem}
+                        activeSubMenuItem={activeSubMenuItem}
+                        style={style}
+                    />
                     <AdminMenu
                         show={isAdmin}
                         selected={activePanel === Panel.Admin}

@@ -90,11 +90,7 @@ type User
     @auth(
         rules: [
             { allow: groups, groups: ["admin"] }
-            {
-                allow: groups
-                groups: ["groupLeader"]
-                operations: [create, read, update]
-            }
+            { allow: groups, groups: ["groupLeader"] }
         ]
     )
     @key(name: "byGroup", fields: ["groupID"], queryField: "usersByGroup") {

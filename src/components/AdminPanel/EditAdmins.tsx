@@ -37,9 +37,7 @@ const Admin = (props: any) => {
                 <TableCell>
                     <Avatar alt={name} src={picture} />
                 </TableCell>
-                <TableCell>
-                    {name}
-                </TableCell>
+                <TableCell>{name}</TableCell>
                 <TableCell>{email}</TableCell>
                 <TableCell>{username}</TableCell>
                 <TableCell>
@@ -115,8 +113,8 @@ const EditAdmins = () => {
                             </Typography>
                             Administratorer har tilgang til alles svar. De kan
                             også velge hvem som er gruppeledere og
-                            administratorer. På denne siden kan du legge til og
-                            fjerne gruppeledere.
+                            administratorer og kan lage og fjerne grupper. På
+                            denne siden kan du legge til og fjerne gruppeledere.
                         </CardContent>
                     </Card>
                     <AdminTable admins={admins} deleteAdmin={deleteAdmin} />

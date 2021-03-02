@@ -1,9 +1,8 @@
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import React from "react";
-import { Panel } from "./Content";
 import { KnowitColors } from "../styles";
-import { YourAnswerProps } from "../types";
+import { YourAnswerProps, Panel } from "../types";
 import AnswerDiagram from "./AnswerDiagram";
 import { Form } from "./Form";
 import ProgressBar from "./ProgressBar";

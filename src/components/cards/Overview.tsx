@@ -5,7 +5,7 @@ import { KnowitColors } from "../../styles";
 import { OverviewProps } from "../../types";
 import TypedOverviewChart from "../TypedOverviewChart";
 import Highlights from "../Highlights";
-import { Panel } from "../Content";
+import { Panel } from "../../types";
 
 const cardCornerRadius: number = 40;
 
@@ -74,7 +74,7 @@ const overviewStyle = makeStyles({
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        overflowY: "scroll",
+        overflowY: "auto",
         overflowX: "hidden",
         height: "100%",
     },
