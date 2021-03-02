@@ -59,6 +59,7 @@
               "Ref": "env"
             },
             "GROUP": "admin",
+            "GROUP_LIST_USERS": "groupLeader",
             "USERPOOL": {
               "Ref": "authkompetansekartleggind11d7cceUserPoolId"
             }

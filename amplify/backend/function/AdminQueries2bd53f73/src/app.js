@@ -43,6 +43,7 @@ app.use((req, res, next) => {
 
 // Only perform tasks if the user is in a specific group
 const allowedGroup = process.env.GROUP;
+const allowedListUsersGroup = process.env.GROUP_LIST_USERS;
 
 const checkGroup = function(req, res, next) {
   if (req.path == '/signUserOut') {
@@ -56,7 +57,9 @@ const checkGroup = function(req, res, next) {
   // Fail if group enforcement is being used
   if (req.apiGateway.event.requestContext.authorizer.claims['cognito:groups']) {
     const groups = req.apiGateway.event.requestContext.authorizer.claims['cognito:groups'].split(',');
-    if (!(allowedGroup && groups.indexOf(allowedGroup) > -1)) {
+    // allow groupLeader group to list all users in the cognito user pool
+    if ((req.path == "/listUsers" || req.path == "/listUsersInGroup") && groups.includes(allowedListUsersGroup)) {}
+    else if (!(allowedGroup && groups.indexOf(allowedGroup) > -1)) {
       const err = new Error(`User does not have permissions to perform administrative tasks`);
       next(err);
     }
