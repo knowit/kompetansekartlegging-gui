@@ -22,7 +22,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { not, getAttribute } from "./helpers";
-import useApiGet from "./useApiGet";
 
 const getNameOrUsername = (user: any) => {
     const name = getAttribute(user, "name");
@@ -159,9 +158,7 @@ const SelectedUsers = ({ selectedUsers, setSelectedUser }: any) => {
 };
 
 const User = ({ user, selected, setSelectedUser }: any) => {
-    const username = user.Username;
     const name = getAttribute(user, "name");
-    const email = getAttribute(user, "email");
     const picture = getAttribute(user, "picture");
     const hasGroup = !!user.groupLeader;
     const groupLeaderName = hasGroup && getAttribute(user.groupLeader, "name");

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import DeleteIcon from "@material-ui/icons/Delete";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -14,7 +16,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { getAttribute } from "./helpers";
 import AddMemberToGroupDialog from "./AddMemberToGroupDialog";
 
-const User = ({ user }: any) => {
+const User = ({ user, deleteMember }: any) => {
     const username = user.Username;
     const name = getAttribute(user, "name");
     const email = getAttribute(user, "email");
@@ -29,15 +31,25 @@ const User = ({ user }: any) => {
                 <TableCell>{name}</TableCell>
                 <TableCell>{email}</TableCell>
                 <TableCell>{username}</TableCell>
+                <TableCell>
+                    <IconButton edge="end" onClick={() => deleteMember(user)}>
+                        <DeleteIcon />
+                    </IconButton>
+                </TableCell>
             </TableRow>
         </>
     );
 };
 
-const GroupMembers = ({ allUsers, members, addMembersToGroup }: any) => {
+const GroupMembers = ({
+    allUsers,
+    members,
+    addMembersToGroup,
+    deleteMember,
+}: any) => {
     const [open, setOpen] = useState<boolean>(false);
     const onConfirm = (users: any[]) => {
-        addMembersToGroup(users)
+        addMembersToGroup(users);
         setOpen(false);
     };
 
@@ -51,11 +63,16 @@ const GroupMembers = ({ allUsers, members, addMembersToGroup }: any) => {
                             <TableCell>Navn</TableCell>
                             <TableCell>Email</TableCell>
                             <TableCell>Brukernavn</TableCell>
+                            <TableCell />
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {members.map((u: any) => (
-                            <User key={u.Username} user={u} />
+                            <User
+                                key={u.Username}
+                                user={u}
+                                deleteMember={deleteMember}
+                            />
                         ))}
                     </TableBody>
                 </Table>

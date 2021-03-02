@@ -23,6 +23,7 @@ import Collapse from "@material-ui/core/Collapse";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
+import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
 import AddGroupDialog from "./AddGroupDialog";
 import DeleteGroupDialog from "./DeleteGroupDialog";
 import useApiGet from "./useApiGet";
@@ -37,7 +38,7 @@ import {
     listAllUsers,
     addUserToGroup,
     updateUserGroup,
-    removeUserFromGroup
+    removeUserFromGroup,
 } from "./groupsApi";
 import { getAttribute } from "./helpers";
 import GroupMembers from "./GroupMembers";
@@ -52,6 +53,7 @@ const useRowStyles = makeStyles({
 
 const Group = ({
     addMembersToGroup,
+    deleteMember,
     group,
     deleteGroup,
     users,
@@ -111,6 +113,9 @@ const Group = ({
                                 addMembersToGroup={(users: any) =>
                                     addMembersToGroup(users, groupId)
                                 }
+                                deleteMember={(user: any) =>
+                                    deleteMember(user, groupId)
+                                }
                             />
                         </Box>
                     </Collapse>
@@ -127,6 +132,7 @@ const GroupsTable = ({
     groupLeaders,
     deleteGroup,
     addMembersToGroup,
+    deleteMember,
 }: any) => {
     const [openId, setOpenId] = useState<string>("");
     const setOpenGroup = (groupId: string) => {
@@ -175,6 +181,7 @@ const GroupsTable = ({
                             open={g.id === openId}
                             setOpenId={setOpenGroup}
                             addMembersToGroup={addMembersToGroup}
+                            deleteMember={deleteMember}
                         />
                     ))}
                 </TableBody>
@@ -215,7 +222,18 @@ const EditGroups = () => {
     });
     const [showAddGroup, setShowAddGroup] = useState<boolean>(false);
     const [groupToDelete, setGroupToDelete] = useState<any>();
+    const [memberToDelete, setMemberToDelete] = useState<any>();
 
+    const deleteMember = (user: any, group: any) =>
+        setMemberToDelete({ user, group });
+    const deleteMemberConfirm = async () => {
+        await removeUserFromGroup(
+            memberToDelete.user.Username,
+            memberToDelete.group.id
+        );
+        setMemberToDelete(null);
+        setDummy((dummy) => dummy + 1);
+    };
     const deleteGroup = (group: any) => setGroupToDelete(group);
     const deleteGroupConfirm = async () => {
         await removeGroup(groupToDelete);
@@ -283,6 +301,7 @@ const EditGroups = () => {
                         allAvailableUsers={allAvailableUsers}
                         groupLeaders={groupLeaders}
                         addMembersToGroup={addMembersToGroup}
+                        deleteMember={deleteMember}
                     />
                     <Button
                         variant="contained"
@@ -301,6 +320,14 @@ const EditGroups = () => {
                 onConfirm={deleteGroupConfirm}
                 group={groupToDelete}
                 groupLeaders={groupLeaders}
+            />
+            <DeleteUserFromGroupDialog
+                open={!!memberToDelete}
+                onCancel={() => setMemberToDelete(null)}
+                onConfirm={deleteMemberConfirm}
+                user={memberToDelete && memberToDelete.user}
+                roleName="gruppen"
+                disableRoleSuffix
             />
             {showAddGroup && (
                 <AddGroupDialog

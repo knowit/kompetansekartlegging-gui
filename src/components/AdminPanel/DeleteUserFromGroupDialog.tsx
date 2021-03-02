@@ -15,16 +15,18 @@ const DeleteUserFromGroupDialog = ({
     user,
     open,
     roleName,
+    disableRoleSuffix,
     children,
 }: any) => {
     const name = getAttribute(user, "name");
+    const role = disableRoleSuffix ? roleName : `${roleName}rollen`;
     return (
         <Dialog open={open} onClose={onCancel}>
-            <DialogTitle>{`Fjern ${name} fra ${roleName}rollen?`}</DialogTitle>
+            <DialogTitle>{`Fjern ${name} fra ${role}?`}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Er du sikker på at du har lyst å fjerne {name} fra{" "}
-                    {roleName}rollen? {children}
+                    Er du sikker på at du har lyst å fjerne {name} fra {role}?{" "}
+                    {children}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
