@@ -1,3 +1,7 @@
 .tableContainer {
     max-height: 768px;
 }
+
+.usersTableContainer {
+    max-height: 480px;
+}

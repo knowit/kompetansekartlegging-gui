@@ -17,7 +17,6 @@ import { getAttribute } from "./helpers";
 import AddMemberToGroupDialog from "./AddMemberToGroupDialog";
 
 const User = ({ user, deleteMember }: any) => {
-    const username = user.Username;
     const name = getAttribute(user, "name");
     const email = getAttribute(user, "email");
     const picture = getAttribute(user, "picture");
@@ -30,7 +29,6 @@ const User = ({ user, deleteMember }: any) => {
                 </TableCell>
                 <TableCell>{name}</TableCell>
                 <TableCell>{email}</TableCell>
-                <TableCell>{username}</TableCell>
                 <TableCell>
                     <IconButton edge="end" onClick={() => deleteMember(user)}>
                         <DeleteIcon />
@@ -62,7 +60,6 @@ const GroupMembers = ({
                             <TableCell />
                             <TableCell>Navn</TableCell>
                             <TableCell>Email</TableCell>
-                            <TableCell>Brukernavn</TableCell>
                             <TableCell />
                         </TableRow>
                     </TableHead>

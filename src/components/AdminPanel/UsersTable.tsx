@@ -1,5 +1,6 @@
 import React from "react";
 
+import commonStyles from "./common.module.css";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -12,7 +13,6 @@ import Avatar from "@material-ui/core/Avatar";
 import { getAttribute } from "./helpers";
 
 const User = ({ user, selected, setSelectedUser }: any) => {
-    const username = user.Username;
     const name = getAttribute(user, "name");
     const email = getAttribute(user, "email");
     const picture = getAttribute(user, "picture");
@@ -27,11 +27,8 @@ const User = ({ user, selected, setSelectedUser }: any) => {
                 <TableCell>
                     <Avatar alt={name} src={picture} />
                 </TableCell>
-                <TableCell>
-                    {name}
-                </TableCell>
+                <TableCell>{name}</TableCell>
                 <TableCell>{email}</TableCell>
-                <TableCell>{username}</TableCell>
             </TableRow>
         </>
     );
@@ -42,14 +39,16 @@ const UsersTable = ({ users, selectedUser, setSelectedUser }: any) => {
         selectedUser && user.Username === selectedUser.Username;
 
     return (
-        <TableContainer component={Paper}>
-            <Table>
+        <TableContainer
+            component={Paper}
+            className={commonStyles.usersTableContainer}
+        >
+            <Table stickyHeader>
                 <TableHead>
                     <TableRow>
                         <TableCell />
                         <TableCell>Navn</TableCell>
                         <TableCell>Email</TableCell>
-                        <TableCell>Brukernavn</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
