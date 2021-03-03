@@ -146,15 +146,25 @@ const getAllCategories = async () => {
 
 // Find all users.
 const getAllUsers = async () => {
-    return await cognito
-        .listUsers({
-            UserPoolId: USER_POOL_ID,
-            AttributesToGet: [
-                // "name",
-                "email",
-            ],
-        })
-        .promise();
+    let allUsers = [];
+    let PaginationToken = null;
+
+    do {
+        const res = await cognito
+            .listUsers({
+                UserPoolId: USER_POOL_ID,
+                AttributesToGet: [
+                    // "name",
+                    "email",
+                ],
+                PaginationToken,
+            })
+            .promise();
+        allUsers = [...allUsers, ...res.Users];
+        PaginationToken = res.PaginationToken;
+    } while (PaginationToken);
+
+    return allUsers;
 };
 
 // Find all form definitions.

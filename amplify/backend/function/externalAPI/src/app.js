@@ -78,11 +78,11 @@ router.get("/answers", async (req, res) => {
 
     // Find all users.
     const allUsers = await getAllUsers();
-    console.log(allUsers.Users);
+    console.log(allUsers);
 
     // Find answers for the current form definition for each user.
     const userAnswers = await Promise.all(
-        allUsers.Users.map((user) =>
+        allUsers.map((user) =>
             getAnswersForUser(user, newestFormDef.id, questionMap)
         )
     );
