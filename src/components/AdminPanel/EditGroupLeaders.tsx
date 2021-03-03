@@ -18,6 +18,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Typography from "@material-ui/core/Typography";
 
+import commonStyles from "./common.module.css";
 import useApiGet from "./useApiGet";
 import {
     listAllUsers,
@@ -42,9 +43,7 @@ const GroupLeader = (props: any) => {
                 <TableCell>
                     <Avatar alt={name} src={picture} />
                 </TableCell>
-                <TableCell>
-                    {name}
-                </TableCell>
+                <TableCell>{name}</TableCell>
                 <TableCell>{email}</TableCell>
                 <TableCell>{username}</TableCell>
                 <TableCell>
@@ -62,8 +61,11 @@ const GroupLeader = (props: any) => {
 
 const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
     return (
-        <TableContainer component={Paper}>
-            <Table>
+        <TableContainer
+            component={Paper}
+            className={commonStyles.tableContainer}
+        >
+            <Table stickyHeader>
                 <TableHead>
                     <TableRow>
                         <TableCell />
@@ -113,7 +115,7 @@ const EditGroupLeaders = () => {
     };
 
     return (
-        <Container maxWidth="md" style={{ marginLeft: "0" }}>
+        <Container maxWidth="md">
             {error && <p>An error occured: {error}</p>}
             {loading && <CircularProgress />}
             {!error && !loading && groupLeaders && (

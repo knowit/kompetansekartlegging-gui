@@ -18,6 +18,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Typography from "@material-ui/core/Typography";
 
+import commonStyles from "./common.module.css";
 import AddUserToGroupDialog from "./AddUserToGroupDialog";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
 import useApiGet from "./useApiGet";
@@ -52,8 +53,11 @@ const Admin = (props: any) => {
 
 const AdminTable = ({ admins, deleteAdmin }: any) => {
     return (
-        <TableContainer component={Paper}>
-            <Table>
+        <TableContainer
+            component={Paper}
+            className={commonStyles.tableContainer}
+        >
+            <Table stickyHeader>
                 <TableHead>
                     <TableRow>
                         <TableCell />

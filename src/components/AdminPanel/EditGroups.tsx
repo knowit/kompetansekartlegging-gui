@@ -23,6 +23,7 @@ import Collapse from "@material-ui/core/Collapse";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
+import commonStyles from "./common.module.css";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
 import AddGroupDialog from "./AddGroupDialog";
 import DeleteGroupDialog from "./DeleteGroupDialog";
@@ -40,7 +41,7 @@ import {
     updateUserGroup,
     removeUserFromGroup,
 } from "./groupsApi";
-import { getAttribute } from "./helpers";
+import { getAttribute, compareByName } from "./helpers";
 import GroupMembers from "./GroupMembers";
 
 const useRowStyles = makeStyles({
@@ -57,25 +58,21 @@ const Group = ({
     group,
     deleteGroup,
     users,
-    groupLeaders,
     open,
     setOpenId,
 }: any) => {
-    const groupId = group.id;
-    const groupLeader = groupLeaders.find(
-        (gl: any) => gl.Username === group.groupLeaderUsername
-    );
-    const members = users.filter((u: any) => u.groupId === groupId);
-
-    const name = getAttribute(groupLeader, "name");
-    const picture = getAttribute(groupLeader, "picture");
+    const name = getAttribute(group.groupLeader, "name");
+    const picture = getAttribute(group.groupLeader, "picture");
     const classes = useRowStyles();
 
     return (
         <>
             <TableRow className={classes.root}>
                 <TableCell>
-                    <IconButton size="small" onClick={() => setOpenId(groupId)}>
+                    <IconButton
+                        size="small"
+                        onClick={() => setOpenId(group.id)}
+                    >
                         {open ? (
                             <KeyboardArrowUpIcon />
                         ) : (
@@ -87,7 +84,7 @@ const Group = ({
                     <Avatar alt={name} src={picture} />
                 </TableCell>
                 <TableCell>{name}</TableCell>
-                <TableCell>{members.length}</TableCell>
+                <TableCell>{group.members.length}</TableCell>
                 <TableCell align="right">
                     <Button
                         endIcon={<DeleteIcon />}
@@ -109,12 +106,12 @@ const Group = ({
                             </Typography>
                             <GroupMembers
                                 allUsers={users}
-                                members={members}
+                                members={group.members}
                                 addMembersToGroup={(users: any) =>
-                                    addMembersToGroup(users, groupId)
+                                    addMembersToGroup(users, group.id)
                                 }
                                 deleteMember={(user: any) =>
-                                    deleteMember(user, groupId)
+                                    deleteMember(user, group.id)
                                 }
                             />
                         </Box>
@@ -158,8 +155,25 @@ const GroupsTable = ({
         }
     });
 
+    const groupsAnnotated = groups
+        .map((g: any) => {
+            const groupLeader = groupLeaders.find(
+                (gl: any) => gl.Username === g.groupLeaderUsername
+            );
+            const members = allAvailableUsersAnnotated.filter(
+                (u: any) => u.groupId === g.id
+            );
+            return { ...g, groupLeader, members };
+        })
+        .sort((g1: any, g2: any) =>
+            compareByName(g1?.groupLeader, g2?.groupLeader)
+        );
+
     return (
-        <TableContainer component={Paper}>
+        <TableContainer
+            component={Paper}
+            className={commonStyles.tableContainer}
+        >
             <Table>
                 <TableHead>
                     <TableRow>
@@ -171,12 +185,11 @@ const GroupsTable = ({
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {groups.map((g: any) => (
+                    {groupsAnnotated.map((g: any) => (
                         <Group
                             key={g.id}
                             group={g}
                             users={allAvailableUsersAnnotated}
-                            groupLeaders={groupLeaders}
                             deleteGroup={deleteGroup}
                             open={g.id === openId}
                             setOpenId={setOpenGroup}
