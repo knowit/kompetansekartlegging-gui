@@ -25,7 +25,6 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
 import commonStyles from "./common.module.css";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
-import AddGroupDialog from "./AddGroupDialog";
 import DeleteGroupDialog from "./DeleteGroupDialog";
 import useApiGet from "./useApiGet";
 import {
@@ -43,6 +42,7 @@ import {
 } from "./groupsApi";
 import { getAttribute, compareByName } from "./helpers";
 import GroupMembers from "./GroupMembers";
+import AddUserToGroupDialog from "./AddUserToGroupDialog";
 
 const useRowStyles = makeStyles({
     root: {
@@ -343,11 +343,12 @@ const EditGroups = () => {
                 disableRoleSuffix
             />
             {showAddGroup && (
-                <AddGroupDialog
+                <AddUserToGroupDialog
+                    userGetFn={listGroupLeaders}
+                    title="Velg gruppeleder til den nye gruppen"
+                    confirmButtonText="Lag gruppe"
                     open={showAddGroup}
-                    groupLeaders={groupLeaders}
-                    error={groupLeadersError}
-                    loading={groupLeadersLoading}
+                    currentUsersInGroup={[]}
                     onCancel={hideShowAddGroup}
                     onConfirm={addGroupConfirm}
                 />
