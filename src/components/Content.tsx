@@ -652,8 +652,9 @@ const Content = ({ ...props }: ContentProps) => {
     type AdminMenuProps = {
         show: boolean;
         selected: boolean;
+        setShowFab: React.Dispatch<React.SetStateAction<boolean>>;
     };
-    const AdminMenu = ({ show, selected }: AdminMenuProps) => {
+    const AdminMenu = ({ show, selected, setShowFab }: AdminMenuProps) => {
         if (!show) return null;
 
         const items = [
@@ -680,7 +681,7 @@ const Content = ({ ...props }: ContentProps) => {
                     })}
                     onClick={() => {
                         // main pane is same as edit group leader pane atm
-                        props.setShowFab(false);
+                        setShowFab(false);
                         setActiveSubmenuItem("Rediger gruppeledere");
                         setActivePanel(Panel.Admin);
                     }}
@@ -747,6 +748,7 @@ const Content = ({ ...props }: ContentProps) => {
                     <AdminMenu
                         show={isAdmin}
                         selected={activePanel === Panel.Admin}
+                        setShowFab={props.setShowFab}
                     />
                 </div>
             )}
