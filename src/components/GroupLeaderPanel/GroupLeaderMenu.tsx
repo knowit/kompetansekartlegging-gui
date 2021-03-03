@@ -13,6 +13,7 @@ const GroupLeaderMenu = ({
     setActivePanel,
     activeSubMenuItem,
     setActiveSubmenuItem,
+    setShowFab,
     style,
 }: any) => {
     if (!show) return null;
@@ -29,6 +30,7 @@ const GroupLeaderMenu = ({
                     [style.menuButtonActive]: selected,
                 })}
                 onClick={() => {
+                    setShowFab(true);
                     setActiveSubmenuItem("MAIN");
                     setActivePanel(Panel.GroupLeader);
                 }}

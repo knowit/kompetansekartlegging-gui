@@ -741,6 +741,7 @@ const Content = ({ ...props }: ContentProps) => {
                         setActivePanel={setActivePanel}
                         setActiveSubmenuItem={setActiveSubmenuItem}
                         activeSubMenuItem={activeSubMenuItem}
+                        setShowFab={props.setShowFab}
                         style={style}
                     />
                     <AdminMenu
