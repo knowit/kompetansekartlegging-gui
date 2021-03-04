@@ -11,7 +11,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
-import styles from "./GroupMember.module.css";
 import { KnowitColors } from "../../styles";
 
 const BootstrapInput = withStyles((theme: Theme) =>
@@ -56,6 +55,13 @@ const BootstrapInput = withStyles((theme: Theme) =>
 )(InputBase);
 
 const useNavStyles = makeStyles((theme) => ({
+    container: {
+        marginLeft: "30px",
+        marginBottom: "20px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
     formControl: {
         margin: theme.spacing(1),
         minWidth: 200,
@@ -63,7 +69,12 @@ const useNavStyles = makeStyles((theme) => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
-    menuItem: {
+    name: {
+        fontFamily: "Arial",
+        fontStyle: "normal",
+        fontWeight: "bold",
+        fontSize: "20px",
+        lineHeight: "23px",
     },
 }));
 
@@ -71,28 +82,22 @@ const Nav = ({ categories, category, setCategory, name }: any) => {
     const classes = useNavStyles();
 
     return (
-        <div className={styles.nav}>
+        <div className={classes.container}>
             <FormControl className={classes.formControl}>
                 <Select
                     value={category}
                     onChange={(e: any) => setCategory(e.target.value)}
                     input={<BootstrapInput />}
                 >
-                    <MenuItem value="Oversikt" className={classes.menuItem}>
-                        Oversikt
-                    </MenuItem>
+                    <MenuItem value="Oversikt">Oversikt</MenuItem>
                     {categories.map((c: any) => (
-                        <MenuItem
-                            key={c}
-                            value={c}
-                            className={classes.menuItem}
-                        >
+                        <MenuItem key={c} value={c}>
                             {c}
                         </MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            <h1 className={styles.navName}>{name}</h1>
+            <h3 className={classes.name}>{name}</h3>
         </div>
     );
 };
