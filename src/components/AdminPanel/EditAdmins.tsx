@@ -112,7 +112,7 @@ const EditAdmins = () => {
     };
 
     return (
-        <Container maxWidth="md" style={{ marginLeft: "0" }}>
+        <Container maxWidth="md">
             {error && <p>An error occured: {error}</p>}
             {loading && <CircularProgress />}
             {!error && !loading && admins && (
