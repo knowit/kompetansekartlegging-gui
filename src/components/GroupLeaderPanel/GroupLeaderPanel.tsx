@@ -16,7 +16,7 @@ import {
 } from "../AdminPanel/groupsApi";
 
 import Main from "./Main";
-import GroupMember from "./GroupMember"
+import GroupMember from "./GroupMember";
 
 const GroupLeaderPanel = ({
     members,
@@ -62,15 +62,21 @@ const GroupLeaderPanel = ({
         (g: Group) => g.groupLeaderUsername === user.username
     );
     const groupId = group?.id;
+    const [
+        showDeleteUserFromGroupDialog,
+        setShowDeleteUserFromGroupDialog,
+    ] = useState<boolean>(false);
     const [memberToDelete, setMemberToDelete] = useState<any>();
-    const deleteMember = (user: any, group: any) =>
+    const deleteMember = (user: any, group: any) => {
         setMemberToDelete({ user, group });
+        setShowDeleteUserFromGroupDialog(true);
+    };
     const deleteMemberConfirm = async () => {
         await removeUserFromGroup(
             memberToDelete.user.Username,
             memberToDelete.group.id
         );
-        setMemberToDelete(null);
+        setShowDeleteUserFromGroupDialog(false);
         setUserRefreshCounter(
             (userRefreshCounter: any) => userRefreshCounter + 1
         );
@@ -151,6 +157,12 @@ const GroupLeaderPanel = ({
                     isLoading={isLoading}
                     addMembersToGroup={addMembersToGroup}
                     deleteMember={deleteMember}
+                    setShowDeleteUserFromGroupDialog={
+                        setShowDeleteUserFromGroupDialog
+                    }
+                    showDeleteUserFromGroupDialog={
+                        showDeleteUserFromGroupDialog
+                    }
                     memberToDelete={memberToDelete}
                     setMemberToDelete={setMemberToDelete}
                     deleteMemberConfirm={deleteMemberConfirm}

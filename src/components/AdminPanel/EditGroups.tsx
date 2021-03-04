@@ -237,14 +237,20 @@ const EditGroups = () => {
     const [groupToDelete, setGroupToDelete] = useState<any>();
     const [memberToDelete, setMemberToDelete] = useState<any>();
 
-    const deleteMember = (user: any, group: any) =>
+    const [
+        showDeleteUserFromGroupDialog,
+        setShowDeleteUserFromGroupDialog,
+    ] = useState<boolean>(false);
+    const deleteMember = (user: any, group: any) => {
         setMemberToDelete({ user, group });
+        setShowDeleteUserFromGroupDialog(true);
+    };
     const deleteMemberConfirm = async () => {
         await removeUserFromGroup(
             memberToDelete.user.Username,
             memberToDelete.group.id
         );
-        setMemberToDelete(null);
+        setShowDeleteUserFromGroupDialog(false);
         setDummy((dummy) => dummy + 1);
     };
     const deleteGroup = (group: any) => setGroupToDelete(group);
@@ -335,8 +341,9 @@ const EditGroups = () => {
                 groupLeaders={groupLeaders}
             />
             <DeleteUserFromGroupDialog
-                open={!!memberToDelete}
-                onCancel={() => setMemberToDelete(null)}
+                open={showDeleteUserFromGroupDialog}
+                onCancel={() => setShowDeleteUserFromGroupDialog(false)}
+                onExited={() => setMemberToDelete(null)}
                 onConfirm={deleteMemberConfirm}
                 user={memberToDelete && memberToDelete.user}
                 roleName="gruppen"

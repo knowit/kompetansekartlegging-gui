@@ -12,6 +12,7 @@ import { getAttribute } from "./helpers";
 const DeleteUserFromGroupDialog = ({
     onCancel,
     onConfirm,
+    onExited,
     user,
     open,
     roleName,
@@ -21,7 +22,7 @@ const DeleteUserFromGroupDialog = ({
     const name = getAttribute(user, "name");
     const role = disableRoleSuffix ? roleName : `${roleName}rollen`;
     return (
-        <Dialog open={open} onClose={onCancel}>
+        <Dialog open={open} onClose={onCancel} onExited={onExited}>
             <DialogTitle>{`Fjern ${name} fra ${role}?`}</DialogTitle>
             <DialogContent>
                 <DialogContentText>

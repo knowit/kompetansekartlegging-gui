@@ -88,12 +88,19 @@ const EditAdmins = () => {
         refreshCounter: dummy,
     });
     const [showAddAdmin, setShowAddAdmin] = useState<boolean>(false);
+    const [
+        showDeleteUserFromGroupDialog,
+        setShowDeleteUserFromGroupDialog,
+    ] = useState<boolean>(false);
     const [adminToDelete, setAdminToDelete] = useState<any>();
 
-    const deleteAdmin = (user: any) => setAdminToDelete(user);
+    const deleteAdmin = (user: any) => {
+        setShowDeleteUserFromGroupDialog(true);
+        setAdminToDelete(user);
+    };
     const deleteAdminConfirm = async () => {
         await removeAdmin(adminToDelete);
-        setAdminToDelete(null);
+        setShowDeleteUserFromGroupDialog(false);
         setDummy((dummy) => dummy + 1);
     };
     const clearSelectedAdmin = () => setAdminToDelete(null);
@@ -134,8 +141,9 @@ const EditAdmins = () => {
                 </>
             )}
             <DeleteUserFromGroupDialog
-                open={!!adminToDelete}
-                onCancel={clearSelectedAdmin}
+                open={showDeleteUserFromGroupDialog}
+                onCancel={() => setShowDeleteUserFromGroupDialog(false)}
+                onExited={clearSelectedAdmin}
                 onConfirm={deleteAdminConfirm}
                 user={adminToDelete}
                 roleName="administrator"

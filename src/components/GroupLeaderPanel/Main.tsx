@@ -17,9 +17,11 @@ const Main = ({
     isLoading,
     addMembersToGroup,
     deleteMember,
+    showDeleteUserFromGroupDialog,
+    setShowDeleteUserFromGroupDialog,
     memberToDelete,
     setMemberToDelete,
-    deleteMemberConfirm
+    deleteMemberConfirm,
 }: any) => {
     return (
         <Container maxWidth="md">
@@ -50,8 +52,9 @@ const Main = ({
                 </>
             )}
             <DeleteUserFromGroupDialog
-                open={!!memberToDelete}
-                onCancel={() => setMemberToDelete(null)}
+                open={showDeleteUserFromGroupDialog}
+                onCancel={() => setShowDeleteUserFromGroupDialog(false)}
+                onExited={() => setMemberToDelete(null)}
                 onConfirm={deleteMemberConfirm}
                 user={memberToDelete && memberToDelete.user}
                 roleName="gruppen"

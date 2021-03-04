@@ -34,7 +34,6 @@ const AddMemberToGroupDialog = ({
     open,
     allUsers,
     members,
-    addMembersToGroup,
 }: any) => {
     const [showOnlyUnset, setShowOnlyUnset] = useState<boolean>(false);
     const [nameFilter, setNameFilter] = useState<string>("");

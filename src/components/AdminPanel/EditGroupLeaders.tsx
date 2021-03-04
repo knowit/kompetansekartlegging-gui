@@ -100,10 +100,17 @@ const EditGroupLeaders = () => {
     );
     const [groupLeaderToDelete, setGroupLeaderToDelete] = useState<any>();
 
-    const deleteGroupLeader = (user: any) => setGroupLeaderToDelete(user);
+    const [
+        showDeleteUserFromGroupDialog,
+        setShowDeleteUserFromGroupDialog,
+    ] = useState<boolean>(false);
+    const deleteGroupLeader = (user: any) => {
+        setGroupLeaderToDelete(user);
+        setShowDeleteUserFromGroupDialog(true);
+    };
     const deleteGroupLeaderConfirm = async () => {
         await removeGroupLeader(groupLeaderToDelete);
-        setGroupLeaderToDelete(null);
+        setShowDeleteUserFromGroupDialog(false);
         setDummy((dummy) => dummy + 1);
     };
     const clearSelectedGroupLeader = () => setGroupLeaderToDelete(null);
@@ -146,8 +153,9 @@ const EditGroupLeaders = () => {
                 </>
             )}
             <DeleteUserFromGroupDialog
-                open={!!groupLeaderToDelete}
-                onCancel={clearSelectedGroupLeader}
+                open={showDeleteUserFromGroupDialog}
+                onCancel={() => setShowDeleteUserFromGroupDialog(false)}
+                onExited={clearSelectedGroupLeader}
                 onConfirm={deleteGroupLeaderConfirm}
                 user={groupLeaderToDelete}
                 roleName="gruppeleder"
