@@ -39,8 +39,6 @@ import {
 
 const cardCornerRadius: number = 40;
 
-const showSetAllQuestionsMaxButton = false;
-
 export enum MenuButton {
     Overview,
     MyAnswers,
@@ -629,24 +627,7 @@ const Content = ({ ...props }: ContentProps) => {
             case Panel.Other:
                 return <div>Hello! This is the "Other" panel :D</div>;
         }
-        return <div></div>;
-    };
-
-    const setAllQuestionsMax = () => {
-        categories.forEach((category) => {
-            let newAnswers: QuestionAnswer[] =
-                questionAnswers.get(category)?.map((quAns) => {
-                    return {
-                        ...quAns,
-                        knowledge: 5,
-                        motivation: 5,
-                        updatedAt: Date.now(),
-                    };
-                }) || [];
-            setQuestionAnswers(
-                new Map(questionAnswers.set(category, newAnswers))
-            );
-        });
+        return <div>Not implemented</div>;
     };
 
     return (
@@ -690,13 +671,6 @@ const Content = ({ ...props }: ContentProps) => {
                 style={style}
                     />
                 </div>
-            )}
-            {showSetAllQuestionsMaxButton ? (
-                <button onClick={() => setAllQuestionsMax()}>
-                    Max all questions
-                </button>
-            ) : (
-                ""
             )}
             <div className={props.isMobile ? mobileStyle.panel : style.panel}>
                 {setupPanel()}
