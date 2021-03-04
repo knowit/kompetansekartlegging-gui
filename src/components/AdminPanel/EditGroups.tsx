@@ -413,7 +413,9 @@ const EditGroups = () => {
                     title="Velg ny gruppeleder"
                     confirmButtonText="Velg"
                     open={!!groupToEdit}
-                    currentUsersInGroup={[]}
+                    currentUsersInGroup={
+                        groupToEdit.groupLeader ? [groupToEdit.groupLeader] : []
+                    }
                     onCancel={() => setGroupToEdit(null)}
                     onConfirm={editGroupConfirm}
                 />
