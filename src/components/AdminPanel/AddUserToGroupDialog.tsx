@@ -19,6 +19,7 @@ const AddUserToGroupDialog = ({
     onConfirm,
     open,
     currentUsersInGroup,
+    usersConstant,
     userGetFn,
     roleName,
     title,
@@ -27,6 +28,7 @@ const AddUserToGroupDialog = ({
     const { result: users, error, loading } = useApiGet({
         getFn: userGetFn,
         refreshCounter: 0,
+        constantResult: usersConstant,
     });
     const [selectedUser, setSelectedUser] = useState<any>();
     const onSelect = (user: any) => {

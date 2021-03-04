@@ -409,7 +409,7 @@ const EditGroups = () => {
             />
             {groupToEdit && (
                 <AddUserToGroupDialog
-                    userGetFn={listGroupLeaders}
+                    usersConstant={groupLeaders}
                     title="Velg ny gruppeleder"
                     confirmButtonText="Velg"
                     open={!!groupToEdit}
@@ -422,7 +422,7 @@ const EditGroups = () => {
             )}
             {showAddGroup && (
                 <AddUserToGroupDialog
-                    userGetFn={listGroupLeaders}
+                    usersConstant={groupLeaders}
                     title="Velg gruppeleder til den nye gruppen"
                     confirmButtonText="Lag gruppe"
                     open={showAddGroup}
