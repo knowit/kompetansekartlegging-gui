@@ -31,6 +31,62 @@ export const AppStyle = makeStyles({
     },
 });
 
+export const dialogStyles = makeStyles({
+    searchField: {
+        "& fieldset": {
+            border: "2px solid #F3C8BA",
+            borderRadius: "27px",
+            transition: "border 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+        },
+    },
+    closeButton: {
+        color: "black",
+    },
+    confirmButton: {
+        width: "162px",
+        height: "38px",
+        border: "3px solid",
+        background: KnowitColors.lightGreen,
+        borderRadius: "19px",
+        borderColor: KnowitColors.lightGreen,
+    },
+    cancelButton: {
+        width: "162px",
+        height: "38px",
+        border: "3px solid",
+        borderColor: KnowitColors.flamingo,
+        boxsizing: "border-box",
+        borderRadius: "19px",
+    },
+    buttonText: {
+        fontWeight: "bold",
+        textTransform: "none",
+        lineHeight: 1,
+    },
+    errorIcon: {
+        fill: KnowitColors.fuchsia,
+        height: "38px",
+        width: "38px",
+        marginRight: "8px",
+    },
+    alertText: {
+        color: "black",
+    },
+    alertButtons: {
+        justifyContent: "space-evenly",
+        marginBottom: "10px",
+    },
+    dialogTitle: {
+        "& h2": {
+            display: "flex",
+        },
+    },
+    dialogTitleText: {
+        fontWeight: "bold",
+        marginTop: "4px",
+    },
+});
+
 export const FontSettings = makeStyles({
     lighter: {
         fontWeight: "lighter",

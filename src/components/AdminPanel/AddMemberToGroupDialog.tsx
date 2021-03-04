@@ -15,12 +15,16 @@ import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Chip from "@material-ui/core/Chip";
+import Box from "@material-ui/core/Box";
+import IconButton from "@material-ui/core/IconButton";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import { dialogStyles } from "../../styles";
+import { CloseIcon } from "../DescriptionTable";
 import { not, getAttribute } from "./helpers";
 
 const getNameOrUsername = (user: any) => {
@@ -35,7 +39,9 @@ const AddMemberToGroupDialog = ({
     allUsers,
     members,
 }: any) => {
-    const [showOnlyUnset, setShowOnlyUnset] = useState<boolean>(false);
+    const style = dialogStyles();
+
+    const [showOnlyUnset, setShowOnlyUnset] = useState<boolean>(true);
     const [nameFilter, setNameFilter] = useState<string>("");
     const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
     const onSelect = (user: any) => {
@@ -69,14 +75,39 @@ const AddMemberToGroupDialog = ({
         .filter(showOnlyUnsetFilterFn);
 
     return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+        <Dialog
+            open={open}
+            onClose={onClose}
+            fullWidth
+            maxWidth="sm"
+            PaperProps={{
+                style: { borderRadius: 30 },
+            }}
+        >
             <DialogTitle>
+                <Box
+                    component="div"
+                    mb={1}
+                    display="flex"
+                    justifyContent="space-between"
+                >
+                    <span className={style.dialogTitleText}>
+                        Legg til medlemmer
+                    </span>
+                    <IconButton
+                        className={style.closeButton}
+                        onClick={onCancel}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </Box>
                 <FormGroup row>
                     <TextField
                         fullWidth
                         placeholder="Søk etter ansatt i Knowit Objectnet"
                         variant="outlined"
                         value={nameFilter}
+                        className={style.searchField}
                         onChange={(e: any) => setNameFilter(e.target.value)}
                     />
                     <FormControlLabel
@@ -104,18 +135,19 @@ const AddMemberToGroupDialog = ({
                     setSelectedUser={onSelect}
                 />
             </DialogContent>
-            <DialogActions>
+            <DialogActions className={style.alertButtons}>
+                <Button onClick={onClose} className={style.cancelButton}>
+                    <span className={style.buttonText}>Avbryt</span>
+                </Button>
                 <Button
                     onClick={() => {
                         onConfirm(selectedUsers);
                         onClose();
                     }}
                     disabled={selectedUsers.length === 0}
+                    className={style.confirmButton}
                 >
-                    Legg til
-                </Button>
-                <Button onClick={onClose} color="primary" variant="contained">
-                    Avbryt
+                    <span className={style.buttonText}>Legg til</span>
                 </Button>
             </DialogActions>
         </Dialog>

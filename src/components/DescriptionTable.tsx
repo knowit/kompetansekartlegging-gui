@@ -6,7 +6,7 @@ import { KnowitColors } from "../styles";
 import IconButton from "@material-ui/core/IconButton";
 import SvgIcon from "@material-ui/core/SvgIcon";
 
-const CloseIcon = () => (
+export const CloseIcon = () => (
     <SvgIcon>
         <svg viewBox="0 0 32 32">
             <path d="M21,18.5L18.5,21l11,10.9l2.5-2.5L21,18.5z" />
