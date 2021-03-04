@@ -122,7 +122,7 @@ const EditGroupLeaders = () => {
     };
 
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="md" className={commonStyles.container}>
             {error && <p>An error occured: {error}</p>}
             {loading && <CircularProgress />}
             {!error && !loading && groupLeaders && (

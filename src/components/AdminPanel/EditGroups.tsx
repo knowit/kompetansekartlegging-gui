@@ -354,7 +354,7 @@ const EditGroups = () => {
         error || allAvailableUsersError || groupLeadersError || groupsError;
 
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="md" className={commonStyles.container}>
             {isError && <p>An error occured: {isError}</p>}
             {isLoading && <CircularProgress />}
             {!isError && !isLoading && groups && (

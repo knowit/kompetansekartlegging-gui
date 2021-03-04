@@ -5,3 +5,7 @@
 .usersTableContainer {
     max-height: 480px;
 }
+
+.container {
+    margin-left: 0 !important;
+}

@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 
 import DeleteUserFromGroupDialog from "../AdminPanel/DeleteUserFromGroupDialog";
 import GroupMembers from "../AdminPanel/GroupMembers";
+import commonStyles from "../AdminPanel/common.module.css"
 
 const Main = ({
     allAvailableUsersAnnotated,
@@ -24,7 +25,7 @@ const Main = ({
     deleteMemberConfirm,
 }: any) => {
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="md" className={commonStyles.container}>
             {isError && <p>An error occured: {isError}</p>}
             {isLoading && <CircularProgress />}
             {!isError && !isLoading && allAvailableUsersAnnotated && (
