@@ -173,6 +173,29 @@ const removeGroup = async (group: any): Promise<ApiResponse<null>> => {
     }
 };
 
+const updateGroupLeader = async (
+    groupToEdit: any,
+    newGroupLeader: any
+): Promise<ApiResponse<Group>> => {
+    try {
+        const groupId = groupToEdit.id;
+        const newGroupLeaderUsername = newGroupLeader.Username;
+
+        const groupGQ = await callGraphQL<UpdateGroupMutation>(updateGroup, {
+            input: {
+                id: groupId,
+                groupLeaderUsername: newGroupLeaderUsername,
+            },
+        });
+        const group = groupGQ?.data?.updateGroup as Group;
+        return { result: group || null };
+    } catch (e) {
+        return {
+            error: `Could not set group leader to '${newGroupLeader.Username}' on group '${groupToEdit.id}'.`,
+        };
+    }
+};
+
 export {
     getGroupMembers,
     listAllGroups,
@@ -181,5 +204,6 @@ export {
     removeGroup,
     addUserToGroup,
     updateUserGroup,
-    removeUserFromGroup
+    removeUserFromGroup,
+    updateGroupLeader,
 };
