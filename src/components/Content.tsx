@@ -28,7 +28,7 @@ import {
 } from "./AlertNotification";
 import NavBarMobile from "./NavBarMobile";
 import { AnswerHistory } from "./AnswerHistory";
-import { AdminPanel } from "./AdminPanel/";
+import { AdminPanel, AdminMenu } from "./AdminPanel/";
 import { GroupLeaderMenu, GroupLeaderPanel } from "./GroupLeaderPanel/";
 import {
     getUserAnswers,
@@ -649,71 +649,6 @@ const Content = ({ ...props }: ContentProps) => {
         });
     };
 
-    type AdminMenuProps = {
-        show: boolean;
-        selected: boolean;
-        setShowFab: React.Dispatch<React.SetStateAction<boolean>>;
-    };
-    const AdminMenu = ({ show, selected, setShowFab }: AdminMenuProps) => {
-        if (!show) return null;
-
-        const items = [
-            {
-                text: "Rediger katalog",
-                disabled: true,
-            },
-            {
-                text: "Rediger gruppeledere",
-            },
-            {
-                text: "Rediger grupper",
-            },
-            {
-                text: "Rediger administratorer",
-            },
-        ];
-
-        return (
-            <>
-                <Button
-                    className={clsx(style.MenuButton, {
-                        [style.menuButtonActive]: selected,
-                    })}
-                    onClick={() => {
-                        // main pane is same as edit group leader pane atm
-                        setShowFab(false);
-                        setActiveSubmenuItem("Rediger gruppeledere");
-                        setActivePanel(Panel.Admin);
-                    }}
-                >
-                    <div className={clsx(style.menuButtonText)}>ADMIN</div>
-                </Button>
-
-                {selected &&
-                    items.map((cat) => (
-                        <Button
-                            key={cat.text}
-                            className={clsx(style.MenuButton, {
-                                [style.menuButtonActive]:
-                                    activeSubMenuItem === cat.text,
-                                [style.hideCategoryButtons]: cat.disabled,
-                            })}
-                            onClick={() => setActiveSubmenuItem(cat.text)}
-                        >
-                            <span
-                                className={clsx(
-                                    style.menuButtonText,
-                                    style.menuButtonCategoryText
-                                )}
-                            >
-                                {cat.text}
-                            </span>
-                        </Button>
-                    ))}
-            </>
-        );
-    };
-
     return (
         <div
             className={
@@ -749,6 +684,10 @@ const Content = ({ ...props }: ContentProps) => {
                         show={isAdmin}
                         selected={activePanel === Panel.Admin}
                         setShowFab={props.setShowFab}
+                        setActivePanel={setActivePanel}
+                        setActiveSubmenuItem={setActiveSubmenuItem}
+                        activeSubMenuItem={activeSubMenuItem}
+                style={style}
                     />
                 </div>
             )}
