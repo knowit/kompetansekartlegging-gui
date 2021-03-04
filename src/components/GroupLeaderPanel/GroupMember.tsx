@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import {
@@ -17,43 +12,10 @@ import { getAttribute } from "../AdminPanel/helpers";
 import { Panel, UserAnswer, QuestionAnswer } from "../../types";
 import { Overview } from "../cards/Overview";
 import AnswerDiagram from "../AnswerDiagram";
-import styles from "./GroupMember.module.css";
+import Nav from "./Nav";
 
 const voidFn = () => 1;
 
-const useNavStyles = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
-
-const Nav = ({ categories, category, setCategory, name }: any) => {
-    const classes = useNavStyles();
-
-    return (
-        <div className={styles.nav}>
-            <FormControl className={classes.formControl}>
-                <InputLabel>Kategori</InputLabel>
-                <Select
-                    value={category}
-                    onChange={(e: any) => setCategory(e.target.value)}
-                >
-                    <MenuItem value="Oversikt">Oversikt</MenuItem>
-                    {categories.map((c: any) => (
-                        <MenuItem key={c} value={c}>
-                            {c}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <h1 className={styles.navName}>{name}</h1>
-        </div>
-    );
-};
 const GroupMember = ({ members, userId, isMobile = false }: any) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
