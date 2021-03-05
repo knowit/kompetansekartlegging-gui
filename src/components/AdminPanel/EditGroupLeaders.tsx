@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -29,6 +28,7 @@ import {
 import { getAttribute } from "./helpers";
 import AddUserToGroupDialog from "./AddUserToGroupDialog";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
+import Button from "../Button";
 
 const GroupLeader = (props: any) => {
     const { groupLeader, deleteGroupLeader } = props;
@@ -145,7 +145,6 @@ const EditGroupLeaders = () => {
                         variant="contained"
                         color="primary"
                         startIcon={<PersonAddIcon />}
-                        style={{ marginTop: "24px" }}
                         onClick={() => setShowAddGroupLeader(true)}
                     >
                         Legg til gruppeleder

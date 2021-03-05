@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -47,6 +46,7 @@ import {
 import { getAttribute, compareByName } from "./helpers";
 import GroupMembers from "./GroupMembers";
 import AddUserToGroupDialog from "./AddUserToGroupDialog";
+import Button from "../Button"
 
 const useRowStyles = makeStyles({
     root: {

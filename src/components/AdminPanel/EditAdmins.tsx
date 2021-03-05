@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -24,6 +23,7 @@ import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
 import useApiGet from "./useApiGet";
 import { listAllUsers, listAdmins, removeAdmin, addAdmin } from "./adminApi";
 import { getAttribute } from "./helpers";
+import Button from "../Button";
 
 const Admin = (props: any) => {
     const { admin, deleteAdmin } = props;
