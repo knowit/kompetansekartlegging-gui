@@ -88,7 +88,7 @@ const ValueSliderMobile = withStyles(
         mark: {
             backgroundColor: KnowitColors.white,
             height: 10,
-            width: 2,
+            width: 4,
             borderWidth: 1,
             borderStyle: "solid",
             borderColor: KnowitColors.darkGreen,

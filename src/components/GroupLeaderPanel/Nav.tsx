@@ -61,6 +61,7 @@ const useNavStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        maxWidth: "1200px",
     },
     formControl: {
         margin: theme.spacing(1),
