@@ -1,5 +1,10 @@
+import React, { useState } from "react";
 import { Button, makeStyles } from "@material-ui/core";
-import React from "react";
+import {
+    AmplifyAuthenticator,
+    AmplifySignIn,
+    AmplifySignUp,
+} from "@aws-amplify/ui-react";
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
 import { Auth } from "aws-amplify";
 import { KnowitColors } from "../styles";
@@ -106,10 +111,31 @@ const loginStyle = makeStyles({
     },
 });
 
+const userBranch = process.env.REACT_APP_USER_BRANCH;
+const isNotProd = userBranch !== "master";
 const Login = (props: { isMobile: boolean }) => {
+    console.log("/tree/", userBranch, isNotProd);
     const style = loginStyle();
+    const [showDevLogin, setShowDevLogin] = useState<boolean>(false);
 
-    return (
+    return showDevLogin ? (
+        <AmplifyAuthenticator usernameAlias="email">
+            <AmplifySignIn
+                headerText="Username/password login for developers"
+                slot="sign-in"
+                usernameAlias="email"
+            />
+            <AmplifySignUp
+                slot="sign-up"
+                usernameAlias="email"
+                formFields={[
+                    { type: "name", label: "Name" },
+                    { type: "password" },
+                    { type: "email" },
+                ]}
+            />
+        </AmplifyAuthenticator>
+    ) : (
         <div className={style.container}>
             <div className={style.topDiv} />
             <div className={style.midDiv} />
@@ -143,6 +169,14 @@ const Login = (props: { isMobile: boolean }) => {
                     >
                         Logg inn
                     </Button>
+                    {isNotProd && (
+                        <Button
+                            className={style.loginButton}
+                            onClick={() => setShowDevLogin(true)}
+                        >
+                            Dev login
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>
