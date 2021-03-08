@@ -29,7 +29,6 @@ export type Answers = {
 
 export type Question = {
     id: string;
-    qid: string | undefined;
     createdAt: string;
     text: string;
     topic: string;
@@ -44,7 +43,6 @@ export type Question = {
 
 export type QuestionAnswer = {
     id: string;
-    qid: string | undefined;
     createdAt: string;
     text: string;
     topic: string;
@@ -323,7 +321,6 @@ export type BatchCreatedQuestionAnswer = {
             id: string;
             text: string;
             topic: string;
-            qid: string;
             index: number;
         };
     }[];

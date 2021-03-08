@@ -51,7 +51,6 @@ const createQuestionAnswers = (
                     createdAt: qu.createdAt,
                     id: qu.id,
                     index: qu.index,
-                    qid: qu.qid,
                     text: qu.text,
                     topic: qu.topic,
                     knowledge: -1,

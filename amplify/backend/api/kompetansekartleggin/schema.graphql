@@ -59,7 +59,6 @@ type Question
     id: ID!
     text: String!
     topic: String!
-    qid: String
     index: Int
     formDefinitionID: ID!
     categoryID: ID!

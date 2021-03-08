@@ -77,7 +77,6 @@ export const formByCreatedAtt = /* GraphQL */ `
                         createdAt
                         text
                         topic
-                        qid
                     }
                 }
             }
@@ -118,7 +117,6 @@ export const formByCreatedAtPaginated = /* GraphQL */ `
                         createdAt
                         text
                         topic
-                        qid
                     }
                     nextToken
                 }

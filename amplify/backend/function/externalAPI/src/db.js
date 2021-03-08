@@ -122,7 +122,7 @@ const getAllQuestionForFormDef = async (lastFormDefID) => {
             ExpressionAttributeValues: {
                 ":formDef": lastFormDefID,
             },
-            ProjectionExpression: "id, qid, #text, topic, categoryID",
+            ProjectionExpression: "id, #text, topic, categoryID",
             ExpressionAttributeNames: {
                 "#formDef": "formDefinitionID",
                 "#text": "text",
