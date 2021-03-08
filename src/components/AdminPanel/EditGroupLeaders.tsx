@@ -3,16 +3,13 @@ import React, { useState } from "react";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
-import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Avatar from "@material-ui/core/Avatar";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Typography from "@material-ui/core/Typography";
@@ -26,9 +23,11 @@ import {
     addGroupLeader,
 } from "./adminApi";
 import { getAttribute } from "./helpers";
+import PictureAndNameCell from "./PictureAndNameCell";
 import AddUserToGroupDialog from "./AddUserToGroupDialog";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
-import Button from "../Button";
+import Button from "../mui/Button";
+import Table from "../mui/Table";
 
 const GroupLeader = (props: any) => {
     const { groupLeader, deleteGroupLeader } = props;
@@ -41,9 +40,8 @@ const GroupLeader = (props: any) => {
         <>
             <TableRow>
                 <TableCell>
-                    <Avatar alt={name} src={picture} />
+                    <PictureAndNameCell name={name} picture={picture} />
                 </TableCell>
-                <TableCell>{name}</TableCell>
                 <TableCell>{email}</TableCell>
                 <TableCell>{username}</TableCell>
                 <TableCell>
@@ -61,15 +59,11 @@ const GroupLeader = (props: any) => {
 
 const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
     return (
-        <TableContainer
-            component={Paper}
-            className={commonStyles.tableContainer}
-        >
+        <TableContainer className={commonStyles.tableContainer}>
             <Table stickyHeader>
                 <TableHead>
                     <TableRow>
-                        <TableCell />
-                        <TableCell>Navn</TableCell>
+                        <TableCell>Ansatt</TableCell>
                         <TableCell>Email</TableCell>
                         <TableCell>Brukernavn</TableCell>
                         <TableCell />

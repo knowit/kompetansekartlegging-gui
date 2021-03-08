@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 
-import { withStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
-import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Avatar from "@material-ui/core/Avatar";
-import Badge from "@material-ui/core/Badge";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
@@ -23,7 +17,6 @@ import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import EditIcon from "@material-ui/icons/Edit";
 
 import commonStyles from "./common.module.css";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
@@ -44,9 +37,12 @@ import {
     updateGroupLeader,
 } from "./groupsApi";
 import { getAttribute, compareByName } from "./helpers";
+import PictureAndNameEditCell from "./PictureAndNameEditCell";
 import GroupMembers from "./GroupMembers";
 import AddUserToGroupDialog from "./AddUserToGroupDialog";
-import Button from "../Button"
+import Button from "../mui/Button";
+import Table from "../mui/Table";
+import TableRow from "../mui/TableRow";
 
 const useRowStyles = makeStyles({
     root: {
@@ -56,38 +52,6 @@ const useRowStyles = makeStyles({
     },
     editIcon: {},
 });
-
-const StyledEditIcon = withStyles(() => ({
-    root: {
-        fontSize: "15px",
-    },
-}))(EditIcon);
-
-const StyledBadge = withStyles((theme) => ({
-    badge: {
-        border: `2px solid ${theme.palette.background.default}`,
-        padding: "0 0px",
-        backgroundColor: `${theme.palette.background.paper}`,
-    },
-}))(Badge);
-
-const GroupAvatar = ({ showBadge, onClick, name, picture }: any) => (
-    <StyledBadge
-        badgeContent={
-            showBadge ? (
-                <IconButton size="small" onClick={onClick}>
-                    <StyledEditIcon />
-                </IconButton>
-            ) : null
-        }
-        anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-        }}
-    >
-        <Avatar alt={name} src={picture} />
-    </StyledBadge>
-);
 
 const Group = ({
     addMembersToGroup,
@@ -124,14 +88,12 @@ const Group = ({
                     </IconButton>
                 </TableCell>
                 <TableCell align="right">
-                    <GroupAvatar
-                        onClick={() => editGroup(group)}
+                    <PictureAndNameEditCell
                         name={name}
                         picture={picture}
-                        showBadge={true}
+                        onEdit={() => editGroup(group)}
                     />
                 </TableCell>
-                <TableCell>{name}</TableCell>
                 <TableCell>{group.members.length}</TableCell>
                 <TableCell align="right">
                     <Button
@@ -220,14 +182,13 @@ const GroupsTable = ({
 
     return (
         <TableContainer
-            component={Paper}
             className={commonStyles.tableContainer}
+            style={{ overflowX: "hidden" }}
         >
             <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell>Detaljer</TableCell>
-                        <TableCell />
                         <TableCell>Gruppeleder</TableCell>
                         <TableCell>Antall gruppemedlemmer</TableCell>
                         <TableCell />

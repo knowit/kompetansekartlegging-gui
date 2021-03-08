@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 
-import IconButton from "@material-ui/core/IconButton";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
 
 import { getAttribute } from "./helpers";
+import PictureAndNameCell from "./PictureAndNameCell";
 import AddMemberToGroupDialog from "./AddMemberToGroupDialog";
-import Button from "../Button";
+import Button from "../mui/Button";
+import Table from "../mui/Table";
+import TableRow from "../mui/TableRow";
 
 const User = ({ user, deleteMember }: any) => {
     const name = getAttribute(user, "name");
@@ -25,14 +22,16 @@ const User = ({ user, deleteMember }: any) => {
         <>
             <TableRow>
                 <TableCell>
-                    <Avatar alt={name} src={picture} />
+                    <PictureAndNameCell name={name} picture={picture} />
                 </TableCell>
-                <TableCell>{name}</TableCell>
                 <TableCell>{email}</TableCell>
                 <TableCell>
-                    <IconButton edge="end" onClick={() => deleteMember(user)}>
-                        <DeleteIcon />
-                    </IconButton>
+                    <Button
+                        onClick={() => deleteMember(user)}
+                        style={{ fontStyle: "italic" }}
+                    >
+                        Fjern fra gruppe
+                    </Button>
                 </TableCell>
             </TableRow>
         </>
@@ -53,12 +52,11 @@ const GroupMembers = ({
 
     return (
         <>
-            <TableContainer component={Paper}>
+            <TableContainer>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell />
-                            <TableCell>Navn</TableCell>
+                            <TableCell>Ansatt</TableCell>
                             <TableCell>Email</TableCell>
                             <TableCell />
                         </TableRow>

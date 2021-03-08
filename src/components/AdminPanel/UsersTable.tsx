@@ -1,16 +1,16 @@
 import React from "react";
 
 import commonStyles from "./common.module.css";
-import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
 
 import { getAttribute } from "./helpers";
+import Table from "../mui/Table";
+import TableRow from "../mui/TableRow"
+import PictureAndNameCell from "./PictureAndNameCell";
 
 const User = ({ user, selected, setSelectedUser }: any) => {
     const name = getAttribute(user, "name");
@@ -25,9 +25,8 @@ const User = ({ user, selected, setSelectedUser }: any) => {
                 onClick={() => setSelectedUser(user)}
             >
                 <TableCell>
-                    <Avatar alt={name} src={picture} />
+                    <PictureAndNameCell name={name} picture={picture} />
                 </TableCell>
-                <TableCell>{name}</TableCell>
                 <TableCell>{email}</TableCell>
             </TableRow>
         </>
@@ -46,8 +45,7 @@ const UsersTable = ({ users, selectedUser, setSelectedUser }: any) => {
             <Table stickyHeader>
                 <TableHead>
                     <TableRow>
-                        <TableCell />
-                        <TableCell>Navn</TableCell>
+                        <TableCell>Ansatt</TableCell>
                         <TableCell>Email</TableCell>
                     </TableRow>
                 </TableHead>

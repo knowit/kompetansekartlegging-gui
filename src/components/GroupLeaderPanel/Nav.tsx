@@ -59,7 +59,7 @@ const useNavStyles = makeStyles((theme) => ({
         marginLeft: "30px",
         marginBottom: "20px",
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "start",
         alignItems: "center",
         maxWidth: "1200px",
     },
@@ -76,6 +76,7 @@ const useNavStyles = makeStyles((theme) => ({
         fontWeight: "bold",
         fontSize: "20px",
         lineHeight: "23px",
+        marginRight: "23px",
     },
 }));
 
@@ -84,6 +85,7 @@ const Nav = ({ categories, category, setCategory, name }: any) => {
 
     return (
         <div className={classes.container}>
+            <h3 className={classes.name}>{name}</h3>
             <FormControl className={classes.formControl}>
                 <Select
                     value={category}
@@ -98,7 +100,6 @@ const Nav = ({ categories, category, setCategory, name }: any) => {
                     ))}
                 </Select>
             </FormControl>
-            <h3 className={classes.name}>{name}</h3>
         </div>
     );
 };

@@ -2,13 +2,12 @@ import React from "react";
 
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 
 import DeleteUserFromGroupDialog from "../AdminPanel/DeleteUserFromGroupDialog";
 import GroupMembers from "../AdminPanel/GroupMembers";
-import commonStyles from "../AdminPanel/common.module.css"
+import commonStyles from "../AdminPanel/common.module.css";
 
 const Main = ({
     allAvailableUsersAnnotated,
@@ -30,16 +29,11 @@ const Main = ({
             {isLoading && <CircularProgress />}
             {!isError && !isLoading && allAvailableUsersAnnotated && (
                 <>
-                    <Card style={{ marginBottom: "24px" }} variant="outlined">
-                        <CardContent>
-                            <Typography color="textSecondary" gutterBottom>
-                                Rediger din gruppe
-                            </Typography>
-                            En gruppe består av en gruppeleder og flere
-                            gruppebarn. På denne siden kan legge til og fjerne
-                            ansatte til og fra gruppen din.
-                        </CardContent>
-                    </Card>
+                    <Box margin={3} marginLeft={2}>
+                    <Typography variant="h5" component="h2" color="textPrimary">
+                            Min gruppe
+                        </Typography>
+                    </Box>
                     <GroupMembers
                         allUsers={allAvailableUsersAnnotated}
                         members={members}

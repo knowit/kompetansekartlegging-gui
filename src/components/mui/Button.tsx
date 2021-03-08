@@ -2,11 +2,16 @@ import { createStyles, withStyles } from "@material-ui/core/styles";
 import Button, {
     ButtonProps as MuiButtonProps,
 } from "@material-ui/core/Button";
-import { KnowitColors } from "../styles";
+import { KnowitColors } from "../../styles";
 
 const StyledButton = withStyles(() =>
     createStyles({
         root: {
+            fontWeight: (props: MuiButtonProps) =>
+                props.color === "primary" || props.color === "secondary"
+                    ? "bold"
+                    : "normal",
+            textTransform: "none",
             margin: (props: MuiButtonProps) => {
                 switch (props.color) {
                     case "primary":

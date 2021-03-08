@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
@@ -23,6 +20,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import Table from "../mui/Table";
+import TableRow from "../mui/TableRow";
+import PictureAndNameCell from "./PictureAndNameCell";
 import { dialogStyles } from "../../styles";
 import { CloseIcon } from "../DescriptionTable";
 import { not, getAttribute } from "./helpers";
@@ -202,9 +202,8 @@ const User = ({ user, selected, setSelectedUser }: any) => {
                 onClick={() => setSelectedUser(user)}
             >
                 <TableCell>
-                    <Avatar alt={name} src={picture} />
+                    <PictureAndNameCell name={name} picture={picture} />
                 </TableCell>
-                <TableCell>{name}</TableCell>
                 <TableCell>
                     {groupLeaderName || "Mangler gruppeleder"}
                 </TableCell>
@@ -218,12 +217,11 @@ const UsersTable = ({ users, selectedUsers, setSelectedUser }: any) => {
         selectedUsers.some((u: any) => u.Username === user.Username);
 
     return (
-        <TableContainer component={Paper}>
-            <Table>
+        <TableContainer component={Paper} style={{ height: "100%" }}>
+            <Table stickyHeader style={{ maxHeight: "100%" }}>
                 <TableHead>
                     <TableRow>
-                        <TableCell />
-                        <TableCell>Navn</TableCell>
+                        <TableCell>Ansatt</TableCell>
                         <TableCell>Gruppeleder</TableCell>
                     </TableRow>
                 </TableHead>
