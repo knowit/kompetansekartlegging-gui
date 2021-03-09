@@ -55,7 +55,8 @@ type QuestionAnswer
 
 type Question
     @model
-    @key(name: "byFormDefinition", fields: ["formDefinitionID"]) {
+    @key(name: "byFormDefinition", fields: ["formDefinitionID"])
+    @key(name: "byCategory", fields: ["categoryID"]) {
     id: ID!
     text: String!
     topic: String!
@@ -70,6 +71,9 @@ type Category @model {
     text: String!
     description: String
     index: Int
+    formDefinitionID: ID!
+    formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
+    questions: [Question] @connection(keyName: "byCategory", fields: ["id"])
 }
 
 type Group
