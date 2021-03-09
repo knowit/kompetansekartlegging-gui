@@ -6,6 +6,7 @@ type FormDefinition
         queryField: "formByCreatedAt"
     ) {
     id: ID!
+    label: String
     createdAt: AWSDateTime!
     sortKeyConstant: String!
     questions: [Question]
