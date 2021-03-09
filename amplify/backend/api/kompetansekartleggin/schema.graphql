@@ -1,5 +1,11 @@
 type FormDefinition
     @model
+    @auth(
+        rules: [
+            { allow: private, operations: [read] }
+            { allow: groups, groups: ["admin"] }
+        ]
+    )
     @key(
         name: "byCreatedAt"
         fields: ["sortKeyConstant", "createdAt"]
@@ -56,6 +62,12 @@ type QuestionAnswer
 
 type Question
     @model
+    @auth(
+        rules: [
+            { allow: private, operations: [read] }
+            { allow: groups, groups: ["admin"] }
+        ]
+    )
     @key(name: "byFormDefinition", fields: ["formDefinitionID"])
     @key(name: "byCategory", fields: ["categoryID"]) {
     id: ID!
@@ -67,7 +79,14 @@ type Question
     category: Category! @connection(fields: ["categoryID"])
 }
 
-type Category @model {
+type Category
+    @model
+    @auth(
+        rules: [
+            { allow: private, operations: [read] }
+            { allow: groups, groups: ["admin"] }
+        ]
+    ) {
     id: ID!
     text: String!
     description: String
