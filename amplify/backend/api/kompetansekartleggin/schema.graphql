@@ -86,6 +86,11 @@ type Category
             { allow: private, operations: [read] }
             { allow: groups, groups: ["admin"] }
         ]
+    )
+    @key(
+        name: "byFormDefinition"
+        fields: ["formDefinitionID"]
+        queryField: "categoriesByFormDefinition"
     ) {
     id: ID!
     text: String!
