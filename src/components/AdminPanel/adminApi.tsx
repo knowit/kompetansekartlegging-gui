@@ -1,9 +1,14 @@
 import { API, Auth } from "aws-amplify";
 
-export type ApiResponse<T> = {
-    result?: T;
-    error?: string;
-};
+export interface Response<T> {
+    result: T
+}
+
+export interface Failure {
+    error: string
+}
+
+export type ApiResponse<T> = Response<T> | Failure;
 
 const removeUserFromGroup = async (
     groupname: string,

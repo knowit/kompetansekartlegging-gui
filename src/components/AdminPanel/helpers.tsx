@@ -12,4 +12,10 @@ const compareByName = (a: any, b: any) => {
     return aName.localeCompare(bName);
 };
 
-export { getAttribute, not, compareByName };
+const compareByIndex = (a: any, b: any) => {
+    if (!a.index) return 1;
+    if (!b.index) return -1;
+    return a.index - b.index;
+}
+
+export { getAttribute, not, compareByName, compareByIndex };

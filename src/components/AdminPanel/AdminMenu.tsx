@@ -25,10 +25,6 @@ const AdminMenu = ({
 
     const items = [
         {
-            text: "Rediger katalog",
-            disabled: true,
-        },
-        {
             text: "Rediger gruppeledere",
         },
         {
@@ -36,6 +32,9 @@ const AdminMenu = ({
         },
         {
             text: "Rediger administratorer",
+        },
+        {
+            text: "Rediger katalog",
         },
     ];
 
@@ -62,7 +61,6 @@ const AdminMenu = ({
                         className={clsx(style.MenuButton, {
                             [style.menuButtonActive]:
                                 activeSubMenuItem === cat.text,
-                            [style.hideCategoryButtons]: cat.disabled,
                         })}
                         onClick={() => setActiveSubmenuItem(cat.text)}
                     >
