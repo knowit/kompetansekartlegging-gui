@@ -24,8 +24,10 @@ const EditCategory = () => {
     >();
     const query = useQuery();
     const formDefinitionLabel = query.get("formDefinitionLabel");
+    const label = query.get("label");
     const breadCrumbs = {
         [`/edit/${formDefinitionId}`]: formDefinitionLabel,
+        [`/edit/${formDefinitionId}/${id}`]: label,
     };
     const breadCrumbsUrlOverrides = {
         "/edit": `/edit/${formDefinitionId}?label=${formDefinitionLabel}`,

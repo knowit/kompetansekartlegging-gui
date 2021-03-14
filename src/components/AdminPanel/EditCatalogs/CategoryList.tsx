@@ -60,7 +60,7 @@ const CategoryList = ({ formDefinitionID, formDefinitionLabel }: any) => {
                 <List>
                     {categories.map((c: Category, ind: number) => {
                         const editPathName = `/edit/${formDefinitionID}/${c.id}`;
-                        const editSearch = `?formDefinitionLabel=${formDefinitionLabel}`;
+                        const editSearch = `?formDefinitionLabel=${formDefinitionLabel}&label=${c.text}`;
 
                         return (
                             <CategoryListItem

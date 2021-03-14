@@ -167,6 +167,15 @@ const updateQuestionIndex = async (question: any, index: number) => {
     await updateQuestion(question.id, { index });
 };
 
+const updateQuestionTextTopicAndCategory = async (
+    question: any,
+    topic: string,
+    text: string,
+    categoryID: string
+) => {
+    await updateQuestion(question.id, { topic, text, categoryID });
+};
+
 export {
     listAllFormDefinitions,
     listCategoriesByFormDefinitionID,
@@ -174,4 +183,5 @@ export {
     listQuestionsByCategoryID,
     updateQuestionIndex,
     updateCategoryTextAndDescription,
+    updateQuestionTextTopicAndCategory,
 };

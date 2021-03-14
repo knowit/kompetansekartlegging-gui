@@ -87,6 +87,7 @@ const CategoryListItem = ({
             setEditMode(false);
         } catch (e) {}
     };
+
     const onCancel = () => {
         setText(c.text);
         setDescription(c.description || "");

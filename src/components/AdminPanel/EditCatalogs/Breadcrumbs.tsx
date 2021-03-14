@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
             paddingBottom: "24px",
             display: "flex",
             flexDirection: "column",
-            width: 360,
+            width: "100%",
         },
         lists: {
             backgroundColor: theme.palette.background.paper,
