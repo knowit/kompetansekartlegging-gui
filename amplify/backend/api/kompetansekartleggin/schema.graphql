@@ -68,8 +68,16 @@ type Question
             { allow: groups, groups: ["admin"] }
         ]
     )
-    @key(name: "byFormDefinition", fields: ["formDefinitionID"])
-    @key(name: "byCategory", fields: ["categoryID"]) {
+    @key(
+        name: "byFormDefinition"
+        fields: ["formDefinitionID"]
+        queryField: "questionsByFormDefinition"
+    )
+    @key(
+        name: "byCategory"
+        fields: ["categoryID"]
+        queryField: "questionsByCategory"
+    ) {
     id: ID!
     text: String!
     topic: String!
