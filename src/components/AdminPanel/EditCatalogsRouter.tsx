@@ -5,6 +5,7 @@ import { Route, Switch } from "react-router";
 import Root from "./EditCatalogs/Root";
 import AddCatalog from "./EditCatalogs/AddCatalog";
 import EditCatalog from "./EditCatalogs/EditCatalog";
+import EditCategory from "./EditCatalogs/EditCategory";
 
 const EditCatalogsRouter = () => {
     return (
@@ -15,6 +16,9 @@ const EditCatalogsRouter = () => {
                 </Route>
                 <Route path="/add">
                     <AddCatalog />
+                </Route>
+                <Route path="/edit/:formDefinitionId/:id">
+                    <EditCategory />
                 </Route>
                 <Route path="/edit/:id">
                     <EditCatalog />

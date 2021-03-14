@@ -6,14 +6,19 @@ import {
     Category,
     FormDefinition,
     ListFormDefinitionsQuery,
+    Question,
+    QuestionsByCategoryQuery,
     UpdateCategoryMutation,
+    UpdateQuestionMutation,
 } from "../../API";
 import {
     categoriesByFormDefinition,
     listFormDefinitions,
+    questionsByCategory,
 } from "../../graphql/queries";
 import {
-    updateCategory as updateCategoryGq
+    updateCategory as updateCategoryGq,
+    updateQuestion as updateQuestionGq,
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
 
@@ -72,14 +77,47 @@ const listCategoriesByFormDefinitionID = async (
     }
 };
 
+const listQuestionsByCategoryID = async (
+    categoryID: string
+): Promise<ApiResponse<Question[]>> => {
+    try {
+        const gq = await callGraphQL<QuestionsByCategoryQuery>(
+            questionsByCategory,
+            {
+                categoryID,
+            }
+        );
+        const els = gq?.data?.questionsByCategory?.items?.map(
+            (el) =>
+                ({
+                    id: el?.id,
+                    text: el?.text,
+                    topic: el?.topic,
+                    formDefinitionID: el?.formDefinitionID,
+                    categoryID: el?.categoryID,
+                    index: el?.index,
+                    createdAt: el?.createdAt,
+                    updatedAt: el?.updatedAt,
+                } as Question)
+        );
+
+        return { result: els || [] };
+    } catch (e) {
+        return {
+            error: `Could not get a list of questions for category id '${categoryID}'.`,
+        };
+    }
+};
+
 const updateCategory = async (
     id: string,
     vars: any
 ): Promise<ApiResponse<Category>> => {
     try {
         const input = {
-            id, ...vars
-        }
+            id,
+            ...vars,
+        };
         const gq = await callGraphQL<UpdateCategoryMutation>(updateCategoryGq, {
             input,
         });
@@ -96,8 +134,44 @@ const updateCategoryIndex = async (category: any, index: number) => {
     await updateCategory(category.id, { index });
 };
 
+const updateCategoryTextAndDescription = async (
+    category: any,
+    text: string,
+    description: string
+) => {
+    await updateCategory(category.id, { text, description });
+};
+
+const updateQuestion = async (
+    id: string,
+    vars: any
+): Promise<ApiResponse<Question>> => {
+    try {
+        const input = {
+            id,
+            ...vars,
+        };
+        const gq = await callGraphQL<UpdateQuestionMutation>(updateQuestionGq, {
+            input,
+        });
+        const el = gq?.data?.updateQuestion as Question;
+        return { result: el || null };
+    } catch (e) {
+        return {
+            error: `Could not update question '${id}'.`,
+        };
+    }
+};
+
+const updateQuestionIndex = async (question: any, index: number) => {
+    await updateQuestion(question.id, { index });
+};
+
 export {
     listAllFormDefinitions,
     listCategoriesByFormDefinitionID,
     updateCategoryIndex,
+    listQuestionsByCategoryID,
+    updateQuestionIndex,
+    updateCategoryTextAndDescription,
 };
