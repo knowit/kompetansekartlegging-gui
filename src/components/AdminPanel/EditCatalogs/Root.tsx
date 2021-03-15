@@ -21,11 +21,13 @@ import { compareByCreatedAt } from "../helpers";
 import {
     listAllFormDefinitions,
     updateFormDefinitionCreatedAt,
+    deleteFormDefinition
 } from "../catalogApi";
 import Button from "../../mui/Button";
 import Table from "../../mui/Table";
 import TableRow from "../../mui/TableRow";
 import ActivateCatalogDialog from "./ActivateCatalogDialog";
+import DeleteCatalogDialog from "./DeleteCatalogDialog";
 
 const Catalog = ({ catalog, deleteCatalog, active, activateCatalog }: any) => {
     const name = catalog.label || "Ikke satt";
@@ -116,7 +118,7 @@ const Root = () => {
         setCatalogToDelete(catalog);
     };
     const deleteCatalogConfirm = async () => {
-        // await removeA(adminToDelete);
+        await deleteFormDefinition(catalogToDelete.id);
         setShowDeleteCatalogDialog(false);
         setDummy((dummy) => dummy + 1);
     };
@@ -177,6 +179,12 @@ const Root = () => {
                 onCancel={() => setShowActivateCatalogDialog(false)}
                 onExited={() => setCatalogToActivate(null)}
                 onConfirm={activateCatalogConfirm}
+            />
+            <DeleteCatalogDialog
+                open={showDeleteCatalogDialog}
+                onCancel={() => setShowDeleteCatalogDialog(false)}
+                onExited={() => setCatalogToDelete(null)}
+                onConfirm={deleteCatalogConfirm}
             />
         </Container>
     );
