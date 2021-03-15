@@ -189,7 +189,7 @@ const Content = ({ ...props }: ContentProps) => {
     const [activeCategory, setActiveCategory] = useState<string>("dkjfgdrjkg");
     const [answerEditMode, setAnswerEditMode] = useState<boolean>(false);
     const [alerts, setAlerts] = useState<AlertState>();
-    const [activeSubMenuItem, setActiveSubmenuItem] = useState<string>("");
+    const [activeSubmenuItem, setActiveSubmenuItem] = useState<string>("");
 
     const updateAnswer = (
         category: string,
@@ -616,14 +616,15 @@ const Content = ({ ...props }: ContentProps) => {
             case Panel.GroupLeader:
                 return (
                     <GroupLeaderPanel
-                        activeCategory={activeSubMenuItem}
+                        setActiveSubmenuItem={setActiveSubmenuItem}
+                        activeSubmenuItem={activeSubmenuItem}
                         user={props.user}
                         members={groupMembers}
                         setMembers={setGroupMembers}
                     />
                 );
             case Panel.Admin:
-                return <AdminPanel activeCategory={activeSubMenuItem} />;
+                return <AdminPanel activeCategory={activeSubmenuItem} />;
             case Panel.Other:
                 return <div>Hello! This is the "Other" panel :D</div>;
         }
@@ -657,7 +658,7 @@ const Content = ({ ...props }: ContentProps) => {
                         user={props.user}
                         setActivePanel={setActivePanel}
                         setActiveSubmenuItem={setActiveSubmenuItem}
-                        activeSubMenuItem={activeSubMenuItem}
+                        activeSubmenuItem={activeSubmenuItem}
                         setShowFab={props.setShowFab}
                         style={style}
                     />
@@ -667,8 +668,8 @@ const Content = ({ ...props }: ContentProps) => {
                         setShowFab={props.setShowFab}
                         setActivePanel={setActivePanel}
                         setActiveSubmenuItem={setActiveSubmenuItem}
-                        activeSubMenuItem={activeSubMenuItem}
-                style={style}
+                        activeSubmenuItem={activeSubmenuItem}
+                        style={style}
                     />
                 </div>
             )}

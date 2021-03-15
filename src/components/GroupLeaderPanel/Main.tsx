@@ -22,6 +22,7 @@ const Main = ({
     memberToDelete,
     setMemberToDelete,
     deleteMemberConfirm,
+    viewMember,
 }: any) => {
     return (
         <Container maxWidth="md" className={commonStyles.container}>
@@ -30,7 +31,11 @@ const Main = ({
             {!isError && !isLoading && allAvailableUsersAnnotated && (
                 <>
                     <Box margin={3} marginLeft={2}>
-                    <Typography variant="h5" component="h2" color="textPrimary">
+                        <Typography
+                            variant="h5"
+                            component="h2"
+                            color="textPrimary"
+                        >
                             Min gruppe
                         </Typography>
                     </Box>
@@ -43,6 +48,7 @@ const Main = ({
                         deleteMember={(user: any) =>
                             deleteMember(user, groupId)
                         }
+                        viewMember={viewMember}
                     />
                 </>
             )}

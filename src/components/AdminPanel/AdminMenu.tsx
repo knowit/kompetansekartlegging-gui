@@ -8,7 +8,7 @@ type AdminMenuProps = {
     selected: boolean;
     setShowFab: React.Dispatch<React.SetStateAction<boolean>>;
     style: any;
-    activeSubMenuItem: any;
+    activeSubmenuItem: any;
     setActiveSubmenuItem: any;
     setActivePanel: any;
 };
@@ -17,7 +17,7 @@ const AdminMenu = ({
     selected,
     setShowFab,
     style,
-    activeSubMenuItem,
+    activeSubmenuItem,
     setActiveSubmenuItem,
     setActivePanel,
 }: AdminMenuProps) => {
@@ -60,7 +60,7 @@ const AdminMenu = ({
                         key={cat.text}
                         className={clsx(style.MenuButton, {
                             [style.menuButtonActive]:
-                                activeSubMenuItem === cat.text,
+                                activeSubmenuItem === cat.text,
                         })}
                         onClick={() => setActiveSubmenuItem(cat.text)}
                     >

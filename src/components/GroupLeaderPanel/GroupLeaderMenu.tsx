@@ -11,7 +11,7 @@ const GroupLeaderMenu = ({
     show,
     selected,
     setActivePanel,
-    activeSubMenuItem,
+    activeSubmenuItem,
     setActiveSubmenuItem,
     setShowFab,
     style,
@@ -44,7 +44,7 @@ const GroupLeaderMenu = ({
                         key={member.name}
                         className={clsx(style.MenuButton, {
                             [style.menuButtonActive]:
-                                activeSubMenuItem === member.username,
+                                activeSubmenuItem === member.username,
                         })}
                         onClick={() => setActiveSubmenuItem(member.username)}
                     >

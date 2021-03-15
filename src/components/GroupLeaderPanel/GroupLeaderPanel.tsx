@@ -21,7 +21,8 @@ import GroupMember from "./GroupMember";
 const GroupLeaderPanel = ({
     members,
     setMembers,
-    activeCategory,
+    activeSubmenuItem,
+    setActiveSubmenuItem,
     user,
 }: any) => {
     const [userRefreshCounter, setUserRefreshCounter] = useState<number>(0);
@@ -148,7 +149,7 @@ const GroupLeaderPanel = ({
 
     return (
         <div className={style.container}>
-            {activeCategory === "MAIN" ? (
+            {activeSubmenuItem === "MAIN" ? (
                 <Main
                     allAvailableUsersAnnotated={allAvailableUsersAnnotated}
                     members={members}
@@ -166,9 +167,10 @@ const GroupLeaderPanel = ({
                     memberToDelete={memberToDelete}
                     setMemberToDelete={setMemberToDelete}
                     deleteMemberConfirm={deleteMemberConfirm}
+                    viewMember={(id: string) => setActiveSubmenuItem(id)}
                 />
             ) : (
-                <GroupMember members={members} userId={activeCategory} />
+                <GroupMember members={members} userId={activeSubmenuItem} />
             )}
         </div>
     );

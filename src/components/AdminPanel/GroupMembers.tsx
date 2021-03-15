@@ -13,28 +13,29 @@ import Button from "../mui/Button";
 import Table from "../mui/Table";
 import TableRow from "../mui/TableRow";
 
-const User = ({ user, deleteMember }: any) => {
+const User = ({ user, deleteMember, viewMember }: any) => {
     const name = getAttribute(user, "name");
     const email = getAttribute(user, "email");
     const picture = getAttribute(user, "picture");
+    const onClick = () => {
+        if (viewMember) viewMember(user.Username);
+    };
 
     return (
-        <>
-            <TableRow>
-                <TableCell>
-                    <PictureAndNameCell name={name} picture={picture} />
-                </TableCell>
-                <TableCell>{email}</TableCell>
-                <TableCell>
-                    <Button
-                        onClick={() => deleteMember(user)}
-                        style={{ fontStyle: "italic" }}
-                    >
-                        Fjern fra gruppe
-                    </Button>
-                </TableCell>
-            </TableRow>
-        </>
+        <TableRow hover style={{ cursor: viewMember ? "pointer" : "default" }}>
+            <TableCell onClick={onClick}>
+                <PictureAndNameCell name={name} picture={picture} />
+            </TableCell>
+            <TableCell onClick={onClick}>{email}</TableCell>
+            <TableCell>
+                <Button
+                    onClick={() => deleteMember(user)}
+                    style={{ fontStyle: "italic" }}
+                >
+                    Fjern fra gruppe
+                </Button>
+            </TableCell>
+        </TableRow>
     );
 };
 
@@ -43,6 +44,7 @@ const GroupMembers = ({
     members,
     addMembersToGroup,
     deleteMember,
+    viewMember,
 }: any) => {
     const [open, setOpen] = useState<boolean>(false);
     const onConfirm = (users: any[]) => {
@@ -67,6 +69,7 @@ const GroupMembers = ({
                                 key={u.Username}
                                 user={u}
                                 deleteMember={deleteMember}
+                                viewMember={viewMember}
                             />
                         ))}
                     </TableBody>
