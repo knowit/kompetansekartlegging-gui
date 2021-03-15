@@ -34,7 +34,7 @@ const useQuestionListStyles = makeStyles(() =>
             },
         },
         listItemEdit: {
-            backgroundColor: KnowitColors.creme,
+            backgroundColor: KnowitColors.darkBrown,
             padding: "16px",
             borderRadius: "16px",
             marginBottom: "10px",
@@ -60,10 +60,18 @@ const useQuestionListStyles = makeStyles(() =>
             alignItems: "center",
         },
         textField: {
-            color: KnowitColors.darkBrown,
             marginBottom: "16px",
+            "& input": {
+                color: KnowitColors.white,
+            },
+            "& textarea": {
+                color: KnowitColors.white,
+            },
+            "& label": {
+                color: KnowitColors.white,
+            },
             "& fieldset": {
-                color: KnowitColors.black,
+                color: KnowitColors.white,
                 border: "2px solid #F3C8BA",
                 borderRadius: "15px",
                 transition: "border 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
@@ -120,7 +128,6 @@ const QuestionListItem = ({
                             }
                         />
                         <TextField
-                            autoFocus
                             fullWidth
                             multiline
                             rows={4}
