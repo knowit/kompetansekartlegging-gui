@@ -13,7 +13,12 @@ import { Question } from "../../../API";
 import { compareByIndex } from "../helpers";
 import QuestionListItem from "./QuestionListItem";
 
-const QuestionList = ({ id, formDefinitionID, formDefinitionLabel }: any) => {
+const QuestionList = ({
+    id,
+    categories,
+    formDefinitionID,
+    formDefinitionLabel,
+}: any) => {
     const memoizedCallback = useCallback(() => listQuestionsByCategoryID(id), [
         id,
     ]);
@@ -70,6 +75,7 @@ const QuestionList = ({ id, formDefinitionID, formDefinitionLabel }: any) => {
                             saveQuestion={saveQuestion}
                             enableUpdates={enableUpdates}
                             questions={questions}
+                            categories={categories}
                         />
                     ))}
                 </List>

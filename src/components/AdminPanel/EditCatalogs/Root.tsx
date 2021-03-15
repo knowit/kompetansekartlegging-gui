@@ -169,7 +169,7 @@ const Root = () => {
                             startIcon={<AddIcon />}
                             style={{ marginTop: "24px" }}
                         >
-                            Legg til katalog
+                            Lag ny katalog
                         </Button>
                     </Link>
                 </>

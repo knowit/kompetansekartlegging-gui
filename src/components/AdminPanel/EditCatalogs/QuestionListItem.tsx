@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
@@ -14,6 +15,7 @@ import TextField from "@material-ui/core/TextField";
 
 import { KnowitColors } from "../../../styles";
 import EditActionButtons from "./EditActionButtons";
+import CategoriesSelect from "./CategoriesSelect";
 
 const useQuestionListStyles = makeStyles(() =>
     createStyles({
@@ -90,6 +92,7 @@ const QuestionListItem = ({
     saveQuestion,
     enableUpdates,
     questions,
+    categories,
 }: any) => {
     const [editMode, setEditMode] = useState<boolean>(false);
     const [topic, setTopic] = useState<String>(q.topic);
@@ -116,20 +119,27 @@ const QuestionListItem = ({
             <ListItemText
                 primary={
                     <>
-                        <TextField
-                            autoFocus
-                            fullWidth
-                            label="Emne"
-                            variant="outlined"
-                            value={topic}
-                            className={classes.textField}
-                            onChange={(e: any) => setTopic(e.target.value)}
-                            error={topic.length === 0}
-                            helperText={
-                                topic.length === 0 &&
-                                "Emnet kan ikke være tomt."
-                            }
-                        />
+                        <Box display="flex" alignItems="center">
+                            <TextField
+                                autoFocus
+                                fullWidth
+                                label="Emne"
+                                variant="outlined"
+                                value={topic}
+                                className={classes.textField}
+                                onChange={(e: any) => setTopic(e.target.value)}
+                                error={topic.length === 0}
+                                helperText={
+                                    topic.length === 0 &&
+                                    "Emnet kan ikke være tomt."
+                                }
+                            />
+                            <CategoriesSelect
+                                categoryID={categoryID}
+                                setCategoryID={setCategoryID}
+                                categories={categories}
+                            />
+                        </Box>
                         <TextField
                             fullWidth
                             multiline

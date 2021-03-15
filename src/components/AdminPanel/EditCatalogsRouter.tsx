@@ -17,7 +17,7 @@ const EditCatalogsRouter = () => {
                 <Route path="/add">
                     <AddCatalog />
                 </Route>
-                <Route path="/edit/:formDefinitionId/:id">
+                <Route path="/edit/:formDefinitionID/:id">
                     <EditCategory />
                 </Route>
                 <Route path="/edit/:id">
