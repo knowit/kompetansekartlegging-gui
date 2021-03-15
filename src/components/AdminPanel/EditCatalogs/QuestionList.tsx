@@ -24,10 +24,8 @@ const QuestionList = ({
     ]);
     const [enableUpdates, setEnableUpdates] = useState<boolean>(true);
 
-    const [dummy, setDummy] = useState(0);
-    const { result: questions, error, loading } = useApiGet({
+    const { result: questions, error, loading, refresh } = useApiGet({
         getFn: memoizedCallback,
-        refreshCounter: dummy,
         cmpFn: compareByIndex,
     });
 
@@ -41,8 +39,8 @@ const QuestionList = ({
         await updateQuestionIndex(me, swapWith.index);
         await updateQuestionIndex(swapWith, me.index);
 
-        setDummy((dummy) => dummy + 1);
         setEnableUpdates(true);
+        refresh();
     };
 
     const saveQuestion = async (
@@ -57,7 +55,7 @@ const QuestionList = ({
             text,
             categoryID
         );
-        setDummy((dummy) => dummy + 1);
+        refresh();
     };
 
     return (

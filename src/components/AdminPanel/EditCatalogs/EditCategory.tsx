@@ -32,7 +32,6 @@ const EditCategory = () => {
     );
     const { result: categories, error, loading } = useApiGet({
         getFn: memoizedCallback,
-        refreshCounter: 0,
         cmpFn: compareByIndex,
     });
 

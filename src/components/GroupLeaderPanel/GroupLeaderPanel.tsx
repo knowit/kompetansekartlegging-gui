@@ -25,22 +25,20 @@ const GroupLeaderPanel = ({
     setActiveSubmenuItem,
     user,
 }: any) => {
-    const [userRefreshCounter, setUserRefreshCounter] = useState<number>(0);
     const {
         result: groups,
         error: groupsError,
         loading: groupsLoading,
     } = useApiGet({
         getFn: listAllGroups,
-        refreshCounter: userRefreshCounter,
     });
     const {
         result: users,
         error: usersError,
         loading: usersLoading,
+        refresh: refreshAllUsers,
     } = useApiGet({
         getFn: listAllUsers,
-        refreshCounter: userRefreshCounter,
     });
     const {
         result: groupLeaders,
@@ -48,7 +46,6 @@ const GroupLeaderPanel = ({
         loading: groupLeadersLoading,
     } = useApiGet({
         getFn: listGroupLeaders,
-        refreshCounter: userRefreshCounter,
     });
     const {
         result: allAvailableUsers,
@@ -56,7 +53,6 @@ const GroupLeaderPanel = ({
         loading: allAvailableUsersLoading,
     } = useApiGet({
         getFn: listAllAvailableUsers,
-        refreshCounter: userRefreshCounter,
     });
 
     const group = groups?.find(
@@ -78,9 +74,7 @@ const GroupLeaderPanel = ({
             memberToDelete.group.id
         );
         setShowDeleteUserFromGroupDialog(false);
-        setUserRefreshCounter(
-            (userRefreshCounter: any) => userRefreshCounter + 1
-        );
+        refreshAllUsers();
     };
 
     const addMembersToGroup = async (selectedUsers: any[], groupId: string) => {
@@ -96,9 +90,7 @@ const GroupLeaderPanel = ({
                 }
             })
         );
-        setUserRefreshCounter(
-            (userRefreshCounter: any) => userRefreshCounter + 1
-        );
+        refreshAllUsers();
     };
 
     const isLoading =
@@ -135,7 +127,7 @@ const GroupLeaderPanel = ({
             });
             setAllAvailableUsersAnnotated(annotated);
         }
-    }, [userRefreshCounter, allAvailableUsers, groupLeaders, groups, users]);
+    }, [allAvailableUsers, groupLeaders, groups, users]);
 
     useEffect(() => {
         if (allAvailableUsersAnnotated) {

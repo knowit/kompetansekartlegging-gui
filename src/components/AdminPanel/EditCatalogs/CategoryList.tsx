@@ -22,10 +22,8 @@ const CategoryList = ({ formDefinitionID, formDefinitionLabel }: any) => {
     );
     const [enableUpdates, setEnableUpdates] = useState<boolean>(true);
 
-    const [dummy, setDummy] = useState(0);
-    const { result: categories, error, loading } = useApiGet({
+    const { result: categories, error, loading, refresh } = useApiGet({
         getFn: memoizedCallback,
-        refreshCounter: dummy,
         cmpFn: compareByIndex,
     });
 
@@ -39,8 +37,8 @@ const CategoryList = ({ formDefinitionID, formDefinitionLabel }: any) => {
         await updateCategoryIndex(me, swapWith.index);
         await updateCategoryIndex(swapWith, me.index);
 
-        setDummy((dummy) => dummy + 1);
         setEnableUpdates(true);
+        refresh();
     };
 
     const saveCategory = async (
@@ -49,7 +47,7 @@ const CategoryList = ({ formDefinitionID, formDefinitionLabel }: any) => {
         description: string
     ) => {
         await updateCategoryTextAndDescription(category, text, description);
-        setDummy((dummy) => dummy + 1);
+        refresh();
     };
 
     return (

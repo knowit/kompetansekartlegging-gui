@@ -21,7 +21,7 @@ import { compareByCreatedAt } from "../helpers";
 import {
     listAllFormDefinitions,
     updateFormDefinitionCreatedAt,
-    deleteFormDefinition
+    deleteFormDefinition,
 } from "../catalogApi";
 import Button from "../../mui/Button";
 import Table from "../../mui/Table";
@@ -101,10 +101,8 @@ const CatalogTable = ({ catalogs, deleteCatalog, activateCatalog }: any) => {
 };
 
 const Root = () => {
-    const [dummy, setDummy] = useState(0);
-    const { result: catalogs, error, loading } = useApiGet({
+    const { result: catalogs, error, loading, refresh } = useApiGet({
         getFn: listAllFormDefinitions,
-        refreshCounter: dummy,
         cmpFn: compareByCreatedAt,
     });
 
@@ -120,7 +118,7 @@ const Root = () => {
     const deleteCatalogConfirm = async () => {
         await deleteFormDefinition(catalogToDelete.id);
         setShowDeleteCatalogDialog(false);
-        setDummy((dummy) => dummy + 1);
+        refresh();
     };
 
     const [
@@ -138,7 +136,7 @@ const Root = () => {
             new Date().toISOString()
         );
         setShowActivateCatalogDialog(false);
-        setDummy((dummy) => dummy + 1);
+        refresh();
     };
 
     return (

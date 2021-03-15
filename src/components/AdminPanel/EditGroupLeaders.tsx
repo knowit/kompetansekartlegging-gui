@@ -84,10 +84,8 @@ const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
 };
 
 const EditGroupLeaders = () => {
-    const [dummy, setDummy] = useState(0); // used to refresh table; don't arrest me
-    const { result: groupLeaders, error, loading } = useApiGet({
+    const { result: groupLeaders, error, loading, refresh } = useApiGet({
         getFn: listGroupLeaders,
-        refreshCounter: dummy,
     });
     const [showAddGroupLeader, setShowAddGroupLeader] = useState<boolean>(
         false
@@ -105,14 +103,14 @@ const EditGroupLeaders = () => {
     const deleteGroupLeaderConfirm = async () => {
         await removeGroupLeader(groupLeaderToDelete);
         setShowDeleteUserFromGroupDialog(false);
-        setDummy((dummy) => dummy + 1);
+        refresh();
     };
     const clearSelectedGroupLeader = () => setGroupLeaderToDelete(null);
     const hideShowAddGroupLeader = () => setShowAddGroupLeader(false);
     const addGroupLeaderConfirm = async (user: any) => {
         await addGroupLeader(user);
         setShowAddGroupLeader(false);
-        setDummy((dummy) => dummy + 1);
+        refresh();
     };
 
     return (

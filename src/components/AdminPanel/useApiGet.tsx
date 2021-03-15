@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { compareByName } from "./helpers";
 
-const useApiGet = ({
-    getFn,
-    constantResult,
-    refreshCounter,
-    cmpFn = compareByName,
-}: any) => {
+const useApiGet = ({ getFn, constantResult, cmpFn = compareByName }: any) => {
     const [result, setResult] = useState<any[]>(constantResult || []);
     const [loading, setLoading] = useState<boolean>(!constantResult);
     const [error, setError] = useState<string | undefined>();
+    const [refreshCounter, setRefreshCounter] = useState<number>(0);
+
+    const refresh = () => {
+        setRefreshCounter((i) => i + 1);
+    };
 
     useEffect(() => {
         if (!constantResult) {
@@ -35,7 +35,7 @@ const useApiGet = ({
         }
     }, [refreshCounter, getFn, cmpFn, constantResult]);
 
-    return { result, error, loading };
+    return { result, error, loading, refresh };
 };
 
 export default useApiGet;

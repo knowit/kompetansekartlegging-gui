@@ -215,34 +215,37 @@ const GroupsTable = ({
 };
 
 const EditGroups = () => {
-    const [dummy, setDummy] = useState(0);
-    const { result: users, error, loading } = useApiGet({
+    const {
+        result: users,
+        error,
+        loading,
+        refresh: refreshAllUsers,
+    } = useApiGet({
         getFn: listAllUsers,
-        refreshCounter: dummy,
     });
     const {
         result: allAvailableUsers,
         error: allAvailableUsersError,
         loading: allAvailableUsersLoading,
+        refresh: refreshAllAvailableUsers,
     } = useApiGet({
         getFn: listAllAvailableUsers,
-        refreshCounter: dummy,
     });
     const {
         result: groupLeaders,
         error: groupLeadersError,
         loading: groupLeadersLoading,
+        refresh: refreshGroupLeaders,
     } = useApiGet({
         getFn: listGroupLeaders,
-        refreshCounter: dummy,
     });
     const {
         result: groups,
         error: groupsError,
         loading: groupsLoading,
+        refresh: refreshGroups,
     } = useApiGet({
         getFn: listAllGroups,
-        refreshCounter: dummy,
     });
     const [showAddGroup, setShowAddGroup] = useState<boolean>(false);
     const [groupToDelete, setGroupToDelete] = useState<any>();
@@ -263,7 +266,7 @@ const EditGroups = () => {
             memberToDelete.group.id
         );
         setShowDeleteUserFromGroupDialog(false);
-        setDummy((dummy) => dummy + 1);
+        refreshAllUsers();
     };
     const deleteGroup = (group: any) => setGroupToDelete(group);
     const deleteGroupConfirm = async () => {
@@ -274,20 +277,20 @@ const EditGroups = () => {
                 .map((u: any) => removeUserFromGroup(u.id, groupToDelete.id))
         );
         setGroupToDelete(null);
-        setDummy((dummy) => dummy + 1);
+        refreshGroups();
     };
     const clearSelectedGroup = () => setGroupToDelete(null);
     const hideShowAddGroup = () => setShowAddGroup(false);
     const addGroupConfirm = async (user: any) => {
         await addGroup(user);
         setShowAddGroup(false);
-        setDummy((dummy) => dummy + 1);
+        refreshGroups();
     };
     const editGroup = (group: any) => setGroupToEdit(group);
     const editGroupConfirm = async (groupLeader: any) => {
         await updateGroupLeader(groupToEdit, groupLeader);
         setGroupToEdit(null);
-        setDummy((dummy) => dummy + 1);
+        refreshGroupLeaders();
     };
 
     const addMembersToGroup = async (selectedUsers: any[], groupId: string) => {
@@ -303,7 +306,7 @@ const EditGroups = () => {
                 }
             })
         );
-        setDummy((dummy) => dummy + 1);
+        refreshAllUsers();
     };
 
     const isLoading =

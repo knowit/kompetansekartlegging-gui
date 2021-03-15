@@ -76,10 +76,8 @@ const AdminTable = ({ admins, deleteAdmin }: any) => {
 };
 
 const EditAdmins = () => {
-    const [dummy, setDummy] = useState(0);
-    const { result: admins, error, loading } = useApiGet({
+    const { result: admins, error, loading, refresh } = useApiGet({
         getFn: listAdmins,
-        refreshCounter: dummy,
     });
     const [showAddAdmin, setShowAddAdmin] = useState<boolean>(false);
     const [
@@ -95,14 +93,14 @@ const EditAdmins = () => {
     const deleteAdminConfirm = async () => {
         await removeAdmin(adminToDelete);
         setShowDeleteUserFromGroupDialog(false);
-        setDummy((dummy) => dummy + 1);
+        refresh();
     };
     const clearSelectedAdmin = () => setAdminToDelete(null);
     const hideShowAddAdmin = () => setShowAddAdmin(false);
     const addAdminConfirm = async (user: any) => {
         await addAdmin(user);
         setShowAddAdmin(false);
-        setDummy((dummy) => dummy + 1);
+        refresh();
     };
 
     return (
