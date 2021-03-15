@@ -9,6 +9,7 @@ import {
     Question,
     QuestionsByCategoryQuery,
     UpdateCategoryMutation,
+    UpdateFormDefinitionMutation,
     UpdateQuestionMutation,
 } from "../../API";
 import {
@@ -19,6 +20,7 @@ import {
 import {
     updateCategory as updateCategoryGq,
     updateQuestion as updateQuestionGq,
+    updateFormDefinition as updateFormDefinitionGq,
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
 
@@ -176,6 +178,31 @@ const updateQuestionTextTopicAndCategory = async (
     await updateQuestion(question.id, { topic, text, categoryID });
 };
 
+const updateFormDefinition = async (
+    id: string,
+    vars: any
+): Promise<ApiResponse<FormDefinition>> => {
+    try {
+        const input = {
+            id,
+            ...vars,
+        };
+        const gq = await callGraphQL<UpdateFormDefinitionMutation>(updateFormDefinitionGq, {
+            input,
+        });
+        const el = gq?.data?.updateFormDefinition as FormDefinition;
+        return { result: el || null };
+    } catch (e) {
+        return {
+            error: `Could not update form definition '${id}'.`,
+        };
+    }
+};
+
+const updateFormDefinitionCreatedAt = async (formDefinition: any, createdAt: string) => {
+    await updateFormDefinition(formDefinition.id, { createdAt });
+};
+
 export {
     listAllFormDefinitions,
     listCategoriesByFormDefinitionID,
@@ -184,4 +211,5 @@ export {
     updateQuestionIndex,
     updateCategoryTextAndDescription,
     updateQuestionTextTopicAndCategory,
+    updateFormDefinitionCreatedAt
 };

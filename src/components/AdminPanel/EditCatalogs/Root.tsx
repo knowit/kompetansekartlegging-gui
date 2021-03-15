@@ -7,29 +7,44 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import DeleteIcon from "@material-ui/icons/Delete";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 
 import commonStyles from "../common.module.css";
 import useApiGet from "../useApiGet";
-import { listAllFormDefinitions } from "../catalogApi";
+import { compareByCreatedAt } from "../helpers";
+import {
+    listAllFormDefinitions,
+    updateFormDefinitionCreatedAt,
+} from "../catalogApi";
 import Button from "../../mui/Button";
 import Table from "../../mui/Table";
+import TableRow from "../../mui/TableRow";
+import ActivateCatalogDialog from "./ActivateCatalogDialog";
 
-const Catalog = ({ catalog, deleteCatalog }: any) => {
+const Catalog = ({ catalog, deleteCatalog, active, activateCatalog }: any) => {
     const name = catalog.label || "Ikke satt";
 
     return (
         <>
-            <TableRow>
+            <TableRow selected={active}>
                 <TableCell>{name}</TableCell>
                 <TableCell>
                     {new Date(catalog.updatedAt).toLocaleString("nb-NO")}
+                </TableCell>
+                <TableCell align="right">
+                    <Button
+                        disabled={active}
+                        endIcon={<BookmarkIcon />}
+                        onClick={() => activateCatalog(catalog)}
+                    >
+                        Bruk katalog
+                    </Button>
                 </TableCell>
                 <TableCell align="right">
                     <Link
@@ -54,7 +69,7 @@ const Catalog = ({ catalog, deleteCatalog }: any) => {
     );
 };
 
-const CatalogTable = ({ catalogs, deleteCatalog }: any) => {
+const CatalogTable = ({ catalogs, deleteCatalog, activateCatalog }: any) => {
     return (
         <TableContainer className={commonStyles.tableContainer}>
             <Table stickyHeader>
@@ -64,14 +79,17 @@ const CatalogTable = ({ catalogs, deleteCatalog }: any) => {
                         <TableCell>Sist oppdatert</TableCell>
                         <TableCell />
                         <TableCell />
+                        <TableCell />
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {catalogs.map((c: any) => (
+                    {catalogs.map((c: any, ind: number) => (
                         <Catalog
                             key={c.id}
                             catalog={c}
                             deleteCatalog={deleteCatalog}
+                            activateCatalog={activateCatalog}
+                            active={ind === 0}
                         />
                     ))}
                 </TableBody>
@@ -85,32 +103,41 @@ const Root = () => {
     const { result: catalogs, error, loading } = useApiGet({
         getFn: listAllFormDefinitions,
         refreshCounter: dummy,
+        cmpFn: compareByCreatedAt,
     });
+
     const [
         showDeleteCatalogDialog,
         setShowDeleteCatalogDialog,
     ] = useState<boolean>(false);
     const [catalogToDelete, setCatalogToDelete] = useState<any>();
-
-    const deleteCatalog = (user: any) => {
+    const deleteCatalog = (catalog: any) => {
         setShowDeleteCatalogDialog(true);
-        setCatalogToDelete(user);
+        setCatalogToDelete(catalog);
     };
     const deleteCatalogConfirm = async () => {
         // await removeA(adminToDelete);
         setShowDeleteCatalogDialog(false);
         setDummy((dummy) => dummy + 1);
     };
-    const clearSelectedCatalog = () => setCatalogToDelete(null);
 
-    // <DeleteUserFromGroupDialog
-    //     open={showDeleteUserFromGroupDialog}
-    //     onCancel={() => setShowDeleteUserFromGroupDialog(false)}
-    //     onExited={clearSelectedAdmin}
-    //     onConfirm={deleteAdminConfirm}
-    //     user={adminToDelete}
-    //     roleName="administrator"
-    // />
+    const [
+        showActivateCatalogDialog,
+        setShowActivateCatalogDialog,
+    ] = useState<boolean>(false);
+    const [catalogToActivate, setCatalogToActivate] = useState<any>();
+    const activateCatalog = (catalog: any) => {
+        setShowActivateCatalogDialog(true);
+        setCatalogToActivate(catalog);
+    };
+    const activateCatalogConfirm = async () => {
+        await updateFormDefinitionCreatedAt(
+            catalogToActivate,
+            new Date().toISOString()
+        );
+        setShowActivateCatalogDialog(false);
+        setDummy((dummy) => dummy + 1);
+    };
 
     return (
         <Container maxWidth="md" className={commonStyles.container}>
@@ -131,6 +158,7 @@ const Root = () => {
                     <CatalogTable
                         catalogs={catalogs}
                         deleteCatalog={deleteCatalog}
+                        activateCatalog={activateCatalog}
                     />
                     <Link to="/add">
                         <Button
@@ -144,6 +172,12 @@ const Root = () => {
                     </Link>
                 </>
             )}
+            <ActivateCatalogDialog
+                open={showActivateCatalogDialog}
+                onCancel={() => setShowActivateCatalogDialog(false)}
+                onExited={() => setCatalogToActivate(null)}
+                onConfirm={activateCatalogConfirm}
+            />
         </Container>
     );
 };

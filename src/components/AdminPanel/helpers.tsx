@@ -16,6 +16,9 @@ const compareByIndex = (a: any, b: any) => {
     if (!a.index) return 1;
     if (!b.index) return -1;
     return a.index - b.index;
-}
+};
 
-export { getAttribute, not, compareByName, compareByIndex };
+const compareByCreatedAt = (a: any, b: any) =>
+    Date.parse(a.createdAt) > Date.parse(b.createdAt) ? -1 : 1;
+
+export { getAttribute, not, compareByName, compareByIndex, compareByCreatedAt };
