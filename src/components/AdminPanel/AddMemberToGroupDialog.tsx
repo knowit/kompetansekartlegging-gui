@@ -109,6 +109,7 @@ const AddMemberToGroupDialog = ({
                         value={nameFilter}
                         className={style.searchField}
                         onChange={(e: any) => setNameFilter(e.target.value)}
+                        helperText="Den ansatte må ha logget seg inn i appen minst en gang."
                     />
                     <FormControlLabel
                         control={
