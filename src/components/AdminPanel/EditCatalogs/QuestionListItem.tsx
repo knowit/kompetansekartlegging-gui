@@ -17,10 +17,6 @@ import EditActionButtons from "./EditActionButtons";
 
 const useQuestionListStyles = makeStyles(() =>
     createStyles({
-        button: {
-            color: KnowitColors.darkBrown,
-            marginLeft: "16px",
-        },
         listItem: {
             transition: "150ms",
             backgroundColor: KnowitColors.beige,
@@ -47,6 +43,13 @@ const useQuestionListStyles = makeStyles(() =>
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+            },
+        },
+        button: {
+            color: KnowitColors.darkBrown,
+            marginLeft: "16px",
+            "& span": {
+                justifyContent: "center",
             },
         },
         listItemEditText: {
