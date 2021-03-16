@@ -4,6 +4,7 @@ import { callGraphQL } from "../../helperFunctions";
 import {
     CategoriesByFormDefinitionQuery,
     Category,
+    DeleteCategoryMutation,
     DeleteFormDefinitionMutation,
     FormDefinition,
     ListFormDefinitionsQuery,
@@ -23,6 +24,7 @@ import {
     updateQuestion as updateQuestionGq,
     updateFormDefinition as updateFormDefinitionGq,
     deleteFormDefinition as deleteFormDefinitionGq,
+    deleteCategory as deleteCategoryGq,
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
 
@@ -223,6 +225,25 @@ const deleteFormDefinition = async (
     }
 };
 
+const deleteCategory = async (
+    id: string,
+): Promise<ApiResponse<null>> => {
+    try {
+        const input = {
+            id,
+        };
+        await callGraphQL<DeleteCategoryMutation>(deleteCategoryGq, {
+            input,
+        });
+        return { result: null };
+    } catch (e) {
+        return {
+            error: `Could not delete category '${id}'.`,
+        };
+    }
+};
+
+
 export {
     listAllFormDefinitions,
     listCategoriesByFormDefinitionID,
@@ -232,5 +253,6 @@ export {
     updateCategoryTextAndDescription,
     updateQuestionTextTopicAndCategory,
     updateFormDefinitionCreatedAt,
-    deleteFormDefinition
+    deleteFormDefinition,
+    deleteCategory
 };

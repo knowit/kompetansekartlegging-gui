@@ -82,6 +82,7 @@ const CategoryListItem = ({
     index: ind,
     moveCategory,
     saveCategory,
+    deleteCategory,
     enableUpdates,
     categories,
 }: any) => {
@@ -154,7 +155,10 @@ const CategoryListItem = ({
                 >
                     <EditIcon />
                 </IconButton>
-                <IconButton onClick={() => 1} className={classes.button}>
+                <IconButton
+                    onClick={() => deleteCategory(c)}
+                    className={classes.button}
+                >
                     <DeleteIcon />
                 </IconButton>
                 <ButtonGroup

@@ -8,11 +8,13 @@ import {
     listCategoriesByFormDefinitionID,
     updateCategoryIndex,
     updateCategoryTextAndDescription,
+    deleteCategory as deleteCategoryApi,
 } from "../catalogApi";
 import useApiGet from "../useApiGet";
 import { Category } from "../../../API";
 import { compareByIndex } from "../helpers";
 import CategoryListItem from "./CategoryListItem";
+import DeleteCategoryDialog from "./DeleteCategoryDialog";
 
 const CategoryList = ({ formDefinitionID, formDefinitionLabel }: any) => {
     const history = useHistory();
@@ -26,6 +28,21 @@ const CategoryList = ({ formDefinitionID, formDefinitionLabel }: any) => {
         getFn: memoizedCallback,
         cmpFn: compareByIndex,
     });
+
+    const [
+        showDeleteCategoryDialog,
+        setShowDeleteCategoryDialog,
+    ] = useState<boolean>(false);
+    const [categoryToDelete, setCategoryToDelete] = useState<any>();
+    const deleteCategory = (category: any) => {
+        setShowDeleteCategoryDialog(true);
+        setCategoryToDelete(category);
+    };
+    const deleteCategoryConfirm = async () => {
+        await deleteCategoryApi(categoryToDelete.id);
+        setShowDeleteCategoryDialog(false);
+        refresh();
+    };
 
     const moveCategory = async (category: any, direction: number) => {
         setEnableUpdates(false);
@@ -70,12 +87,22 @@ const CategoryList = ({ formDefinitionID, formDefinitionLabel }: any) => {
                                 index={ind}
                                 moveCategory={moveCategory}
                                 saveCategory={saveCategory}
+                                deleteCategory={deleteCategory}
                                 enableUpdates={enableUpdates}
                                 categories={categories}
                             />
                         );
                     })}
                 </List>
+            )}
+            {categoryToDelete && (
+                <DeleteCategoryDialog
+                    open={showDeleteCategoryDialog}
+                    onCancel={() => setShowDeleteCategoryDialog(false)}
+                    onExited={() => setCategoryToDelete(null)}
+                    onConfirm={deleteCategoryConfirm}
+                    category={categoryToDelete}
+                />
             )}
         </>
     );

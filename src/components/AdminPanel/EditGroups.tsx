@@ -227,7 +227,7 @@ const EditGroups = () => {
         result: allAvailableUsers,
         error: allAvailableUsersError,
         loading: allAvailableUsersLoading,
-        refresh: refreshAllAvailableUsers,
+        // refresh: refreshAllAvailableUsers,
     } = useApiGet({
         getFn: listAllAvailableUsers,
     });
