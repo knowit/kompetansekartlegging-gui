@@ -29,6 +29,9 @@ const {
     getAllCategories,
     getAllQuestionForFormDef,
     getAnswersForUser,
+    getAllFormDefs,
+    getAllCategoriesForFormDef,
+    getAllQuestionForCategory,
 } = require("./db");
 
 // general helpers
@@ -147,6 +150,54 @@ router.get("/answers/:username/newest", async (req, res) => {
     console.log(answers);
     return res.json(answers);
 });
+
+// returns: list of all users
+router.get("/users", async (req, res) => {
+    const allUsers = await getAllUsers();
+    return res.json(
+        allUsers
+            .filter((u) => u.Enabled)
+            .map((u) => ({
+                username: u.Username,
+                attributes: u.Attributes,
+            }))
+    );
+});
+
+// returns: list of all form definitions
+router.get("/catalogs", async (req, res) => {
+    const allFormDefs = await getAllFormDefs();
+    return res.json(
+        allFormDefs.Items.map((fd) => ({
+            id: fd.id,
+            label: fd.label,
+        }))
+    );
+});
+
+// returns: list of all categories for a form definition
+router.get("/catalogs/:id/categories", async (req, res) => {
+    const formDefID = req.params.id;
+    const categories = await getAllCategoriesForFormDef(formDefID);
+    return res.json(categories.Items);
+});
+
+// returns: list of all questions for a form definition
+router.get("/catalogs/:id/questions", async (req, res) => {
+    const formDefID = req.params.id;
+    const allQuestions = await getAllQuestionForFormDef(formDefID);
+    return res.json(allQuestions.Items);
+});
+
+// returns: list of all questions for a category
+router.get(
+    "/catalogs/:id/categories/:categoryID/questions",
+    async (req, res) => {
+        const catID = req.params.categoryID;
+        const allQuestions = await getAllQuestionForCategory(catID);
+        return res.json(allQuestions.Items);
+    }
+);
 
 // The serverless-express library creates a server and listens on a Unix
 // Domain Socket for you, so you can remove the usual call to app.listen.

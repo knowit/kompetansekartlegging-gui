@@ -131,6 +131,25 @@ const getAllQuestionForFormDef = async (lastFormDefID) => {
         .promise();
 };
 
+// Finds all questions for the given category.
+const getAllQuestionForCategory = async (categoryID) => {
+    return await docClient
+        .query({
+            TableName: QUESTION_TABLE_NAME,
+            IndexName: "byCategory",
+            KeyConditionExpression: "#category = :category",
+            ExpressionAttributeValues: {
+                ":category": categoryID,
+            },
+            ProjectionExpression: "id, #text, topic, categoryID",
+            ExpressionAttributeNames: {
+                "#category": "categoryID",
+                "#text": "text",
+            },
+        })
+        .promise();
+};
+
 // Finds all categories.
 const getAllCategories = async () => {
     return await docClient
@@ -139,6 +158,26 @@ const getAllCategories = async () => {
             ProjectionExpression: "id, description, #text",
             ExpressionAttributeNames: {
                 "#text": "text",
+            },
+        })
+        .promise();
+};
+
+// Finds all categories for the given form definition.
+const getAllCategoriesForFormDef = async (formDefID) => {
+    return await docClient
+        .query({
+            TableName: CATEGORY_TABLE_NAME,
+            IndexName: "byFormDefinition",
+            KeyConditionExpression: "#formDef = :formDef",
+            ExpressionAttributeValues: {
+                ":formDef": formDefID,
+            },
+            ProjectionExpression: "id, description, #text, #index",
+            ExpressionAttributeNames: {
+                "#formDef": "formDefinitionID",
+                "#text": "text",
+                "#index": "index",
             },
         })
         .promise();
@@ -201,4 +240,6 @@ module.exports = {
     getAllQuestionForFormDef,
     getAnswersForUserForm,
     getAnswersForUser,
+    getAllCategoriesForFormDef,
+    getAllQuestionForCategory,
 };
