@@ -122,10 +122,11 @@ const getAllQuestionForFormDef = async (lastFormDefID) => {
             ExpressionAttributeValues: {
                 ":formDef": lastFormDefID,
             },
-            ProjectionExpression: "id, #text, topic, categoryID",
+            ProjectionExpression: "id, #text, #index, topic, categoryID",
             ExpressionAttributeNames: {
                 "#formDef": "formDefinitionID",
                 "#text": "text",
+                "#index": "index",
             },
         })
         .promise();
@@ -141,10 +142,11 @@ const getAllQuestionForCategory = async (categoryID) => {
             ExpressionAttributeValues: {
                 ":category": categoryID,
             },
-            ProjectionExpression: "id, #text, topic, categoryID",
+            ProjectionExpression: "id, #text, #index, topic, categoryID",
             ExpressionAttributeNames: {
                 "#category": "categoryID",
                 "#text": "text",
+                "#index": "index",
             },
         })
         .promise();
