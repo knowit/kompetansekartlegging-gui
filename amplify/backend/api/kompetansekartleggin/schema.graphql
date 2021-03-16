@@ -57,7 +57,7 @@ type QuestionAnswer
     questionID: ID!
     knowledge: Float!
     motivation: Float!
-    question: Question! @connection(fields: ["questionID"])
+    question: Question @connection(fields: ["questionID"])
 }
 
 type Question
@@ -84,7 +84,7 @@ type Question
     index: Int
     formDefinitionID: ID!
     categoryID: ID!
-    category: Category! @connection(fields: ["categoryID"])
+    category: Category @connection(fields: ["categoryID"])
 }
 
 type Category
@@ -105,7 +105,7 @@ type Category
     description: String
     index: Int
     formDefinitionID: ID!
-    formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
+    formDefinition: FormDefinition @connection(fields: ["formDefinitionID"])
     questions: [Question] @connection(keyName: "byCategory", fields: ["id"])
 }
 
