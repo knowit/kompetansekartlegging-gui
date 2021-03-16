@@ -7,11 +7,13 @@ import {
     listQuestionsByCategoryID,
     updateQuestionIndex,
     updateQuestionTextTopicAndCategory,
+    deleteQuestion as deleteQuestionApi,
 } from "../catalogApi";
 import useApiGet from "../useApiGet";
 import { Question } from "../../../API";
 import { compareByIndex } from "../helpers";
 import QuestionListItem from "./QuestionListItem";
+import DeleteQuestionDialog from "./DeleteQuestionDialog";
 
 const QuestionList = ({
     id,
@@ -28,6 +30,21 @@ const QuestionList = ({
         getFn: memoizedCallback,
         cmpFn: compareByIndex,
     });
+
+    const [
+        showDeleteQuestionDialog,
+        setShowDeleteQuestionDialog,
+    ] = useState<boolean>(false);
+    const [questionToDelete, setQuestionToDelete] = useState<any>();
+    const deleteQuestion = (question: any) => {
+        setShowDeleteQuestionDialog(true);
+        setQuestionToDelete(question);
+    };
+    const deleteQuestionConfirm = async () => {
+        await deleteQuestionApi(questionToDelete.id);
+        setShowDeleteQuestionDialog(false);
+        refresh();
+    };
 
     const moveQuestion = async (question: any, direction: number) => {
         setEnableUpdates(false);
@@ -71,12 +88,22 @@ const QuestionList = ({
                             index={ind}
                             moveQuestion={moveQuestion}
                             saveQuestion={saveQuestion}
+                            deleteQuestion={deleteQuestion}
                             enableUpdates={enableUpdates}
                             questions={questions}
                             categories={categories}
                         />
                     ))}
                 </List>
+            )}
+            {questionToDelete && (
+                <DeleteQuestionDialog
+                    open={showDeleteQuestionDialog}
+                    onCancel={() => setShowDeleteQuestionDialog(false)}
+                    onExited={() => setQuestionToDelete(null)}
+                    onConfirm={deleteQuestionConfirm}
+                    question={questionToDelete}
+                />
             )}
         </>
     );

@@ -6,6 +6,7 @@ import {
     Category,
     DeleteCategoryMutation,
     DeleteFormDefinitionMutation,
+    DeleteQuestionMutation,
     FormDefinition,
     ListFormDefinitionsQuery,
     Question,
@@ -25,6 +26,7 @@ import {
     updateFormDefinition as updateFormDefinitionGq,
     deleteFormDefinition as deleteFormDefinitionGq,
     deleteCategory as deleteCategoryGq,
+    deleteQuestion as deleteQuestionGq,
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
 
@@ -191,9 +193,12 @@ const updateFormDefinition = async (
             id,
             ...vars,
         };
-        const gq = await callGraphQL<UpdateFormDefinitionMutation>(updateFormDefinitionGq, {
-            input,
-        });
+        const gq = await callGraphQL<UpdateFormDefinitionMutation>(
+            updateFormDefinitionGq,
+            {
+                input,
+            }
+        );
         const el = gq?.data?.updateFormDefinition as FormDefinition;
         return { result: el || null };
     } catch (e) {
@@ -203,20 +208,24 @@ const updateFormDefinition = async (
     }
 };
 
-const updateFormDefinitionCreatedAt = async (formDefinition: any, createdAt: string) => {
+const updateFormDefinitionCreatedAt = async (
+    formDefinition: any,
+    createdAt: string
+) => {
     await updateFormDefinition(formDefinition.id, { createdAt });
 };
 
-const deleteFormDefinition = async (
-    id: string,
-): Promise<ApiResponse<null>> => {
+const deleteFormDefinition = async (id: string): Promise<ApiResponse<null>> => {
     try {
         const input = {
             id,
         };
-        await callGraphQL<DeleteFormDefinitionMutation>(deleteFormDefinitionGq, {
-            input,
-        });
+        await callGraphQL<DeleteFormDefinitionMutation>(
+            deleteFormDefinitionGq,
+            {
+                input,
+            }
+        );
         return { result: null };
     } catch (e) {
         return {
@@ -225,9 +234,7 @@ const deleteFormDefinition = async (
     }
 };
 
-const deleteCategory = async (
-    id: string,
-): Promise<ApiResponse<null>> => {
+const deleteCategory = async (id: string): Promise<ApiResponse<null>> => {
     try {
         const input = {
             id,
@@ -243,6 +250,21 @@ const deleteCategory = async (
     }
 };
 
+const deleteQuestion = async (id: string): Promise<ApiResponse<null>> => {
+    try {
+        const input = {
+            id,
+        };
+        await callGraphQL<DeleteQuestionMutation>(deleteQuestionGq, {
+            input,
+        });
+        return { result: null };
+    } catch (e) {
+        return {
+            error: `Could not delete question '${id}'.`,
+        };
+    }
+};
 
 export {
     listAllFormDefinitions,
@@ -254,5 +276,6 @@ export {
     updateQuestionTextTopicAndCategory,
     updateFormDefinitionCreatedAt,
     deleteFormDefinition,
-    deleteCategory
+    deleteCategory,
+    deleteQuestion
 };

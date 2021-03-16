@@ -90,6 +90,7 @@ const QuestionListItem = ({
     index: ind,
     moveQuestion,
     saveQuestion,
+    deleteQuestion,
     enableUpdates,
     questions,
     categories,
@@ -170,7 +171,7 @@ const QuestionListItem = ({
                                 <EditIcon />
                             </IconButton>
                             <IconButton
-                                onClick={() => 1}
+                                onClick={() => deleteQuestion(q)}
                                 className={classes.button}
                             >
                                 <DeleteIcon />
