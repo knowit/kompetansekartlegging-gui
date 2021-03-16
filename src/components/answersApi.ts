@@ -172,9 +172,12 @@ const getUserAnswers = async (
         paginatedUserform.formDefinitionID === formDef?.id
     ) {
         // console.log("Found user form!", paginatedUserform);
-        setUserAnswers(questionAnswers);
+        const removedQuestionsFiltered = questionAnswers.filter(
+            (q) => q.question
+        );
+        setUserAnswers(removedQuestionsFiltered);
         setUserAnswersLoaded(true);
-        return questionAnswers;
+        return removedQuestionsFiltered;
     } else {
         // console.log("Found no user form!", paginatedUserform);
         setActivePanel(Panel.MyAnswers);
