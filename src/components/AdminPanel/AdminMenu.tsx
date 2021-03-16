@@ -35,6 +35,12 @@ const AdminMenu = ({
         },
         {
             text: "Rediger katalog",
+            hasInternalRouting: true,
+        },
+        // refactor this one out once the whole app uses routing
+        {
+            text: "hidden",
+            hidden: true,
         },
     ];
 
@@ -55,25 +61,33 @@ const AdminMenu = ({
             </Button>
 
             {selected &&
-                items.map((cat) => (
-                    <Button
-                        key={cat.text}
-                        className={clsx(style.MenuButton, {
-                            [style.menuButtonActive]:
-                                activeSubmenuItem === cat.text,
-                        })}
-                        onClick={() => setActiveSubmenuItem(cat.text)}
-                    >
-                        <span
-                            className={clsx(
-                                style.menuButtonText,
-                                style.menuButtonCategoryText
-                            )}
+                items
+                    .filter((x) => !x.hidden)
+                    .map((cat) => (
+                        <Button
+                            key={cat.text}
+                            className={clsx(style.MenuButton, {
+                                [style.menuButtonActive]:
+                                    activeSubmenuItem === cat.text,
+                            })}
+                            onClick={async () => {
+                                if (cat.hasInternalRouting) {
+                                    setActiveSubmenuItem("hidden");
+                                    await new Promise(resolve => setTimeout(resolve, 50));
+                                }
+                                setActiveSubmenuItem(cat.text);
+                            }}
                         >
-                            {cat.text}
-                        </span>
-                    </Button>
-                ))}
+                            <span
+                                className={clsx(
+                                    style.menuButtonText,
+                                    style.menuButtonCategoryText
+                                )}
+                            >
+                                {cat.text}
+                            </span>
+                        </Button>
+                    ))}
         </>
     );
 };

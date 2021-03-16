@@ -7,18 +7,19 @@ import EditCatalogsRouter from "./EditCatalogsRouter";
 import style from "./AdminPanel.module.css";
 
 type AdminPanelProps = {
-    activeCategory: string;
+    activeSubmenuItem: string;
 };
 
 enum SubmenuCategory {
     MAIN,
+    HIDDEN,
     EDIT_GROUP_LEADERS,
     EDIT_GROUPS,
     EDIT_ADMINS,
     EDIT_CATALOGS,
 }
 
-const activeCategoryToSubmenuCategory = (
+const activeSubmenuItemToSubmenuCategory = (
     activeCategory: string
 ): SubmenuCategory => {
     switch (activeCategory) {
@@ -30,13 +31,15 @@ const activeCategoryToSubmenuCategory = (
             return SubmenuCategory.EDIT_ADMINS;
         case "Rediger katalog":
             return SubmenuCategory.EDIT_CATALOGS;
+        case "hidden":
+            return SubmenuCategory.HIDDEN;
         default:
             return SubmenuCategory.MAIN;
     }
 };
 
-const AdminPanel = ({ activeCategory }: AdminPanelProps) => {
-    const category = activeCategoryToSubmenuCategory(activeCategory);
+const AdminPanel = ({ activeSubmenuItem }: AdminPanelProps) => {
+    const category = activeSubmenuItemToSubmenuCategory(activeSubmenuItem);
 
     return (
         <div className={style.container}>

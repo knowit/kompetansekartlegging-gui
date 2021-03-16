@@ -624,7 +624,7 @@ const Content = ({ ...props }: ContentProps) => {
                     />
                 );
             case Panel.Admin:
-                return <AdminPanel activeCategory={activeSubmenuItem} />;
+                return <AdminPanel activeSubmenuItem={activeSubmenuItem} />;
             case Panel.Other:
                 return <div>Hello! This is the "Other" panel :D</div>;
         }
