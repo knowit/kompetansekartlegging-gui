@@ -110,7 +110,6 @@ const CategoryListItem = ({
                 primary={
                     <>
                         <TextField
-                            autoFocus
                             fullWidth
                             label="Navn"
                             variant="outlined"

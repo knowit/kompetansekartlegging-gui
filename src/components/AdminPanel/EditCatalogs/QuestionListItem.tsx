@@ -121,7 +121,6 @@ const QuestionListItem = ({
                     <>
                         <Box display="flex" alignItems="center">
                             <TextField
-                                autoFocus
                                 fullWidth
                                 label="Emne"
                                 variant="outlined"
