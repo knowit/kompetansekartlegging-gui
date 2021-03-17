@@ -40,6 +40,13 @@ export const dialogStyles = makeStyles(
                 transition: "border 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
             },
         },
+        textField: {
+            "& fieldset": {
+                border: "2px solid #F3C8BA",
+                borderRadius: "13px",
+                transition: "border 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+            },
+        },
         closeButton: {
             color: "black",
         },

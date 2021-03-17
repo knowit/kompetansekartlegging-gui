@@ -22,12 +22,14 @@ import {
     listAllFormDefinitions,
     updateFormDefinitionCreatedAt,
     deleteFormDefinition,
+    createFormDefinition,
 } from "../catalogApi";
 import Button from "../../mui/Button";
 import Table from "../../mui/Table";
 import TableRow from "../../mui/TableRow";
 import ActivateCatalogDialog from "./ActivateCatalogDialog";
 import DeleteCatalogDialog from "./DeleteCatalogDialog";
+import AddCatalogDialog from "./AddCatalogDialog";
 
 const Catalog = ({ catalog, deleteCatalog, active, activateCatalog }: any) => {
     const name = catalog.label || "Ikke satt";
@@ -139,6 +141,15 @@ const Root = () => {
         refresh();
     };
 
+    const [showAddCatalogDialog, setShowAddCatalogDialog] = useState<boolean>(
+        false
+    );
+    const addCatalogConfirm = async (name: string) => {
+        await createFormDefinition(name);
+        setShowAddCatalogDialog(false);
+        refresh();
+    };
+
     return (
         <Container maxWidth="md" className={commonStyles.container}>
             {error && <p>An error occured: {error}</p>}
@@ -160,17 +171,23 @@ const Root = () => {
                         deleteCatalog={deleteCatalog}
                         activateCatalog={activateCatalog}
                     />
-                    <Link to="/add">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            startIcon={<AddIcon />}
-                            style={{ marginTop: "24px" }}
-                        >
-                            Lag ny katalog
-                        </Button>
-                    </Link>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddIcon />}
+                        style={{ marginTop: "24px" }}
+                        onClick={() => setShowAddCatalogDialog(true)}
+                    >
+                        Lag ny katalog
+                    </Button>
                 </>
+            )}
+            {showAddCatalogDialog && (
+                <AddCatalogDialog
+                    open={showAddCatalogDialog}
+                    onCancel={() => setShowAddCatalogDialog(false)}
+                    onConfirm={addCatalogConfirm}
+                />
             )}
             <ActivateCatalogDialog
                 open={showActivateCatalogDialog}
