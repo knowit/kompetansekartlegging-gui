@@ -60,6 +60,13 @@ type QuestionAnswer
     question: Question @connection(fields: ["questionID"])
 }
 
+
+enum QuestionType {
+    knowledgeMotivation,
+    customScaleLabels,
+    text,
+}
+
 type Question
     @model
     @auth(
@@ -85,6 +92,7 @@ type Question
     formDefinitionID: ID!
     categoryID: ID!
     category: Category @connection(fields: ["categoryID"])
+    type: QuestionType
 }
 
 type Category
