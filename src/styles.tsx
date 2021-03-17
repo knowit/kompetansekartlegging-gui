@@ -46,6 +46,7 @@ export const dialogStyles = makeStyles(
                 borderRadius: "13px",
                 transition: "border 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
             },
+            margin: "0 8px 8px 0",
         },
         closeButton: {
             color: "black",

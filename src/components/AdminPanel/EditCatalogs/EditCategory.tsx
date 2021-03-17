@@ -1,23 +1,47 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import AddIcon from "@material-ui/icons/Add";
 
-import { listCategoriesByFormDefinitionID } from "../catalogApi";
+import {
+    listQuestionsByCategoryID,
+    listCategoriesByFormDefinitionID,
+    createQuestion,
+} from "../catalogApi";
+import { QuestionType } from "../../../API";
 import useApiGet from "../useApiGet";
 import { compareByIndex } from "../helpers";
-
 import QuestionList from "./QuestionList";
 import RouterBreadcrumbs from "./Breadcrumbs";
 import useQuery from "./useQuery";
-import commonStyles from "../common.module.css";
+import AddQuestionDialog from "./AddQuestionDialog";
 
 const useStyles = makeStyles(() =>
     createStyles({
+        container: {
+            marginLeft: "0 !important",
+            display: "flex",
+            flexWrap: "wrap",
+        },
         questionList: {
             marginLeft: "0",
+            marginRight: "0",
+        },
+        floatingMenu: {
+            padding: "8px 0 0 48px",
+            width: "250px",
+        },
+        addQuestionButton: {
+            borderRadius: "30px",
+            boxShadow: "none",
+            fontWeight: "bold",
+            width: "20ch",
+            textTransform: "none",
         },
     })
 );
@@ -30,10 +54,52 @@ const EditCategory = () => {
         () => listCategoriesByFormDefinitionID(formDefinitionID),
         [formDefinitionID]
     );
-    const { result: categories, error, loading } = useApiGet({
+    const {
+        result: categories,
+        error: errorCategories,
+        loading: loadingCategories,
+    } = useApiGet({
         getFn: memoizedCallback,
         cmpFn: compareByIndex,
     });
+
+    const memoizedQuestionsCallback = useCallback(
+        () => listQuestionsByCategoryID(id),
+        [id]
+    );
+    const {
+        result: questions,
+        error: errorQuestions,
+        loading: loadingQuestions,
+        refresh: refreshQuestions,
+    } = useApiGet({
+        getFn: memoizedQuestionsCallback,
+        cmpFn: compareByIndex,
+    });
+
+    const [showAddQuestionDialog, setShowAddQuestionDialog] = useState<boolean>(
+        false
+    );
+    const addQuestionConfirm = async (
+        topic: string,
+        description: string,
+        questionType: QuestionType,
+        questionConfig: object = {}
+    ) => {
+        // the dialog makes sure questionConfig contains the correct data
+        // might be a good idea to double check here
+        await createQuestion(
+            topic,
+            description,
+            questionType,
+            questions.length + 1,
+            formDefinitionID,
+            id,
+            questionConfig
+        );
+        setShowAddQuestionDialog(false);
+        refreshQuestions();
+    };
 
     const query = useQuery();
     const formDefinitionLabel = query.get("formDefinitionLabel");
@@ -47,26 +113,56 @@ const EditCategory = () => {
         [`/edit/${formDefinitionID}`]: `/edit/${formDefinitionID}?label=${formDefinitionLabel}`,
     };
 
+    const loading = loadingCategories || loadingQuestions;
+    const error = errorCategories || errorQuestions;
+
     return (
         <>
-            {error && <p>An error occured: {error}</p>}
-            {loading && <CircularProgress />}
-            {!error && !loading && categories && (
-                <Container maxWidth="lg" className={commonStyles.container}>
-                    <RouterBreadcrumbs
-                        extraCrumbsMap={breadCrumbs}
-                        urlOverrides={breadCrumbsUrlOverrides}
-                    />
-                    <Container maxWidth="sm" className={classes.questionList}>
-                        <QuestionList
-                            id={id}
-                            categories={categories}
-                            formDefinitionID={formDefinitionID}
-                            formDefinitionLabel={formDefinitionLabel}
-                        />
-                    </Container>
-                </Container>
-            )}
+            <Container maxWidth="lg" className={classes.container}>
+                {error && <p>An error occured: {error}</p>}
+                {loading && <CircularProgress />}
+                {!error && !loading && categories && (
+                    <>
+                        <Box flexBasis="100%">
+                            <RouterBreadcrumbs
+                                extraCrumbsMap={breadCrumbs}
+                                urlOverrides={breadCrumbsUrlOverrides}
+                            />
+                        </Box>
+                        <Container
+                            maxWidth="sm"
+                            className={classes.questionList}
+                        >
+                            <QuestionList
+                                id={id}
+                                categories={categories}
+                                questions={questions}
+                                formDefinitionID={formDefinitionID}
+                                formDefinitionLabel={formDefinitionLabel}
+                                refreshQuestions={refreshQuestions}
+                            />
+                        </Container>
+                        <div className={classes.floatingMenu}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<AddIcon />}
+                                className={classes.addQuestionButton}
+                                onClick={() => setShowAddQuestionDialog(true)}
+                            >
+                                Legg til nytt spørsmål
+                            </Button>
+                        </div>
+                        {showAddQuestionDialog && (
+                            <AddQuestionDialog
+                                open={showAddQuestionDialog}
+                                onCancel={() => setShowAddQuestionDialog(false)}
+                                onConfirm={addQuestionConfirm}
+                            />
+                        )}
+                    </>
+                )}
+            </Container>
         </>
     );
 };

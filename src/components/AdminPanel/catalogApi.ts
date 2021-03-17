@@ -16,6 +16,8 @@ import {
     UpdateQuestionMutation,
     CreateFormDefinitionMutation,
     CreateCategoryMutation,
+    QuestionType,
+    CreateQuestionMutation,
 } from "../../API";
 import {
     categoriesByFormDefinition,
@@ -31,6 +33,7 @@ import {
     deleteQuestion as deleteQuestionGq,
     createFormDefinition as createFormDefinitionGq,
     createCategory as createCategoryGq,
+    createQuestion as createQuestionGq,
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
 
@@ -321,6 +324,39 @@ const createCategory = async (
     }
 };
 
+const createQuestion = async (
+    topic: string,
+    description: string,
+    questionType: QuestionType,
+    index: number,
+    formDefinitionID: string,
+    categoryID: string,
+    questionConfig: any,
+): Promise<ApiResponse<Question>> => {
+    try {
+        const input = {
+            id: uuidv4(),
+            topic,
+            type: questionType,
+            text: description,
+            index,
+            formDefinitionID,
+            categoryID,
+            ...questionConfig
+        };
+        const gq = await callGraphQL<CreateQuestionMutation>(createQuestionGq, {
+            input,
+        });
+        const el = gq?.data?.createQuestion as Question;
+        return { result: el || null };
+    } catch (e) {
+        return {
+            error: `Could not create question '${topic}'.`,
+        };
+    }
+};
+
+
 export {
     listAllFormDefinitions,
     listCategoriesByFormDefinitionID,
@@ -335,4 +371,5 @@ export {
     deleteQuestion,
     createFormDefinition,
     createCategory,
+    createQuestion,
 };

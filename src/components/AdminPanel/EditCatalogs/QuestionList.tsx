@@ -1,35 +1,25 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
 import List from "@material-ui/core/List";
 
 import {
-    listQuestionsByCategoryID,
     updateQuestionIndex,
     updateQuestionTextTopicAndCategory,
     deleteQuestion as deleteQuestionApi,
 } from "../catalogApi";
-import useApiGet from "../useApiGet";
 import { Question } from "../../../API";
-import { compareByIndex } from "../helpers";
 import QuestionListItem from "./QuestionListItem";
 import DeleteQuestionDialog from "./DeleteQuestionDialog";
 
 const QuestionList = ({
     id,
     categories,
+    questions,
     formDefinitionID,
     formDefinitionLabel,
+    refreshQuestions,
 }: any) => {
-    const memoizedCallback = useCallback(() => listQuestionsByCategoryID(id), [
-        id,
-    ]);
     const [enableUpdates, setEnableUpdates] = useState<boolean>(true);
-
-    const { result: questions, error, loading, refresh } = useApiGet({
-        getFn: memoizedCallback,
-        cmpFn: compareByIndex,
-    });
 
     const [
         showDeleteQuestionDialog,
@@ -43,7 +33,7 @@ const QuestionList = ({
     const deleteQuestionConfirm = async () => {
         await deleteQuestionApi(questionToDelete.id);
         setShowDeleteQuestionDialog(false);
-        refresh();
+        refreshQuestions();
     };
 
     const moveQuestion = async (question: any, direction: number) => {
@@ -51,13 +41,13 @@ const QuestionList = ({
 
         const me = question;
         const swapWith = questions.find(
-            (c) => c.index === me.index - direction
+            (c: any) => c.index === me.index - direction
         );
         await updateQuestionIndex(me, swapWith.index);
         await updateQuestionIndex(swapWith, me.index);
 
         setEnableUpdates(true);
-        refresh();
+        refreshQuestions();
     };
 
     const saveQuestion = async (
@@ -72,30 +62,29 @@ const QuestionList = ({
             text,
             categoryID
         );
-        refresh();
+        refreshQuestions();
     };
 
     return (
         <>
-            {error && <p>An error occured: {error}</p>}
-            {loading && <CircularProgress />}
-            {!error && !loading && questions && (
-                <List>
-                    {questions.map((q: Question, ind: number) => (
-                        <QuestionListItem
-                            key={q.id}
-                            question={q}
-                            index={ind}
-                            moveQuestion={moveQuestion}
-                            saveQuestion={saveQuestion}
-                            deleteQuestion={deleteQuestion}
-                            enableUpdates={enableUpdates}
-                            questions={questions}
-                            categories={categories}
-                        />
-                    ))}
-                </List>
+            {questions.length === 0 && (
+                <p>Ingen spørsmål i denne kategorien ennå.</p>
             )}
+            <List>
+                {questions.map((q: Question, ind: number) => (
+                    <QuestionListItem
+                        key={q.id}
+                        question={q}
+                        index={ind}
+                        moveQuestion={moveQuestion}
+                        saveQuestion={saveQuestion}
+                        deleteQuestion={deleteQuestion}
+                        enableUpdates={enableUpdates}
+                        questions={questions}
+                        categories={categories}
+                    />
+                ))}
+            </List>
             {questionToDelete && (
                 <DeleteQuestionDialog
                     open={showDeleteQuestionDialog}
