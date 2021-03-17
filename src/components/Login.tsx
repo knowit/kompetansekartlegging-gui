@@ -114,7 +114,7 @@ const loginStyle = makeStyles({
 const userBranch = process.env.REACT_APP_USER_BRANCH;
 const isNotProd = userBranch !== "master";
 const Login = (props: { isMobile: boolean }) => {
-    console.log("/tree/", userBranch, isNotProd);
+    // console.log("/tree/", userBranch, isNotProd);
     const style = loginStyle();
     const [showDevLogin, setShowDevLogin] = useState<boolean>(false);
 

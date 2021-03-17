@@ -15,6 +15,7 @@ import {
     UpdateFormDefinitionMutation,
     UpdateQuestionMutation,
     CreateFormDefinitionMutation,
+    CreateCategoryMutation,
 } from "../../API";
 import {
     categoriesByFormDefinition,
@@ -29,6 +30,7 @@ import {
     deleteCategory as deleteCategoryGq,
     deleteQuestion as deleteQuestionGq,
     createFormDefinition as createFormDefinitionGq,
+    createCategory as createCategoryGq,
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
 
@@ -293,6 +295,32 @@ const createFormDefinition = async (
     }
 };
 
+const createCategory = async (
+    name: string,
+    description: string,
+    index: number,
+    formDefinitionID: string
+): Promise<ApiResponse<Category>> => {
+    try {
+        const input = {
+            id: uuidv4(),
+            text: name,
+            description,
+            index,
+            formDefinitionID,
+        };
+        const gq = await callGraphQL<CreateCategoryMutation>(createCategoryGq, {
+            input,
+        });
+        const el = gq?.data?.createCategory as Category;
+        return { result: el || null };
+    } catch (e) {
+        return {
+            error: `Could not create category '${name}'.`,
+        };
+    }
+};
+
 export {
     listAllFormDefinitions,
     listCategoriesByFormDefinitionID,
@@ -306,4 +334,5 @@ export {
     deleteCategory,
     deleteQuestion,
     createFormDefinition,
+    createCategory,
 };
