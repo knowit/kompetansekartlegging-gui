@@ -55,16 +55,23 @@ type QuestionAnswer
     id: ID!
     userFormID: ID!
     questionID: ID!
-    knowledge: Float!
-    motivation: Float!
     question: Question @connection(fields: ["questionID"])
+
+    # if question.type == null or knowledgeMotivation
+    knowledge: Float
+    motivation: Float
+
+    # if question.type == customScaleLabels
+    customScaleValue: Float
+
+    # if question.type == text
+    textValue: String
 }
 
-
 enum QuestionType {
-    knowledgeMotivation,
-    customScaleLabels,
-    text,
+    knowledgeMotivation
+    customScaleLabels
+    text
 }
 
 type Question
@@ -93,6 +100,11 @@ type Question
     categoryID: ID!
     category: Category @connection(fields: ["categoryID"])
     type: QuestionType
+
+    # if type == customScaleLabels
+    scaleStart: String
+    scaleMiddle: String
+    scaleEnd: String
 }
 
 type Category
