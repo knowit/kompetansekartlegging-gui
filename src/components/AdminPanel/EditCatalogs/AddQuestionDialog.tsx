@@ -20,10 +20,8 @@ import { CloseIcon } from "../../DescriptionTable";
 
 const AddQuestionDialog = ({ onCancel, onConfirm, open }: any) => {
     const style = dialogStyles();
-    const [topic, setTopic] = useState(`topic ${new Date().toISOString()}`);
-    const [description, setDescription] = useState(
-        `description ${new Date().toISOString()}`
-    );
+    const [topic, setTopic] = useState("");
+    const [description, setDescription] = useState("");
     const [questionType, setQuestionType] = useState<QuestionType>(
         QuestionType.knowledgeMotivation
     );
