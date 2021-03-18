@@ -165,8 +165,9 @@ type CreateQuestionAnswerFailedInput {
     id: ID
     userFormID: ID!
     questionID: ID!
-    knowledge: Float!
-    motivation: Float!
+    knowledge: Float
+    motivation: Float
+    customScaleValue: Float
     formDefinitionID: String!
 }
 
@@ -174,8 +175,9 @@ input CreateQuestionAnswerInput {
     id: ID
     userFormID: ID!
     questionID: ID!
-    knowledge: Float!
-    motivation: Float!
+    knowledge: Float
+    motivation: Float
+    customScaleValue: Float
     formDefinitionID: String!
 }
 
