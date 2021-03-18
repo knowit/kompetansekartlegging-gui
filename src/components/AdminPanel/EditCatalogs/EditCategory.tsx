@@ -5,7 +5,6 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 
 import {
@@ -20,6 +19,7 @@ import QuestionList from "./QuestionList";
 import RouterBreadcrumbs from "./Breadcrumbs";
 import useQuery from "./useQuery";
 import AddQuestionDialog from "./AddQuestionDialog";
+import Button from "../../mui/Button";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -38,10 +38,8 @@ const useStyles = makeStyles(() =>
         },
         addQuestionButton: {
             borderRadius: "30px",
-            boxShadow: "none",
-            fontWeight: "bold",
             width: "20ch",
-            textTransform: "none",
+            marginTop: 0,
         },
     })
 );
