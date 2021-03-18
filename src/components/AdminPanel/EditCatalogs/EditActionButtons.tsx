@@ -46,7 +46,7 @@ const useStyles = makeStyles(() =>
     })
 );
 
-const EditActionButtons = ({ onSave, onCancel }: any) => {
+const EditActionButtons = ({ onSave, onCancel, disabled }: any) => {
     const classes = useStyles();
 
     return (
@@ -54,7 +54,11 @@ const EditActionButtons = ({ onSave, onCancel }: any) => {
             <Button onClick={onCancel} className={classes.cancelButton}>
                 <span className={classes.buttonText}>Avbryt</span>
             </Button>
-            <Button onClick={onSave} className={classes.confirmButton}>
+            <Button
+                disabled={disabled}
+                onClick={onSave}
+                className={classes.confirmButton}
+            >
                 <span className={classes.buttonText}>Lagre</span>
             </Button>
         </div>

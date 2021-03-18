@@ -113,6 +113,12 @@ const listQuestionsByCategoryID = async (
                     index: el?.index,
                     createdAt: el?.createdAt,
                     updatedAt: el?.updatedAt,
+
+                    type: el?.type,
+
+                    scaleStart: el?.scaleStart,
+                    scaleMiddle: el?.scaleMiddle,
+                    scaleEnd: el?.scaleEnd,
                 } as Question)
         );
 
@@ -186,9 +192,15 @@ const updateQuestionTextTopicAndCategory = async (
     question: any,
     topic: string,
     text: string,
-    categoryID: string
+    categoryID: string,
+    questionConfig: any
 ) => {
-    await updateQuestion(question.id, { topic, text, categoryID });
+    await updateQuestion(question.id, {
+        topic,
+        text,
+        categoryID,
+        ...questionConfig,
+    });
 };
 
 const updateFormDefinition = async (
@@ -331,7 +343,7 @@ const createQuestion = async (
     index: number,
     formDefinitionID: string,
     categoryID: string,
-    questionConfig: any,
+    questionConfig: any
 ): Promise<ApiResponse<Question>> => {
     try {
         const input = {
@@ -342,7 +354,7 @@ const createQuestion = async (
             index,
             formDefinitionID,
             categoryID,
-            ...questionConfig
+            ...questionConfig,
         };
         const gq = await callGraphQL<CreateQuestionMutation>(createQuestionGq, {
             input,
@@ -355,7 +367,6 @@ const createQuestion = async (
         };
     }
 };
-
 
 export {
     listAllFormDefinitions,

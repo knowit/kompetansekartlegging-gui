@@ -32,10 +32,10 @@ const AddQuestionDialog = ({ onCancel, onConfirm, open }: any) => {
     // const isKnowledgeMotivation =
     //     questionType === QuestionType.knowledgeMotivation;
     const isCustomScaleLabels = questionType === QuestionType.customScaleLabels;
-    const isCompleted = (): boolean => {
+    const isCompleted = (() => {
         if (topic === "" || description === "") return false;
         return true;
-    };
+    })();
 
     const onQuestionTypeChange = (e: any) => {
         const qtype = e.target.value;
@@ -165,7 +165,7 @@ const AddQuestionDialog = ({ onCancel, onConfirm, open }: any) => {
                     <span className={style.buttonText}>Avbryt</span>
                 </Button>
                 <Button
-                    disabled={!isCompleted()}
+                    disabled={!isCompleted}
                     onClick={() =>
                         onConfirm(
                             topic,

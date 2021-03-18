@@ -54,13 +54,15 @@ const QuestionList = ({
         question: any,
         topic: string,
         text: string,
-        categoryID: string
+        categoryID: string,
+        questionConfig: any
     ) => {
         await updateQuestionTextTopicAndCategory(
             question,
             topic,
             text,
-            categoryID
+            categoryID,
+            questionConfig
         );
         refreshQuestions();
     };
