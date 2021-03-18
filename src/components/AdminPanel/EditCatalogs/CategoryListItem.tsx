@@ -139,7 +139,11 @@ const CategoryListItem = ({
                 }
                 className={classes.listItemText}
             />
-            <EditActionButtons onSave={onSave} onCancel={onCancel} />
+            <EditActionButtons
+                disabled={text.length === 0}
+                onSave={onSave}
+                onCancel={onCancel}
+            />
         </ListItem>
     ) : (
         <ListItem className={classes.listItem} onClick={onClick}>
