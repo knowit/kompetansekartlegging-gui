@@ -1,3 +1,4 @@
+import { QuestionType } from "./API";
 import { MenuButton } from "./components/Content";
 import { AlertType } from "./components/AlertNotification";
 import { Dispatch, SetStateAction } from "react";
@@ -33,6 +34,7 @@ export type Question = {
     text: string;
     topic: string;
     index: number;
+    type: QuestionType;
     category: {
         id: string;
         text: string;
@@ -42,20 +44,11 @@ export type Question = {
 };
 
 export type QuestionAnswer = {
-    id: string;
-    createdAt: string;
-    text: string;
-    topic: string;
-    index: number;
-    category: {
-        id: string;
-        text: string;
-        description: string | undefined;
-        index: number | undefined;
-    };
     knowledge: number;
     motivation: number;
+    customScaleValue: number;
     updatedAt: number;
+    question: Question;
 };
 
 export type AggregatedAnswer = {
@@ -91,6 +84,7 @@ export type ResultData = {
     category: string;
     aggKnowledge: number;
     aggMotivation: number;
+    aggCustomScale: number;
 };
 
 export type AnsweredQuestion = {
@@ -209,6 +203,7 @@ export type UserAnswer = {
     id: string;
     knowledge: number;
     motivation: number;
+    customScaleValue: number;
     updatedAt: string;
     question: Question;
 };
@@ -298,9 +293,7 @@ export type QuestionProps = {
         category: string,
         sliderMap: Map<string, SliderValues>
     ) => void;
-    topic: string;
-    text: string;
-    questionId: string;
+    questionAnswer: QuestionAnswer;
     knowledgeDefaultValue: number;
     motivationDefaultValue: number;
     setIsCategorySubmitted: (categorySubmitted: boolean) => void;
@@ -477,11 +470,20 @@ export type CombinedChartProps = {
     className?: string;
 };
 
-export type SliderValues = {
-    //Used in form and question
+//Used in form and question
+export type SliderKnowledgeMotivationValues = {
     knowledge: number;
     motivation: number;
 };
+
+//Used in form and question [questionType === QuestionType.customScaleLabels]
+export type SliderCustomScaleValue = {
+    customScaleValue: number;
+};
+
+export type SliderValues =
+    | SliderKnowledgeMotivationValues
+    | SliderCustomScaleValue;
 
 export type ProgressProps = {
     //Used in form and question

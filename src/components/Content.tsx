@@ -16,7 +16,7 @@ import * as helper from "../helperFunctions";
 import * as customQueries from "../graphql/custom-queries";
 import { Overview } from "./cards/Overview";
 import { YourAnswers } from "./cards/YourAnswers";
-import { CreateQuestionAnswerInput } from "../API";
+import { CreateQuestionAnswerInput, QuestionType } from "../API";
 import { Button, ListItem, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import { KnowitColors } from "../styles";
@@ -138,26 +138,31 @@ const updateCategoryAlerts = (
     let catAlerts = new Map<string, number>();
     questionAnswers.forEach((quAnsArr) => {
         quAnsArr.forEach((quAns) => {
-            if (quAns.motivation === -1 || quAns.knowledge === -1) {
-                alerts.set(quAns.id, {
+            if (
+                (quAns.question.type !== QuestionType.customScaleLabels &&
+                    (quAns.motivation === -1 || quAns.knowledge === -1)) ||
+                (quAns.question.type === QuestionType.customScaleLabels &&
+                    quAns.customScaleValue === -1)
+            ) {
+                alerts.set(quAns.question.id, {
                     type: AlertType.Incomplete,
                     message: "Ubesvart!",
                 });
-                let numAlerts = catAlerts.get(quAns.category.text);
+                let numAlerts = catAlerts.get(quAns.question.category.text);
                 if (numAlerts)
-                    catAlerts.set(quAns.category.text, numAlerts + 1);
-                else catAlerts.set(quAns.category.text, 1);
+                    catAlerts.set(quAns.question.category.text, numAlerts + 1);
+                else catAlerts.set(quAns.question.category.text, 1);
             } else if (msNow - quAns.updatedAt > staleAnswersLimit) {
-                alerts.set(quAns.id, {
+                alerts.set(quAns.question.id, {
                     type: AlertType.Outdated,
                     message: `Bør oppdateres! Sist besvart: ${
                         new Date(quAns.updatedAt) //.toLocaleDateString('no-NO')
                     }`,
                 });
-                let numAlerts = catAlerts.get(quAns.category.text);
+                let numAlerts = catAlerts.get(quAns.question.category.text);
                 if (numAlerts)
-                    catAlerts.set(quAns.category.text, numAlerts + 1);
-                else catAlerts.set(quAns.category.text, 1);
+                    catAlerts.set(quAns.question.category.text, numAlerts + 1);
+                else catAlerts.set(quAns.question.category.text, 1);
             }
         });
     });
@@ -197,7 +202,18 @@ const Content = ({ ...props }: ContentProps) => {
     ): void => {
         let newAnswers: QuestionAnswer[] =
             questionAnswers.get(category)?.map((quAns) => {
-                let sliderValues = sliderMap.get(quAns.id);
+                let sliderValues = sliderMap.get(
+                    quAns.question.id
+                ) as QuestionAnswer;
+                if (sliderValues.customScaleValue) {
+                    return {
+                        ...quAns,
+                        customScaleValue: sliderValues
+                            ? sliderValues.customScaleValue
+                            : -2,
+                        updatedAt: Date.now(),
+                    };
+                }
                 return {
                     ...quAns,
                     knowledge: sliderValues ? sliderValues.knowledge : -2, //If is -2, something is wrong
@@ -210,7 +226,6 @@ const Content = ({ ...props }: ContentProps) => {
 
     const createUserForm = async () => {
         setIsCategorySubmitted(true);
-        // setAnswersBeforeSubmitted(JSON.parse(JSON.stringify(answers)));
         setAnswersBeforeSubmitted(new Map(questionAnswers));
         setAnswerEditMode(false);
         if (!formDefinition) {
@@ -219,10 +234,23 @@ const Content = ({ ...props }: ContentProps) => {
         }
         let quAnsInput: CreateQuestionAnswerInput[] = [];
         questionAnswers.get(activeCategory)?.forEach((quAns) => {
+            if (
+                quAns.question.type === QuestionType.customScaleLabels &&
+                quAns.customScaleValue !== -1
+            ) {
+                quAnsInput.push({
+                    userFormID: "",
+                    questionID: quAns.question.id,
+                    customScaleValue: quAns.customScaleValue,
+                    formDefinitionID: formDefinition.id.toString(),
+                });
+                return;
+            }
+
             if (quAns.knowledge < 0 && quAns.motivation < 0) return;
             quAnsInput.push({
                 userFormID: "",
-                questionID: quAns.id,
+                questionID: quAns.question.id,
                 knowledge: quAns.knowledge,
                 motivation: quAns.motivation,
                 formDefinitionID: formDefinition.id.toString(),
@@ -230,7 +258,7 @@ const Content = ({ ...props }: ContentProps) => {
         });
         if (quAnsInput.length === 0) {
             console.error(
-                "Error finding active category whe creating userform"
+                "Error finding active category when creating userform"
             );
             return;
         }

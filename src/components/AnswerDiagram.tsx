@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react";
-import { AnswerDiagramProps, ChartData } from "../types";
+import { QuestionType } from "../API";
+import { AnswerDiagramProps, ChartData, QuestionAnswer } from "../types";
 import { CombinedChart } from "./CombinedChart";
 import { CombinedChartMobile } from "./CombinedChartMobile";
 
@@ -10,6 +11,41 @@ const answerDiagramStyle = makeStyles({
     },
 });
 
+interface Scores {
+    valueKnowledge: number[];
+    valueMotivation: number[];
+}
+
+const scores = (
+    quAns: QuestionAnswer,
+    knowledgeStart: number,
+    motivationStart: number
+): Scores => {
+    if (quAns.question.type === QuestionType.customScaleLabels) {
+        return {
+            valueKnowledge: [
+                knowledgeStart,
+                knowledgeStart + (quAns.customScaleValue === -1 ? 0 : quAns.customScaleValue),
+            ],
+            valueMotivation: [
+                motivationStart,
+                motivationStart + (quAns.customScaleValue === -1 ? 0 : quAns.customScaleValue),
+            ],
+        }
+    }
+
+    return {
+        valueKnowledge: [
+            knowledgeStart,
+            knowledgeStart + (quAns.knowledge === -1 ? 0 : quAns.knowledge),
+        ],
+        valueMotivation: [
+            motivationStart,
+            motivationStart + (quAns.motivation === -1 ? 0 : quAns.motivation),
+        ],
+    };
+};
+
 export default function AnswerDiagram({ ...props }: AnswerDiagramProps) {
     const styles = answerDiagramStyle();
 
@@ -18,17 +54,9 @@ export default function AnswerDiagram({ ...props }: AnswerDiagramProps) {
     let chartData: ChartData[] =
         props.questionAnswers.get(props.activeCategory)?.map((quAns) => {
             return {
-                name: quAns.topic,
-                valueKnowledge: [
-                    knowledgeStart,
-                    knowledgeStart +
-                        (quAns.knowledge === -1 ? 0 : quAns.knowledge),
-                ],
-                valueMotivation: [
-                    motivationStart,
-                    motivationStart +
-                        (quAns.motivation === -1 ? 0 : quAns.motivation),
-                ],
+                questionType: quAns.question.type,
+                name: quAns.question.topic,
+                ...scores(quAns, knowledgeStart, motivationStart)
             };
         }) || [];
 

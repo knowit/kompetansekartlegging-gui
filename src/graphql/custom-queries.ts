@@ -117,6 +117,11 @@ export const formByCreatedAtPaginated = /* GraphQL */ `
                         createdAt
                         text
                         topic
+
+                        type
+                        scaleStart
+                        scaleMiddle
+                        scaleEnd
                     }
                     nextToken
                 }
@@ -156,10 +161,12 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
                         knowledge
                         motivation
                         updatedAt
+                        customScaleValue
                         question {
                             id
                             text
                             topic
+                            type
                             category {
                                 id
                                 text

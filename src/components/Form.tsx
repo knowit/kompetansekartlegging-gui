@@ -2,6 +2,7 @@ import { Button, makeStyles } from "@material-ui/core";
 import React, { Fragment, useRef } from "react";
 import { KnowitColors } from "../styles";
 import { FormProps, SliderValues } from "../types";
+import { QuestionType as QuestionTypeT } from "../API";
 import Question from "./Question";
 import ArrowForwardRoundedIcon from "@material-ui/icons/ArrowForwardRounded";
 
@@ -132,20 +133,26 @@ export const Form = ({ ...props }: FormProps) => {
         let questionAnswers =
             props.questionAnswers
                 ?.get(props.activeCategory)
-                ?.map((question) => {
-                    sliderValues.current.set(question.id, {
-                        knowledge: question.knowledge,
-                        motivation: question.motivation,
-                    });
+                ?.map((questionAnswer) => {
+                    const question = questionAnswer.question;
+                    // great stuff guys; don't ever see this getting back at us
+                    if (question.type === QuestionTypeT.customScaleLabels) {
+                        sliderValues.current.set(question.id, {
+                            customScaleValue: questionAnswer.customScaleValue,
+                        });
+                    } else {
+                        sliderValues.current.set(question.id, {
+                            knowledge: questionAnswer.knowledge,
+                            motivation: questionAnswer.motivation,
+                        });
+                    }
                     return (
                         <Question
                             key={question.id}
-                            questionId={question.id}
-                            topic={question.topic}
-                            text={question.text}
+                            questionAnswer={questionAnswer}
                             updateAnswer={props.updateAnswer}
-                            knowledgeDefaultValue={question.knowledge}
-                            motivationDefaultValue={question.motivation}
+                            knowledgeDefaultValue={questionAnswer.knowledge}
+                            motivationDefaultValue={questionAnswer.motivation}
                             setIsCategorySubmitted={
                                 props.setIsCategorySubmitted
                             }
@@ -161,7 +168,6 @@ export const Form = ({ ...props }: FormProps) => {
     };
 
     const handleClickSubmit = async () => {
-        // TODO pending other PR: check isCategorySubmitted so new user form isn't generated when nothing has changed
         props.updateAnswer(props.activeCategory, sliderValues.current);
         props.createUserForm();
         props.scrollToTop();
@@ -173,11 +179,8 @@ export const Form = ({ ...props }: FormProps) => {
         props.scrollToTop();
     };
 
-    //TODO: Return only used category, not everyone
     const createQuestionCategory = (): JSX.Element => {
         if (!props.formDefinition) return <Fragment />;
-        // let questions = props.formDefinition.questions.items.filter(item => item.category.text === props.activeCategory)
-        //     .sort((a, b) => (a.category.text < b.category.text) ? -1 : 1);
         return (
             <Fragment>
                 {getQuestionsForCategory(undefined)}

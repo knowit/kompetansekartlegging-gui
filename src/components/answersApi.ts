@@ -47,14 +47,10 @@ const createQuestionAnswers = (
             })
             .map((qu) => {
                 return {
-                    category: qu.category,
-                    createdAt: qu.createdAt,
-                    id: qu.id,
-                    index: qu.index,
-                    text: qu.text,
-                    topic: qu.topic,
+                    question: qu,
                     knowledge: -1,
                     motivation: -1,
+                    customScaleValue: -1,
                     updatedAt: 0,
                 };
             });
@@ -210,7 +206,8 @@ const setFirstAnswers = (
                 if (newUserAnswers) {
                     let userAnswer = newUserAnswers.filter(
                         (userAnswer) =>
-                            userAnswer.question.id === questionAnswer.id
+                            userAnswer.question.id ===
+                            questionAnswer.question.id
                     );
                     if (userAnswer.length === 0) return questionAnswer;
                     return {
@@ -221,6 +218,9 @@ const setFirstAnswers = (
                         motivation: userAnswer[0]
                             ? userAnswer[0].motivation
                             : questionAnswer.motivation,
+                        customScaleValue: userAnswer[0]
+                            ? userAnswer[0].customScaleValue
+                            : questionAnswer.customScaleValue,
                         updatedAt: Date.parse(userAnswer[0].updatedAt) || 0,
                     };
                 }

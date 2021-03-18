@@ -44,8 +44,6 @@ const returnStatus = {
     ok: 200,
     fail: 275364, //No idea what is best here, so abit random :)
 };
-const debugMode = false;
-const debugWhitelist = ["Google_116860815063854500356"];
 
 exports.handler = async (event, context) => {
     millisecToday = Date.now();
@@ -60,13 +58,6 @@ exports.handler = async (event, context) => {
     }
 
     ownerId = event.identity.username;
-    if (debugMode && debugWhitelist.filter((id) => id === ownerId).length === 0)
-        return {
-            status: returnStatus.fail,
-            error:
-                "Debug mode is active, and you are not in the whiltelist. Your answers are not saved, contact an amin or developer to fix this.",
-            failedInputs: [],
-        };
 
     console.log("Owner: ", ownerId);
     console.log("Event: ", JSON.stringify(event));
@@ -280,35 +271,47 @@ async function mapQuestionAnswers(newAnswers, oldAnswers, useNewUserform) {
 async function updateQuestionAnswers(mappedQuestionAnswers) {
     console.log("Updating Answers", mappedQuestionAnswers);
     if (mappedQuestionAnswers.length === 0) return null;
-    //Update answers that are tagged as update needed
-    // console.log(`New answer length: `, newAnswers.length);
     const updateResult = await Promise.all(
-        mappedQuestionAnswers.map((answer, index) => {
-            // const oldAnswer = oldAnswers.filter(old => old.questionID === answersWithUpdateCheck[index].questionID);
-            let result = docClient
-                .update({
-                    TableName: QUESTIONANSWERTABLE_NAME,
-                    Key: {
-                        id: answer.questionAnswerId,
-                    },
-                    UpdateExpression:
-                        "SET knowledge = :knowledge, motivation = :motivation, updatedAt = :updatedAt",
-                    ExpressionAttributeValues: {
-                        ":knowledge": answer.knowledge,
-                        ":motivation": answer.motivation,
-                        ":updatedAt": new Date(millisecToday).toISOString(),
-                    },
-                })
-                .promise();
-            return result;
-        })
+        mappedQuestionAnswers.map((answer) => updateQuestionAnswer(answer))
     );
     console.log("Update results ", updateResult);
     return updateResult;
-    // let newAnswersToMake = answersWithUpdateCheck.filter(ans => ans.create == true);
-    // console.log("New answers to make: ", newAnswersToMake);
-    // return newAnswersToMake;
 }
+
+const updateQuestionAnswer = (quAns) => {
+    if (quAns.customScaleValue) {
+        return docClient
+            .update({
+                TableName: QUESTIONANSWERTABLE_NAME,
+                Key: {
+                    id: quAns.questionAnswerId,
+                },
+                UpdateExpression:
+                    "SET customScaleValue = :customScaleValue, updatedAt = :updatedAt",
+                ExpressionAttributeValues: {
+                    ":customScaleValue": quAns.customScaleValue,
+                    ":updatedAt": new Date(millisecToday).toISOString(),
+                },
+            })
+            .promise();
+    }
+
+    return docClient
+        .update({
+            TableName: QUESTIONANSWERTABLE_NAME,
+            Key: {
+                id: quAns.questionAnswerId,
+            },
+            UpdateExpression:
+                "SET knowledge = :knowledge, motivation = :motivation, updatedAt = :updatedAt",
+            ExpressionAttributeValues: {
+                ":knowledge": quAns.knowledge,
+                ":motivation": quAns.motivation,
+                ":updatedAt": new Date(millisecToday).toISOString(),
+            },
+        })
+        .promise();
+};
 
 //Structures and creates the setup for a batchWrite
 async function insertQuestionAnswers(answerArray, userformId) {
@@ -339,6 +342,7 @@ async function insertQuestionAnswers(answerArray, userformId) {
                                     new Date(millisecToday).toISOString(),
                                 knowledge: answer.knowledge,
                                 motivation: answer.motivation,
+                                customScaleValue: answer.customScaleValue,
                                 owner: ownerId,
                                 questionID: answer.questionID,
                                 userFormID: userformId,
@@ -351,7 +355,7 @@ async function insertQuestionAnswers(answerArray, userformId) {
     });
     console.log("Prepped answers: ", JSON.stringify(prepedAnswers));
 
-    for (var i = 0; i < prepedAnswers.length; i++) {
+    for (let i = 0; i < prepedAnswers.length; i++) {
         await docClient
             .batchWrite(prepedAnswers[i], (err, data) => {
                 if (err) {
@@ -469,7 +473,7 @@ function uuidv4() {
         /[xy]/g,
         function (c) {
             var r = (Math.random() * 16) | 0,
-                v = c == "x" ? r : (r & 0x3) | 0x8;
+                v = c === "x" ? r : (r & 0x3) | 0x8;
             return v.toString(16);
         }
     );

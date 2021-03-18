@@ -15,6 +15,7 @@ import { GetIcon } from "../icons/iconController";
 import { KnowitColors } from "../styles";
 import { CombinedChartProps } from "../types";
 import { OverviewType } from "./TypedOverviewChart";
+import { QuestionType } from "../API";
 
 const numTicks = 5;
 const chartSplitAt = numTicks + 2;
@@ -80,6 +81,24 @@ const useStyles = makeStyles({
     },
 });
 
+const getLabel = (
+    questionType: QuestionType,
+    isTop: any,
+    topGetFn: () => any,
+    defaultValue: string
+): string => {
+    if (isTop) {
+        return topGetFn();
+    }
+
+    const isCustomScaleLabels = questionType === QuestionType.customScaleLabels;
+    if (isCustomScaleLabels) {
+        return "Svar";
+    }
+
+    return defaultValue;
+};
+
 export const CombinedChart = ({ ...props }: CombinedChartProps) => {
     let classes = useStyles();
 
@@ -98,26 +117,28 @@ export const CombinedChart = ({ ...props }: CombinedChartProps) => {
                 let motivationValue = (
                     props.payload[1]?.payload.valueMotivation[1] - chartSplitAt
                 ).toFixed(1);
+                const questionType = props.payload[0]?.payload.questionType;
+                const knowledgeLabel = getLabel(
+                    questionType,
+                    isTop,
+                    () => validate(topSubjects?.get(props.label)?.kTop),
+                    "Kompetanse"
+                );
+                const motivationLabel = getLabel(
+                    questionType,
+                    isTop,
+                    () => validate(topSubjects?.get(props.label)?.mTop),
+                    "Motivasjon"
+                );
+
                 return (
                     <div className={classes.tooltipRoot}>
                         <p className={classes.tooltipLabel}>{props.label}</p>
                         <p className={classes.knowledge}>
-                            {`${
-                                isTop
-                                    ? validate(
-                                          topSubjects?.get(props.label)?.kTop
-                                      )
-                                    : "Kompetanse"
-                            }: ${knowledgeValue}`}
+                            {knowledgeLabel}: {knowledgeValue}
                         </p>
                         <p className={classes.motivation}>
-                            {`${
-                                isTop
-                                    ? validate(
-                                          topSubjects?.get(props.label)?.mTop
-                                      )
-                                    : "Motivasjon"
-                            }: ${motivationValue}`}
+                            {motivationLabel}: {motivationValue}
                         </p>
                     </div>
                 );

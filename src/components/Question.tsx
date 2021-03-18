@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
-import { QuestionProps } from "../types";
+import { QuestionType } from "../API";
+import { QuestionProps, SliderKnowledgeMotivationValues } from "../types";
 import Slider from "./Slider";
 import { makeStyles } from "@material-ui/core";
 import { KnowitColors } from "../styles";
@@ -132,48 +133,82 @@ const questionStyleMobile = makeStyles({
 });
 
 const Question = ({ ...props }: QuestionProps) => {
+    const question = props.questionAnswer.question;
+    const questionId = question.id;
+    const questionType = question.type || QuestionType.knowledgeMotivation;
+    const questionTopic = question.topic;
+    const questionText = question.text;
+    const sliderValues = props.sliderValues.get(questionId);
+
     const style = props.isMobile
         ? questionStyleMobile()
         : questionStyleDesktop();
 
     const sliderChanged = (newValue: number, motivation: boolean) => {
         props.setIsCategorySubmitted(false);
-        // console.log("Slider changed");
-        if (motivation) {
-            props.setSliderValues(props.questionId, {
-                knowledge:
-                    props.sliderValues.get(props.questionId)?.knowledge || 0,
-                motivation: newValue,
-            });
-            // setMotivationValue(newValue);
-            // props.updateAnswer(props.questionId, knowledgeValue, newValue);
-        } else {
-            props.setSliderValues(props.questionId, {
-                knowledge: newValue,
-                motivation:
-                    props.sliderValues.get(props.questionId)?.motivation || 0,
-            });
-            // setKnowledgeValue(newValue);
-            // props.updateAnswer(props.questionId, newValue, motivationValue);
+        if (sliderValues) {
+            if (questionType === QuestionType.knowledgeMotivation) {
+                const sv = sliderValues as SliderKnowledgeMotivationValues;
+                if (motivation) {
+                    props.setSliderValues(questionId, {
+                        knowledge: sv.knowledge || 0,
+                        motivation: newValue,
+                    });
+                } else {
+                    props.setSliderValues(questionId, {
+                        knowledge: newValue,
+                        motivation: sv.motivation || 0,
+                    });
+                }
+            } else if (questionType === QuestionType.customScaleLabels) {
+                props.setSliderValues(questionId, {
+                    customScaleValue: newValue,
+                });
+            }
         }
     };
 
     return (
         <div className={style.root}>
             <div className={style.topic}>
-                <div className={style.topicText}>{props.topic}</div>
-                {props.alerts?.qidMap.has(props.questionId) ? (
+                <div className={style.topicText}>{questionTopic}</div>
+                {props.alerts?.qidMap.has(questionId) && (
                     <AlertNotification
-                        type={props.alerts?.qidMap.get(props.questionId)!.type}
-                        message={
-                            props.alerts?.qidMap.get(props.questionId)!.message
-                        }
+                        type={props.alerts?.qidMap.get(questionId)!.type}
+                        message={props.alerts?.qidMap.get(questionId)!.message}
                     />
-                ) : (
-                    ""
                 )}
             </div>
-            <div className={style.text}>{props.text}</div>
+            {questionType === QuestionType.knowledgeMotivation && (
+                <KnowledgeMotivationSliders
+                    style={style}
+                    sliderValues={sliderValues}
+                    sliderChanged={sliderChanged}
+                    isMobile={props.isMobile}
+                />
+            )}
+            {questionType === QuestionType.customScaleLabels && (
+                <CustomLabelSlider
+                    question={question}
+                    style={style}
+                    sliderValues={sliderValues}
+                    sliderChanged={sliderChanged}
+                    isMobile={props.isMobile}
+                />
+            )}
+            <div className={style.text}>{questionText}</div>
+        </div>
+    );
+};
+
+const KnowledgeMotivationSliders = ({
+    style,
+    sliderValues,
+    sliderChanged,
+    isMobile,
+}: any) => {
+    return (
+        <div>
             <div className={style.answerArea}>
                 <div className={clsx(style.largeBold)}>KOMPETANSE</div>
                 <div className={style.sliderArea}>
@@ -182,13 +217,10 @@ const Question = ({ ...props }: QuestionProps) => {
                     </div>
                     <div className={style.slider}>
                         <Slider
-                            value={
-                                props.sliderValues.get(props.questionId)
-                                    ?.knowledge || -2
-                            }
+                            value={sliderValues?.knowledge || -2}
                             motivation={false}
                             sliderChanged={sliderChanged}
-                            isMobile={props.isMobile}
+                            isMobile={isMobile}
                         />
                     </div>
                 </div>
@@ -201,13 +233,45 @@ const Question = ({ ...props }: QuestionProps) => {
                     </div>
                     <div className={style.slider}>
                         <Slider
-                            value={
-                                props.sliderValues.get(props.questionId)
-                                    ?.motivation || -2
-                            }
+                            value={sliderValues?.motivation || -2}
                             motivation={true}
                             sliderChanged={sliderChanged}
-                            isMobile={props.isMobile}
+                            isMobile={isMobile}
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const CustomLabelSlider = ({
+    style,
+    sliderValues,
+    sliderChanged,
+    question,
+    isMobile,
+}: any) => {
+    const labels = [
+        question.scaleStart,
+        question.scaleEnd,
+    ].filter((l) => !!l);
+    return (
+        <div>
+            <div className={style.answerArea}>
+                <div className={clsx(style.largeBold)}>SVAR</div>
+                <div className={style.sliderArea}>
+                    <div className={style.iconArea}>
+                        {labels?.map((l: string) => (
+                            <span key={l}>{l}</span>
+                        ))}
+                    </div>
+                    <div className={style.slider}>
+                        <Slider
+                            value={sliderValues.customScaleValue || -2}
+                            motivation={false}
+                            sliderChanged={sliderChanged}
+                            isMobile={isMobile}
                         />
                     </div>
                 </div>

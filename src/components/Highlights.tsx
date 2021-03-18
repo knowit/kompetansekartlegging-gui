@@ -209,14 +209,14 @@ export default function Highlights({ ...props }: HighlightsProps) {
                 quAns.forEach((answer) => {
                     if (answer.knowledge >= shortlistCutoff) {
                         shortlistKnowledge.push({
-                            topic: answer.topic,
+                            topic: answer.question.topic,
                             score: answer.knowledge,
                             icon: Math.floor(answer.knowledge),
                         });
                     }
                     if (answer.motivation >= shortlistCutoff) {
                         shortlistMotivation.push({
-                            topic: answer.topic,
+                            topic: answer.question.topic,
                             score: answer.motivation,
                             icon: Math.floor(answer.motivation),
                         });

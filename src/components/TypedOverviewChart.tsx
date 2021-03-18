@@ -101,19 +101,39 @@ const recalculate = (
     }
     let knowledgeStart = isMobile ? 7 : 0;
     let motivationStart = isMobile ? 0 : 7;
-    let data: ChartData[] = answerData.map((answer) => ({
-        name: answer.category,
-        valueKnowledge: [
-            knowledgeStart,
-            knowledgeStart +
-                (answer.aggKnowledge === -1 ? 0 : answer.aggKnowledge),
-        ],
-        valueMotivation: [
-            motivationStart,
-            motivationStart +
-                (answer.aggMotivation === -1 ? 0 : answer.aggMotivation),
-        ],
-    }));
+    let data: ChartData[] = answerData.map((answer) => {
+        if (answer.aggCustomScale > 0) {
+            return {
+                name: answer.category,
+                valueKnowledge: [
+                    knowledgeStart,
+                    knowledgeStart +
+                        (answer.aggCustomScale === -1 ? 0 : answer.aggCustomScale),
+                ],
+                valueMotivation: [
+                    motivationStart,
+                    motivationStart +
+                        (answer.aggCustomScale === -1
+                            ? 0
+                            : answer.aggCustomScale),
+                ],
+            };
+        }
+
+        return {
+            name: answer.category,
+            valueKnowledge: [
+                knowledgeStart,
+                knowledgeStart +
+                    (answer.aggKnowledge === -1 ? 0 : answer.aggKnowledge),
+            ],
+            valueMotivation: [
+                motivationStart,
+                motivationStart +
+                    (answer.aggMotivation === -1 ? 0 : answer.aggMotivation),
+            ],
+        };
+    });
     setChartData(data);
 };
 
@@ -124,17 +144,20 @@ export default function TypedOverviewChart({ ...props }: ResultDiagramProps) {
     const [currentType, setOverviewType] = useState<OverviewType>(
         OverviewType.HIGHEST
     );
-    const [topSubjects, setTopSubjects] = useState<Map<string, { kTop: string; mTop: string }>>(
-        new Map()
-    );
+    const [topSubjects, setTopSubjects] = useState<
+        Map<string, { kTop: string; mTop: string }>
+    >(new Map());
 
     type ReduceValue = {
-        konwledgeCount: number;
+        knowledgeCount: number;
         knowledgeAverage: number;
         knowledgeTotal: number;
         motivationCount: number;
         motivationAverage: number;
         motivationTotal: number;
+        customScaleCount: number;
+        customScaleAverage: number;
+        customScaleTotal: number;
     };
 
     useEffect(() => {
@@ -144,12 +167,20 @@ export default function TypedOverviewChart({ ...props }: ResultDiagramProps) {
             props.questionAnswers.forEach((questionAnswers, category) => {
                 let reduced = questionAnswers.reduce<ReduceValue>(
                     (acc, cur): ReduceValue => {
+                        if (cur.customScaleValue && cur.customScaleValue >= 0) {
+                            acc.customScaleCount = acc.customScaleCount + 1;
+                            acc.customScaleTotal =
+                                acc.customScaleTotal + cur.customScaleValue;
+                            acc.customScaleAverage =
+                                acc.customScaleTotal / acc.customScaleCount;
+                        }
+
                         if (cur.knowledge >= 0) {
-                            acc.konwledgeCount = acc.konwledgeCount + 1;
+                            acc.knowledgeCount = acc.knowledgeCount + 1;
                             acc.knowledgeTotal =
                                 acc.knowledgeTotal + cur.knowledge;
                             acc.knowledgeAverage =
-                                acc.knowledgeTotal / acc.konwledgeCount;
+                                acc.knowledgeTotal / acc.knowledgeCount;
                         }
                         if (cur.motivation >= 0) {
                             acc.motivationCount = acc.motivationCount + 1;
@@ -161,18 +192,25 @@ export default function TypedOverviewChart({ ...props }: ResultDiagramProps) {
                         return acc;
                     },
                     {
-                        konwledgeCount: 0,
+                        knowledgeCount: 0,
                         knowledgeAverage: 0,
                         knowledgeTotal: 0,
                         motivationCount: 0,
                         motivationAverage: 0,
                         motivationTotal: 0,
+                        customScaleCount: 0,
+                        customScaleAverage: 0,
+                        customScaleTotal: 0,
                     }
                 );
                 ansData.push({
                     category: category,
                     aggKnowledge: roundDecimals(reduced.knowledgeAverage, 1),
                     aggMotivation: roundDecimals(reduced.motivationAverage, 1),
+                    aggCustomScale: roundDecimals(
+                        reduced.customScaleAverage,
+                        1
+                    ),
                 });
             });
             return ansData;
@@ -199,16 +237,25 @@ export default function TypedOverviewChart({ ...props }: ResultDiagramProps) {
                             .map((qa) => qa.motivation)
                             .filter((n) => n >= 0)
                     );
+                    let medianCustomScale = getMedian(
+                        questionAnswers
+                            .map((qa) => qa.customScaleValue)
+                            .filter((n) => n >= 0)
+                    );
                     ansData.push({
                         category: category,
                         aggKnowledge: medianKnowledge ? medianKnowledge : 0,
                         aggMotivation: medianMotivation ? medianMotivation : 0,
+                        aggCustomScale: medianCustomScale
+                            ? medianCustomScale
+                            : 0,
                     });
                 } else {
                     ansData.push({
                         category: category,
                         aggKnowledge: 0,
                         aggMotivation: 0,
+                        aggCustomScale: 0,
                     });
                 }
             });
@@ -217,37 +264,51 @@ export default function TypedOverviewChart({ ...props }: ResultDiagramProps) {
 
         const createHighestData = (): ResultData[] => {
             let ansData: ResultData[] = [];
-            let newTopSubjects: Map<string, { kTop: string, mTop: string }> = new Map()
+            let newTopSubjects: Map<
+                string,
+                { kTop: string; mTop: string }
+            > = new Map();
             props.questionAnswers.forEach((questionAnswers, category) => {
                 let kTop: string = "";
                 let mTop: string = "";
                 let reduced = questionAnswers.reduce<{
                     maxKnowledge: number;
                     maxMotivation: number;
+                    maxCustomScale: number;
                 }>(
                     (
                         acc,
                         cur
-                    ): { maxKnowledge: number; maxMotivation: number } => {
+                    ): {
+                        maxKnowledge: number;
+                        maxMotivation: number;
+                        maxCustomScale: number;
+                    } => {
                         if (acc.maxKnowledge < cur.knowledge) {
                             acc.maxKnowledge = cur.knowledge;
-                            kTop = cur.topic;
+                            kTop = cur.question.topic;
                         }
                         if (acc.maxMotivation < cur.motivation) {
                             acc.maxMotivation = cur.motivation;
-                            mTop = cur.topic;
+                            mTop = cur.question.topic;
+                        }
+                        if (acc.maxCustomScale < cur.customScaleValue) {
+                            acc.maxCustomScale = cur.customScaleValue;
+                            mTop = cur.question.topic;
                         }
                         return acc;
                     },
                     {
                         maxKnowledge: -1,
                         maxMotivation: -1,
+                        maxCustomScale: -1,
                     }
                 );
                 ansData.push({
                     category: category,
                     aggKnowledge: reduced.maxKnowledge,
                     aggMotivation: reduced.maxMotivation,
+                    aggCustomScale: reduced.maxCustomScale,
                 });
                 newTopSubjects.set(category, { kTop: kTop, mTop: mTop });
             });
