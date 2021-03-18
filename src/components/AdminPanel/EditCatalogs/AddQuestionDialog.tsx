@@ -29,8 +29,8 @@ const AddQuestionDialog = ({ onCancel, onConfirm, open }: any) => {
     );
     const [questionConfig, setQuestionConfig] = useState<any>({});
 
-    const isKnowledgeMotivation =
-        questionType === QuestionType.knowledgeMotivation;
+    // const isKnowledgeMotivation =
+    //     questionType === QuestionType.knowledgeMotivation;
     const isCustomScaleLabels = questionType === QuestionType.customScaleLabels;
     const isCompleted = (): boolean => {
         if (topic === "" || description === "") return false;
