@@ -32,16 +32,6 @@ export default function AnswerDiagram({ ...props }: AnswerDiagramProps) {
             };
         }) || [];
 
-    // let chartData: ChartData[] = helper.sortArray(props.data)
-    //     .filter(answer => answer.category === props.activeCategory)
-    //     .map(
-    //         (answer) => ({
-    //             name: answer.topic,
-    //             valueKnowledge: [0, (answer.knowledge === -1) ? 0 : answer.knowledge],
-    //             valueMotivation: [7, 7 + ((answer.motivation === -1) ? 0 : answer.motivation)],
-    //         })
-    //     );
-
     return props.isMobile ? (
         <CombinedChartMobile chartData={chartData} />
     ) : (

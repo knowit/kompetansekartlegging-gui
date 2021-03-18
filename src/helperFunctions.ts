@@ -20,24 +20,6 @@ export const callGraphQL = async <T>(
     )) as GraphQLResult<T>;
 };
 
-type SearchableItem = {
-    createdAt: string;
-};
-
-/*
-    Get the last item in a array, based on the "createdAt" field. Used with results from graphql querries.
-    
-    Dont use this function anymore, it should be changed or removed because the query itself will grab the
-        last item automaticly.
-*/
-export const getLastItem = <T extends SearchableItem>(itemsArray?: T[]) => {
-    if (!itemsArray) return null;
-    let sortedArray = itemsArray.sort((a, b) =>
-        Date.parse(a.createdAt) > Date.parse(b.createdAt) ? -1 : 1
-    );
-    return sortedArray[0];
-};
-
 /*
     Gets all userforms in the database. Returned as an array.
     Because graphql has a limit on how many items that can be querried at a time,
@@ -124,47 +106,6 @@ export const roundDecimals = (
     );
 };
 
-/*
-    Clamp a number between 2 numbers.
-    - Value: The value to clamp.
-    - Min: The lowest value the input value can be (return this if value < min).
-    - Max (Optional): The highest value the input value can be (return this if value > max).
-*/
-export const clampNumber = (
-    value: number,
-    min: number,
-    max?: number
-): number => {
-    let newValue = value < min ? min : value;
-    if (max) newValue = value > max ? max : value;
-    // console.log(`v:${value}, min:${min}, max:${max}, new:${newValue}`);
-    return newValue;
-};
-
-/*
-    Limits a strings length, and replaces any extra characters with "...".
-    - Str: Input string to limit.
-    - Length: The max length of the string.
-    - Overflow: True if you want to add lineshift instead of "..." at length.
-    If overflow == true, use regex to place lineshift between words that would go over the length limit.
-        This dose not work that great if there is words in the string longer than length.
-*/
-export const limitStringLength = (
-    str: string,
-    length: number,
-    overflow: boolean = false
-): string[] => {
-    if (length <= 0) return [str];
-    if (overflow)
-        return (
-            str.match(
-                new RegExp("(?:\\s*)(.{1," + length + "})(?:\\s+|\\s*$)", "g")
-            ) || []
-        );
-    if (length <= 3) return ["..."];
-    return [str.substring(0, length - 3) + "..."];
-};
-
 /**
  * Splits a long string into an array of shorter strings, with hyphens where "appropriate".
  *
@@ -197,70 +138,6 @@ export const wrapString = (str: string, maxLength: number): string[] => {
     }
     return resultArray;
 };
-
-/*
-    Adds padding to all strings in the input array, used to make all strings a set length.
-    - Str: Array with all strings to add padding to.
-    - PaddLength: How long all strings sould end up with.
-    - PadChar (optional): Character to use for adding padding (default is a space " ").
-    
-    This function should be changed to take a single string too, so you dont have to use
-        a array of strings every time.
-*/
-export const addLeftPaddingToStringArray = (
-    str: string[],
-    padLength: number,
-    padChar?: string
-): string[] => {
-    return str.map((value) => value.padStart(padLength, padChar));
-};
-
-//Can be made more advanced, but this s enought for current useage
-export const sortArray = <T>(array: T[]): T[] => {
-    return array.sort((a: any, b: any) => {
-        //using any to remove "Index not found on type T" error
-        if (a.index && b.index == null) return -1;
-        if (a.index == null && b.index) return 1;
-        if (a.index && b.index) return a.index - b.index;
-        if (a.index == null && b.index == null)
-            return a.text.localeCompare(b.text);
-        return 0;
-    });
-};
-
-/*
-    
-*/
-// let activePanels = {
-//     Overview: true,
-//     MyAnswers: false
-// };
-
-// export enum Panel {
-//     Overview,
-//     MyAnswers,
-//     None
-// };
-
-// export const getActivePanel = (): Panel => {
-//     if(activePanels.Overview) return Panel.Overview;
-//     if(activePanels.MyAnswers) return Panel.MyAnswers;
-//     return Panel.None;
-// };
-
-// export const setActivePanel = (panel: Panel): Panel => {
-//     if(panel === Panel.Overview) {
-//         activePanels.Overview = true;
-//         activePanels.MyAnswers = false;
-//     } else if(panel === Panel.MyAnswers){
-//         activePanels.Overview = false;
-//         activePanels.MyAnswers = true;
-//     } else if(panel === Panel.None){
-//         activePanels.Overview = false;
-//         activePanels.MyAnswers = false;
-//     }
-//     return getActivePanel();
-// };
 
 export const Millisecs = {
     FIVEMINUTES: 300000,
