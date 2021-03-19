@@ -35,6 +35,9 @@ export type Question = {
     topic: string;
     index: number;
     type: QuestionType;
+    scaleStart: string | undefined;
+    scaleMiddle: string | undefined;
+    scaleEnd: string | undefined;
     category: {
         id: string;
         text: string;
@@ -463,11 +466,23 @@ export type ChartData = {
     valueMotivation: number[];
 };
 
+export type CustomScaleLabelsChartData = {
+    name: string;
+    startLabel: string | undefined;
+    middleLabel: string | undefined;
+    endLabel: string | undefined;
+    value: number;
+};
+
 export type CombinedChartProps = {
     chartData: ChartData[];
     type?: OverviewType;
     topSubjects?: Map<string, { kTop: string; mTop: string }>;
     className?: string;
+};
+
+export type CustomScaleChartProps = {
+    chartData: CustomScaleLabelsChartData[];
 };
 
 //Used in form and question
