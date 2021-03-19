@@ -199,7 +199,11 @@ router.get(
     async (req, res) => {
         const catID = req.params.categoryID;
         const allQuestions = await getAllQuestionForCategory(catID);
-        return res.json(allQuestions.Items);
+        return res.json(
+            allQuestions.Items.map((q) =>
+                q.type ? q : { ...q, type: "knowledgeMotivation" }
+            )
+        );
     }
 );
 

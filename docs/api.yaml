@@ -173,14 +173,19 @@ paths:
                                         "id": "aaaaaaaa-7123-4d35-9cfd-bbbbbbbbbbbb",
                                         "topic": "Viktig JS kunnskap",
                                         "text": "[] == ![]?",
-                                        "categoryID": "aaaaaaaa-d88e-40c6-808f-bbbbbbbbbbbb"
+                                        "categoryID": "aaaaaaaa-d88e-40c6-808f-bbbbbbbbbbbb",
+                                        "type": "knowledgeMotivation"
                                     },
                                     {
                                         "index": 2,
                                         "id": "bbbbbbbb-7123-4d35-9cfd-cccccccccccc",
                                         "topic": "Viktig JS kunnskap",
                                         "text": "typeof document.all?",
-                                        "categoryID": "aaaaaaaa-d88e-40c6-808f-bbbbbbbbbbbb"
+                                        "categoryID": "aaaaaaaa-d88e-40c6-808f-bbbbbbbbbbbb",
+                                        "type": "customScaleLabels",
+                                        "scaleStart": "Vil ikke",
+                                        "scaleMiddle": "Kanskje",
+                                        "scaleEnd": "Jippi"
                                     }
                                 ]
             security:
@@ -215,14 +220,16 @@ paths:
                                         "id": "aaaaaaaa-7123-4d35-9cfd-bbbbbbbbbbbb",
                                         "topic": "Viktig JS kunnskap",
                                         "text": "[] == ![]?",
-                                        "categoryID": "aaaaaaaa-d88e-40c6-808f-bbbbbbbbbbbb"
+                                        "categoryID": "aaaaaaaa-d88e-40c6-808f-bbbbbbbbbbbb",
+                                        "type": "knowledgeMotivation"
                                     },
                                     {
                                         "index": 2,
                                         "id": "bbbbbbbb-7123-4d35-9cfd-cccccccccccc",
                                         "topic": "Viktig JS kunnskap",
                                         "text": "typeof document.all?",
-                                        "categoryID": "aaaaaaaa-d88e-40c6-808f-bbbbbbbbbbbb"
+                                        "categoryID": "aaaaaaaa-d88e-40c6-808f-bbbbbbbbbbbb",
+                                        "type": "knowledgeMotivation"
                                     }
                                 ]
             security:
@@ -285,6 +292,7 @@ components:
                         anyOf:
                             - $ref: "#/components/schemas/UnansweredQuestion"
                             - $ref: "#/components/schemas/AnsweredKnowledgeMotivationQuestion"
+                            - $ref: "#/components/schemas/AnsweredCustomScaleLabelsQuestion"
             required:
                 - username
                 - email
@@ -303,6 +311,16 @@ components:
             required:
                 - knowledge
                 - motivation
+                - question
+        AnsweredCustomScaleLabelsQuestion:
+            type: object
+            properties:
+                customScaleValue:
+                    type: number
+                question:
+                    $ref: "#/components/schemas/Question"
+            required:
+                - customScaleValue
                 - question
         UnansweredQuestion:
             type: object
@@ -368,11 +386,23 @@ components:
                     type: integer
                 categoryID:
                     type: string
+                type:
+                    type: string
+                    enum:
+                        - knowledgeMotivation
+                        - customScaleLabels
+                scaleStart:
+                    type: string
+                scaleMiddle:
+                    type: string
+                scaleEnd:
+                    type: string
             required:
                 - id
                 - topic
                 - text
                 - categoryID
+                - type
     securitySchemes:
         api_key:
             type: apiKey
