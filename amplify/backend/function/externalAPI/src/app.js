@@ -186,7 +186,11 @@ router.get("/catalogs/:id/categories", async (req, res) => {
 router.get("/catalogs/:id/questions", async (req, res) => {
     const formDefID = req.params.id;
     const allQuestions = await getAllQuestionForFormDef(formDefID);
-    return res.json(allQuestions.Items);
+    return res.json(
+        allQuestions.Items.map((q) =>
+            q.type ? q : { ...q, type: "knowledgeMotivation" }
+        )
+    );
 });
 
 // returns: list of all questions for a category

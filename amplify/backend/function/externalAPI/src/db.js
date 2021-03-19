@@ -29,7 +29,7 @@ const getAnswersForUserForm = async (userFormID) => {
             KeyConditionExpression: "userFormID = :ufID",
             ExpressionAttributeValues: { ":ufID": userFormID },
             ProjectionExpression:
-                "questionID, knowledge, motivation, updatedAt",
+                "questionID, knowledge, motivation, customScaleValue, updatedAt",
         })
         .promise();
 
@@ -98,6 +98,10 @@ const getAnswersForUser = async (user, formDefinitionID, questionMap) => {
                     topic: question.topic,
                     category: question.category,
                     id: question.id,
+                    type: question.type || "knowledgeMotivation",
+                    scaleStart: question.scaleStart,
+                    scaleMiddle: question.scaleMiddle,
+                    scaleEnd: question.scaleEnd,
                 },
             };
         }
@@ -122,11 +126,13 @@ const getAllQuestionForFormDef = async (lastFormDefID) => {
             ExpressionAttributeValues: {
                 ":formDef": lastFormDefID,
             },
-            ProjectionExpression: "id, #text, #index, topic, categoryID",
+            ProjectionExpression:
+                "id, #text, #index, #type, scaleStart, scaleMiddle, scaleEnd, topic, categoryID",
             ExpressionAttributeNames: {
                 "#formDef": "formDefinitionID",
                 "#text": "text",
                 "#index": "index",
+                "#type": "type",
             },
         })
         .promise();
@@ -142,11 +148,13 @@ const getAllQuestionForCategory = async (categoryID) => {
             ExpressionAttributeValues: {
                 ":category": categoryID,
             },
-            ProjectionExpression: "id, #text, #index, topic, categoryID",
+            ProjectionExpression:
+                "id, #text, #index, #type, scaleStart, scaleMiddle, scaleEnd, topic, categoryID",
             ExpressionAttributeNames: {
                 "#category": "categoryID",
                 "#text": "text",
                 "#index": "index",
+                "#type": "type",
             },
         })
         .promise();

@@ -21,6 +21,23 @@ const mapQuestionToAnswer = (questionMap, answer) => {
         };
     }
 
+    if (question.type === "customScaleLabels") {
+        return {
+            knowledge: answer.knowledge,
+            customScaleValue: answer.customScaleValue,
+            question: {
+                text: question.text,
+                topic: question.topic,
+                type: question.type,
+                category: question.category,
+                id: question.id,
+                scaleStart: question.scaleStart,
+                scaleMiddle: question.scaleMiddle,
+                scaleEnd: question.scaleEnd,
+            },
+        };
+    }
+
     return {
         knowledge: answer.knowledge,
         motivation: answer.motivation,
@@ -28,6 +45,7 @@ const mapQuestionToAnswer = (questionMap, answer) => {
         question: {
             text: question.text,
             topic: question.topic,
+            type: question.type || "knowledgeMotivation",
             category: question.category,
             id: question.id,
         },
