@@ -72,7 +72,9 @@ const listAllUsers = async (): Promise<ApiResponse<User[]>> => {
     let allUsers: any[] = [];
     try {
         do {
-            const usersGQ = await callGraphQL<ListUsersQuery>(listUsers);
+            const usersGQ = await callGraphQL<ListUsersQuery>(listUsers, {
+                nextToken: nextToken || null,
+            });
             nextToken = usersGQ?.data?.listUsers?.nextToken || "";
             const users = usersGQ?.data?.listUsers?.items?.map(
                 (user) =>
@@ -82,7 +84,7 @@ const listAllUsers = async (): Promise<ApiResponse<User[]>> => {
                     } as User)
             );
             allUsers = [...allUsers, ...(users || [])];
-        } while (!!nextToken);
+        } while (nextToken);
     } catch (e) {
         return { error: `Could not get a list of all users.` };
     }

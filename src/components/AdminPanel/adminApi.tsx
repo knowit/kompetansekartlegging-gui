@@ -1,11 +1,11 @@
 import { API, Auth } from "aws-amplify";
 
 export interface Response<T> {
-    result: T
+    result: T;
 }
 
 export interface Failure {
-    error: string
+    error: string;
 }
 
 export type ApiResponse<T> = Response<T> | Failure;
@@ -130,10 +130,10 @@ const listAllUsers = async (
                 },
             };
             const res = await API.get(apiName, path, variables);
-            const { Users, NextToken } = res;
+            const { Users, nextToken: NextToken } = res;
             nextToken = NextToken;
             allUsers = [...allUsers, ...Users];
-        } while (!!nextToken);
+        } while (nextToken);
     } catch (e) {
         return { error: "Could not get a list of all users." };
     }
