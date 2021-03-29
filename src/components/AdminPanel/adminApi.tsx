@@ -130,7 +130,7 @@ const listAllUsers = async (
                 },
             };
             const res = await API.get(apiName, path, variables);
-            const { Users, nextToken: NextToken } = res;
+            const { Users, NextToken } = res;
             nextToken = NextToken;
             allUsers = [...allUsers, ...Users];
         } while (nextToken);
