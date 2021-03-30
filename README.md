@@ -88,16 +88,6 @@ as the steps necessary are somewhat complicated.
 To update an Amplify `category`, i.e. `auth`, run the command `$
 amplify update category`.
 
-## Not-so-obvious things to know
-
-All Amplify environment information is contained in
-`amplify/team-provider-info.json` (which is put in `.gitignore` since
-it contains secrets). This means that environment information has to
-be pulled manually (by finding the right Amplify CLI command for the
-respective environment in the Amplify console). We are currently using
-[git-secret](https://git-secret.io/#using-gpg) to safely encrypt the
-environments file.
-
 ## Useful links
 
 1. [Amplify CLI documentation](https://docs.amplify.aws/cli)
