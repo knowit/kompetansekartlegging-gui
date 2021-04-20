@@ -26,14 +26,9 @@ const mapQuestionToAnswer = (questionMap, answer) => {
             knowledge: answer.knowledge,
             customScaleValue: answer.customScaleValue,
             question: {
-                text: question.text,
-                topic: question.topic,
-                type: question.type,
-                category: question.category,
                 id: question.id,
-                scaleStart: question.scaleStart,
-                scaleMiddle: question.scaleMiddle,
-                scaleEnd: question.scaleEnd,
+                topic: question.topic,
+                category: question.category,
             },
         };
     }
@@ -43,11 +38,9 @@ const mapQuestionToAnswer = (questionMap, answer) => {
         motivation: answer.motivation,
         updatedAt: answer.updatedAt,
         question: {
-            text: question.text,
-            topic: question.topic,
-            type: question.type || "knowledgeMotivation",
-            category: question.category,
             id: question.id,
+            topic: question.topic,
+            category: question.category,
         },
     };
 };

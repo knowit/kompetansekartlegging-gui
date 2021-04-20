@@ -290,7 +290,6 @@ components:
                     type: array
                     items:
                         anyOf:
-                            - $ref: "#/components/schemas/UnansweredQuestion"
                             - $ref: "#/components/schemas/AnsweredKnowledgeMotivationQuestion"
                             - $ref: "#/components/schemas/AnsweredCustomScaleLabelsQuestion"
             required:
@@ -384,7 +383,7 @@ components:
                     type: string
                 index:
                     type: integer
-                categoryID:
+                category:
                     type: string
                 type:
                     type: string
@@ -400,9 +399,7 @@ components:
             required:
                 - id
                 - topic
-                - text
-                - categoryID
-                - type
+                - category
     securitySchemes:
         api_key:
             type: apiKey

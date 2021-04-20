@@ -40,7 +40,6 @@ const getAnswersForUserForm = async (userFormID) => {
 const getAnswersForUser = async (user, formDefinitionID, questionMap) => {
     const email = getUserAttribute(user, "email");
     const username = user.Username;
-    console.log(user);
 
     let allUserForms = await docClient
         .query({
@@ -59,8 +58,6 @@ const getAnswersForUser = async (user, formDefinitionID, questionMap) => {
         })
         .promise();
 
-    console.log("UserForms: ", allUserForms.Items);
-
     // No answers given.
     if (allUserForms.Items.length < 1) {
         return {
@@ -73,46 +70,17 @@ const getAnswersForUser = async (user, formDefinitionID, questionMap) => {
     // Get the latest UserForm.
     let lastUserForm = getNewestItem(allUserForms.Items);
 
-    console.log("Last UserForm: ", lastUserForm);
-
     const answers = await getAnswersForUserForm(lastUserForm.id);
     const answersWithQuestions = answers.map((a) =>
         mapQuestionToAnswer(questionMap, a)
     );
-
-    console.log("Answers with questions: ", answersWithQuestions);
-
-    // Mark unanswered questions with 'unanswered: true'
-    const allQuestionsWithAnswers = Object.keys(questionMap).map((qId) => {
-        const question = questionMap[qId];
-        const answer = answersWithQuestions.find(
-            (a) => a.question && a.question.id === qId
-        );
-        if (answer) {
-            return answer;
-        } else {
-            return {
-                unanswered: true,
-                question: {
-                    text: question.text,
-                    topic: question.topic,
-                    category: question.category,
-                    id: question.id,
-                    type: question.type || "knowledgeMotivation",
-                    scaleStart: question.scaleStart,
-                    scaleMiddle: question.scaleMiddle,
-                    scaleEnd: question.scaleEnd,
-                },
-            };
-        }
-    });
 
     return {
         username,
         email,
         formDefinitionID,
         updatedAt: lastUserForm.updatedAt,
-        answers: allQuestionsWithAnswers,
+        answers: answersWithQuestions,
     };
 };
 

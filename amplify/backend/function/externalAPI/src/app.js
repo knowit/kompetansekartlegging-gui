@@ -58,7 +58,7 @@ router.get("/", (req, res) => {
 router.get("/answers", async (req, res) => {
     // Find the newest FormDefinition.
     const newestFormDef = await getNewestFormDef();
-    console.log(newestFormDef);
+    // console.log(newestFormDef);
     if (!newestFormDef) {
         res.status(500).json({
             error: "could not get newest form definition",
@@ -68,7 +68,7 @@ router.get("/answers", async (req, res) => {
     // Get all categories.
     const allCategories = await getAllCategories();
     const categoryMap = mapFromArray(allCategories.Items, "id");
-    console.log(categoryMap);
+    // console.log(categoryMap);
 
     // Find all the questions belonging to the current FormDefinition.
     const allQuestions = await getAllQuestionForFormDef(newestFormDef.id);
@@ -77,11 +77,11 @@ router.get("/answers", async (req, res) => {
         category: categoryMap[q.categoryID].text,
     }));
     const questionMap = mapFromArray(allQuestionsWithCategory, "id");
-    console.log(questionMap);
+    // console.log(questionMap);
 
     // Find all users.
     const allUsers = await getAllUsers();
-    console.log(allUsers);
+    // console.log(allUsers);
 
     // Find answers for the current form definition for each user.
     const userAnswers = await Promise.all(
@@ -95,7 +95,6 @@ router.get("/answers", async (req, res) => {
         (ua) => ua.answers.length > 0
     );
 
-    console.log(nonEmptyUserAnswers);
     // Create response.
     return res.json(nonEmptyUserAnswers);
 });
