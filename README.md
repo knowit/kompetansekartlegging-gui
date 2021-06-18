@@ -96,4 +96,4 @@ amplify update category`.
 ## Problems?
 
 Questions related to Amplify not covered by this document can be
-directed to `bjorn.iversen@knowit.no`.
+directed to `bjorn.iversen@knowit.no`. 
