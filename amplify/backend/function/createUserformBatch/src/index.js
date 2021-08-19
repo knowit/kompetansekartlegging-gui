@@ -222,18 +222,18 @@ async function mapQuestionAnswers(newAnswers, oldAnswers, useNewUserform) {
             return newAns;
         }
 
-        const old = oldAnswers.filter(
+        const old = oldAnswers.find(
             (oldAns) => oldAns.questionID === newAns.questionID
         );
         // console.log("old question: ", old);
-        if (old.length > 0) {
+        if (old) {
             //If using new userform, all answers need to be create
             if (useNewUserform) {
                 newAns.action = Action.Create;
             } else {
                 //Makes it possible to bypass the timeLimit variable (gotten from database (in future)), mostly used for testing
                 if (useTimeLimit) {
-                    newAns.questionAnswerId = old[0].id;
+                    newAns.questionAnswerId = old.id;
                     newAns.action = Action.Update;
                     newAns.updatedAt = new Date(millisecToday).toISOString();
                 } else {
