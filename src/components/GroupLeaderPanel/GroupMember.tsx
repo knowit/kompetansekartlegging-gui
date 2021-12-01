@@ -13,6 +13,7 @@ import { Panel, UserAnswer, QuestionAnswer } from "../../types";
 import { Overview } from "../cards/Overview";
 import AnswerDiagram from "../AnswerDiagram";
 import Nav from "./Nav";
+import { isFederatedSignInOptionsCustom } from "@aws-amplify/auth/lib-esm/types";
 
 const voidFn = () => 1;
 
@@ -61,7 +62,7 @@ const GroupMember = ({ members, userId, isMobile = false }: any) => {
                         )
                 );
             } catch (e) {
-                setError(e.toString());
+                setError(typeof e == 'string' ? e.toString() : 'undefined');
             }
             setLoading(false);
         };
