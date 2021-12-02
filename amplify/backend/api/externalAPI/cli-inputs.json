@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "paths": {
+    "/": {
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "read"
+        ]
+      },
+      "lambdaFunction": "externalAPI"
+    }
+  }
+}

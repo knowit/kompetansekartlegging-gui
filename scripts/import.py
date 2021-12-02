@@ -2,7 +2,7 @@ import boto3
 import os
 
 sourceappid = '3hic5nngffevtfafcd62sdoece'
-destinationappid = 'covu22hn6fgf5jdsw67hhugyty'
+destinationappid = 'sydchfdph5h4ddy5dnjyklwhj4'
 tablename = 'UserForm'
 env = 'dev'
 

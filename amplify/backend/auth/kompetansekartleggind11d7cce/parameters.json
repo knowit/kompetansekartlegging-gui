@@ -53,7 +53,7 @@
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "dependsOn": [],
-    "hostedUIDomainName": "kompetansekartleggine8062390-e8062390",
+    "hostedUIDomainName": "kompetansekartlegging-474359401138",
     "authProvidersUserPool": [
         "Google"
     ],
