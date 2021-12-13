@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { callGraphQL } from "../../helperFunctions";
+import { callGraphQL, getActiveOrganizationAwait } from "../../helperFunctions";
 import {
     CategoriesByFormDefinitionQuery,
     Category,
@@ -8,7 +8,6 @@ import {
     DeleteFormDefinitionMutation,
     DeleteQuestionMutation,
     FormDefinition,
-    ListFormDefinitionsQuery,
     Question,
     QuestionsByCategoryQuery,
     UpdateCategoryMutation,
@@ -18,10 +17,11 @@ import {
     CreateCategoryMutation,
     QuestionType,
     CreateQuestionMutation,
+    FormDefinitionByOrganizationIdQuery,
 } from "../../API";
 import {
     categoriesByFormDefinition,
-    listFormDefinitions,
+    formDefinitionByOrganizationId,
     questionsByCategory,
 } from "../../graphql/queries";
 import {
@@ -37,14 +37,31 @@ import {
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
 
-const listAllFormDefinitions = async (): Promise<
+const listAllFormDefinitionsForLoggedInUser = async (): Promise<
+    ApiResponse<FormDefinition[]>
+> => {
+
+    const organizationID = await getActiveOrganizationAwait();
+    try {
+        return await listAllFormDefinitionsByOrganizationID(organizationID);
+    } catch (e) {
+        return { error: `Could not get a list of all form definitions for organization id '${organizationID}'.` };
+    }
+};
+
+const listAllFormDefinitionsByOrganizationID = async (
+    organizationID: string
+): Promise<
     ApiResponse<FormDefinition[]>
 > => {
     try {
-        const gq = await callGraphQL<ListFormDefinitionsQuery>(
-            listFormDefinitions
+        const gq = await callGraphQL<FormDefinitionByOrganizationIdQuery>(
+            formDefinitionByOrganizationId,
+            {
+                organizationID,
+            }
         );
-        const els = gq?.data?.listFormDefinitions?.items?.map(
+        const els = gq?.data?.formDefinitionByOrganizationID?.items?.map(
             (el) =>
                 ({
                     id: el?.id,
@@ -52,12 +69,13 @@ const listAllFormDefinitions = async (): Promise<
                     createdAt: el?.createdAt,
                     updatedAt: el?.updatedAt,
                     sortKeyConstant: el?.sortKeyConstant,
+                    organizationID: el?.organizationID,
                 } as FormDefinition)
         );
 
         return { result: els || [] };
     } catch (e) {
-        return { error: `Could not get a list of all form definitions.` };
+        return { error: `Could not get a list of all form definitions for organization id '${organizationID}'.` };
     }
 };
 
@@ -292,6 +310,7 @@ const createFormDefinition = async (
         const input = {
             id: uuidv4(),
             label: name,
+            organizationID: await getActiveOrganizationAwait(),
             sortKeyConstant: "formDefinitionConstant",
             createdAt: new Date(0).toISOString(),
         };
@@ -369,7 +388,7 @@ const createQuestion = async (
 };
 
 export {
-    listAllFormDefinitions,
+    listAllFormDefinitionsForLoggedInUser,
     listCategoriesByFormDefinitionID,
     updateCategoryIndex,
     listQuestionsByCategoryID,

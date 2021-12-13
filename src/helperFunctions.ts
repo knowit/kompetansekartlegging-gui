@@ -1,4 +1,4 @@
-import { API, graphqlOperation } from "aws-amplify";
+import { API, Auth, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api";
 import { UserFormList, UserFormWithAnswers } from "./types";
 import * as customQueries from "./graphql/custom-queries";
@@ -144,4 +144,29 @@ export const Millisecs = {
     ONEDAY: 86400000,
     THREEDAYS: 259200000,
     THREEMONTHS: 7889400000,
+};
+
+// TODO Major preliminary hack to get active org when auth-object not containing info on which Organization the user belongs to
+export const getActiveOrganizationAwait = async () => {
+        // TODO hardcoded userhack for now
+        var organizationID = undefined;
+        const userInfo =  await Auth.currentAuthenticatedUser();
+        const userEmail = userInfo.attributes.email;
+        if (userEmail === 'jhg@knowit.no') {
+            organizationID = '1'
+        } else {
+            organizationID = '2'
+        }
+        return organizationID;
+};
+
+export const getActiveOrganization = (userName: string) => {
+    // TODO hardcoded userhack for now
+    var organizationID = undefined;
+    if (userName === 'jhg@knowit.no') {
+        organizationID = '1'
+    } else {
+        organizationID = '2'
+    }
+    return organizationID;
 };

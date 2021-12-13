@@ -674,6 +674,7 @@ const Content = ({ ...props }: ContentProps) => {
                     activePanel={activePanel}
                     userName={props.userName}
                     userPicture={props.userPicture}
+                    organizationName={props.organizationName}
                     signout={props.signout}
                 />
             ) : (

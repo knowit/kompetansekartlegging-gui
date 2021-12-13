@@ -402,6 +402,8 @@ export type NavBarPropsDesktop = {
     signout: () => void;
     userName: string;
     userPicture: string;
+    organizationName: string;
+
 };
 
 export type NavBarPropsMobile = {
@@ -409,6 +411,7 @@ export type NavBarPropsMobile = {
     activePanel: Panel;
     userName: string;
     userPicture: string;
+    organizationName: string;
     signout: () => void;
 };
 
@@ -449,6 +452,7 @@ export type ContentProps = {
     signout: () => void;
     userName: string;
     userPicture: string;
+    organizationName: string;
     collapseMobileCategories: boolean;
     categoryNavRef: React.MutableRefObject<HTMLInputElement | null>;
     scrollToTop: () => void;

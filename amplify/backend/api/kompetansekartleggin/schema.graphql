@@ -1,3 +1,23 @@
+type Organization
+    @model
+    @auth(
+        rules: [
+            { allow: owner }
+            { allow: groups, groups: ["admin"] }
+            { allow: groups, groups: ["groupLeader"], operations: [read] }
+        ]
+    )
+    @key(
+        name: "byCreatedAt"
+        fields: ["owner", "createdAt"]
+        queryField: "organizationByCreatedAt"
+    ) {
+    id: ID!
+    createdAt: AWSDateTime!
+    owner: String
+    name: String
+}
+
 type FormDefinition
     @model
     @auth(
@@ -10,6 +30,11 @@ type FormDefinition
         name: "byCreatedAt"
         fields: ["sortKeyConstant", "createdAt"]
         queryField: "formByCreatedAt"
+    )
+    @key(
+        name: "byOrganization"
+        fields: ["organizationID"]
+        queryField: "formDefinitionByOrganizationID"
     ) {
     id: ID!
     label: String
@@ -17,6 +42,7 @@ type FormDefinition
     sortKeyConstant: String!
     questions: [Question]
         @connection(keyName: "byFormDefinition", fields: ["id"])
+    organizationID: ID!
 }
 
 type UserForm

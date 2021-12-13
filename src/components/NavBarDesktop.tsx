@@ -154,7 +154,7 @@ const NavBarDesktop = ({ ...props }: NavBarPropsDesktop) => {
                     <div className={style.logo}>
                         <KnowitLogo />
                     </div>
-                    <h1 className={style.title}>Kompetansekartlegging</h1>
+                    <h1 className={style.title}>Kompetansekartlegging for {props.organizationName}</h1>
 
                     {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}
                     <div className={style.dropdownMenuButton}>

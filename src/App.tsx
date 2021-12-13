@@ -11,6 +11,7 @@ import FloatingScaleDescButton from "./components/FloatingScaleDescButton";
 import NavBarDesktop from "./components/NavBarDesktop";
 import { UserRole } from "./types";
 import theme from "./theme";
+import { getActiveOrganization } from "./helperFunctions";
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -94,6 +95,7 @@ const App = () => {
     // used to reference items in desktop navbar
     const [userName, setUserName] = useState<string>("");
     const [userPicture, setUserPicture] = useState<string>("");
+    const [organizationName, setOrganizationName] = useState<string>("");
 
     useEffect(() => {
         if (user) {
@@ -105,6 +107,7 @@ const App = () => {
                 let attributes = user.attributes;
                 setUserName(attributes.name);
                 setUserPicture(attributes.picture);
+                setOrganizationName(getActiveOrganization(attributes.email));
             }
         }
     }, [user]);
@@ -162,6 +165,7 @@ const App = () => {
                                 displayAnswers={displayAnswers}
                                 signout={signout}
                                 userName={userName}
+                                organizationName={organizationName}
                                 userPicture={userPicture}
                             />
                         )}
@@ -173,6 +177,7 @@ const App = () => {
                             isMobile={isMobile}
                             signout={signout}
                             userName={userName}
+                            organizationName={organizationName}
                             userPicture={userPicture}
                             collapseMobileCategories={collapseMobileCategories}
                             categoryNavRef={categoryNavRef}

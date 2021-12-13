@@ -25,7 +25,7 @@ const AdminMenu = ({
 
     const items = [
         {
-            text: "Redigerr gruppeledere",
+            text: "Rediger gruppeledere",
         },
         {
             text: "Rediger grupper",

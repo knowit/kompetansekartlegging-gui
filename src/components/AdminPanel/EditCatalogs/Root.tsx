@@ -19,7 +19,7 @@ import commonStyles from "../common.module.css";
 import useApiGet from "../useApiGet";
 import { compareByCreatedAt } from "../helpers";
 import {
-    listAllFormDefinitions,
+    listAllFormDefinitionsForLoggedInUser,
     updateFormDefinitionCreatedAt,
     deleteFormDefinition,
     createFormDefinition,
@@ -104,7 +104,7 @@ const CatalogTable = ({ catalogs, deleteCatalog, activateCatalog }: any) => {
 
 const Root = () => {
     const { result: catalogs, error, loading, refresh } = useApiGet({
-        getFn: listAllFormDefinitions,
+        getFn: listAllFormDefinitionsForLoggedInUser,
         cmpFn: compareByCreatedAt,
     });
 
