@@ -2,6 +2,8 @@ import { API, Auth, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api";
 import { UserFormList, UserFormWithAnswers } from "./types";
 import * as customQueries from "./graphql/custom-queries";
+import * as queries from './graphql/queries';
+import { OrganizationByNameQuery } from "./API";
 
 /*
     Used to call graphql queries and mutations.
@@ -146,27 +148,44 @@ export const Millisecs = {
     THREEMONTHS: 7889400000,
 };
 
-// TODO Major preliminary hack to get active org when auth-object not containing info on which Organization the user belongs to
-export const getActiveOrganizationAwait = async () => {
-        // TODO hardcoded userhack for now
-        var organizationID = undefined;
-        const userInfo =  await Auth.currentAuthenticatedUser();
-        const userEmail = userInfo.attributes.email;
-        if (userEmail === 'jhg@knowit.no') {
-            organizationID = '1'
-        } else {
-            organizationID = '2'
-        }
-        return organizationID;
+export const getActiveOrganizationName = async () => {
+    const userInfo =  await Auth.currentAuthenticatedUser();
+    return getOrganizationNameByEmail(userInfo.attributes.email);
 };
 
-export const getActiveOrganization = (userName: string) => {
-    // TODO hardcoded userhack for now
-    var organizationID = undefined;
-    if (userName === 'jhg@knowit.no') {
-        organizationID = '1'
+// TODO internal hardcoded userhack for now
+// TODO Major preliminary hack to get active org when auth-object not containing info on which Organization the user belongs to
+const getOrganizationNameByEmail = (userEmail: string) => {
+    var organizationName = undefined;
+    if (userEmail === 'jhg@knowit.no') {
+        organizationName = 'Knowit Objectnet'
     } else {
-        organizationID = '2'
+        organizationName = 'Knowit Solutions'
     }
-    return organizationID;
+    return organizationName;
+};
+
+export const getActiveOrganizationID = async () => {
+    try {
+        const org = await getActiveOrganizationName();
+        const s = await getOrganizationIDByName(org);
+        return s;
+      } catch (e) {
+          return { error: 'Could not get organization name or id' };
+      }
+};
+
+
+const getOrganizationIDByName = async (organizationName: string) => {
+    try {
+        const gq = await callGraphQL<OrganizationByNameQuery>(
+            queries.organizationByName,
+            {
+                orgname: organizationName,
+            }
+        );
+        return gq?.data?.organizationByName?.items[0]?.id;
+    } catch (e) {
+        return { error: `getOrganizationIDByName: Could not find organizationidbyname '${organizationName}'.` };
+    }
 };

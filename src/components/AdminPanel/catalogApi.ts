@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { callGraphQL, getActiveOrganizationAwait } from "../../helperFunctions";
+import { callGraphQL, getActiveOrganizationID } from "../../helperFunctions";
 import {
     CategoriesByFormDefinitionQuery,
     Category,
@@ -41,9 +41,9 @@ const listAllFormDefinitionsForLoggedInUser = async (): Promise<
     ApiResponse<FormDefinition[]>
 > => {
 
-    const organizationID = await getActiveOrganizationAwait();
+    const organizationID = await getActiveOrganizationID();
     try {
-        return await listAllFormDefinitionsByOrganizationID(organizationID);
+        return await listAllFormDefinitionsByOrganizationID(organizationID as string);
     } catch (e) {
         return { error: `Could not get a list of all form definitions for organization id '${organizationID}'.` };
     }
@@ -75,7 +75,8 @@ const listAllFormDefinitionsByOrganizationID = async (
 
         return { result: els || [] };
     } catch (e) {
-        return { error: `Could not get a list of all form definitions for organization id '${organizationID}'.` };
+        console.log(e)
+        return { error: `listAllFormDefinitionsBtOrganizationID: Could not get a list of all form definitions for organization id '${organizationID}'.` };
     }
 };
 
@@ -310,7 +311,7 @@ const createFormDefinition = async (
         const input = {
             id: uuidv4(),
             label: name,
-            organizationID: await getActiveOrganizationAwait(),
+            organizationID: await getActiveOrganizationID(),
             sortKeyConstant: "formDefinitionConstant",
             createdAt: new Date(0).toISOString(),
         };

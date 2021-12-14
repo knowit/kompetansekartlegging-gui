@@ -8,6 +8,11 @@ type Organization
         ]
     )
     @key(
+        name: "byName"
+        fields: ["orgname"]
+        queryField: "organizationByName"
+    )
+    @key(
         name: "byCreatedAt"
         fields: ["owner", "createdAt"]
         queryField: "organizationByCreatedAt"
@@ -15,7 +20,7 @@ type Organization
     id: ID!
     createdAt: AWSDateTime!
     owner: String
-    name: String
+    orgname: String
 }
 
 type FormDefinition
