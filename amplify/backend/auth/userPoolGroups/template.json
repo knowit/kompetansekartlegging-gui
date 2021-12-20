@@ -358,5 +358,5 @@
       }
     }
   },
-  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.5.5\",\"stackType\":\"auth-Cognito-UserPool-Groups\",\"metadata\":{}}"
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.3\",\"stackType\":\"auth-Cognito-UserPool-Groups\",\"metadata\":{}}"
 }
