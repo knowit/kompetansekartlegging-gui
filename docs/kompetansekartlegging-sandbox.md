@@ -39,6 +39,17 @@ npm install
 npm start
 ```
 
+### Step six: adding existing data to the sandbox
+The import.py python script located in the scripts folder allows one to import data from one DynamoDB application to another. To use it, you need two profiles in your AWS CLI config. One for each AWS account. The script requires you to install ***boto3*** using pip.
+
+You then create a JSON file under the scripts folder called parameters.json. In this file, you add the parameters ['source_iam_user', 'destination_iam_user', 'destination_graphql_api_id', 'destination_env'].
+* **source_iam_user** is the local AWS CLI profile name for the IAM user you created in the Kompetansekartlegging AWS account, while the **destination_iam_user** is the local AWS CLI profile name for the IAM user you use for the Amplify CLI.
+* **destination_graphql_api_id** can be found by looking in dynamoDB in your sandbox AWS account, and finding the middle part of the table names (Example: User-exampleid-dev).
+* **destination_env** is the sandbox environment name you created in step one.
+
+Once this json file is created and filled in, you should be able to run the python script, which will fetch data from kompetansekartlegging-dev and insert it into your sandbox environment.
+
+
 
 ### Known errors:
 If you encounter CREATE_FAILED HostedUICustomResourceInputs, it is likely that the chosen environment name is already in use. To fix this, you can change the HostedUIDomainName parameter in the amplify/backend/auth/kompetansekartleggind11d7cce/paramters.json file. This is not an ideal solution, and the changes should be kept locally. The likely reason for this error is that AWS demands that the cognito hosted UI domain name is unique in a given region.
