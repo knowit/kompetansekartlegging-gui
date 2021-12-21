@@ -9,7 +9,7 @@ Run
 ```
 amplify init
 ```
-The setup will ask you for an environment name. Enter a new environment name like "username-sandbox", as the sandbox enviornment should be unique to the user.
+The setup will ask you for an environment name. Enter a new environment name like "username-sandbox", as the sandbox environment should be unique to the user.
 
 During set-up, you will be asked about a Google Web Client ID. This can be created by following the steps in [this tutorial](https://aws.amazon.com/premiumsupport/knowledge-center/cognito-google-social-identity-provider/). Ignore the steps about setting up Authorized javascript origins and Authorized redirect urls for now, this comes later. 
 
