@@ -69,3 +69,6 @@ ignoreFolder
 .idea/codeStyles/codeStyleConfig.xml
 .idea/.gitignore
 .log/
+
+
+scripts/parameters.json
