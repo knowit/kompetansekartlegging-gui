@@ -57,6 +57,6 @@
     "authProvidersUserPool": [
         "Google"
     ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"picture\":\"picture\",\"name\":\"name\",\"username\":\"sub\"}}]",
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://googlelogin.d26o3uvnva5774.amplifyapp.com/\",\"http://localhost:3000/\",\"https://master.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.d26o3uvnva5774.amplifyapp.com/\",\"https://testback.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.kompetanse.knowit.no/\"],\"LogoutURLs\":[\"https://googlelogin.d26o3uvnva5774.amplifyapp.com/\",\"http://localhost:3000/\",\"https://master.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.d26o3uvnva5774.amplifyapp.com/\",\"https://testback.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.kompetanse.knowit.no/\"]}"
 }
