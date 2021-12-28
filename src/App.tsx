@@ -18,6 +18,10 @@ awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 Amplify.configure(awsconfig);
 
+Hub.listen(/.*/, (data) => {
+    console.log('Hub listening to all messages: ', data);
+});
+
 const appStyle = makeStyles({
     root: {
         display: "flex",
@@ -98,6 +102,9 @@ const App = () => {
     const [organizationName, setOrganizationName] = useState<any>("");
 
     useEffect(() => {
+
+        console.log('userEffect user', user);
+
         if (user) {
             if (
                 typeof user != "undefined" &&
