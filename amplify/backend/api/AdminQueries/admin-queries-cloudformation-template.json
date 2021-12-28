@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.3\",\"stackType\":\"api-API Gateway\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.3\",\"stackType\":\"api-API Gateway\",\"metadata\":{}}",
   "Parameters": {
     "authRoleName": {
       "Type": "String"

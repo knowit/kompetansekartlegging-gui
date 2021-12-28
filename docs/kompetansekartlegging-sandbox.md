@@ -18,7 +18,7 @@ During set-up, you will be asked about a Google Web Client ID. This can be creat
 ```
 amplify push
 ```
-This command builds the project and pushes the amplify application to the cloud. Once this step is complete, it is time to fill in the Authorized javascript origins and Authorized redirect urls in the Google Web client project. The URL you want is the cognito domain name (example: https://exampleDomain.auth.eu-central-1.amazoncognito.com) under the Authorized javascript origins, and the cognito domain name plus /oauth2/idpresponse (example: https://exampleDomain.auth.eu-central-1.amazoncognito.com/oauth2/idpresponse).
+This command builds the project and pushes the amplify application to the cloud. Once this step is complete, it is time to fill in the Authorized javascript origins and Authorized redirect urls in the Google Web client project. The URL you want is the cognito domain name (example: https://exampleDomain.auth.eu-central-1.amazoncognito.com) under the Authorized javascript origins, and the cognito domain name plus /oauth2/idpresponse under the Authorized redirct URIs (example: https://exampleDomain.auth.eu-central-1.amazoncognito.com/oauth2/idpresponse).
 
 ### Step three: Configuring and running codegen
 We need to run Codegen to generate our API code. Simply run
