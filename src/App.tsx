@@ -16,6 +16,7 @@ import { getActiveOrganizationName } from "./helperFunctions";
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
+
 Amplify.configure(awsconfig);
 
 Hub.listen(/.*/, (data) => {
