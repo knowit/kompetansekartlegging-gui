@@ -17,6 +17,9 @@ awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 
+console.log('redirect signout:', awsconfig.oauth.redirectSignOut);
+
+
 Amplify.configure(awsconfig);
 
 Hub.listen(/.*/, (data) => {
@@ -72,6 +75,7 @@ const App = () => {
 
     useEffect(() => {
         Hub.listen("auth", ({ payload: { event, data } }) => {
+            console.log('event listener', event, data);
             switch (event) {
                 case "signIn":
                     setUser(data);
