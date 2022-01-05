@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import "./App.css";
-import Amplify, { Auth, Hub } from "aws-amplify";
+import Amplify, { Auth, Hub, API } from "aws-amplify";
 import awsconfig from "./aws-exports";
 import Content from "./components/Content";
 import Login from "./components/Login";
@@ -17,10 +17,8 @@ awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 
-console.log('redirect signout:', awsconfig.oauth.redirectSignOut);
-
-
-Amplify.configure(awsconfig);
+Auth.configure(awsconfig);
+API.configure(awsconfig);
 
 Hub.listen(/.*/, (data) => {
     console.log('Hub listening to all messages: ', data);
