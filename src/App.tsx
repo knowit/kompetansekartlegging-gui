@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import "./App.css";
-import Amplify, { Auth, Hub } from "aws-amplify";
+import { API, Auth, Hub } from "aws-amplify";
 import awsconfig from "./aws-exports";
 import Content from "./components/Content";
 import Login from "./components/Login";
@@ -13,10 +13,11 @@ import { UserRole } from "./types";
 import theme from "./theme";
 import { getActiveOrganizationName } from "./helperFunctions";
 
-awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
-awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
+// awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
+// awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
-Amplify.configure(awsconfig);
+API.configure(awsconfig);
+Auth.configure(awsconfig);
 
 Hub.listen(/.*/, (data) => {
     console.log('Hub listening to all messages: ', data);
@@ -73,7 +74,10 @@ const App = () => {
         Hub.listen("auth", ({ payload: { event, data } }) => {
             switch (event) {
                 case "signIn":
-                    setUser(data);
+                    setUser({...data});
+                    break;
+                case "signIn_failure":
+                    console.trace("Failed to sign in");
                     break;
                 case "signOut":
                     setUser(null);
@@ -81,7 +85,10 @@ const App = () => {
             }
         });
         Auth.currentAuthenticatedUser()
-            .then(setUser)
+            .then((res) => {
+                console.log(res);
+                setUser(res);
+            })
             .catch(() => console.log("Not signed in"));
     }, []);
 

@@ -161,9 +161,9 @@ const Login = (props: { isMobile: boolean }) => {
                     <Button
                         className={style.loginButton}
                         onClick={() =>
-                            Auth.federatedSignIn({
-                                customProvider:
-                                    CognitoHostedUIIdentityProvider.Google,
+                            (isNotProd) ?
+                            Auth.federatedSignIn() : Auth.federatedSignIn({
+                                customProvider: CognitoHostedUIIdentityProvider.Google,
                             })
                         }
                     >
