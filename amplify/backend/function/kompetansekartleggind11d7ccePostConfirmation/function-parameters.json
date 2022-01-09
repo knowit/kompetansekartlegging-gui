@@ -1,0 +1,19 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "kompetansekartleggind11d7cce",
+  "functionName": "kompetansekartleggind11d7ccePostConfirmation",
+  "resourceName": "kompetansekartleggind11d7ccePostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "C:\\Users\\hakon\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\@aws-amplify\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "triggerEventPath": "PostConfirmation.event.json",
+  "roleName": "kompetansekartleggind11d7ccePostConfirmation",
+  "skipEdit": true,
+  "deploymentBucketName": "amplify-kompetansekartleggin-hakcar-181150-deployment",
+  "s3Key": "amplify-builds/kompetansekartleggind11d7ccePostConfirmation-63634c6e2b5233424a44-build.zip",
+  "enableCors": false
+}

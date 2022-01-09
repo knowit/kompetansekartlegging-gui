@@ -46,6 +46,22 @@
       "Google"
     ],
     "identityPoolName": "kompetansekartleggind11d7cce_identitypool_d11d7cce",
-    "allowUnauthenticatedIdentities": false
+    "allowUnauthenticatedIdentities": false,
+    "dependsOn": [
+      {
+        "category": "function",
+        "resourceName": "kompetansekartleggind11d7ccePostConfirmation",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      }
+    ],
+    "triggers": {
+      "PostConfirmation": [
+        "custom"
+      ]
+    }
   }
 }
