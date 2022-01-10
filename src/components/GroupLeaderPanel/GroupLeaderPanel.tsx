@@ -4,6 +4,7 @@ import style from "./GroupLeaderPanel.module.css";
 import { Group } from "../../API";
 import useApiGet from "../AdminPanel/useApiGet";
 import {
+    listAllUsersInOrganization as listAllAvailableUsersInOrganization,
     listAllUsers as listAllAvailableUsers,
     listGroupLeaders,
 } from "../AdminPanel/adminApi";
@@ -17,6 +18,7 @@ import {
 
 import Main from "./Main";
 import GroupMember from "./GroupMember";
+import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
 
 const GroupLeaderPanel = ({
     members,
@@ -52,7 +54,8 @@ const GroupLeaderPanel = ({
         error: allAvailableUsersError,
         loading: allAvailableUsersLoading,
     } = useApiGet({
-        getFn: listAllAvailableUsers,
+        getFn: listAllAvailableUsersInOrganization,
+        params: user.attributes[ORGANIZATION_ID_ATTRIBUTE]
     });
 
     const group = groups?.find(

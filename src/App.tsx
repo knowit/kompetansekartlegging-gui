@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { API, Auth, Hub } from "aws-amplify";
+import {Amplify,  API, Auth, Hub } from "aws-amplify";
 import awsconfig from "./aws-exports";
 import Content from "./components/Content";
 import Login from "./components/Login";
@@ -16,6 +16,8 @@ import { getActiveOrganizationName } from "./helperFunctions";
 // awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 // awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
+// let config = Amplify.configure(awsconfig);
+// console.log(config);
 API.configure(awsconfig);
 Auth.configure(awsconfig);
 

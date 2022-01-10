@@ -150,17 +150,19 @@ export const Millisecs = {
 
 export const getActiveOrganizationName = async () => {
     const userInfo =  await Auth.currentAuthenticatedUser();
-    return getOrganizationNameByEmail(userInfo.attributes.email);
+    return getOrganizationNameByEmail(userInfo.signInUserSession.idToken.payload["cognito:groups"]);
 };
 
 // TODO internal hardcoded userhack for now
 // TODO Major preliminary hack to get active org when auth-object not containing info on which Organization the user belongs to
-const getOrganizationNameByEmail = (userEmail: string) => {
+const getOrganizationNameByEmail = (userGroup: string[]) => {
     var organizationName = undefined;
-    if (userEmail === 'jhg@knowit.no') {
-        organizationName = 'Knowit Objectnet'
+    if (userGroup.includes("knowitobjectnet")) {
+        organizationName = 'Knowit Objectnet';
+    }else if (userGroup.includes("knowitsolutions")) {
+        organizationName = 'Knowit Solutions';
     } else {
-        organizationName = 'Knowit Solutions'
+        organizationName = "No org found";
     }
     return organizationName;
 };

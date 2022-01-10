@@ -178,12 +178,16 @@ type User
         rules: [
             { allow: groups, groups: ["admin"] }
             { allow: groups, groups: ["groupLeader"] }
+            { allow: groups, groupsField: "orgGroups" }
         ]
     )
     @key(name: "byGroup", fields: ["groupID"], queryField: "usersByGroup") {
     id: ID!
     groupID: ID!
     group: Group! @connection(fields: ["groupID"])
+    orgID: ID!
+    organization: Organization @connection(fields: ["orgID"])
+    orgGroups: [String]
 }
 
 type CreateQuestionAnswerResult {

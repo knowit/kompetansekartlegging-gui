@@ -18,6 +18,7 @@ import commonStyles from "./common.module.css";
 import useApiGet from "./useApiGet";
 import {
     listAllUsers,
+    listAllUsersInOrganization,
     listGroupLeaders,
     removeGroupLeader,
     addGroupLeader,
@@ -28,6 +29,7 @@ import AddUserToGroupDialog from "./AddUserToGroupDialog";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
 import Button from "../mui/Button";
 import Table from "../mui/Table";
+import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
 
 const GroupLeader = (props: any) => {
     const { groupLeader, deleteGroupLeader } = props;
@@ -83,7 +85,7 @@ const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
     );
 };
 
-const EditGroupLeaders = () => {
+const EditGroupLeaders = ({user} : any) => {
     const { result: groupLeaders, error, loading, refresh } = useApiGet({
         getFn: listGroupLeaders,
     });
@@ -156,9 +158,10 @@ const EditGroupLeaders = () => {
             </DeleteUserFromGroupDialog>
             {showAddGroupLeader && (
                 <AddUserToGroupDialog
-                    userGetFn={listAllUsers}
+                    userGetFn={listAllUsersInOrganization}
                     roleName="gruppeleder"
                     open={showAddGroupLeader}
+                    user={user}
                     currentUsersInGroup={groupLeaders}
                     onCancel={hideShowAddGroupLeader}
                     onConfirm={addGroupLeaderConfirm}

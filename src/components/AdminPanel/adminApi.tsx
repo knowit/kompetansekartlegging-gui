@@ -105,6 +105,7 @@ const listUsersInGroup = async (
     }
 };
 
+const listAllUsersInOrganization = async (organizationID: string) => await listUsersInGroup(organizationID);
 const listGroupLeaders = async () => await listUsersInGroup("groupLeader");
 const listAdmins = async () => await listUsersInGroup("admin");
 
@@ -142,6 +143,7 @@ const listAllUsers = async (
 
 export {
     listAllUsers,
+    listAllUsersInOrganization,
     listGroupLeaders,
     addGroupLeader,
     removeGroupLeader,
