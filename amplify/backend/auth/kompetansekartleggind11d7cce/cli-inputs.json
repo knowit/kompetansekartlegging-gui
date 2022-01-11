@@ -81,17 +81,15 @@
         "Arn"
       ]
     },
-    "breakCircularDependency": false,
+    "breakCircularDependency": true,
     "useEnabledMfas": false,
     "permissions": [],
-    "authTriggerConnections": [
-      "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"kompetansekartleggind11d7ccePostConfirmation\"}"
-    ],
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"kompetansekartleggind11d7ccePostConfirmation\"\n  }\n]",
     "hostedUIProviderCreds": "[]",
     "googleClientId": "501380647535-kbb6lcaonhmb9g42lhov8fi1rdqege20.apps.googleusercontent.com",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://googlelogin.d26o3uvnva5774.amplifyapp.com/\",\"http://localhost:3000/\",\"https://master.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.d26o3uvnva5774.amplifyapp.com/\",\"https://testback.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.kompetanse.knowit.no/\"],\"LogoutURLs\":[\"https://googlelogin.d26o3uvnva5774.amplifyapp.com/\",\"http://localhost:3000/\",\"https://master.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.d26o3uvnva5774.amplifyapp.com/\",\"https://testback.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.kompetanse.knowit.no/\"]}",
     "parentStack": {
       "Ref": "AWS::StackId"
-    }
+    },
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://googlelogin.d26o3uvnva5774.amplifyapp.com/\",\"http://localhost:3000/\",\"https://master.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.d26o3uvnva5774.amplifyapp.com/\",\"https://testback.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.kompetanse.knowit.no/\"],\"LogoutURLs\":[\"https://googlelogin.d26o3uvnva5774.amplifyapp.com/\",\"http://localhost:3000/\",\"https://master.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.d26o3uvnva5774.amplifyapp.com/\",\"https://testback.d26o3uvnva5774.amplifyapp.com/\",\"https://dev.kompetanse.knowit.no/\"]}"
   }
 }

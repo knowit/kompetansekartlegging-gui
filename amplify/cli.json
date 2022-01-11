@@ -2,6 +2,9 @@
   "features": {
     "project": {
       "overrides": true
+    }, 
+    "auth": {
+      "breakCircularDependency": true
     }
   }
 }
