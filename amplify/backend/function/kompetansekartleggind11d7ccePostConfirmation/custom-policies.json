@@ -1,6 +1,6 @@
 [
   {
-    "Action": ["cognito-idp:AdminAddUserToGroup", "cognito-idp:UpdateUserAttributes"],
+    "Action": ["cognito-idp:AdminAddUserToGroup", "cognito-idp:UpdateUserAttributes", "cognito-idp:AdminUpdateUserAttributes"],
     "Resource": ["arn:aws:cognito-idp:*:*:userpool/*"]
   }
 ]
