@@ -1,4 +1,4 @@
-const ORGANIZATION_ID_ATTRIBUTE = "custom:organizationID";
+const ORGANIZATION_ID_ATTRIBUTE = "custom:OrganizationID";
 
 
 

@@ -8,7 +8,7 @@ const { CognitoIdentityProviderClient, ListUsersInGroupCommand } = require("@aws
 
 exports.handler = async (event) => {
     const cognitoProvider = new CognitoIdentityProviderClient({region: "eu-central-1"});
-    const organizationID = event.user.attributes["custom:organizationID"];
+    const organizationID = event.user.attributes["custom:OrganizationID"];
     
     const fetchGroupLeadersUsersInput = {
         GroupName: "groupLeader",
@@ -22,7 +22,7 @@ exports.handler = async (event) => {
         groupLeadersInOrg.push(...organizationUsersResponse.Users.filter(user => {
             let userOrganization;
             user.Attributes.forEach(attribute => {
-                if (attribute.Name === "custom:organizationID") {
+                if (attribute.Name === "custom:OrganizationID") {
                     userOrganization = attribute.Value;
                 }
             })
