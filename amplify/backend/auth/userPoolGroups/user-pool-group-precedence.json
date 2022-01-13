@@ -8,11 +8,27 @@
     "precedence": 2
   },
   {
-    "groupName": "orgother",
+    "groupName": "knowitobjectnet",
     "precedence": 3
   },
   {
-    "groupName": "orgobjectnet",
+    "groupName": "knowitsolutions",
     "precedence": 4
+  },
+  {
+    "groupName": "knowitobjectnet0groupLeader",
+    "precedence": 5
+  },
+  {
+    "groupName": "knowitobjectnet0admin",
+    "precedence": 6
+  },
+  {
+    "groupName": "knowitsolutions0groupLeader",
+    "precedence": 7
+  },
+  {
+    "groupName": "knowitsolutions0admin",
+    "precedence": 8
   }
 ]

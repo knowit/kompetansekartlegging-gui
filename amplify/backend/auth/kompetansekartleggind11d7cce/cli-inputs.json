@@ -41,8 +41,12 @@
     "userPoolGroupList": [
       "admin",
       "groupLeader",
-      "orgother",
-      "orgobjectnet"
+      "knowitobjectnet",
+      "knowitsolutions",
+      "knowitobjectnet0groupLeader",
+      "knowitobjectnet0admin",
+      "knowitsolutions0groupLeader",
+      "knowitsolutions0admin"
     ],
     "usernameAttributes": [
       "email"

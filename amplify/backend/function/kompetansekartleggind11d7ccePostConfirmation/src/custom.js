@@ -4,8 +4,8 @@ const getGroupName = event => {
 
 
   const providerToGroup = {
-    "Google": "orgobjectnet",
-    "azureprovider": "orgother"
+    "Google": "knowitobjectnet",
+    "azureprovider": "knowitsolutions"
   };
 
   const identities = JSON.parse(event["request"]["userAttributes"]["identities"]);

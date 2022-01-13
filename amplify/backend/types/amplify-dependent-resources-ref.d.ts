@@ -16,8 +16,12 @@ export type AmplifyDependentResourcesAttributes = {
         "userPoolGroups": {
             "adminGroupRole": "string",
             "groupLeaderGroupRole": "string",
-            "orgotherGroupRole": "string",
-            "orgobjectnetGroupRole": "string"
+            "knowitobjectnetGroupRole": "string",
+            "knowitsolutionsGroupRole": "string",
+            "knowitobjectnet0groupLeaderGroupRole": "string",
+            "knowitobjectnet0adminGroupRole": "string",
+            "knowitsolutions0groupLeaderGroupRole": "string",
+            "knowitsolutions0adminGroupRole": "string"
         }
     },
     "api": {
