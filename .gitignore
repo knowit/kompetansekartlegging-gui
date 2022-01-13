@@ -93,3 +93,8 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+
+# lambda events
+amplify/backend/function/FetchGroupLeaders/src/event.json
+amplify/backend/function/kompetansekartleggind11d7ccePostConfirmation/src/event.json

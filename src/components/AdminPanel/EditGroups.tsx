@@ -24,6 +24,7 @@ import DeleteGroupDialog from "./DeleteGroupDialog";
 import useApiGet from "./useApiGet";
 import {
     listAllUsers as listAllAvailableUsers,
+    listAllUsersInOrganization as listAllAvailableUsersInOrganization,
     listGroupLeaders,
 } from "./adminApi";
 import {
@@ -43,6 +44,7 @@ import AddUserToGroupDialog from "./AddUserToGroupDialog";
 import Button from "../mui/Button";
 import Table from "../mui/Table";
 import TableRow from "../mui/TableRow";
+import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
 
 const useRowStyles = makeStyles({
     root: {
@@ -214,7 +216,7 @@ const GroupsTable = ({
     );
 };
 
-const EditGroups = () => {
+const EditGroups = ({user}: any) => {
     const {
         result: users,
         error,
@@ -229,7 +231,8 @@ const EditGroups = () => {
         loading: allAvailableUsersLoading,
         // refresh: refreshAllAvailableUsers,
     } = useApiGet({
-        getFn: listAllAvailableUsers,
+        getFn: listAllAvailableUsersInOrganization,
+        params: user.attributes[ORGANIZATION_ID_ATTRIBUTE],
     });
     const {
         result: groupLeaders,
@@ -256,8 +259,8 @@ const EditGroups = () => {
         setShowDeleteUserFromGroupDialog,
     ] = useState<boolean>(false);
 
-    const deleteMember = (user: any, group: any) => {
-        setMemberToDelete({ user, group });
+    const deleteMember = (member: any, group: any) => {
+        setMemberToDelete({ user: member, group });
         setShowDeleteUserFromGroupDialog(true);
     };
     const deleteMemberConfirm = async () => {
@@ -302,7 +305,7 @@ const EditGroups = () => {
                 if (userHasGroup) {
                     return updateUserGroup(u.Username, groupId);
                 } else {
-                    return addUserToGroup(u.Username, groupId);
+                    return addUserToGroup(u.Username, groupId, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
                 }
             })
         );

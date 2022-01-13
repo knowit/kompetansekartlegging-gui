@@ -1,4 +1,5 @@
-import { API, Auth } from "aws-amplify";
+import { API, Auth,  } from "aws-amplify";
+
 
 export interface Response<T> {
     result: T;
@@ -105,6 +106,7 @@ const listUsersInGroup = async (
     }
 };
 
+const listAllUsersInOrganization = async (organizationID: string) => await listUsersInGroup(organizationID);
 const listGroupLeaders = async () => await listUsersInGroup("groupLeader");
 const listAdmins = async () => await listUsersInGroup("admin");
 
@@ -140,8 +142,18 @@ const listAllUsers = async (
     return { result: allUsers };
 };
 
+const listGroupLeadersInOrganization = async (user: any, credentials: any) => {
+    const apiName = "FetchGroupLeaders";
+    try {
+        // TODO: Implement function call to Lambda function FetchGroupLeaders
+    } catch(error) {
+
+    }
+}
+
 export {
     listAllUsers,
+    listAllUsersInOrganization,
     listGroupLeaders,
     addGroupLeader,
     removeGroupLeader,
