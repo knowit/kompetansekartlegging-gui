@@ -160,11 +160,8 @@ const Login = (props: { isMobile: boolean }) => {
                 <div className={style.buttonAlign}>
                     <Button
                         className={style.loginButton}
-                        onClick={() =>
-                            Auth.federatedSignIn({
-                                customProvider:
-                                    CognitoHostedUIIdentityProvider.Google,
-                            })
+                        onClick={
+                            () => Auth.federatedSignIn()
                         }
                     >
                         Logg inn

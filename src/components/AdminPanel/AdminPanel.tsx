@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
 import EditGroupLeaders from "./EditGroupLeaders";
 import EditAdmins from "./EditAdmins";
 import EditGroups from "./EditGroups";
 import EditCatalogsRouter from "./EditCatalogsRouter";
 import style from "./AdminPanel.module.css";
+import { Auth } from "aws-amplify";
 
 type AdminPanelProps = {
     activeSubmenuItem: string;
@@ -40,15 +41,20 @@ const activeSubmenuItemToSubmenuCategory = (
 
 const AdminPanel = ({ activeSubmenuItem }: AdminPanelProps) => {
     const category = activeSubmenuItemToSubmenuCategory(activeSubmenuItem);
+    const [user, setUser] = useState<any | null>(null)
+
+    if (!user) {
+        Auth.currentAuthenticatedUser().then(setUser);
+    }
 
     return (
         <div className={style.container}>
             {(category === SubmenuCategory.MAIN ||
                 category === SubmenuCategory.EDIT_GROUP_LEADERS) && (
-                <EditGroupLeaders />
+                <EditGroupLeaders user={user}/>
             )}
-            {category === SubmenuCategory.EDIT_ADMINS && <EditAdmins />}
-            {category === SubmenuCategory.EDIT_GROUPS && <EditGroups />}
+            {category === SubmenuCategory.EDIT_ADMINS && <EditAdmins user={user}/>}
+            {category === SubmenuCategory.EDIT_GROUPS && <EditGroups user = {user}/>}
             {category === SubmenuCategory.EDIT_CATALOGS && (
                 <EditCatalogsRouter />
             )}

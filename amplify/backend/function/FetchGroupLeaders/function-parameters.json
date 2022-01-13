@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "auth": {
+      "kompetansekartleggind11d7cce": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

@@ -18,7 +18,7 @@ import commonStyles from "./common.module.css";
 import AddUserToGroupDialog from "./AddUserToGroupDialog";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
 import useApiGet from "./useApiGet";
-import { listAllUsers, listAdmins, removeAdmin, addAdmin } from "./adminApi";
+import { listAllUsers, listAllUsersInOrganization, listAdmins, removeAdmin, addAdmin } from "./adminApi";
 import { getAttribute } from "./helpers";
 import Button from "../mui/Button";
 import Table from "../mui/Table";
@@ -75,7 +75,7 @@ const AdminTable = ({ admins, deleteAdmin }: any) => {
     );
 };
 
-const EditAdmins = () => {
+const EditAdmins = ({user} : any) => {
     const { result: admins, error, loading, refresh } = useApiGet({
         getFn: listAdmins,
     });
@@ -144,7 +144,8 @@ const EditAdmins = () => {
                 <AddUserToGroupDialog
                     open={showAddAdmin}
                     currentUsersInGroup={admins}
-                    userGetFn={listAllUsers}
+                    user={user}
+                    userGetFn={listAllUsersInOrganization}
                     onCancel={hideShowAddAdmin}
                     onConfirm={addAdminConfirm}
                     roleName="administrator"
