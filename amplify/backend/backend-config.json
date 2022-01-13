@@ -124,6 +124,20 @@
           ]
         }
       ]
+    },
+    "FetchGroupLeaders": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "kompetansekartleggind11d7cce",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
     }
   }
 }

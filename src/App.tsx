@@ -13,8 +13,8 @@ import { UserRole } from "./types";
 import theme from "./theme";
 import { getActiveOrganizationName } from "./helperFunctions";
 
-// awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
-// awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
+awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
+awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 
 // let config = Amplify.configure(awsconfig);
 // console.log(config);

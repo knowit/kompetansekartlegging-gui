@@ -1,4 +1,5 @@
-import { API, Auth } from "aws-amplify";
+import { API, Auth,  } from "aws-amplify";
+
 
 export interface Response<T> {
     result: T;
@@ -140,6 +141,15 @@ const listAllUsers = async (
     }
     return { result: allUsers };
 };
+
+const listGroupLeadersInOrganization = async (user: any, credentials: any) => {
+    const apiName = "FetchGroupLeaders";
+    try {
+        // TODO: Implement function call to Lambda function FetchGroupLeaders
+    } catch(error) {
+
+    }
+}
 
 export {
     listAllUsers,

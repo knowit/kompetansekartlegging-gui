@@ -86,6 +86,7 @@ const listAllUsers = async (): Promise<ApiResponse<User[]>> => {
             allUsers = [...allUsers, ...(users || [])];
         } while (nextToken);
     } catch (e) {
+        console.error(e);
         return { error: `Could not get a list of all users.` };
     }
     return { result: allUsers };
@@ -93,13 +94,16 @@ const listAllUsers = async (): Promise<ApiResponse<User[]>> => {
 
 const addUserToGroup = async (
     id: string,
-    groupID: string
+    groupID: string,
+    orgID: string
 ): Promise<ApiResponse<User>> => {
     try {
         const userGQ = await callGraphQL<CreateUserMutation>(createUser, {
             input: {
                 id,
                 groupID,
+                orgID,
+                orgGroups: [`${orgID}_groupLeader`, `${orgID}_admin`]
             },
         });
         const user = userGQ?.data?.createUser as User;

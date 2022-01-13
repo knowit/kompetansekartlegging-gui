@@ -305,7 +305,7 @@ const EditGroups = ({user}: any) => {
                 if (userHasGroup) {
                     return updateUserGroup(u.Username, groupId);
                 } else {
-                    return addUserToGroup(u.Username, groupId);
+                    return addUserToGroup(u.Username, groupId, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
                 }
             })
         );
