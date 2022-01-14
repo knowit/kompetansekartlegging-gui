@@ -5,10 +5,12 @@
 Amplify Params - DO NOT EDIT */
 
 const { CognitoIdentityProviderClient, ListUsersInGroupCommand } = require("@aws-sdk/client-cognito-identity-provider");
+const REGION = process.env.REGION;
+const ORGANIZATION_ID_ATTRIBUTE = "custom:organizationID";
 
 exports.handler = async (event) => {
-    const cognitoProvider = new CognitoIdentityProviderClient({region: "eu-central-1"});
-    const organizationID = event.user.attributes["custom:organizationID"];
+    const cognitoProvider = new CognitoIdentityProviderClient({region: REGION});
+    const organizationID = event.user.attributes[ORGANIZATION_ID_ATTRIBUTE];
     
     const fetchGroupLeadersUsersInput = {
         GroupName: "groupLeader",
@@ -22,7 +24,7 @@ exports.handler = async (event) => {
         groupLeadersInOrg.push(...organizationUsersResponse.Users.filter(user => {
             let userOrganization;
             user.Attributes.forEach(attribute => {
-                if (attribute.Name === "custom:organizationID") {
+                if (attribute.Name === ORGANIZATION_ID_ATTRIBUTE) {
                     userOrganization = attribute.Value;
                 }
             })

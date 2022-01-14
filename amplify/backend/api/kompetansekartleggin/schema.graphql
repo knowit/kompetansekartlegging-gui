@@ -55,8 +55,10 @@ type UserForm
     @auth(
         rules: [
             { allow: owner }
-            { allow: groups, groups: ["admin"] }
-            { allow: groups, groups: ["groupLeader"], operations: [read] }
+            # { allow: groups, groups: ["admin"] }
+            # { allow: groups, groups: ["groupLeader"], operations: [read] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "orgGroupLeaders", operations: [read] }
         ]
     )
     @key(
@@ -71,6 +73,9 @@ type UserForm
     questionAnswers: [QuestionAnswer]!
         @connection(keyName: "byUserForm", fields: ["id"])
     formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
+    
+    orgGroupLeaders: String
+    orgAdmins: String
 }
 
 type QuestionAnswer
@@ -78,8 +83,10 @@ type QuestionAnswer
     @auth(
         rules: [
             { allow: owner }
-            { allow: groups, groups: ["admin"] }
-            { allow: groups, groups: ["groupLeader"], operations: [read] }
+            # { allow: groups, groups: ["admin"] }
+            # { allow: groups, groups: ["groupLeader"], operations: [read] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "orgGroupLeaders", operations: [read] }
         ]
     )
     @key(name: "byUserForm", fields: ["userFormID"]) {
@@ -97,6 +104,9 @@ type QuestionAnswer
 
     # if question.type == text
     textValue: String
+
+    orgGroupLeaders: String
+    orgAdmins: String
 }
 
 enum QuestionType {
@@ -164,12 +174,18 @@ type Group
     @model
     @auth(
         rules: [
-            { allow: groups, groups: ["admin"] }
-            { allow: groups, groups: ["groupLeader"], operations: [read] }
+            # { allow: groups, groups: ["admin"] }
+            # { allow: groups, groups: ["groupLeader"], operations: [read] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "orgGroupLeaders", operations: [read] }
         ]
     ) {
     id: ID!
     groupLeaderUsername: String!
+    orgID: ID!
+    organization: Organization @connection(fields: ["orgID"])
+    orgGroupLeaders: String
+    orgAdmins: String
 }
 
 type User

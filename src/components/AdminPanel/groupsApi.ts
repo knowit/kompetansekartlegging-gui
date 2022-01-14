@@ -103,7 +103,7 @@ const addUserToGroup = async (
                 id,
                 groupID,
                 orgID,
-                orgGroups: [`${orgID}_groupLeader`, `${orgID}_admin`]
+                orgGroups: [`${orgID}0groupLeader`, `${orgID}0admin`]
             },
         });
         const user = userGQ?.data?.createUser as User;
@@ -151,12 +151,15 @@ const removeUserFromGroup = async (
     }
 };
 
-const addGroup = async (user: any): Promise<ApiResponse<Group>> => {
+const addGroup = async (user: any, orgID: any): Promise<ApiResponse<Group>> => {
     try {
         const groupsGQ = await callGraphQL<CreateGroupMutation>(createGroup, {
             input: {
                 id: uuidv4(),
                 groupLeaderUsername: user.Username,
+                orgID: orgID,
+                orgGroupLeaders: `${orgID}0groupLeader`,
+                orgAdmins: `${orgID}0admin`,
             },
         });
         const group = groupsGQ?.data?.createGroup as Group;

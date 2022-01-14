@@ -19,7 +19,7 @@ import useApiGet from "./useApiGet";
 import {
     listAllUsers,
     listAllUsersInOrganization,
-    listGroupLeaders,
+    listGroupLeadersInOrganization,
     removeGroupLeader,
     addGroupLeader,
 } from "./adminApi";
@@ -87,7 +87,8 @@ const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
 
 const EditGroupLeaders = ({user} : any) => {
     const { result: groupLeaders, error, loading, refresh } = useApiGet({
-        getFn: listGroupLeaders,
+        getFn: listGroupLeadersInOrganization,
+        params: user.attributes[ORGANIZATION_ID_ATTRIBUTE]
     });
     const [showAddGroupLeader, setShowAddGroupLeader] = useState<boolean>(
         false
@@ -109,8 +110,8 @@ const EditGroupLeaders = ({user} : any) => {
     };
     const clearSelectedGroupLeader = () => setGroupLeaderToDelete(null);
     const hideShowAddGroupLeader = () => setShowAddGroupLeader(false);
-    const addGroupLeaderConfirm = async (user: any) => {
-        await addGroupLeader(user);
+    const addGroupLeaderConfirm = async (newGroupLeaderUser: any) => {
+        await addGroupLeader(newGroupLeaderUser, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
         setShowAddGroupLeader(false);
         refresh();
     };

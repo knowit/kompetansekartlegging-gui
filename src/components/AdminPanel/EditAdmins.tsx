@@ -23,6 +23,7 @@ import { getAttribute } from "./helpers";
 import Button from "../mui/Button";
 import Table from "../mui/Table";
 import PictureAndNameCell from "./PictureAndNameCell";
+import { ORGANIZATION_ID_ATTRIBUTE } from "../../constants";
 
 const Admin = (props: any) => {
     const { admin, deleteAdmin } = props;
@@ -77,7 +78,8 @@ const AdminTable = ({ admins, deleteAdmin }: any) => {
 
 const EditAdmins = ({user} : any) => {
     const { result: admins, error, loading, refresh } = useApiGet({
-        getFn: listAdmins,
+        getFn: listAllUsersInOrganization,
+        params: `${user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0admin`
     });
     const [showAddAdmin, setShowAddAdmin] = useState<boolean>(false);
     const [
@@ -97,8 +99,8 @@ const EditAdmins = ({user} : any) => {
     };
     const clearSelectedAdmin = () => setAdminToDelete(null);
     const hideShowAddAdmin = () => setShowAddAdmin(false);
-    const addAdminConfirm = async (user: any) => {
-        await addAdmin(user);
+    const addAdminConfirm = async (newAdminUser: any) => {
+        await addAdmin(newAdminUser, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
         setShowAddAdmin(false);
         refresh();
     };

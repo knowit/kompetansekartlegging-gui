@@ -9,6 +9,7 @@ import { Auth } from "aws-amplify";
 
 type AdminPanelProps = {
     activeSubmenuItem: string;
+    user: any;
 };
 
 enum SubmenuCategory {
@@ -39,13 +40,8 @@ const activeSubmenuItemToSubmenuCategory = (
     }
 };
 
-const AdminPanel = ({ activeSubmenuItem }: AdminPanelProps) => {
+const AdminPanel = ({ activeSubmenuItem, user }: AdminPanelProps) => {
     const category = activeSubmenuItemToSubmenuCategory(activeSubmenuItem);
-    const [user, setUser] = useState<any | null>(null)
-
-    if (!user) {
-        Auth.currentAuthenticatedUser().then(setUser);
-    }
 
     return (
         <div className={style.container}>

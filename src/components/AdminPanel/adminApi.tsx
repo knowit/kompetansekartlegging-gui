@@ -74,10 +74,11 @@ const addUserToGroup = async (
     }
 };
 
-const addGroupLeader = async (user: any) =>
-    await addUserToGroup("groupLeader", user.Username);
-const addAdmin = async (user: any) =>
-    await addUserToGroup("admin", user.Username);
+const addGroupLeader = async (user: any, org: any) =>
+    await addUserToGroup(`${org}0groupLeader`, user.Username);
+const addAdmin = async (user: any, org: any) => {
+    await addUserToGroup(`${org}0admin`, user.Username);
+}
 
 const listUsersInGroup = async (
     groupname: string
@@ -107,7 +108,9 @@ const listUsersInGroup = async (
 };
 
 const listAllUsersInOrganization = async (organizationID: string) => await listUsersInGroup(organizationID);
+const listGroupLeadersInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}0groupLeader`);
 const listGroupLeaders = async () => await listUsersInGroup("groupLeader");
+const listAdminsInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}0admin`);
 const listAdmins = async () => await listUsersInGroup("admin");
 
 const listAllUsers = async (
@@ -142,22 +145,16 @@ const listAllUsers = async (
     return { result: allUsers };
 };
 
-const listGroupLeadersInOrganization = async (user: any, credentials: any) => {
-    const apiName = "FetchGroupLeaders";
-    try {
-        // TODO: Implement function call to Lambda function FetchGroupLeaders
-    } catch(error) {
-
-    }
-}
 
 export {
     listAllUsers,
     listAllUsersInOrganization,
     listGroupLeaders,
+    listGroupLeadersInOrganization,
     addGroupLeader,
     removeGroupLeader,
     listAdmins,
+    listAdminsInOrganization,
     addAdmin,
     removeAdmin,
 };

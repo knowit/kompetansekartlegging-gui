@@ -41,6 +41,14 @@ const appStyle = makeStyles({
 const hasRole = (role: string) => (user: any): boolean => {
     const groups: Array<string> =
         user?.signInUserSession?.idToken?.payload["cognito:groups"];
+    const orgRoles: Array<string> = [];
+    groups.forEach(group => {
+        const splitGroup = group.split("0");
+        if (splitGroup.length > 1) {
+            orgRoles.push(splitGroup[1]);
+        }
+    });
+    groups.push(...orgRoles);
     return groups?.includes(role);
 };
 const isAdmin = hasRole("admin");
@@ -88,7 +96,6 @@ const App = () => {
         });
         Auth.currentAuthenticatedUser()
             .then((res) => {
-                console.log(res);
                 setUser(res);
             })
             .catch(() => console.log("Not signed in"));
@@ -112,7 +119,7 @@ const App = () => {
 
     useEffect(() => {
 
-        console.log('userEffect user', user);
+        // console.log('userEffect user', user);
 
         if (user) {
             if (

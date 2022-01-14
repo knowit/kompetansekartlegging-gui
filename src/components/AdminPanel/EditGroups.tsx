@@ -25,7 +25,8 @@ import useApiGet from "./useApiGet";
 import {
     listAllUsers as listAllAvailableUsers,
     listAllUsersInOrganization as listAllAvailableUsersInOrganization,
-    listGroupLeaders,
+    // listGroupLeaders,
+    listGroupLeadersInOrganization
 } from "./adminApi";
 import {
     listAllGroups,
@@ -240,7 +241,8 @@ const EditGroups = ({user}: any) => {
         loading: groupLeadersLoading,
         refresh: refreshGroupLeaders,
     } = useApiGet({
-        getFn: listGroupLeaders,
+        getFn: listGroupLeadersInOrganization,
+        params: user.attributes[ORGANIZATION_ID_ATTRIBUTE]
     });
     const {
         result: groups,
@@ -284,8 +286,8 @@ const EditGroups = ({user}: any) => {
     };
     const clearSelectedGroup = () => setGroupToDelete(null);
     const hideShowAddGroup = () => setShowAddGroup(false);
-    const addGroupConfirm = async (user: any) => {
-        await addGroup(user);
+    const addGroupConfirm = async (groupLeaderUser: any) => {
+        await addGroup(groupLeaderUser, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
         setShowAddGroup(false);
         refreshGroups();
     };
