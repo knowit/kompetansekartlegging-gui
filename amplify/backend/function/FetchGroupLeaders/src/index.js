@@ -6,7 +6,7 @@ Amplify Params - DO NOT EDIT */
 
 const { CognitoIdentityProviderClient, ListUsersInGroupCommand } = require("@aws-sdk/client-cognito-identity-provider");
 const REGION = process.env.REGION;
-const ORGANIZATION_ID_ATTRIBUTE = "custom:organizationID";
+const ORGANIZATION_ID_ATTRIBUTE = "custom:OrganizationID";
 
 exports.handler = async (event) => {
     const cognitoProvider = new CognitoIdentityProviderClient({region: REGION});

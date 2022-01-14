@@ -82,6 +82,7 @@ const App = () => {
 
     useEffect(() => {
         Hub.listen("auth", ({ payload: { event, data } }) => {
+            console.log('event listener', event, data);
             switch (event) {
                 case "signIn":
                     setUser({...data});

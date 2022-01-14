@@ -6,5 +6,29 @@
   {
     "groupName": "groupLeader",
     "precedence": 2
+  },
+  {
+    "groupName": "knowitobjectnet",
+    "precedence": 3
+  },
+  {
+    "groupName": "knowitsolutions",
+    "precedence": 4
+  },
+  {
+    "groupName": "knowitobjectnet0groupLeader",
+    "precedence": 5
+  },
+  {
+    "groupName": "knowitobjectnet0admin",
+    "precedence": 6
+  },
+  {
+    "groupName": "knowitsolutions0groupLeader",
+    "precedence": 7
+  },
+  {
+    "groupName": "knowitsolutions0admin",
+    "precedence": 8
   }
 ]

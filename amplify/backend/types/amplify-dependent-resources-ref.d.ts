@@ -10,11 +10,18 @@ export type AmplifyDependentResourcesAttributes = {
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
             "AppClientID": "string",
-            "CreatedSNSRole": "string"
+            "CreatedSNSRole": "string",
+            "GoogleWebClient": "string"
         },
         "userPoolGroups": {
             "adminGroupRole": "string",
-            "groupLeaderGroupRole": "string"
+            "groupLeaderGroupRole": "string",
+            "knowitobjectnetGroupRole": "string",
+            "knowitsolutionsGroupRole": "string",
+            "knowitobjectnet0groupLeaderGroupRole": "string",
+            "knowitobjectnet0adminGroupRole": "string",
+            "knowitsolutions0groupLeaderGroupRole": "string",
+            "knowitsolutions0adminGroupRole": "string"
         }
     },
     "api": {
@@ -51,11 +58,11 @@ export type AmplifyDependentResourcesAttributes = {
             "Region": "string",
             "LambdaExecutionRole": "string"
         },
-        "FetchGroupLeaders": {
+        "kompetansekartleggind11d7ccePostConfirmation": {
             "Name": "string",
             "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
+            "LambdaExecutionRole": "string",
+            "Region": "string"
         }
     }
 }
