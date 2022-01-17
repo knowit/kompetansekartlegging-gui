@@ -99,7 +99,6 @@ const App = () => {
 
     useEffect(() => {
         Hub.listen("auth", ({ payload: { event, data } }) => {
-            console.log('event listener', event, JSON.stringify(data['attributes']));
             switch (event) {
                 case "signIn":
                     if(cognitoUserContainsAttributes(data)){

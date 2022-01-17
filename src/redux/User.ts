@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { getOrganizationNameByID } from '../helperFunctions';
+import { ADMIN_COGNITOGROUP_SUFFIX, GROUPLEADER_COGNITOGROUP_SUFFIX } from '../constants';
 
 export interface UserState {
   isSignedIn: boolean
@@ -59,4 +60,15 @@ export default userSlice.reducer;
 
 export const selectUserState = (state : RootState) => {
   return state.user.userState;
+}
+
+
+// Returns the name of the cognito-group for admins in the current users organization
+export const selectAdminCognitoGroupName = (state : RootState) => {
+  return state.user.userState.organizationID + ADMIN_COGNITOGROUP_SUFFIX;
+}
+
+// Returns the name of the cognito-group for groupleaders in the current users organization
+export const selectGroupLeaderCognitoGroupName = (state : RootState) => {
+  return state.user.userState.organizationID + GROUPLEADER_COGNITOGROUP_SUFFIX;
 }

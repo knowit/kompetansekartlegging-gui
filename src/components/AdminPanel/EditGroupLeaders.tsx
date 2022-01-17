@@ -20,8 +20,8 @@ import {
     listAllUsers,
     listAllUsersInOrganization,
     listGroupLeadersInOrganization,
-    removeGroupLeader,
-    addGroupLeader,
+    addUserToGroup,
+    removeUserFromGroup
 } from "./adminApi";
 import { getAttribute } from "./helpers";
 import PictureAndNameCell from "./PictureAndNameCell";
@@ -30,8 +30,11 @@ import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
 import Button from "../mui/Button";
 import Table from "../mui/Table";
 import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
+import {useSelector} from 'react-redux';
+import {selectGroupLeaderCognitoGroupName} from '../../redux/User';
 
 const GroupLeader = (props: any) => {
+
     const { groupLeader, deleteGroupLeader } = props;
     const username = groupLeader.Username;
     const name = getAttribute(groupLeader, "name");
@@ -86,6 +89,7 @@ const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
 };
 
 const EditGroupLeaders = ({user} : any) => {
+    const groupLeaderCognitoGroupName = useSelector(selectGroupLeaderCognitoGroupName);
     const { result: groupLeaders, error, loading, refresh } = useApiGet({
         getFn: listGroupLeadersInOrganization,
         params: user.attributes[ORGANIZATION_ID_ATTRIBUTE]
@@ -104,14 +108,14 @@ const EditGroupLeaders = ({user} : any) => {
         setShowDeleteUserFromGroupDialog(true);
     };
     const deleteGroupLeaderConfirm = async () => {
-        await removeGroupLeader(groupLeaderToDelete);
+        await removeUserFromGroup(groupLeaderCognitoGroupName, groupLeaderToDelete.Username);
         setShowDeleteUserFromGroupDialog(false);
         refresh();
     };
     const clearSelectedGroupLeader = () => setGroupLeaderToDelete(null);
     const hideShowAddGroupLeader = () => setShowAddGroupLeader(false);
     const addGroupLeaderConfirm = async (newGroupLeaderUser: any) => {
-        await addGroupLeader(newGroupLeaderUser, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
+        await addUserToGroup(groupLeaderCognitoGroupName, newGroupLeaderUser.Username);
         setShowAddGroupLeader(false);
         refresh();
     };

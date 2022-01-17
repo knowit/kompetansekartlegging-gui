@@ -11,7 +11,7 @@ export interface Failure {
 
 export type ApiResponse<T> = Response<T> | Failure;
 
-const removeUserFromGroup = async (
+export const removeUserFromGroup = async (
     groupname: string,
     username: string
 ): Promise<ApiResponse<any>> => {
@@ -40,12 +40,7 @@ const removeUserFromGroup = async (
     }
 };
 
-const removeGroupLeader = async (user: any) =>
-    await removeUserFromGroup("groupLeader", user.Username);
-const removeAdmin = async (user: any) =>
-    await removeUserFromGroup("admin", user.Username);
-
-const addUserToGroup = async (
+export const addUserToGroup = async (
     groupname: string,
     username: string
 ): Promise<ApiResponse<any>> => {
@@ -73,12 +68,6 @@ const addUserToGroup = async (
         };
     }
 };
-
-const addGroupLeader = async (user: any, org: any) =>
-    await addUserToGroup(`${org}0groupLeader`, user.Username);
-const addAdmin = async (user: any, org: any) => {
-    await addUserToGroup(`${org}0admin`, user.Username);
-}
 
 const listUsersInGroup = async (
     groupname: string
@@ -151,10 +140,6 @@ export {
     listAllUsersInOrganization,
     listGroupLeaders,
     listGroupLeadersInOrganization,
-    addGroupLeader,
-    removeGroupLeader,
     listAdmins,
     listAdminsInOrganization,
-    addAdmin,
-    removeAdmin,
 };
