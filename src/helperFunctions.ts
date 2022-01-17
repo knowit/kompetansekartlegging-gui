@@ -148,6 +148,17 @@ export const Millisecs = {
     THREEMONTHS: 7889400000,
 };
 
+export const getOrganizationNameByID = (organizationID : string) => {
+    switch(organizationID){
+        case "knowitobjectnet":
+            return "Knowit Objectnet";
+        case "knowitsolutions":
+            return "Knowit Solutions";
+        default:
+            return "No org found" 
+    }
+}
+
 export const getActiveOrganizationName = async () => {
     const userInfo =  await Auth.currentAuthenticatedUser();
     return getOrganizationNameByEmail(userInfo.signInUserSession.idToken.payload["cognito:groups"]);

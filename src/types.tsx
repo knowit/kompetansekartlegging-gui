@@ -400,18 +400,11 @@ export type NavBarProps = {
 export type NavBarPropsDesktop = {
     displayAnswers: () => void;
     signout: () => void;
-    userName: string;
-    userPicture: string;
-    organizationName: string;
-
 };
 
 export type NavBarPropsMobile = {
     menuButtons: JSX.Element[];
     activePanel: Panel;
-    userName: string;
-    userPicture: string;
-    organizationName: string;
     signout: () => void;
 };
 
@@ -450,9 +443,6 @@ export type ContentProps = {
     answerHistoryOpen: boolean;
     isMobile: boolean;
     signout: () => void;
-    userName: string;
-    userPicture: string;
-    organizationName: string;
     collapseMobileCategories: boolean;
     categoryNavRef: React.MutableRefObject<HTMLInputElement | null>;
     scrollToTop: () => void;

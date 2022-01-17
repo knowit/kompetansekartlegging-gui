@@ -672,9 +672,6 @@ const Content = ({ ...props }: ContentProps) => {
                 <NavBarMobile
                     menuButtons={setUpMobileMenu()}
                     activePanel={activePanel}
-                    userName={props.userName}
-                    userPicture={props.userPicture}
-                    organizationName={props.organizationName}
                     signout={props.signout}
                 />
             ) : (
