@@ -36,9 +36,9 @@ import {
     createQuestionAnswers,
     setFirstAnswers,
 } from "./answersApi";
-import { ORGANIZATION_ID_ATTRIBUTE } from "../constants";
 import {useSelector} from 'react-redux';
-import { selectUserState, selectIsAdmin, selectIsGroupLeader } from "../redux/User";
+import { selectUserState, selectIsAdmin, selectIsGroupLeader,
+     selectAdminCognitoGroupName, selectGroupLeaderCognitoGroupName } from "../redux/User";
 
 const cardCornerRadius: number = 40;
 
@@ -175,6 +175,10 @@ const updateCategoryAlerts = (
 const Content = ({ ...props }: ContentProps) => {
 
     const userState = useSelector(selectUserState);
+    const adminCognitoGroupName = useSelector(selectAdminCognitoGroupName);
+    const groupLeaderCognitoGroupName = useSelector(selectGroupLeaderCognitoGroupName);
+
+
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(
         null
     );
@@ -248,8 +252,8 @@ const Content = ({ ...props }: ContentProps) => {
                     questionID: quAns.question.id,
                     customScaleValue: quAns.customScaleValue,
                     formDefinitionID: formDefinition.id.toString(),
-                    orgAdmins: `${props.user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0admin`,
-                    orgGroupLeaders: `${props.user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0groupLeader`
+                    orgAdmins: adminCognitoGroupName,
+                    orgGroupLeaders: groupLeaderCognitoGroupName
                 });
                 return;
             }
@@ -261,8 +265,8 @@ const Content = ({ ...props }: ContentProps) => {
                 knowledge: quAns.knowledge,
                 motivation: quAns.motivation,
                 formDefinitionID: formDefinition.id.toString(),
-                orgAdmins: `${props.user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0admin`,
-                orgGroupLeaders: `${props.user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0groupLeader`
+                orgAdmins: adminCognitoGroupName,
+                orgGroupLeaders: groupLeaderCognitoGroupName
             });
         });
         if (quAnsInput.length === 0) {
@@ -274,7 +278,7 @@ const Content = ({ ...props }: ContentProps) => {
         let result = (
             await helper.callBatchGraphQL<CreateQuestionAnswerResult>(
                 customQueries.batchCreateQuestionAnswer2,
-                { input: quAnsInput, organizationID: props.user.attributes[ORGANIZATION_ID_ATTRIBUTE] },
+                { input: quAnsInput, organizationID: userState.organizationID },
                 "QuestionAnswer"
             )
         ).map((result) => result.data?.batchCreateQuestionAnswer);
@@ -315,13 +319,14 @@ const Content = ({ ...props }: ContentProps) => {
     }, [questionAnswers]);
 
     useEffect(() => {
+        console.log('fetchLastFormDefitniio');
         fetchLastFormDefinition(
             setFormDefinition,
             (formDef) => createQuestionAnswers(formDef, setCategories),
             (formDef) =>
                 getUserAnswers(
                     formDef,
-                    props.user,
+                    userState.userName,
                     setUserAnswers,
                     setActivePanel,
                     setUserAnswersLoaded,
@@ -339,7 +344,7 @@ const Content = ({ ...props }: ContentProps) => {
                 )
         );
     }, [
-        props.user,
+        userState,
         props.setFirstTimeLogin,
         props.setScaleDescOpen,
         props.isMobile,

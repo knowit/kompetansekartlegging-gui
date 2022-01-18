@@ -452,7 +452,6 @@ export enum UserRole {
 
 export type ContentProps = {
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void;
-    user:any,
     answerHistoryOpen: boolean;
     isMobile: boolean;
     signout: () => void;

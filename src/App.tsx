@@ -9,7 +9,6 @@ import { debounce, makeStyles } from "@material-ui/core";
 import { isMobile } from "react-device-detect";
 import FloatingScaleDescButton from "./components/FloatingScaleDescButton";
 import NavBarDesktop from "./components/NavBarDesktop";
-import { UserRole } from "./types";
 import theme from "./theme";
 
 // redux
@@ -52,8 +51,6 @@ const App = () => {
     const userState = useSelector(selectUserState);
 
     const style = appStyle();
-
-    const [user, setUser] = useState<any | null>(null);
     const [showFab, setShowFab] = useState<boolean>(true);
     const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     const [scaleDescOpen, setScaleDescOpen] = useState(false);
@@ -76,14 +73,12 @@ const App = () => {
                     if(cognitoUserContainsAttributes(data)){
                         dispatch(setUserInfo(data));
                     }
-                    setUser({...data});
                     break;
                 case "signIn_failure":
                     console.trace("Failed to sign in");
                     break;
                 case "signOut":
                     dispatch(setUserInfoLogOut());
-                    setUser(null);
                     break;
             }
         });
@@ -92,7 +87,6 @@ const App = () => {
                 if(cognitoUserContainsAttributes(res)){
                     dispatch(setUserInfo(res));
                 }
-                setUser(res);
             })
             .catch(() => {
                 console.log("Not signed in");
@@ -167,7 +161,6 @@ const App = () => {
                         )}
 
                         <Content
-                            user={user}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
                             answerHistoryOpen={answerHistoryOpen}
                             isMobile={isMobile}

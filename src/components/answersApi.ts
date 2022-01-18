@@ -8,6 +8,7 @@ import {
     FormDefinitionPaginated,
     UserFormPaginated,
     UserFormByCreatedAtPaginated,
+    UserState,
 } from "../types";
 import * as helper from "../helperFunctions";
 import * as customQueries from "../graphql/custom-queries";
@@ -132,7 +133,7 @@ const fetchLastFormDefinition = async (
 
 const getUserAnswers = async (
     formDef: FormDefinition,
-    user: any,
+    userName: string,
     setUserAnswers: React.Dispatch<React.SetStateAction<UserAnswer[]>>,
     setActivePanel: React.Dispatch<React.SetStateAction<Panel>>,
     setUserAnswersLoaded: React.Dispatch<React.SetStateAction<boolean>>,
@@ -141,8 +142,12 @@ const getUserAnswers = async (
     setScaleDescOpen: React.Dispatch<React.SetStateAction<boolean>>,
     isMobile: boolean
 ) => {
-    if (!user) return console.error("User not found when getting useranswers");
     let nextToken: string | null = null;
+
+    if(!userName){
+        console.error("User not found when getting useranswers");
+    };
+
     let questionAnswers: UserAnswer[] = [];
     let paginatedUserform: UserFormPaginated | undefined; // The userform response has pagination on questionAnswers, with nextToken; see types
     do {
@@ -151,7 +156,7 @@ const getUserAnswers = async (
                 customQueries.customUserFormByCreatedAt,
                 {
                     ...customQueries.userFormByCreatedAtInputConsts,
-                    owner: user.username || user.Username,
+                    owner: userName,
                     nextToken: nextToken,
                 }
             )
