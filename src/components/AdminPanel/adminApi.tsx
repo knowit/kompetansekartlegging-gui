@@ -40,13 +40,13 @@ const removeUserFromGroup = async (
     }
 };
 
-const removeGroupLeader = async (user: any) =>
-    await removeUserFromGroup("groupLeader", user.Username);
-const removeAdmin = async (user: any) =>
-    await removeUserFromGroup("admin", user.Username);
+const removeGroupLeader = async (user: any, org: any) =>
+    await removeUserFromGroup(`${org}0groupLeader`, user.Username);
+const removeAdmin = async (user: any, org: any) =>
+    await removeUserFromGroup(`${org}0admin`, user.Username);
 
 const addUserToGroup = async (
-    groupname: string,
+    groupname: string,  
     username: string
 ): Promise<ApiResponse<any>> => {
     let apiName = "AdminQueries";

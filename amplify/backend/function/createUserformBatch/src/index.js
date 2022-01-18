@@ -28,6 +28,7 @@ const docClient = new aws.DynamoDB.DocumentClient({ apiVersion: "2012-08-10" });
 let millisecToday;
 let millisecLimit;
 let ownerId;
+let orgId;
 
 const useTimeLimit = true;
 
@@ -58,6 +59,7 @@ exports.handler = async (event, context) => {
     }
 
     ownerId = event.identity.username;
+    orgId = event.arguments.organizationID;
 
     console.log("Owner: ", ownerId);
     console.log("Event: ", JSON.stringify(event));
@@ -198,7 +200,7 @@ async function getOrCreateUserform(eventInput) {
                 "Userform found outside time limit, creating a new one."
             );
         } else {
-            console.log("Userformm found, not using timelimit at this time.");
+            console.log("Userform found, not using timelimit at this time.");
             return returnValue;
         }
     }
@@ -343,6 +345,8 @@ async function insertQuestionAnswers(answerArray, userformId) {
                                 knowledge: answer.knowledge,
                                 motivation: answer.motivation,
                                 customScaleValue: answer.customScaleValue,
+                                orgAdmins: answer.orgAdmins,
+                                orgGroupLeaders: answer.orgGroupLeaders,
                                 owner: ownerId,
                                 questionID: answer.questionID,
                                 userFormID: userformId,
@@ -391,6 +395,8 @@ async function createUserform(formDefinitionId) {
                     owner: ownerId,
                     createdAt: new Date(millisecToday).toISOString(),
                     updatedAt: new Date(millisecToday).toISOString(),
+                    orgAdmins: `${orgId}0admin`,
+                    orgGroupLeaders: `${orgId}0groupLeader`,
                     __typename: "UserForm",
                 },
             })

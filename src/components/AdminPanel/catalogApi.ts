@@ -76,7 +76,7 @@ const listAllFormDefinitionsByOrganizationID = async (
         return { result: els || [] };
     } catch (e) {
         console.log(e)
-        return { error: `listAllFormDefinitionsBtOrganizationID: Could not get a list of all form definitions for organization id '${organizationID}'.` };
+        return { error: `listAllFormDefinitionsByOrganizationID: Could not get a list of all form definitions for organization id '${organizationID}'.` };
     }
 };
 
@@ -308,10 +308,12 @@ const createFormDefinition = async (
     name: string
 ): Promise<ApiResponse<FormDefinition>> => {
     try {
+        const organizationID = await getActiveOrganizationID();
         const input = {
             id: uuidv4(),
             label: name,
-            organizationID: await getActiveOrganizationID(),
+            organizationID: organizationID,
+            orgAdmins: `${organizationID}0admin`,
             sortKeyConstant: "formDefinitionConstant",
             createdAt: new Date(0).toISOString(),
         };
@@ -334,7 +336,8 @@ const createCategory = async (
     name: string,
     description: string,
     index: number,
-    formDefinitionID: string
+    formDefinitionID: string,
+    organizationID: string
 ): Promise<ApiResponse<Category>> => {
     try {
         const input = {
@@ -343,6 +346,7 @@ const createCategory = async (
             description,
             index,
             formDefinitionID,
+            orgAdmins: `${organizationID}0admin`
         };
         const gq = await callGraphQL<CreateCategoryMutation>(createCategoryGq, {
             input,
@@ -363,7 +367,8 @@ const createQuestion = async (
     index: number,
     formDefinitionID: string,
     categoryID: string,
-    questionConfig: any
+    questionConfig: any,
+    organizationID: string
 ): Promise<ApiResponse<Question>> => {
     try {
         const input = {
@@ -374,6 +379,7 @@ const createQuestion = async (
             index,
             formDefinitionID,
             categoryID,
+            orgAdmins: `${organizationID}0admin`,
             ...questionConfig,
         };
         const gq = await callGraphQL<CreateQuestionMutation>(createQuestionGq, {

@@ -69,6 +69,8 @@ const fetchLastFormDefinition = async (
     setFirstAnswers: (arg0: any, arg1: any) => void
 ) => {
     let nextToken: string | null = null;
+    let nextFormToken: string | null = null; // For some reason, the custom query returns empty response if the first item is from a different organization
+    let foundOrganizationForm = false; // Therefore, we need to keep querying until we reach the first response connected to the users organization
     let questions: Question[] = [];
     let formDefPaginated: FormDefinitionPaginated = undefined; // The form definition response has pagination on questions, with nextToken; see types
     try {
@@ -78,6 +80,7 @@ const fetchLastFormDefinition = async (
                 {
                     ...customQueries.formByCreatedAtInputConsts,
                     nextToken: nextToken,
+                    nextFormToken: nextFormToken,
                 }
             );
             if (currentForm.data && currentForm.data.formByCreatedAt.items[0]) {
@@ -96,8 +99,12 @@ const fetchLastFormDefinition = async (
                 nextToken =
                     currentForm.data.formByCreatedAt.items[0].questions
                         .nextToken;
+                foundOrganizationForm = true;
+                // nextFormToken = null;
+            } else if (currentForm.data && currentForm.data.formByCreatedAt && !foundOrganizationForm) {
+                nextFormToken = currentForm.data.formByCreatedAt.nextToken;
             }
-        } while (nextToken);
+        } while (nextToken || (nextFormToken && !foundOrganizationForm));
 
         if (formDefPaginated) {
             let formDef: FormDefinition = {

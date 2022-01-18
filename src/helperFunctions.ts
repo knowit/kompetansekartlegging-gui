@@ -4,6 +4,7 @@ import { UserFormList, UserFormWithAnswers } from "./types";
 import * as customQueries from "./graphql/custom-queries";
 import * as queries from './graphql/queries';
 import { OrganizationByNameQuery } from "./API";
+import { ORGANIZATION_ID_ATTRIBUTE } from "./constants";
 
 /*
     Used to call graphql queries and mutations.
@@ -73,7 +74,7 @@ const splitArray = <T>(array: T[]): T[][] => {
 */
 export const callBatchGraphQL = async <T>(
     query: any,
-    variables: { input: any[] },
+    variables: { input: any[], organizationID: String },
     table: string
 ): Promise<GraphQLResult<T>[]> => {
     if (variables.input.length === 0) {
@@ -86,7 +87,7 @@ export const callBatchGraphQL = async <T>(
     for (const element of split) {
         returnValue.push(
             (await API.graphql(
-                graphqlOperation(query, { input: element })
+                graphqlOperation(query, { input: element, organizationID: variables.organizationID })
             )) as GraphQLResult<T>
         );
     }
@@ -169,9 +170,12 @@ const getOrganizationNameByEmail = (userGroup: string[]) => {
 
 export const getActiveOrganizationID = async () => {
     try {
-        const org = await getActiveOrganizationName();
-        const s = await getOrganizationIDByName(org);
-        return s;
+        // const org = await getActiveOrganizationName();
+        // const s = await getOrganizationIDByName(org);
+        // return s;
+        const user = await Auth.currentAuthenticatedUser();
+        const orgID = user.attributes[ORGANIZATION_ID_ATTRIBUTE];
+        return orgID;
       } catch (e) {
           return { error: 'Could not get organization name or id' };
       }

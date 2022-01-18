@@ -104,7 +104,7 @@ const EditGroupLeaders = ({user} : any) => {
         setShowDeleteUserFromGroupDialog(true);
     };
     const deleteGroupLeaderConfirm = async () => {
-        await removeGroupLeader(groupLeaderToDelete);
+        await removeGroupLeader(groupLeaderToDelete, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
         setShowDeleteUserFromGroupDialog(false);
         refresh();
     };

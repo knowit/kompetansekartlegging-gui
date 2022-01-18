@@ -93,6 +93,7 @@ export const formByCreatedAtPaginated = /* GraphQL */ `
         $filter: ModelFormDefinitionFilterInput
         $limit: Int
         $nextToken: String
+        $nextFormToken: String
     ) {
         formByCreatedAt(
             sortKeyConstant: $sortKeyConstant
@@ -100,6 +101,7 @@ export const formByCreatedAtPaginated = /* GraphQL */ `
             sortDirection: $sortDirection
             filter: $filter
             limit: $limit
+            nextToken: $nextFormToken
         ) {
             items {
                 id
@@ -183,8 +185,14 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
 `;
 
 export const batchCreateQuestionAnswer2 = /* GraphQL */ `
-    mutation BatchCreateQuestionAnswer2($input: [CreateQuestionAnswerInput]) {
-        batchCreateQuestionAnswer(input: $input) {
+    mutation BatchCreateQuestionAnswer2(
+        $input: [CreateQuestionAnswerInput]
+        $organizationID: String
+    ) {
+        batchCreateQuestionAnswer(
+            input: $input
+            organizationID: $organizationID
+        ) {
             status
             error
             failedInputs {

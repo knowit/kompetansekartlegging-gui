@@ -41,6 +41,7 @@ const appStyle = makeStyles({
 const hasRole = (role: string) => (user: any): boolean => {
     const groups: Array<string> =
         user?.signInUserSession?.idToken?.payload["cognito:groups"];
+    if (groups == null) return false;
     const orgRoles: Array<string> = [];
     groups.forEach(group => {
         const splitGroup = group.split("0");
