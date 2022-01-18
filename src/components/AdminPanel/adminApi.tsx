@@ -1,4 +1,6 @@
 import { API, Auth,  } from "aws-amplify";
+import { ADMIN_COGNITOGROUP_SUFFIX, GROUPLEADER_COGNITOGROUP_SUFFIX } from '../../constants';
+
 
 
 export interface Response<T> {
@@ -97,9 +99,9 @@ const listUsersInGroup = async (
 };
 
 const listAllUsersInOrganization = async (organizationID: string) => await listUsersInGroup(organizationID);
-const listGroupLeadersInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}0groupLeader`);
+const listGroupLeadersInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}${GROUPLEADER_COGNITOGROUP_SUFFIX}`);
 const listGroupLeaders = async () => await listUsersInGroup("groupLeader");
-const listAdminsInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}0admin`);
+const listAdminsInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}${ADMIN_COGNITOGROUP_SUFFIX}`);
 const listAdmins = async () => await listUsersInGroup("admin");
 
 const listAllUsers = async (
