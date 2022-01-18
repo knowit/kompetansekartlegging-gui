@@ -74,7 +74,7 @@ const splitArray = <T>(array: T[]): T[][] => {
 */
 export const callBatchGraphQL = async <T>(
     query: any,
-    variables: { input: any[] },
+    variables: { input: any[], organizationID: String },
     table: string
 ): Promise<GraphQLResult<T>[]> => {
     if (variables.input.length === 0) {
@@ -87,7 +87,7 @@ export const callBatchGraphQL = async <T>(
     for (const element of split) {
         returnValue.push(
             (await API.graphql(
-                graphqlOperation(query, { input: element })
+                graphqlOperation(query, { input: element, organizationID: variables.organizationID })
             )) as GraphQLResult<T>
         );
     }

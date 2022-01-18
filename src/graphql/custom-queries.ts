@@ -185,8 +185,14 @@ export const customUserFormByCreatedAt = /* GraphQL */ `
 `;
 
 export const batchCreateQuestionAnswer2 = /* GraphQL */ `
-    mutation BatchCreateQuestionAnswer2($input: [CreateQuestionAnswerInput]) {
-        batchCreateQuestionAnswer(input: $input) {
+    mutation BatchCreateQuestionAnswer2(
+        $input: [CreateQuestionAnswerInput]
+        $organizationID: String
+    ) {
+        batchCreateQuestionAnswer(
+            input: $input
+            organizationID: $organizationID
+        ) {
             status
             error
             failedInputs {

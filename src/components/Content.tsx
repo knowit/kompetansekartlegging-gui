@@ -244,6 +244,8 @@ const Content = ({ ...props }: ContentProps) => {
                     questionID: quAns.question.id,
                     customScaleValue: quAns.customScaleValue,
                     formDefinitionID: formDefinition.id.toString(),
+                    orgAdmins: `${props.user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0admin`,
+                    orgGroupLeaders: `${props.user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0groupLeader`
                 });
                 return;
             }
@@ -255,6 +257,8 @@ const Content = ({ ...props }: ContentProps) => {
                 knowledge: quAns.knowledge,
                 motivation: quAns.motivation,
                 formDefinitionID: formDefinition.id.toString(),
+                orgAdmins: `${props.user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0admin`,
+                orgGroupLeaders: `${props.user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0groupLeader`
             });
         });
         if (quAnsInput.length === 0) {
@@ -266,7 +270,7 @@ const Content = ({ ...props }: ContentProps) => {
         let result = (
             await helper.callBatchGraphQL<CreateQuestionAnswerResult>(
                 customQueries.batchCreateQuestionAnswer2,
-                { input: quAnsInput },
+                { input: quAnsInput, organizationID: props.user.attributes[ORGANIZATION_ID_ATTRIBUTE] },
                 "QuestionAnswer"
             )
         ).map((result) => result.data?.batchCreateQuestionAnswer);
