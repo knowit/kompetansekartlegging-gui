@@ -37,7 +37,7 @@ import {
     setFirstAnswers,
 } from "./answersApi";
 import {useSelector} from 'react-redux';
-import { selectUserState } from "../redux/User";
+import { selectUserState, selectIsAdmin, selectIsGroupLeader } from "../redux/User";
 
 const cardCornerRadius: number = 40;
 
@@ -482,8 +482,8 @@ const Content = ({ ...props }: ContentProps) => {
      *
      *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
      */
-    const isAdmin = props.roles.includes(UserRole.Admin);
-    const isGroupLeader = props.roles.includes(UserRole.GroupLeader);
+    const isAdmin = useSelector(selectIsAdmin);
+    const isGroupLeader = useSelector(selectIsGroupLeader);
 
     const buttonSetup = [
         { text: "OVERSIKT", buttonType: MenuButton.Overview, show: true },

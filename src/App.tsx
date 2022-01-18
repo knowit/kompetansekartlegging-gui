@@ -13,7 +13,6 @@ import { UserRole } from "./types";
 import theme from "./theme";
 
 // redux
-import { RootState } from './redux/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserInfo, setUserInfoLogOut, selectUserState } from './redux/User';
 
@@ -48,28 +47,6 @@ const cognitoUserContainsAttributes = (data:any) : boolean => {
     return 'attributes' in data;
 };
 
-const hasRole = (role: string) => (user: any): boolean => {
-    const groups: Array<string> =
-        user?.signInUserSession?.idToken?.payload["cognito:groups"];
-    const orgRoles: Array<string> = [];
-    groups.forEach(group => {
-        const splitGroup = group.split("0");
-        if (splitGroup.length > 1) {
-            orgRoles.push(splitGroup[1]);
-        }
-    });
-    groups.push(...orgRoles);
-    return groups?.includes(role);
-};
-const isAdmin = hasRole("admin");
-const isGroupLeader = hasRole("groupLeader");
-const userToRoles = (user: any): UserRole[] => {
-    let roles = [UserRole.NormalUser];
-    if (isAdmin(user)) roles.push(UserRole.Admin);
-    if (isGroupLeader(user)) roles.push(UserRole.GroupLeader);
-    return roles;
-};
-
 const App = () => {
     const dispatch = useDispatch();
     const userState = useSelector(selectUserState);
@@ -77,15 +54,10 @@ const App = () => {
     const style = appStyle();
 
     const [user, setUser] = useState<any | null>(null);
-    const [roles, setRoles] = useState<UserRole[]>([UserRole.NormalUser]);
     const [showFab, setShowFab] = useState<boolean>(true);
     const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     const [scaleDescOpen, setScaleDescOpen] = useState(false);
     const [firstTimeLogin, setFirstTimeLogin] = useState(false);
-
-    useEffect(() => {
-        console.log('roles:', roles);
-    }, [roles]);
 
     useEffect(() => {
         const handleResize = debounce(() => {
@@ -138,19 +110,6 @@ const App = () => {
             }
         }
     }, [scaleDescOpen]);
-
-    useEffect(() => {
-        if (user) {
-            if (
-                typeof user != "undefined" &&
-                user.hasOwnProperty("attributes")
-            ) {
-                setRoles(userToRoles(user));
-                let attributes = user.attributes;
-                console.log(attributes);
-            }
-        }
-    }, [user]);
 
     const signout = () => {
         Auth.signOut();
@@ -222,7 +181,6 @@ const App = () => {
                             }
                             setScaleDescOpen={setScaleDescOpen}
                             setFirstTimeLogin={setFirstTimeLogin}
-                            roles={roles}
                             setShowFab={setShowFab}
                         />
                         {showFab && (
