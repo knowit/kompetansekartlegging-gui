@@ -30,7 +30,7 @@ type FormDefinition
             # { allow: private, operations: [read] }
             # { allow: groups, groups: ["admin"] }
             { allow: groups, groupsField: "orgAdmins" }
-            { allow: groups, groupsField: "organizationGroup", operations: [read] }
+            { allow: groups, groupsField: "organizationID", operations: [read] }
         ]
     )
     @key(
@@ -51,7 +51,7 @@ type FormDefinition
         @connection(keyName: "byFormDefinition", fields: ["id"])
     organizationID: ID!
     organization: Organization @connection(fields:["organizationID"])
-    organizationGroup: String
+    organizationGroup: String # Hva skal vi med dette feltet_
     orgAdmins: String
 }
 
@@ -120,6 +120,8 @@ enum QuestionType {
     text
 }
 
+# {allow:private, operations: [read]} er ikke sikkert, gir hvem som helst som har bruker muligheten til å hente
+# spørsmålene til alle organisasjoner
 type Question
     @model
     @auth(
@@ -156,6 +158,8 @@ type Question
     orgAdmins: String
 }
 
+# {allow:private, operations: [read]} er ikke sikkert, gir hvem som helst som har bruker muligheten til å hente 
+# kategoriene til alle organisasjoner
 type Category
     @model
     @auth(
@@ -199,6 +203,7 @@ type Group
     orgAdmins: String
 }
 
+# Må endres til at access reguleres med orgGroupLeader og orgAdmin
 type User
     @model
     @auth(
