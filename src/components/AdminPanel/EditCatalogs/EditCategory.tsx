@@ -20,6 +20,8 @@ import RouterBreadcrumbs from "./Breadcrumbs";
 import useQuery from "./useQuery";
 import AddQuestionDialog from "./AddQuestionDialog";
 import Button from "../../mui/Button";
+import { ORGANIZATION_ID_ATTRIBUTE } from "../../../constants";
+import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -45,6 +47,10 @@ const useStyles = makeStyles(() =>
 );
 
 const EditCategory = () => {
+    const [user, setUser] = useState<any | null>(null);
+
+    if (!user) {Auth.currentAuthenticatedUser().then(setUser);}
+
     const classes = useStyles();
     const { id, formDefinitionID } = useParams<Record<string, string>>();
 
@@ -93,7 +99,8 @@ const EditCategory = () => {
             questions.length + 1,
             formDefinitionID,
             id,
-            questionConfig
+            questionConfig,
+            (user) ? user.attributes[ORGANIZATION_ID_ATTRIBUTE] : ""
         );
         setShowAddQuestionDialog(false);
         refreshQuestions();

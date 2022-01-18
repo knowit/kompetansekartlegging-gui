@@ -27,8 +27,10 @@ type FormDefinition
     @model
     @auth(
         rules: [
-            { allow: private, operations: [read] }
-            { allow: groups, groups: ["admin"] }
+            # { allow: private, operations: [read] }
+            # { allow: groups, groups: ["admin"] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "organizationGroup", operations: [read] }
         ]
     )
     @key(
@@ -48,6 +50,9 @@ type FormDefinition
     questions: [Question]
         @connection(keyName: "byFormDefinition", fields: ["id"])
     organizationID: ID!
+    organization: Organization @connection(fields:["organizationID"])
+    organizationGroup: String
+    orgAdmins: String
 }
 
 type UserForm
@@ -94,6 +99,9 @@ type QuestionAnswer
     userFormID: ID!
     questionID: ID!
     question: Question @connection(fields: ["questionID"])
+    orgGroupLeaders: String
+    orgAdmins: String
+    
 
     # if question.type == null or knowledgeMotivation
     knowledge: Float
@@ -104,9 +112,6 @@ type QuestionAnswer
 
     # if question.type == text
     textValue: String
-
-    orgGroupLeaders: String
-    orgAdmins: String
 }
 
 enum QuestionType {
@@ -120,7 +125,8 @@ type Question
     @auth(
         rules: [
             { allow: private, operations: [read] }
-            { allow: groups, groups: ["admin"] }
+            # { allow: groups, groups: ["admin"] }
+            { allow: groups, groupsField: "orgAdmins" }
         ]
     )
     @key(
@@ -146,6 +152,8 @@ type Question
     scaleStart: String
     scaleMiddle: String
     scaleEnd: String
+    
+    orgAdmins: String
 }
 
 type Category
@@ -153,7 +161,8 @@ type Category
     @auth(
         rules: [
             { allow: private, operations: [read] }
-            { allow: groups, groups: ["admin"] }
+            # { allow: groups, groups: ["admin"] }
+            { allow: groups, groupsField: "orgAdmins" }
         ]
     )
     @key(
@@ -168,6 +177,8 @@ type Category
     formDefinitionID: ID!
     formDefinition: FormDefinition @connection(fields: ["formDefinitionID"])
     questions: [Question] @connection(keyName: "byCategory", fields: ["id"])
+
+    orgAdmins: String
 }
 
 type Group
@@ -230,6 +241,8 @@ input CreateQuestionAnswerInput {
     motivation: Float
     customScaleValue: Float
     formDefinitionID: String!
+    orgAdmins: String
+    orgGroupLeaders: String
 }
 
 type Mutation {

@@ -93,6 +93,7 @@ export const formByCreatedAtPaginated = /* GraphQL */ `
         $filter: ModelFormDefinitionFilterInput
         $limit: Int
         $nextToken: String
+        $nextFormToken: String
     ) {
         formByCreatedAt(
             sortKeyConstant: $sortKeyConstant
@@ -100,6 +101,7 @@ export const formByCreatedAtPaginated = /* GraphQL */ `
             sortDirection: $sortDirection
             filter: $filter
             limit: $limit
+            nextToken: $nextFormToken
         ) {
             items {
                 id

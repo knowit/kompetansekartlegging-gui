@@ -93,7 +93,7 @@ const EditAdmins = ({user} : any) => {
         setAdminToDelete(user);
     };
     const deleteAdminConfirm = async () => {
-        await removeAdmin(adminToDelete);
+        await removeAdmin(adminToDelete, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
         setShowDeleteUserFromGroupDialog(false);
         refresh();
     };
