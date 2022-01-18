@@ -46,6 +46,8 @@ import Button from "../mui/Button";
 import Table from "../mui/Table";
 import TableRow from "../mui/TableRow";
 import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
+import {useSelector} from 'react-redux';
+import { selectUserState } from "../../redux/User";
 
 const useRowStyles = makeStyles({
     root: {
@@ -217,7 +219,10 @@ const GroupsTable = ({
     );
 };
 
-const EditGroups = ({user}: any) => {
+const EditGroups = () => {
+
+    const userState = useSelector(selectUserState);
+
     const {
         result: users,
         error,
@@ -233,7 +238,7 @@ const EditGroups = ({user}: any) => {
         // refresh: refreshAllAvailableUsers,
     } = useApiGet({
         getFn: listAllAvailableUsersInOrganization,
-        params: user.attributes[ORGANIZATION_ID_ATTRIBUTE],
+        params: userState.organizationID,
     });
     const {
         result: groupLeaders,
@@ -242,7 +247,7 @@ const EditGroups = ({user}: any) => {
         refresh: refreshGroupLeaders,
     } = useApiGet({
         getFn: listGroupLeadersInOrganization,
-        params: user.attributes[ORGANIZATION_ID_ATTRIBUTE]
+        params: userState.organizationID
     });
     const {
         result: groups,
@@ -287,7 +292,7 @@ const EditGroups = ({user}: any) => {
     const clearSelectedGroup = () => setGroupToDelete(null);
     const hideShowAddGroup = () => setShowAddGroup(false);
     const addGroupConfirm = async (groupLeaderUser: any) => {
-        await addGroup(groupLeaderUser, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
+        await addGroup(groupLeaderUser, userState.organizationID);
         setShowAddGroup(false);
         refreshGroups();
     };
@@ -307,7 +312,7 @@ const EditGroups = ({user}: any) => {
                 if (userHasGroup) {
                     return updateUserGroup(u.Username, groupId);
                 } else {
-                    return addUserToGroup(u.Username, groupId, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
+                    return addUserToGroup(u.Username, groupId, userState.organizationID);
                 }
             })
         );

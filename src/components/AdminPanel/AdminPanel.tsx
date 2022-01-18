@@ -9,7 +9,6 @@ import { Auth } from "aws-amplify";
 
 type AdminPanelProps = {
     activeSubmenuItem: string;
-    user: any;
 };
 
 enum SubmenuCategory {
@@ -40,17 +39,17 @@ const activeSubmenuItemToSubmenuCategory = (
     }
 };
 
-const AdminPanel = ({ activeSubmenuItem, user }: AdminPanelProps) => {
+const AdminPanel = ({ activeSubmenuItem }: AdminPanelProps) => {
     const category = activeSubmenuItemToSubmenuCategory(activeSubmenuItem);
 
     return (
         <div className={style.container}>
             {(category === SubmenuCategory.MAIN ||
                 category === SubmenuCategory.EDIT_GROUP_LEADERS) && (
-                <EditGroupLeaders user={user}/>
+                <EditGroupLeaders/>
             )}
-            {category === SubmenuCategory.EDIT_ADMINS && <EditAdmins user={user}/>}
-            {category === SubmenuCategory.EDIT_GROUPS && <EditGroups user = {user}/>}
+            {category === SubmenuCategory.EDIT_ADMINS && <EditAdmins/>}
+            {category === SubmenuCategory.EDIT_GROUPS && <EditGroups/>}
             {category === SubmenuCategory.EDIT_CATALOGS && (
                 <EditCatalogsRouter />
             )}

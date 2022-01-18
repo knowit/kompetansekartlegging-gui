@@ -11,7 +11,11 @@ import FloatingScaleDescButton from "./components/FloatingScaleDescButton";
 import NavBarDesktop from "./components/NavBarDesktop";
 import { UserRole } from "./types";
 import theme from "./theme";
-import { getActiveOrganizationName } from "./helperFunctions";
+
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserInfo, setUserInfoLogOut, selectUserState } from './redux/User';
+
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -38,34 +42,18 @@ const appStyle = makeStyles({
     },
 });
 
-const hasRole = (role: string) => (user: any): boolean => {
-    const groups: Array<string> =
-        user?.signInUserSession?.idToken?.payload["cognito:groups"];
-    if (groups == null) return false;
-    const orgRoles: Array<string> = [];
-    groups.forEach(group => {
-        const splitGroup = group.split("0");
-        if (splitGroup.length > 1) {
-            orgRoles.push(splitGroup[1]);
-        }
-    });
-    groups.push(...orgRoles);
-    return groups?.includes(role);
-};
-const isAdmin = hasRole("admin");
-const isGroupLeader = hasRole("groupLeader");
-const userToRoles = (user: any): UserRole[] => {
-    let roles = [UserRole.NormalUser];
-    if (isAdmin(user)) roles.push(UserRole.Admin);
-    if (isGroupLeader(user)) roles.push(UserRole.GroupLeader);
-    return roles;
+// Sometimes the cognito-object does not contain attributes. Not sure why
+const cognitoUserContainsAttributes = (data:any) : boolean => {
+    return 'attributes' in data;
 };
 
 const App = () => {
+    const dispatch = useDispatch();
+    const userState = useSelector(selectUserState);
+
     const style = appStyle();
 
     const [user, setUser] = useState<any | null>(null);
-    const [roles, setRoles] = useState<UserRole[]>([UserRole.NormalUser]);
     const [showFab, setShowFab] = useState<boolean>(true);
     const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     const [scaleDescOpen, setScaleDescOpen] = useState(false);
@@ -83,24 +71,33 @@ const App = () => {
 
     useEffect(() => {
         Hub.listen("auth", ({ payload: { event, data } }) => {
-            console.log('event listener', event, data);
             switch (event) {
                 case "signIn":
+                    if(cognitoUserContainsAttributes(data)){
+                        dispatch(setUserInfo(data));
+                    }
                     setUser({...data});
                     break;
                 case "signIn_failure":
                     console.trace("Failed to sign in");
                     break;
                 case "signOut":
+                    dispatch(setUserInfoLogOut());
                     setUser(null);
                     break;
             }
         });
         Auth.currentAuthenticatedUser()
             .then((res) => {
+                if(cognitoUserContainsAttributes(res)){
+                    dispatch(setUserInfo(res));
+                }
                 setUser(res);
             })
-            .catch(() => console.log("Not signed in"));
+            .catch(() => {
+                console.log("Not signed in");
+                dispatch(setUserInfoLogOut());
+            });
     }, []);
 
     useEffect(() => {
@@ -113,31 +110,6 @@ const App = () => {
             }
         }
     }, [scaleDescOpen]);
-
-    // used to reference items in desktop navbar
-    const [userName, setUserName] = useState<string>("");
-    const [userPicture, setUserPicture] = useState<string>("");
-    const [organizationName, setOrganizationName] = useState<any>("");
-
-    useEffect(() => {
-
-        // console.log('userEffect user', user);
-
-        if (user) {
-            if (
-                typeof user != "undefined" &&
-                user.hasOwnProperty("attributes")
-            ) {
-                setRoles(userToRoles(user));
-                let attributes = user.attributes;
-                setUserName(attributes.name);
-                setUserPicture(attributes.picture);
-                getActiveOrganizationName()
-                    .then(setOrganizationName)
-                    .catch((e) => console.log(e));
-            }
-        }
-    }, [user]);
 
     const signout = () => {
         Auth.signOut();
@@ -185,15 +157,12 @@ const App = () => {
     return (
         <ThemeProvider theme={theme}>
             <div className={style.root}>
-                {user ? (
+                {userState.isSignedIn ? (
                     <Fragment>
                         {isMobile ? null : (
                             <NavBarDesktop
                                 displayAnswers={displayAnswers}
                                 signout={signout}
-                                userName={userName}
-                                organizationName={organizationName}
-                                userPicture={userPicture}
                             />
                         )}
 
@@ -203,9 +172,6 @@ const App = () => {
                             answerHistoryOpen={answerHistoryOpen}
                             isMobile={isMobile}
                             signout={signout}
-                            userName={userName}
-                            organizationName={organizationName}
-                            userPicture={userPicture}
                             collapseMobileCategories={collapseMobileCategories}
                             categoryNavRef={categoryNavRef}
                             mobileNavRef={mobileNavRef}
@@ -215,7 +181,6 @@ const App = () => {
                             }
                             setScaleDescOpen={setScaleDescOpen}
                             setFirstTimeLogin={setFirstTimeLogin}
-                            roles={roles}
                             setShowFab={setShowFab}
                         />
                         {showFab && (

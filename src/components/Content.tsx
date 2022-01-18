@@ -37,6 +37,8 @@ import {
     setFirstAnswers,
 } from "./answersApi";
 import { ORGANIZATION_ID_ATTRIBUTE } from "../constants";
+import {useSelector} from 'react-redux';
+import { selectUserState, selectIsAdmin, selectIsGroupLeader } from "../redux/User";
 
 const cardCornerRadius: number = 40;
 
@@ -171,6 +173,8 @@ const updateCategoryAlerts = (
 };
 
 const Content = ({ ...props }: ContentProps) => {
+
+    const userState = useSelector(selectUserState);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(
         null
     );
@@ -483,8 +487,8 @@ const Content = ({ ...props }: ContentProps) => {
      *
      *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
      */
-    const isAdmin = props.roles.includes(UserRole.Admin);
-    const isGroupLeader = props.roles.includes(UserRole.GroupLeader);
+    const isAdmin = useSelector(selectIsAdmin);
+    const isGroupLeader = useSelector(selectIsGroupLeader);
 
     const buttonSetup = [
         { text: "OVERSIKT", buttonType: MenuButton.Overview, show: true },
@@ -651,13 +655,12 @@ const Content = ({ ...props }: ContentProps) => {
                     <GroupLeaderPanel
                         setActiveSubmenuItem={setActiveSubmenuItem}
                         activeSubmenuItem={activeSubmenuItem}
-                        user={props.user}
                         members={groupMembers}
                         setMembers={setGroupMembers}
                     />
                 );
             case Panel.Admin:
-                return <AdminPanel user={props.user} activeSubmenuItem={activeSubmenuItem} />;
+                return <AdminPanel activeSubmenuItem={activeSubmenuItem} />;
             case Panel.Other:
                 return <div>Hello! This is the "Other" panel :D</div>;
         }
@@ -677,9 +680,6 @@ const Content = ({ ...props }: ContentProps) => {
                 <NavBarMobile
                     menuButtons={setUpMobileMenu()}
                     activePanel={activePanel}
-                    userName={props.userName}
-                    userPicture={props.userPicture}
-                    organizationName={props.organizationName}
                     signout={props.signout}
                 />
             ) : (
@@ -689,7 +689,6 @@ const Content = ({ ...props }: ContentProps) => {
                         members={groupMembers}
                         show={isGroupLeader}
                         selected={activePanel === Panel.GroupLeader}
-                        user={props.user}
                         setActivePanel={setActivePanel}
                         setActiveSubmenuItem={setActiveSubmenuItem}
                         activeSubmenuItem={activeSubmenuItem}

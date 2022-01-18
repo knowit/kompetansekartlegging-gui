@@ -1,4 +1,6 @@
 import { API, Auth,  } from "aws-amplify";
+import { ADMIN_COGNITOGROUP_SUFFIX, GROUPLEADER_COGNITOGROUP_SUFFIX } from '../../constants';
+
 
 
 export interface Response<T> {
@@ -11,7 +13,7 @@ export interface Failure {
 
 export type ApiResponse<T> = Response<T> | Failure;
 
-const removeUserFromGroup = async (
+export const removeUserFromGroup = async (
     groupname: string,
     username: string
 ): Promise<ApiResponse<any>> => {
@@ -45,7 +47,7 @@ const removeGroupLeader = async (user: any, org: any) =>
 const removeAdmin = async (user: any, org: any) =>
     await removeUserFromGroup(`${org}0admin`, user.Username);
 
-const addUserToGroup = async (
+export const addUserToGroup = async (
     groupname: string,  
     username: string
 ): Promise<ApiResponse<any>> => {
@@ -73,12 +75,6 @@ const addUserToGroup = async (
         };
     }
 };
-
-const addGroupLeader = async (user: any, org: any) =>
-    await addUserToGroup(`${org}0groupLeader`, user.Username);
-const addAdmin = async (user: any, org: any) => {
-    await addUserToGroup(`${org}0admin`, user.Username);
-}
 
 const listUsersInGroup = async (
     groupname: string
@@ -108,9 +104,9 @@ const listUsersInGroup = async (
 };
 
 const listAllUsersInOrganization = async (organizationID: string) => await listUsersInGroup(organizationID);
-const listGroupLeadersInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}0groupLeader`);
+const listGroupLeadersInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}${GROUPLEADER_COGNITOGROUP_SUFFIX}`);
 const listGroupLeaders = async () => await listUsersInGroup("groupLeader");
-const listAdminsInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}0admin`);
+const listAdminsInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}${ADMIN_COGNITOGROUP_SUFFIX}`);
 const listAdmins = async () => await listUsersInGroup("admin");
 
 const listAllUsers = async (
@@ -151,10 +147,6 @@ export {
     listAllUsersInOrganization,
     listGroupLeaders,
     listGroupLeadersInOrganization,
-    addGroupLeader,
-    removeGroupLeader,
     listAdmins,
     listAdminsInOrganization,
-    addAdmin,
-    removeAdmin,
 };
