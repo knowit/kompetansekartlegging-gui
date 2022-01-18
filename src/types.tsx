@@ -4,6 +4,17 @@ import { AlertType } from "./components/AlertNotification";
 import { Dispatch, SetStateAction } from "react";
 import { OverviewType } from "./components/TypedOverviewChart";
 
+
+export interface UserState {
+    isSignedIn: boolean
+    organizationID: string,
+    email: string,
+    userName: string,
+    organizationName: string
+    picture: string
+}
+
+
 export enum Panel {
     Overview,
     MyAnswers,
@@ -438,8 +449,8 @@ export enum UserRole {
 }
 
 export type ContentProps = {
-    user: any;
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void;
+    user:any,
     answerHistoryOpen: boolean;
     isMobile: boolean;
     signout: () => void;

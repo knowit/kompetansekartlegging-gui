@@ -31,7 +31,7 @@ import Button from "../mui/Button";
 import Table from "../mui/Table";
 import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
 import {useSelector} from 'react-redux';
-import {selectGroupLeaderCognitoGroupName} from '../../redux/User';
+import {selectGroupLeaderCognitoGroupName, selectUserState} from '../../redux/User';
 
 const GroupLeader = (props: any) => {
 
@@ -88,11 +88,14 @@ const GroupLeaderTable = ({ groupLeaders, deleteGroupLeader }: any) => {
     );
 };
 
-const EditGroupLeaders = ({user} : any) => {
+const EditGroupLeaders = () => {
+    
     const groupLeaderCognitoGroupName = useSelector(selectGroupLeaderCognitoGroupName);
+    const userState = useSelector(selectUserState);
+
     const { result: groupLeaders, error, loading, refresh } = useApiGet({
         getFn: listGroupLeadersInOrganization,
-        params: user.attributes[ORGANIZATION_ID_ATTRIBUTE]
+        params: userState.organizationID
     });
     const [showAddGroupLeader, setShowAddGroupLeader] = useState<boolean>(
         false
@@ -166,7 +169,6 @@ const EditGroupLeaders = ({user} : any) => {
                     userGetFn={listAllUsersInOrganization}
                     roleName="gruppeleder"
                     open={showAddGroupLeader}
-                    user={user}
                     currentUsersInGroup={groupLeaders}
                     onCancel={hideShowAddGroupLeader}
                     onConfirm={addGroupLeaderConfirm}

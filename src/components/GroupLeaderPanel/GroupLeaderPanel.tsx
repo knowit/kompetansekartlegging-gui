@@ -19,6 +19,8 @@ import {
 import Main from "./Main";
 import GroupMember from "./GroupMember";
 import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
+import {useSelector} from 'react-redux';
+import {selectGroupLeaderCognitoGroupName, selectUserState} from '../../redux/User';
 
 const GroupLeaderPanel = ({
     members,

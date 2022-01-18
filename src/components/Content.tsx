@@ -36,6 +36,8 @@ import {
     createQuestionAnswers,
     setFirstAnswers,
 } from "./answersApi";
+import {useSelector} from 'react-redux';
+import { selectUserState } from "../redux/User";
 
 const cardCornerRadius: number = 40;
 
@@ -170,6 +172,8 @@ const updateCategoryAlerts = (
 };
 
 const Content = ({ ...props }: ContentProps) => {
+
+    const userState = useSelector(selectUserState);
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(
         null
     );
@@ -646,13 +650,13 @@ const Content = ({ ...props }: ContentProps) => {
                     <GroupLeaderPanel
                         setActiveSubmenuItem={setActiveSubmenuItem}
                         activeSubmenuItem={activeSubmenuItem}
-                        user={props.user}
                         members={groupMembers}
                         setMembers={setGroupMembers}
+                        user={props.user}
                     />
                 );
             case Panel.Admin:
-                return <AdminPanel user={props.user} activeSubmenuItem={activeSubmenuItem} />;
+                return <AdminPanel activeSubmenuItem={activeSubmenuItem} />;
             case Panel.Other:
                 return <div>Hello! This is the "Other" panel :D</div>;
         }
@@ -681,7 +685,6 @@ const Content = ({ ...props }: ContentProps) => {
                         members={groupMembers}
                         show={isGroupLeader}
                         selected={activePanel === Panel.GroupLeader}
-                        user={props.user}
                         setActivePanel={setActivePanel}
                         setActiveSubmenuItem={setActiveSubmenuItem}
                         activeSubmenuItem={activeSubmenuItem}

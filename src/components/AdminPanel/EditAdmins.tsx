@@ -23,7 +23,6 @@ import { getAttribute } from "./helpers";
 import Button from "../mui/Button";
 import Table from "../mui/Table";
 import PictureAndNameCell from "./PictureAndNameCell";
-import { ORGANIZATION_ID_ATTRIBUTE } from "../../constants";
 import {useSelector} from 'react-redux';
 import {selectAdminCognitoGroupName } from '../../redux/User';
 
@@ -78,12 +77,13 @@ const AdminTable = ({ admins, deleteAdmin }: any) => {
     );
 };
 
-const EditAdmins = ({user} : any) => {
+const EditAdmins = () => {
+
     const adminCognitoGroupName = useSelector(selectAdminCognitoGroupName);
 
     const { result: admins, error, loading, refresh } = useApiGet({
         getFn: listAllUsersInOrganization,
-        params: `${user.attributes[ORGANIZATION_ID_ATTRIBUTE]}0admin`
+        params: adminCognitoGroupName
     });
     const [showAddAdmin, setShowAddAdmin] = useState<boolean>(false);
     const [
@@ -150,7 +150,6 @@ const EditAdmins = ({user} : any) => {
                 <AddUserToGroupDialog
                     open={showAddAdmin}
                     currentUsersInGroup={admins}
-                    user={user}
                     userGetFn={listAllUsersInOrganization}
                     onCancel={hideShowAddAdmin}
                     onConfirm={addAdminConfirm}

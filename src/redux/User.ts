@@ -3,14 +3,7 @@ import { RootState } from './store';
 import { getOrganizationNameByID } from '../helperFunctions';
 import { ADMIN_COGNITOGROUP_SUFFIX, GROUPLEADER_COGNITOGROUP_SUFFIX } from '../constants';
 
-export interface UserState {
-  isSignedIn: boolean
-  organizationID: string,
-  email: string,
-  userName: string,
-  organizationName: string
-  picture: string
-}
+import {UserState} from '../types';
   
 const initialState = {
   userState: {
