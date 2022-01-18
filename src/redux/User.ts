@@ -8,10 +8,11 @@ import {UserState} from '../types';
 const initialState = {
   userState: {
     isSignedIn: false,
-    organizationID: "",
+    organizationID: "", 
     email: "",
-    userName: "" ,
-    organizationName: "",
+    name: "" , // The actual name
+    userName: "", // The cognito-generated unique identifier which is called username in cognito
+    organizationName: "", 
     picture: ""
   }
 };
@@ -31,7 +32,8 @@ export const userSlice = createSlice({
             isSignedIn: true,
             organizationID: cognitoUser.attributes["custom:OrganizationID"],
             email: cognitoUser.attributes["email"],
-            userName: cognitoUser.attributes["name"],
+            name: cognitoUser.attributes["name"],
+            userName: cognitoUser['username'],
             organizationName: getOrganizationNameByID(cognitoUser.attributes["custom:OrganizationID"]),
             picture: ("picture" in cognitoUser.attributes) ? cognitoUser.attributes.picture : ""
           }

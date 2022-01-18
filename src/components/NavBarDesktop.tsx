@@ -173,7 +173,7 @@ const NavBarDesktop = ({ ...props }: NavBarPropsDesktop) => {
                             aria-label="Toggle dropdownmenu"
                         >
                             <div className={style.userName}>
-                                {userState.userName}
+                                {userState.name}
                             </div>
                             <Avatar
                                 className={style.userPicture}

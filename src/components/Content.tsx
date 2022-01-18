@@ -652,7 +652,6 @@ const Content = ({ ...props }: ContentProps) => {
                         activeSubmenuItem={activeSubmenuItem}
                         members={groupMembers}
                         setMembers={setGroupMembers}
-                        user={props.user}
                     />
                 );
             case Panel.Admin:

@@ -9,6 +9,7 @@ export interface UserState {
     isSignedIn: boolean
     organizationID: string,
     email: string,
+    name: string,
     userName: string,
     organizationName: string
     picture: string
