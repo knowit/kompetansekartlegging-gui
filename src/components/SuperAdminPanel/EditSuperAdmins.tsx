@@ -118,12 +118,9 @@ const EditSuperAdmins = () => {
                     <Card style={{ marginBottom: "24px" }} variant="outlined">
                         <CardContent>
                             <Typography color="textSecondary" gutterBottom>
-                                Rediger administratorer
+                                PLACEHOLDER! HER SKAL REDIGER SUPER-ADMINISTRATORER!
                             </Typography>
-                            Administratorer har tilgang til alles svar. De kan
-                            også velge hvem som er gruppeledere og
-                            administratorer og kan lage og fjerne grupper. På
-                            denne siden kan du legge til og fjerne gruppeledere.
+                            PLACEHOLDER BESKRIVELSE.
                         </CardContent>
                     </Card>
                     <AdminTable admins={admins} deleteAdmin={deleteAdmin} />

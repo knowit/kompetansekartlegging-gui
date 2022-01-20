@@ -26,7 +26,7 @@ const activeSubmenuItemToSubmenuCategory = (
         case "Rediger super-administratorer":
             return SubmenuCategory.EDIT_SUPER_ADMINS;
         case "Rediger organisasjon-administratorer":
-            return SubmenuCategory.EDIT_SUPER_ADMINS;
+            return SubmenuCategory.EDIT_ORGANIZATION_ADMINS;
         case "hidden":
             return SubmenuCategory.HIDDEN;
         default:

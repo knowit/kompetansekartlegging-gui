@@ -2,9 +2,6 @@ import { API, Auth, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api";
 import { UserFormList, UserFormWithAnswers } from "./types";
 import * as customQueries from "./graphql/custom-queries";
-import * as queries from './graphql/queries';
-import { OrganizationByNameQuery } from "./API";
-import { ORGANIZATION_ID_ATTRIBUTE } from "./constants";
 
 /*
     Used to call graphql queries and mutations.
@@ -159,50 +156,3 @@ export const getOrganizationNameByID = (organizationID : string) => {
             return "No org found" 
     }
 }
-
-export const getActiveOrganizationName = async () => {
-    const userInfo =  await Auth.currentAuthenticatedUser();
-    return getOrganizationNameByEmail(userInfo.signInUserSession.idToken.payload["cognito:groups"]);
-};
-
-// TODO internal hardcoded userhack for now
-// TODO Major preliminary hack to get active org when auth-object not containing info on which Organization the user belongs to
-const getOrganizationNameByEmail = (userGroup: string[]) => {
-    var organizationName = undefined;
-    if (userGroup.includes("knowitobjectnet")) {
-        organizationName = 'Knowit Objectnet';
-    }else if (userGroup.includes("knowitsolutions")) {
-        organizationName = 'Knowit Solutions';
-    } else {
-        organizationName = "No org found";
-    }
-    return organizationName;
-};
-
-export const getActiveOrganizationID = async () => {
-    try {
-        // const org = await getActiveOrganizationName();
-        // const s = await getOrganizationIDByName(org);
-        // return s;
-        const user = await Auth.currentAuthenticatedUser();
-        const orgID = user.attributes[ORGANIZATION_ID_ATTRIBUTE];
-        return orgID;
-      } catch (e) {
-          return { error: 'Could not get organization name or id' };
-      }
-};
-
-
-const getOrganizationIDByName = async (organizationName: string) => {
-    try {
-        const gq = await callGraphQL<OrganizationByNameQuery>(
-            queries.organizationByName,
-            {
-                orgname: organizationName,
-            }
-        );
-        return gq?.data?.organizationByName?.items[0]?.id;
-    } catch (e) {
-        return { error: `getOrganizationIDByName: Could not find organizationidbyname '${organizationName}'.` };
-    }
-};

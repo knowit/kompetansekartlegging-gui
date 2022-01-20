@@ -25,6 +25,9 @@ import Table from "../mui/Table";
 import PictureAndNameCell from "../AdminPanel/PictureAndNameCell";
 import {useSelector} from 'react-redux';
 import {selectAdminCognitoGroupName } from '../../redux/User';
+import { getOrganizations } from './SuperAdminAPI'; 
+
+
 
 const Admin = (props: any) => {
     const { admin, deleteAdmin } = props;
@@ -118,12 +121,9 @@ const EditOrganizations = () => {
                     <Card style={{ marginBottom: "24px" }} variant="outlined">
                         <CardContent>
                             <Typography color="textSecondary" gutterBottom>
-                                Rediger administratorer
+                                PLACEHOLDER! HER SKAL REDIGER ORGANISASJONER!
                             </Typography>
-                            Administratorer har tilgang til alles svar. De kan
-                            også velge hvem som er gruppeledere og
-                            administratorer og kan lage og fjerne grupper. På
-                            denne siden kan du legge til og fjerne gruppeledere.
+                            PLACEHOLDER BESKRIVELSE.
                         </CardContent>
                     </Card>
                     <AdminTable admins={admins} deleteAdmin={deleteAdmin} />
