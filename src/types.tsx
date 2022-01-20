@@ -22,6 +22,7 @@ export enum Panel {
     MyAnswers,
     GroupLeader,
     Admin,
+    SuperAdmin,
     ScaleDescription,
     Other,
     None,
@@ -446,6 +447,7 @@ export type HistoryTreeViewProps = {
 
 export enum UserRole {
     NormalUser,
+    SuperAdmin,
     Admin,
     GroupLeader,
 }

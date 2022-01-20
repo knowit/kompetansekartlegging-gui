@@ -18,25 +18,46 @@ const initialState = {
   }
 };
 
-const hasRole = (role: string) => (user: any): boolean => {
-  const groups: Array<string> =
-      user?.signInUserSession?.idToken?.payload["cognito:groups"];
-  const orgRoles: Array<string> = [];
-  groups.forEach(group => {
-      const splitGroup = group.split("0");
-      if (splitGroup.length > 1) {
-          orgRoles.push(splitGroup[1]);
-      }
-  });
-  groups.push(...orgRoles);
-  return groups?.includes(role);
+const hasRole = (role: string, cognitoGroups: Array<string>) => {
+  for(const group of cognitoGroups){
+    const splitGroup = group.split('0');
+    if(splitGroup.length > 1 && splitGroup[splitGroup.length - 1] === role){
+        return true;
+    }
+  }
+  return false;
 };
-const isAdmin = hasRole("admin");
-const isGroupLeader = hasRole("groupLeader");
+const isAdmin = (cognitoGroups : Array<string>) => hasRole("admin", cognitoGroups);
+const isGroupLeader = (cognitoGroups : Array<string>) => hasRole("groupLeader", cognitoGroups);
+const isSuperAdmin = (cognitoGroups : Array<string>) => {
+  return cognitoGroups.includes('admin');
+};
+
 const userToRoles = (user: any): UserRole[] => {
-  let roles = [UserRole.NormalUser];
-  if (isAdmin(user)) roles.push(UserRole.Admin);
-  if (isGroupLeader(user)) roles.push(UserRole.GroupLeader);
+  const roles = [UserRole.NormalUser];
+  let cognitoGroups : Array<string> = [];
+  try{
+    cognitoGroups = user.signInUserSession.idToken.payload["cognito:groups"];
+  }catch(err){
+    console.error('Could not find the cognito groups of the user');
+    return roles;
+  }
+
+  if(cognitoGroups === undefined){
+    console.error('Could not find the cognito groups of the user');
+    return roles;
+  }
+
+  if(isSuperAdmin(cognitoGroups)){
+    roles.push(UserRole.SuperAdmin);
+  };
+  if (isAdmin(cognitoGroups)){
+    roles.push(UserRole.Admin)
+  };
+  if (isGroupLeader(cognitoGroups)){
+    roles.push(UserRole.GroupLeader)
+  };
+
   return roles;
 };
 
@@ -79,6 +100,10 @@ export default userSlice.reducer;
 
 export const selectUserState = (state : RootState) => {
   return state.user.userState;
+};
+
+export const selectIsSuperAdmin = (state : RootState) => {
+  return state.user.userState.roles.includes(UserRole.SuperAdmin);
 };
 
 export const selectIsAdmin = (state : RootState) => {
