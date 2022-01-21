@@ -82,7 +82,7 @@ for table in tables:
             # item['orgGroupLeaders'] = 'knowitobjectnet0groupLeader'
             # item['organizationID'] = 'knowitobjectnet'
             for tableItem in table["orgitems"]:
-                item[tableItem] = orgItems[tableItem]
+                item[tableItem] = { "S": orgItems[tableItem] }
             destination_dynamo_client.put_item(
                 TableName = destination_tabname,
                 Item = item
