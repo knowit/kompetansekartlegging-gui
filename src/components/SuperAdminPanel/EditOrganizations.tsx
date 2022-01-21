@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import Container from "@material-ui/core/Container";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -11,41 +10,36 @@ import TableRow from "@material-ui/core/TableRow";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import DeleteIcon from "@material-ui/icons/Delete";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Typography from "@material-ui/core/Typography";
-
 import commonStyles from "../AdminPanel/common.module.css";
-import AddUserToGroupDialog from "../AdminPanel/AddUserToGroupDialog";
-import DeleteUserFromGroupDialog from "../AdminPanel/DeleteUserFromGroupDialog";
-import useApiGet from "../AdminPanel/useApiGet";
-import { listAllUsers, listAllUsersInOrganization, listAdmins, removeUserFromGroup, addUserToGroup } from "../AdminPanel/adminApi";
-import { getAttribute } from "../AdminPanel/helpers";
 import Button from "../mui/Button";
 import Table from "../mui/Table";
-import PictureAndNameCell from "../AdminPanel/PictureAndNameCell";
-import {useSelector} from 'react-redux';
-import {selectAdminCognitoGroupName } from '../../redux/User';
-import { getOrganizations } from './SuperAdminAPI'; 
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 
+import { getOrganizations, removeOrganization, addOrganization} from './SuperAdminAPI'; 
+import { OrganizationInfo } from "./SuperAdminTypes";
+import AddIcon from "@material-ui/icons/Add";
+import AddOrganizationDialog from './AddOrganizationDialog';
+import DeleteOrganizationDialog from "./DeleteOrganizationDialog";
+import useApiGet from "../AdminPanel/useApiGet";
 
-const Admin = (props: any) => {
-    const { admin, deleteAdmin } = props;
-    const username = admin.Username;
-    const name = getAttribute(admin, "name");
-    const email = getAttribute(admin, "email");
-    const picture = getAttribute(admin, "picture");
 
+interface OrganizationProps {
+    organization: OrganizationInfo,
+    deleteOrganization: (id: OrganizationInfo) => void
+};
+
+const Organization : React.FC<OrganizationProps> = ({
+    organization, deleteOrganization
+}) => {
     return (
         <>
             <TableRow>
+                <TableCell>{organization.name}</TableCell>
+                <TableCell>{organization.id}</TableCell>
                 <TableCell>
-                    <PictureAndNameCell name={name} picture={picture} />
-                </TableCell>
-                <TableCell>{email}</TableCell>
-                <TableCell>{username}</TableCell>
-                <TableCell>
-                    <IconButton edge="end" onClick={() => deleteAdmin(admin)}>
+                    <IconButton edge="end" onClick={() => deleteOrganization(organization)}>
                         <DeleteIcon />
                     </IconButton>
                 </TableCell>
@@ -54,24 +48,29 @@ const Admin = (props: any) => {
     );
 };
 
-const AdminTable = ({ admins, deleteAdmin }: any) => {
+interface OrganizationTableProps {
+    organizations: OrganizationInfo[], 
+    deleteOrganization: (id: OrganizationInfo) => void
+};
+
+const OrganizationTable : React.FC<OrganizationTableProps> = ({
+    organizations, deleteOrganization
+}) => {
     return (
         <TableContainer className={commonStyles.tableContainer}>
             <Table stickyHeader>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Ansatt</TableCell>
-                        <TableCell>Email</TableCell>
-                        <TableCell>Brukernavn</TableCell>
-                        <TableCell />
+                        <TableCell>Navn</TableCell>
+                        <TableCell>ID</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {admins.map((gl: any) => (
-                        <Admin
-                            key={gl.Username}
-                            admin={gl}
-                            deleteAdmin={deleteAdmin}
+                    {organizations.map((organization) => (
+                        <Organization
+                            organization={organization}
+                            deleteOrganization={deleteOrganization}
+                            key={organization.id}
                         />
                     ))}
                 </TableBody>
@@ -82,78 +81,101 @@ const AdminTable = ({ admins, deleteAdmin }: any) => {
 
 const EditOrganizations = () => {
 
-    const adminCognitoGroupName = useSelector(selectAdminCognitoGroupName);
 
-    const { result: admins, error, loading, refresh } = useApiGet({
-        getFn: listAllUsersInOrganization,
-        params: adminCognitoGroupName
+    const {
+        result: organizations,
+        error: error,
+        loading: loading,
+        refresh: refreshOrganizations
+    } = useApiGet({
+        getFn: getOrganizations  
     });
-    const [showAddAdmin, setShowAddAdmin] = useState<boolean>(false);
-    const [
-        showDeleteUserFromGroupDialog,
-        setShowDeleteUserFromGroupDialog,
-    ] = useState<boolean>(false);
-    const [adminToDelete, setAdminToDelete] = useState<any>();
 
-    const deleteAdmin = (user: any) => {
-        setShowDeleteUserFromGroupDialog(true);
-        setAdminToDelete(user);
+
+    const [mutationError, setMutationError] = useState<string>("");
+
+    const [showAddOrganization, setShowAddOrganization] = useState<boolean>(false);
+    const [showDeleteOrganization, setShowDeleteOrganization] = useState<boolean>(false);
+    const [organizationToBeDeleted, setOrganizationToBeDeleted] = useState<OrganizationInfo | null>(null);
+
+
+    const addOrganizationConfirm = (organization: OrganizationInfo) => {
+        addOrganization(organization).then((res) => {
+            setMutationError("");
+        }).catch((err) => {
+            setMutationError(err);
+        }).finally(() => {
+            setShowAddOrganization(false);
+            refreshOrganizations();
+        })
     };
-    const deleteAdminConfirm = async () => {
-        await removeUserFromGroup(adminCognitoGroupName, adminToDelete.Username);
-        setShowDeleteUserFromGroupDialog(false);
-        refresh();
+
+    const openDeleteOrganizationDialog = (organization: OrganizationInfo) => {
+        setOrganizationToBeDeleted(organization);
+        setShowDeleteOrganization(true);
     };
-    const clearSelectedAdmin = () => setAdminToDelete(null);
-    const hideShowAddAdmin = () => setShowAddAdmin(false);
-    const addAdminConfirm = async (newAdminUser: any) => {
-        await addUserToGroup(adminCognitoGroupName, newAdminUser.Username);
-        setShowAddAdmin(false);
-        refresh();
+
+    const deleteOrganizationConfirm = (organization : OrganizationInfo) => {
+        removeOrganization(organization).then((res) => {
+            setMutationError("");
+        }).catch((err) => {
+            setMutationError(err);
+        }).finally(() => {
+            refreshOrganizations();
+        });
     };
 
     return (
         <Container maxWidth="md" className={commonStyles.container}>
             {error && <p>An error occured: {error}</p>}
-            {loading && <CircularProgress />}
-            {!error && !loading && admins && (
+            {mutationError && 
                 <>
-                    <Card style={{ marginBottom: "24px" }} variant="outlined">
-                        <CardContent>
-                            <Typography color="textSecondary" gutterBottom>
-                                PLACEHOLDER! HER SKAL REDIGER ORGANISASJONER!
-                            </Typography>
-                            PLACEHOLDER BESKRIVELSE.
-                        </CardContent>
-                    </Card>
-                    <AdminTable admins={admins} deleteAdmin={deleteAdmin} />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<PersonAddIcon />}
-                        style={{ marginTop: "24px" }}
-                        onClick={() => setShowAddAdmin(true)}
-                    >
-                        Legg til administrator
-                    </Button>
+                    <p>An error occured: {mutationError}</p>
                 </>
+            }
+            {loading && <CircularProgress />}
+            {!error && !loading &&
+            <>
+                <Card style={{ marginBottom: "24px" }} variant="outlined">
+                    <CardContent>
+                        <Typography color="textSecondary" gutterBottom>
+                            Rediger organisasjoner.
+                        </Typography>
+                        Her man man legge til, fjerne til eller oppdatere organizasjoner. 
+                    </CardContent>
+                </Card>
+                <OrganizationTable organizations={organizations} deleteOrganization={openDeleteOrganizationDialog} />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                    style={{ marginTop: "24px" }}
+                    onClick={() => setShowAddOrganization(true)}
+                >
+                    Legg til organisasjon
+                </Button>
+            </>
+            }   
+            {showAddOrganization && (
+                <AddOrganizationDialog
+                    open={showAddOrganization}
+                    onCancel={() => {setShowAddOrganization(false)}}
+                    onConfirm={addOrganizationConfirm}
+                />
             )}
-            <DeleteUserFromGroupDialog
-                open={showDeleteUserFromGroupDialog}
-                onCancel={() => setShowDeleteUserFromGroupDialog(false)}
-                onExited={clearSelectedAdmin}
-                onConfirm={deleteAdminConfirm}
-                user={adminToDelete}
-                roleName="administrator"
-            />
-            {showAddAdmin && (
-                <AddUserToGroupDialog
-                    open={showAddAdmin}
-                    currentUsersInGroup={admins}
-                    userGetFn={listAllUsersInOrganization}
-                    onCancel={hideShowAddAdmin}
-                    onConfirm={addAdminConfirm}
-                    roleName="administrator"
+            {showDeleteOrganization && organizationToBeDeleted && (
+                <DeleteOrganizationDialog
+                    open={showDeleteOrganization}
+                    onCancel={() => {
+                        setShowDeleteOrganization(false);
+                        setOrganizationToBeDeleted(null);
+                    }}
+                    onConfirm={(organization) => {
+                        setShowDeleteOrganization(false);
+                        setOrganizationToBeDeleted(null);
+                        deleteOrganizationConfirm(organization);
+                    }}
+                    organization={organizationToBeDeleted}
                 />
             )}
         </Container>

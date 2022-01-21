@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { compareByName } from "./helpers";
 
 const useApiGet = ({ getFn, constantResult, cmpFn = compareByName, params = null }: any) => {
+
+    console.log('constantResult:', constantResult);
+
     const [result, setResult] = useState<any[]>(constantResult || []);
     const [loading, setLoading] = useState<boolean>(!constantResult);
     const [error, setError] = useState<string | undefined>();

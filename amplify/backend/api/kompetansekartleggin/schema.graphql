@@ -1,10 +1,10 @@
+# Private authorization should ideally be replaced
 type Organization
     @model
     @auth(
         rules: [
-            { allow: owner }
+            { allow: private, operations: [read]} 
             { allow: groups, groups: ["admin"] }
-            { allow: groups, groups: ["groupLeader"], operations: [read] }
         ]
     )
     @key(
@@ -20,7 +20,7 @@ type Organization
     id: ID!
     createdAt: AWSDateTime!
     owner: String
-    orgname: String
+    orgname: String!
 }
 
 type FormDefinition
