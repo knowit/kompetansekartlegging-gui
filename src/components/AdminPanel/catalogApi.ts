@@ -346,6 +346,7 @@ const createCategory = async (
             description,
             index,
             formDefinitionID,
+            organizationID: organizationID,
             orgAdmins: `${organizationID}0admin`
         };
         const gq = await callGraphQL<CreateCategoryMutation>(createCategoryGq, {
@@ -379,6 +380,7 @@ const createQuestion = async (
             index,
             formDefinitionID,
             categoryID,
+            organizationID: organizationID,
             orgAdmins: `${organizationID}0admin`,
             ...questionConfig,
         };
