@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { callGraphQL, getActiveOrganizationID } from "../../helperFunctions";
+import { callGraphQL } from "../../helperFunctions";
+import { store } from "../../redux/store";
+
 import {
     CategoriesByFormDefinitionQuery,
     Category,
@@ -41,7 +43,7 @@ const listAllFormDefinitionsForLoggedInUser = async (): Promise<
     ApiResponse<FormDefinition[]>
 > => {
 
-    const organizationID = await getActiveOrganizationID();
+    const organizationID = store.getState().user.userState.organizationID;
     try {
         return await listAllFormDefinitionsByOrganizationID(organizationID as string);
     } catch (e) {
@@ -308,7 +310,7 @@ const createFormDefinition = async (
     name: string
 ): Promise<ApiResponse<FormDefinition>> => {
     try {
-        const organizationID = await getActiveOrganizationID();
+        const organizationID = store.getState().user.userState.organizationID;
         const input = {
             id: uuidv4(),
             label: name,

@@ -37,8 +37,10 @@ import {
     setFirstAnswers,
 } from "./answersApi";
 import {useSelector} from 'react-redux';
-import { selectUserState, selectIsAdmin, selectIsGroupLeader,
+import { selectUserState, selectIsSuperAdmin ,selectIsAdmin, selectIsGroupLeader, 
      selectAdminCognitoGroupName, selectGroupLeaderCognitoGroupName } from "../redux/User";
+import { SuperAdminMenu } from "./SuperAdminPanel/SuperAdminMenu";
+import { SuperAdminPanel } from "./SuperAdminPanel/SuperAdminPanel";
 
 const cardCornerRadius: number = 40;
 
@@ -177,7 +179,6 @@ const Content = ({ ...props }: ContentProps) => {
     const userState = useSelector(selectUserState);
     const adminCognitoGroupName = useSelector(selectAdminCognitoGroupName);
     const groupLeaderCognitoGroupName = useSelector(selectGroupLeaderCognitoGroupName);
-
 
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(
         null
@@ -492,6 +493,7 @@ const Content = ({ ...props }: ContentProps) => {
      *
      *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
      */
+    const isSuperAdmin = useSelector(selectIsSuperAdmin);
     const isAdmin = useSelector(selectIsAdmin);
     const isGroupLeader = useSelector(selectIsGroupLeader);
 
@@ -666,6 +668,8 @@ const Content = ({ ...props }: ContentProps) => {
                 );
             case Panel.Admin:
                 return <AdminPanel activeSubmenuItem={activeSubmenuItem} />;
+            case Panel.SuperAdmin:
+                return <SuperAdminPanel activeSubmenuItem={activeSubmenuItem} />;
             case Panel.Other:
                 return <div>Hello! This is the "Other" panel :D</div>;
         }
@@ -703,6 +707,15 @@ const Content = ({ ...props }: ContentProps) => {
                     <AdminMenu
                         show={isAdmin}
                         selected={activePanel === Panel.Admin}
+                        setShowFab={props.setShowFab}
+                        setActivePanel={setActivePanel}
+                        setActiveSubmenuItem={setActiveSubmenuItem}
+                        activeSubmenuItem={activeSubmenuItem}
+                        style={style}
+                    />
+                    <SuperAdminMenu
+                        show={isSuperAdmin}
+                        selected={activePanel === Panel.SuperAdmin}
                         setShowFab={props.setShowFab}
                         setActivePanel={setActivePanel}
                         setActiveSubmenuItem={setActiveSubmenuItem}
