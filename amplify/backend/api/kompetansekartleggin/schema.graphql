@@ -8,19 +8,15 @@ type Organization
         ]
     )
     @key(
-        name: "byName"
-        fields: ["orgname"]
-        queryField: "organizationByName"
-    )
-    @key(
-        name: "byCreatedAt"
-        fields: ["owner", "createdAt"]
-        queryField: "organizationByCreatedAt"
+        name: "byIdentifierAttribute"
+        fields: ["identifierAttribute"]
+        queryField: "organizationByIdentifierAttribute"
     ) {
     id: ID!
     createdAt: AWSDateTime!
     owner: String
     orgname: String!
+    identifierAttribute: String!
 }
 
 type FormDefinition

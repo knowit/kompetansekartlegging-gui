@@ -38,6 +38,7 @@ const Organization : React.FC<OrganizationProps> = ({
             <TableRow>
                 <TableCell>{organization.name}</TableCell>
                 <TableCell>{organization.id}</TableCell>
+                <TableCell>{organization.identifierAttribute}</TableCell>
                 <TableCell>
                     <IconButton edge="end" onClick={() => deleteOrganization(organization)}>
                         <DeleteIcon />
@@ -63,6 +64,7 @@ const OrganizationTable : React.FC<OrganizationTableProps> = ({
                     <TableRow>
                         <TableCell>Navn</TableCell>
                         <TableCell>ID</TableCell>
+                        <TableCell>Identifier Attribute</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -141,7 +143,7 @@ const EditOrganizations = () => {
                         <Typography color="textSecondary" gutterBottom>
                             Rediger organisasjoner.
                         </Typography>
-                        Her man man legge til, fjerne til eller oppdatere organizasjoner. 
+                        Her man man legge til, fjerne eller oppdatere organizasjoner. 
                     </CardContent>
                 </Card>
                 <OrganizationTable organizations={organizations} deleteOrganization={openDeleteOrganizationDialog} />
