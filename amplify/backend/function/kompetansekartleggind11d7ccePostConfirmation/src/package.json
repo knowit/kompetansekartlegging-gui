@@ -6,6 +6,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.46.0",
+    "aws-sdk": "^2.1062.0",
     "axios": "latest"
   }
 }
