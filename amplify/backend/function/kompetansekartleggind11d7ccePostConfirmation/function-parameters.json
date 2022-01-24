@@ -15,5 +15,12 @@
   "skipEdit": true,
   "deploymentBucketName": "amplify-kompetansekartleggin-hakcar-181150-deployment",
   "s3Key": "amplify-builds/kompetansekartleggind11d7ccePostConfirmation-63634c6e2b5233424a44-build.zip",
-  "enableCors": false
+  "enableCors": false,
+  "permissions": {
+    "api": {
+      "kompetansekartleggin": [
+        "read"
+      ]
+    }
+  }
 }
