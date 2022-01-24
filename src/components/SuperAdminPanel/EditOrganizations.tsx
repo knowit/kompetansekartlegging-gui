@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import Typography from "@material-ui/core/Typography";
 import commonStyles from "../AdminPanel/common.module.css";
 import Button from "../mui/Button";
@@ -39,7 +40,7 @@ const Organization : React.FC<OrganizationProps> = ({
                 <TableCell>{organization.name}</TableCell>
                 <TableCell>{organization.id}</TableCell>
                 <TableCell>{organization.identifierAttribute}</TableCell>
-                <TableCell>
+                <TableCell align="center">
                     <IconButton edge="end" onClick={() => deleteOrganization(organization)}>
                         <DeleteIcon />
                     </IconButton>
@@ -65,6 +66,7 @@ const OrganizationTable : React.FC<OrganizationTableProps> = ({
                         <TableCell>Navn</TableCell>
                         <TableCell>ID</TableCell>
                         <TableCell>Identifier Attribute</TableCell>
+                        <TableCell>Slett</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
