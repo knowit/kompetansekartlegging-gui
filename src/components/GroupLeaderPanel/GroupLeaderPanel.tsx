@@ -6,7 +6,7 @@ import useApiGet from "../AdminPanel/useApiGet";
 import {
     listAllUsersInOrganization as listAllAvailableUsersInOrganization,
     listAllUsers as listAllAvailableUsers,
-    listGroupLeaders,
+    listGroupLeadersInOrganization,
 } from "../AdminPanel/adminApi";
 import {
     listAllGroups,
@@ -51,7 +51,8 @@ const GroupLeaderPanel = ({
         error: groupLeadersError,
         loading: groupLeadersLoading,
     } = useApiGet({
-        getFn: listGroupLeaders,
+        getFn: listGroupLeadersInOrganization,
+        params: userState.organizationID
     });
     const {
         result: allAvailableUsers,
@@ -118,20 +119,47 @@ const GroupLeaderPanel = ({
 
     useEffect(() => {
         if (allAvailableUsers && groupLeaders && groups && users) {
-            const annotated = allAvailableUsers.map((u: any) => {
-                const user = users.find((us: any) => us.id === u.Username);
+            // const annotated = allAvailableUsers.map((u: any) => {
+            //     const user = users.find((us: any) => us.id === u.Username);
+            //     if (user) {
+            //         const groupId = user.groupID;
+            //         const group = groups.find((g: any) => g.id === groupId);
+            //         const groupLeaderUsername = group?.groupLeaderUsername;
+            //         const groupLeader = groupLeaders?.find(
+            //             (gl: any) => gl.Username === groupLeaderUsername
+            //         );
+            //         return { ...u, groupId, groupLeader };
+            //     } else {
+            //         return u;
+            //     }
+            // });
+            
+
+            const annotated = users.map((u:any) => {
+                const user = allAvailableUsers.find((us: any) => u.id === us.Username);
                 if (user) {
-                    const groupId = user.groupID;
+                    const groupId = u.groupID;
                     const group = groups.find((g: any) => g.id === groupId);
                     const groupLeaderUsername = group?.groupLeaderUsername;
                     const groupLeader = groupLeaders?.find(
                         (gl: any) => gl.Username === groupLeaderUsername
                     );
-                    return { ...u, groupId, groupLeader };
+                    return { ...user, groupId, groupLeader };
                 } else {
-                    return u;
+                    const groupId = u.groupID;
+                    const group = groups.find((g: any) => g.id === groupId);
+                    const groupLeaderUsername = group?.groupLeaderUsername;
+
+                    return {...u, groupId: u.groupID, Username: u.id, Attributes: [{"Name": "name", "Value": u.id}], groupLeader: groupLeaderUsername};
                 }
             });
+            // TODO: Denne løsningen ble lagt til for å fikse migrasjon av database. Den er ikke helt ideel, og 
+            allAvailableUsers.forEach((user: any) => {
+                const foundUser = annotated.find((aUser: any) => aUser.Username === user.Username); // Check if cognito user is already in annotated users
+                if (!foundUser) {
+                    annotated.push(user) // If not, add the user to annotated users. NOTICE: Users added here should not belong to a group.
+                }
+            })
             setAllAvailableUsersAnnotated(annotated);
         }
     }, [allAvailableUsers, groupLeaders, groups, users]);

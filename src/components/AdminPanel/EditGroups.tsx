@@ -156,20 +156,46 @@ const GroupsTable = ({
         }
     };
 
-    const allAvailableUsersAnnotated = allAvailableUsers.map((u: any) => {
-        const user = users.find((us: any) => us.id === u.Username);
+    // const allAvailableUsersAnnotated = allAvailableUsers.map((u: any) => {
+    //     const user = users.find((us: any) => us.id === u.Username);
+    //     if (user) {
+    //         const groupId = user.groupID;
+    //         const group = groups.find((g: any) => g.id === groupId);
+    //         const groupLeaderUsername = group?.groupLeaderUsername;
+    //         const groupLeader = groupLeaders?.find(
+    //             (gl: any) => gl.Username === groupLeaderUsername
+    //         );
+    //         return { ...u, groupId, groupLeader };
+    //     } else {
+    //         return u;
+    //     }
+    // });
+
+    const allAvailableUsersAnnotated = users.map((u:any) => {
+        const user = allAvailableUsers.find((us: any) => u.id === us.Username);
         if (user) {
-            const groupId = user.groupID;
+            const groupId = u.groupID;
             const group = groups.find((g: any) => g.id === groupId);
             const groupLeaderUsername = group?.groupLeaderUsername;
             const groupLeader = groupLeaders?.find(
                 (gl: any) => gl.Username === groupLeaderUsername
             );
-            return { ...u, groupId, groupLeader };
+            return { ...user, groupId, groupLeader };
         } else {
-            return u;
+            const groupId = u.groupID;
+            const group = groups.find((g: any) => g.id === groupId);
+            const groupLeaderUsername = group?.groupLeaderUsername;
+            // ahh... this is not really going to work... But it's a fun little experiment, right? Not really, no...
+            return {...u, groupId: u.groupID, Username: u.id, Attributes: [{"Name": "name", "Value": u.id}], groupLeader: groupLeaderUsername};
         }
     });
+
+    allAvailableUsers.forEach((user: any) => {
+        const foundUser = allAvailableUsersAnnotated.find((aUser: any) => aUser.Username === user.Username);
+        if (!foundUser) {
+            allAvailableUsersAnnotated.push(user)
+        }
+    })
 
     const groupsAnnotated = groups
         .map((g: any) => {
