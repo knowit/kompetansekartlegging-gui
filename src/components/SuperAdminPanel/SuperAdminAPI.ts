@@ -17,7 +17,8 @@ export const getOrganizations = async () : Promise<ApiResponse<OrganizationInfo[
         const organizationsResult = await callGraphQL<ListOrganizationsQuery>(listOrganizations);
         const organizations = organizationsResult.data?.listOrganizations?.items.map((item) => ({   
             id: item?.id,
-            name: item?.orgname
+            name: item?.orgname,
+            identifierAttribute: item?.identifierAttribute
         } as OrganizationInfo));
 
         return {
@@ -25,6 +26,7 @@ export const getOrganizations = async () : Promise<ApiResponse<OrganizationInfo[
         };
 
     } catch(e){
+
         return {
             error: 'Could get get a list of organizations.'
         };
@@ -34,13 +36,15 @@ export const getOrganizations = async () : Promise<ApiResponse<OrganizationInfo[
 export const addOrganization = async (organization : OrganizationInfo) => new Promise(async (resolve, reject) => {
     
     try{
-        await callGraphQL<CreateOrganizationMutation>(createOrganization, {
+        const res = await callGraphQL<CreateOrganizationMutation>(createOrganization, {
             input: {
                 id: organization.id,
-                orgname: organization.name
+                orgname: organization.name,
+                identifierAttribute: organization.identifierAttribute
             }
         });
         resolve(null);
+
     } catch (e){
         reject(`Kunne ikke legge til organisasjonen ${organization.name}.`);
     }

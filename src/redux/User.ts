@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { getOrganizationNameByID } from '../helperFunctions';
 import { ADMIN_COGNITOGROUP_SUFFIX, GROUPLEADER_COGNITOGROUP_SUFFIX } from '../constants';
@@ -17,6 +17,21 @@ const initialState = {
     roles: [UserRole.NormalUser]
   }
 };
+
+
+export const fetchOrganizationNameByID = createAsyncThunk(
+  'user/fetchOrganizationNameByID',
+  async(cognitoUser: any, thunkAPI) => {
+    try{
+      const id = cognitoUser.attributes["custom:OrganizationID"];
+      const organizationName = await getOrganizationNameByID(id);
+      return organizationName;
+    }catch (err){
+      throw err;
+    }
+  }
+)
+
 
 const hasRole = (role: string, cognitoGroups: Array<string>) => {
   for(const group of cognitoGroups){
@@ -67,8 +82,11 @@ export const userSlice = createSlice({
   reducers: {
 
     setUserInfo : {
-      reducer: (state, action: PayloadAction<UserState>) => {
-        state.userState = action.payload
+      reducer: (state, action : PayloadAction<Object>) => {
+        state.userState = {
+          ...state.userState,
+          ...action.payload
+        }
       },
       prepare: (cognitoUser : any) => {
         return {
@@ -78,7 +96,6 @@ export const userSlice = createSlice({
             email: cognitoUser.attributes["email"],
             name: cognitoUser.attributes["name"],
             userName: cognitoUser['username'],
-            organizationName: getOrganizationNameByID(cognitoUser.attributes["custom:OrganizationID"]),
             picture: ("picture" in cognitoUser.attributes) ? cognitoUser.attributes.picture : "",
             roles: userToRoles(cognitoUser)
           }
@@ -88,6 +105,14 @@ export const userSlice = createSlice({
     setUserInfoLogOut: (state) => {
       state = initialState
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchOrganizationNameByID.fulfilled, (state, action) => {
+      state.userState.organizationName = action.payload;
+    });
+    builder.addCase(fetchOrganizationNameByID.rejected, (state, action) => {
+      state.userState.organizationName = "no organization name found"
+    });
   }
 });
 

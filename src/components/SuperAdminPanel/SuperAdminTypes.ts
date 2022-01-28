@@ -1,4 +1,5 @@
 export type OrganizationInfo = {
     id: string,
-    name: string
+    name: string,
+    identifierAttribute: string
 };

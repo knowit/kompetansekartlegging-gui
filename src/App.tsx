@@ -13,7 +13,7 @@ import theme from "./theme";
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserInfo, setUserInfoLogOut, selectUserState } from './redux/User';
+import { setUserInfo, setUserInfoLogOut, selectUserState, fetchOrganizationNameByID } from './redux/User';
 
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
@@ -72,6 +72,7 @@ const App = () => {
                 case "signIn":
                     if(cognitoUserContainsAttributes(data)){
                         dispatch(setUserInfo(data));
+                        dispatch(fetchOrganizationNameByID(data));
                     }
                     break;
                 case "signIn_failure":
@@ -86,6 +87,7 @@ const App = () => {
             .then((res) => {
                 if(cognitoUserContainsAttributes(res)){
                     dispatch(setUserInfo(res));
+                    dispatch(fetchOrganizationNameByID(res));
                 }
             })
             .catch(() => {

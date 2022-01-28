@@ -11,12 +11,20 @@ import TextField from "@material-ui/core/TextField";
 
 import { dialogStyles } from "../../styles";
 import { CloseIcon } from "../DescriptionTable";
+import { OrganizationInfo } from "./SuperAdminTypes";
 
 
-const AddOrganizationDialog = ({ onCancel, onConfirm, open } : any) => {
+interface AddOrganizationDialogProps {
+    onCancel: () => void,
+    onConfirm: (arg: OrganizationInfo) => void,
+    open: boolean
+};
+
+const AddOrganizationDialog : React.FC<AddOrganizationDialogProps> = ({ onCancel, onConfirm, open }) => {
     const style = dialogStyles();
     const [organizationName, setOrganizationName] = useState("");
     const [organizationID, setOrganizationID] = useState("");
+    const [organizationIdentifierAttribute, setOrganizationIdentifierAttribute] = useState("");
 
     return (
         <Dialog
@@ -48,6 +56,17 @@ const AddOrganizationDialog = ({ onCancel, onConfirm, open } : any) => {
                 <TextField
                     autoFocus
                     fullWidth
+                    label="Navn"
+                    variant="outlined"
+                    error={organizationName === ""}
+                    helperText={organizationName === "" && "Navn kan ikke være tom."}
+                    value={organizationName}
+                    className={style.textField}
+                    onChange={(e: any) => setOrganizationName(e.target.value)}
+                />
+                <TextField
+                    autoFocus
+                    fullWidth
                     label="ID"
                     variant="outlined"
                     error={organizationID === ""}
@@ -59,13 +78,13 @@ const AddOrganizationDialog = ({ onCancel, onConfirm, open } : any) => {
                 <TextField
                     autoFocus
                     fullWidth
-                    label="Navn"
+                    label="Identifier attribute"
                     variant="outlined"
-                    error={organizationName === ""}
-                    helperText={organizationName === "" && "Navn kan ikke være tom."}
-                    value={organizationName}
+                    error={organizationIdentifierAttribute === ""}
+                    helperText={organizationIdentifierAttribute === "" && "Identifier attribute kan ikke være tom."}
+                    value={organizationIdentifierAttribute}
                     className={style.textField}
-                    onChange={(e: any) => setOrganizationName(e.target.value)}
+                    onChange={(e: any) => setOrganizationIdentifierAttribute(e.target.value)}
                 />
             </DialogTitle>
             <DialogActions className={style.alertButtons}>
@@ -76,7 +95,8 @@ const AddOrganizationDialog = ({ onCancel, onConfirm, open } : any) => {
                     disabled={organizationName === ""}
                     onClick={() => onConfirm({
                         id: organizationID,
-                        name: organizationName
+                        name: organizationName,
+                        identifierAttribute: organizationIdentifierAttribute
                     })}
                     className={style.confirmButton}
                 >

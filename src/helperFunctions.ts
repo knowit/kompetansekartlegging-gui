@@ -2,6 +2,8 @@ import { API, Auth, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api";
 import { UserFormList, UserFormWithAnswers } from "./types";
 import * as customQueries from "./graphql/custom-queries";
+import { GetOrganizationQuery } from './API';
+import { getOrganization } from "./graphql/queries";
 
 /*
     Used to call graphql queries and mutations.
@@ -146,13 +148,22 @@ export const Millisecs = {
     THREEMONTHS: 7889400000,
 };
 
-export const getOrganizationNameByID = (organizationID : string) => {
-    switch(organizationID){
-        case "knowitobjectnet":
-            return "Knowit Objectnet";
-        case "knowitsolutions":
-            return "Knowit Solutions";
-        default:
-            return "No org found" 
+export const getOrganizationNameByID = (organizationID : string) => new Promise<string>(async (resolve, reject) => {
+    try{
+
+        const res = await callGraphQL<GetOrganizationQuery>(getOrganization, {
+            id: organizationID
+        });
+
+        const organizationName = res.data?.getOrganization?.orgname;
+
+        if (typeof organizationName === 'string'){
+            resolve(organizationName);
+        }else{
+            reject('no org found');
+        }
+
+    } catch(e) {
+        reject('no org found');
     }
-}
+});

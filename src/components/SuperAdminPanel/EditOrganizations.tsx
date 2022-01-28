@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import Typography from "@material-ui/core/Typography";
 import commonStyles from "../AdminPanel/common.module.css";
 import Button from "../mui/Button";
@@ -38,7 +39,8 @@ const Organization : React.FC<OrganizationProps> = ({
             <TableRow>
                 <TableCell>{organization.name}</TableCell>
                 <TableCell>{organization.id}</TableCell>
-                <TableCell>
+                <TableCell>{organization.identifierAttribute}</TableCell>
+                <TableCell align="center">
                     <IconButton edge="end" onClick={() => deleteOrganization(organization)}>
                         <DeleteIcon />
                     </IconButton>
@@ -63,6 +65,8 @@ const OrganizationTable : React.FC<OrganizationTableProps> = ({
                     <TableRow>
                         <TableCell>Navn</TableCell>
                         <TableCell>ID</TableCell>
+                        <TableCell>Identifier Attribute</TableCell>
+                        <TableCell>Slett</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -141,7 +145,7 @@ const EditOrganizations = () => {
                         <Typography color="textSecondary" gutterBottom>
                             Rediger organisasjoner.
                         </Typography>
-                        Her man man legge til, fjerne til eller oppdatere organizasjoner. 
+                        Her man man legge til, fjerne eller oppdatere organizasjoner. 
                     </CardContent>
                 </Card>
                 <OrganizationTable organizations={organizations} deleteOrganization={openDeleteOrganizationDialog} />
