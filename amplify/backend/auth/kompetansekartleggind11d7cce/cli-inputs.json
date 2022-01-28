@@ -66,10 +66,22 @@
           "Arn",
           "Name"
         ]
+      },
+      {
+        "category": "function",
+        "resourceName": "kompetansekartleggind11d7ccePreSignup",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
       }
     ],
     "triggers": {
       "PostConfirmation": [
+        "custom"
+      ],
+      "PreSignup": [
         "custom"
       ]
     },
@@ -88,7 +100,7 @@
     "breakCircularDependency": true,
     "useEnabledMfas": false,
     "permissions": [],
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"kompetansekartleggind11d7ccePostConfirmation\"\n  }\n]",
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"kompetansekartleggind11d7ccePostConfirmation\"\n  },\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"kompetansekartleggind11d7ccePreSignup\"\n  }\n]",
     "hostedUIProviderCreds": "[]",
     "googleClientId": "501380647535-kbb6lcaonhmb9g42lhov8fi1rdqege20.apps.googleusercontent.com",
     "parentStack": {
