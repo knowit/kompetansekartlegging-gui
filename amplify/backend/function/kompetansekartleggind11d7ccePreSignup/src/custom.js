@@ -37,7 +37,7 @@ const linkProviderToUser = async (username, userPoolId, providerName, providerUs
 
 exports.handler = async (event, context, callback) => {
   // insert code to be executed by your lambda trigger
-
+  console.log("PreSignUpTriggered", event)
   if (event.triggerSource === 'PreSignUp_ExternalProvider') {
     const userRs = await getUserByEmail(event.userPoolId, event.request.userAttributes.email)
     if (userRs && userRs.Users.length > 0) {

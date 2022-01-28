@@ -4,7 +4,7 @@ import boto3
 import json
 
 
-with open('parameters.json') as parameters_file:
+with open('scripts/parameters.json') as parameters_file:
     parameters = json.load(parameters_file)
 
 

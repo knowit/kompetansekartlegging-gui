@@ -6,7 +6,6 @@
     "resourceNameTruncated": "kompetd11d7cce",
     "userPoolName": "kompetansekartleggind11d7cce_userpool_d11d7cce",
     "autoVerifiedAttributes": [
-      "email"
     ],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
@@ -49,7 +48,7 @@
       "knowitsolutions0admin"
     ],
     "usernameAttributes": [
-      "email"
+      "username"
     ],
     "hostedUI": true,
     "hostedUIDomainName": "kompetansekartleggine8062390-e8062390",
