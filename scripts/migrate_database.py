@@ -3,7 +3,11 @@ import boto3
 import json
 
 
+<<<<<<< HEAD
 with open('scripts/parameters.json') as parameters_file:
+=======
+with open('parameters.json') as parameters_file:
+>>>>>>> 943aae27d0904290b187d7ff9c862dd3d2817dcd
     parameters = json.load(parameters_file)
 
 parameter_keys = ['source_iam_user', 'destination_iam_user', 'destination_graphql_api_id', 'destination_env']
