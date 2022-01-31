@@ -50,7 +50,6 @@ const getOrganizationID = (identifierAttributeValue) => new Promise(async (resol
   } catch (err){
     reject(err);
   }
-
 });
 
 const cognitoIdp = new CognitoIdentityServiceProvider()
@@ -63,7 +62,7 @@ const getUserByEmail = async (userPoolId, email) => {
 }
 
 const adminConfirmUserEmail = async (userPoolId, email) => {
-  await cognitoIdp.adminUpdateUserAttributes({
+  return cognitoIdp.adminUpdateUserAttributes({
     UserAttributes: [{
       "Name": "email_verified",
       "Value": "true"
@@ -161,48 +160,44 @@ exports.handler = async (event, context, callback) => {
         event.response.autoVerifyEmail = true;
         event.response.autoConfirmUser = true;
 
-      // if(isDeveloperLogin(event)){
-        //   console.log('is development login');
-        //   callback(null, event);
-        // }else{
-          
-      const client = new CognitoIdentityProviderClient({
-        region: event["region"]
-      });
-      
-      // const identifierAttributeValue = getIdentifierValue(event);
-      const organizationID = await getOrganizationID(providerName);
-      
-      
-      const user_to_group_command = new AdminAddUserToGroupCommand({
-        UserPoolId: event["userPoolId"],
-        Username: userEmail,
-        GroupName: organizationID
-      });
-      
-      const update_user_attribute_command = new AdminUpdateUserAttributesCommand({
-        Username: userEmail,
-        UserPoolId: event["userPoolId"],
-        UserAttributes: [{
-          Name: "custom:OrganizationID", 
-          Value: organizationID
-        }]
-      });
-      
-      try{
-        const [response_user_group, response_custom_attribute] = await Promise.all(
-          [client.send(user_to_group_command), client.send(update_user_attribute_command)]
-          );
-          console.log('response user_to_group', response_user_group);
-          console.log('response custom_attribute', response_custom_attribute);
-      }catch(err){
-        console.log('error',err);
-      }finally{
-        callback(null, event);
+        const client = new CognitoIdentityProviderClient({
+          region: event["region"]
+        });
+        
+        // const identifierAttributeValue = getIdentifierValue(event);
+        const organizationID = await getOrganizationID(providerName);
+        // TODO: Change providerName to appropriate attribute
+        
+        
+        const user_to_group_command = new AdminAddUserToGroupCommand({
+          UserPoolId: event["userPoolId"],
+          Username: userEmail,
+          GroupName: organizationID
+        });
+        
+        const update_user_attribute_command = new AdminUpdateUserAttributesCommand({
+          Username: userEmail,
+          UserPoolId: event["userPoolId"],
+          UserAttributes: [{
+            Name: "custom:OrganizationID", 
+            Value: organizationID
+          }]
+        });
+        
+        try{
+          const [response_user_group, response_custom_attribute] = await Promise.all(
+            [client.send(user_to_group_command), client.send(update_user_attribute_command)]
+            );
+            console.log('response user_to_group', response_user_group);
+            console.log('response custom_attribute', response_custom_attribute);
+        }catch(err){
+          console.log('error',err);
+        }finally{
+          callback(null, event);
+        }
+      } else {
+        console.log('user not found, added new cognito user to userPool.');
       }
-    } else {
-      console.log('user not found, added new cognito user to userPool.');
-    }
     } 
   }
 
