@@ -13,5 +13,12 @@
   "triggerEventPath": "PreSignup.event.json",
   "roleName": "kompetansekartleggind11d7ccePreSignup",
   "skipEdit": true,
-  "enableCors": false
+  "enableCors": false,
+  "permissions": {
+    "api": {
+      "kompetansekartleggin": [
+        "read"
+      ]
+    }
+  }
 }
