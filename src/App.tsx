@@ -14,6 +14,7 @@ import theme from "./theme";
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserInfo, setUserInfoLogOut, selectUserState, fetchOrganizationNameByID } from './redux/User';
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
@@ -26,6 +27,22 @@ Auth.configure(awsconfig);
 
 Hub.listen(/.*/, (data) => {
     console.log('Hub listening to all messages: ', data);
+    if (data.payload.event === "signIn_failure") {
+        let message = data.payload.data.message; 
+        if (message.includes("Google")) {
+            Auth.federatedSignIn({
+                customProvider:
+                    CognitoHostedUIIdentityProvider.Google,
+            });
+        } else if (message.includes("AzureAD")) {
+            // console.log("Failure in the membrane");
+            Auth.federatedSignIn({
+                customProvider:
+                    "AzureAD",
+            });
+        }
+        // Auth.federatedSignIn();
+    }
 });
 
 const appStyle = makeStyles({
@@ -68,6 +85,7 @@ const App = () => {
 
     useEffect(() => {
         Hub.listen("auth", ({ payload: { event, data } }) => {
+            console.log("Auth occured", event);
             switch (event) {
                 case "signIn":
                     if(cognitoUserContainsAttributes(data)){
@@ -77,6 +95,7 @@ const App = () => {
                     break;
                 case "signIn_failure":
                     console.trace("Failed to sign in");
+                    Auth.federatedSignIn();
                     break;
                 case "signOut":
                     dispatch(setUserInfoLogOut());
