@@ -13,7 +13,7 @@ def set_hosted_ui_identity_providers(client_id):
     desc["SupportedIdentityProviders"] = ["Google", "AzureAD"]
 
 
-    print(app_client_desc)
+    # print(app_client_desc)
 
     response = cognito_client.update_user_pool_client(
         UserPoolId=userpool_id,

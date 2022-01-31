@@ -47,7 +47,6 @@ type FormDefinition
         @connection(keyName: "byFormDefinition", fields: ["id"])
     organizationID: ID!
     organization: Organization @connection(fields:["organizationID"])
-    organizationGroup: String # Hva skal vi med dette feltet_
     orgAdmins: String
 }
 
@@ -116,14 +115,13 @@ enum QuestionType {
     text
 }
 
-# {allow:private, operations: [read]} er ikke sikkert, gir hvem som helst som har bruker muligheten til å hente
-# spørsmålene til alle organisasjoner
 type Question
     @model
     @auth(
         rules: [
-            { allow: private, operations: [read] }
+            # { allow: private, operations: [read] }
             # { allow: groups, groups: ["admin"] }
+            { allow: groups, groupsField: "organizationID", operations: [read]}
             { allow: groups, groupsField: "orgAdmins" }
         ]
     )
@@ -151,16 +149,16 @@ type Question
     scaleMiddle: String
     scaleEnd: String
     
+    organizationID: String # Tror ikke denne tabellen trenger å kobles opp mot Organization tabellen
     orgAdmins: String
 }
 
-# {allow:private, operations: [read]} er ikke sikkert, gir hvem som helst som har bruker muligheten til å hente 
-# kategoriene til alle organisasjoner
+
 type Category
     @model
     @auth(
         rules: [
-            { allow: private, operations: [read] }
+            { allow: groups, groupsField: "organizationID", operations: [read] }
             # { allow: groups, groups: ["admin"] }
             { allow: groups, groupsField: "orgAdmins" }
         ]
@@ -178,6 +176,7 @@ type Category
     formDefinition: FormDefinition @connection(fields: ["formDefinitionID"])
     questions: [Question] @connection(keyName: "byCategory", fields: ["id"])
 
+    organizationID: String # Tror ikke denne tabellen trenger å kobles opp mot Organization tabellen
     orgAdmins: String
 }
 
@@ -193,8 +192,8 @@ type Group
     ) {
     id: ID!
     groupLeaderUsername: String!
-    orgID: ID!
-    organization: Organization @connection(fields: ["orgID"])
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
     orgGroupLeaders: String
     orgAdmins: String
 }
@@ -204,18 +203,19 @@ type User
     @model
     @auth(
         rules: [
-            { allow: groups, groups: ["admin"] }
-            { allow: groups, groups: ["groupLeader"] }
-            { allow: groups, groupsField: "orgGroups" }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "orgGroupLeaders"}
+            # { allow: groups, groupsField: "orgGroups" }
         ]
     )
     @key(name: "byGroup", fields: ["groupID"], queryField: "usersByGroup") {
     id: ID!
     groupID: ID!
     group: Group! @connection(fields: ["groupID"])
-    orgID: ID!
-    organization: Organization @connection(fields: ["orgID"])
-    orgGroups: [String]
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
+    orgAdmins: String
+    orgGroupLeaders: String
 }
 
 type CreateQuestionAnswerResult {
