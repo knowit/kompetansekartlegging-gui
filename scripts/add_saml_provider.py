@@ -31,7 +31,7 @@ response = cognito_client.create_identity_provider(
     AttributeMapping={
         'email': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
         'name': 'http://schemas.microsoft.com/ws/2008/06/identity/claims/displayname',
-        'nickname': 'http://schemas.microsoft.com/ws/2008/06/identity/claims/companyname' # TODO: Change to custom attribute or something with a better name
+        'custom:company': 'http://schemas.microsoft.com/ws/2008/06/identity/claims/companyname'
     }
 )
 
