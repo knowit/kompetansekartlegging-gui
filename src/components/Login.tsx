@@ -158,13 +158,27 @@ const Login = (props: { isMobile: boolean }) => {
                     </h1>
                 </div>
                 <div className={style.buttonAlign}>
+                <Button
+                        className={style.loginButton}
+                        onClick={
+                            () => Auth.federatedSignIn({
+                                customProvider:
+                                CognitoHostedUIIdentityProvider.Google,
+                            })
+                        }
+                    >
+                        Logg inn (Google)
+                    </Button>
                     <Button
                         className={style.loginButton}
                         onClick={
-                            () => Auth.federatedSignIn()
+                            () => Auth.federatedSignIn({
+                                customProvider:
+                                    "AzureAD",
+                            })
                         }
                     >
-                        Logg inn
+                        Logg inn (Microsoft)
                     </Button>
                     {isNotProd && (
                         <Button

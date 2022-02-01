@@ -2,7 +2,11 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.9\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
-    "GROUP": {
+    "DOMAINBLACKLIST": {
+      "Type": "String",
+      "Default": ""
+    },
+    "DOMAINWHITELIST": {
       "Type": "String",
       "Default": ""
     },
@@ -75,12 +79,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "kompetansekartleggind11d7ccePostConfirmation",
+            "kompetansekartleggind11d7ccePreSignup",
             {
               "Fn::Join": [
                 "",
                 [
-                  "kompetansekartleggind11d7ccePostConfirmation",
+                  "kompetansekartleggind11d7ccePreSignup",
                   "-",
                   {
                     "Ref": "env"
@@ -101,8 +105,11 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "GROUP": {
-              "Ref": "GROUP"
+            "DOMAINWHITELIST": {
+              "Ref": "DOMAINWHITELIST"
+            },
+            "DOMAINBLACKLIST": {
+              "Ref": "DOMAINBLACKLIST"
             },
             "API_KOMPETANSEKARTLEGGIN_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apikompetansekartlegginGraphQLAPIIdOutput"
@@ -136,12 +143,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "kompetansekartleggind11d7ccePostConfirmation",
+            "kompetansekartleggind11d7ccePreSignup",
             {
               "Fn::Join": [
                 "",
                 [
-                  "kompetansekartleggind11d7ccePostConfirmation",
+                  "kompetansekartleggind11d7ccePreSignup",
                   "-",
                   {
                     "Ref": "env"
@@ -222,8 +229,13 @@
             {
               "Action": [
                 "cognito-idp:AdminAddUserToGroup",
+                "cognito-idp:ListUsers",
                 "cognito-idp:UpdateUserAttributes",
-                "cognito-idp:AdminUpdateUserAttributes"
+                "cognito-idp:AdminUpdateUserAttributes",
+                "cognito-idp:AdminLinkProviderForUser",
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:AdminConfirmSignUp",
+                "cognito-idp:AdminSetUserPassword"
               ],
               "Resource": [
                 "arn:aws:cognito-idp:*:*:userpool/*"

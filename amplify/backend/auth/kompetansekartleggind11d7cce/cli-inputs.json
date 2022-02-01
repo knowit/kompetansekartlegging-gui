@@ -6,7 +6,6 @@
     "resourceNameTruncated": "kompetd11d7cce",
     "userPoolName": "kompetansekartleggind11d7cce_userpool_d11d7cce",
     "autoVerifiedAttributes": [
-      "email"
     ],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
@@ -49,7 +48,7 @@
       "knowitsolutions0admin"
     ],
     "usernameAttributes": [
-      "email"
+      "username"
     ],
     "hostedUI": true,
     "hostedUIDomainName": "kompetansekartleggine8062390-e8062390",
@@ -66,10 +65,22 @@
           "Arn",
           "Name"
         ]
+      },
+      {
+        "category": "function",
+        "resourceName": "kompetansekartleggind11d7ccePreSignup",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
       }
     ],
     "triggers": {
       "PostConfirmation": [
+        "custom"
+      ],
+      "PreSignup": [
         "custom"
       ]
     },
@@ -88,7 +99,7 @@
     "breakCircularDependency": true,
     "useEnabledMfas": false,
     "permissions": [],
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"kompetansekartleggind11d7ccePostConfirmation\"\n  }\n]",
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"kompetansekartleggind11d7ccePostConfirmation\"\n  },\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"kompetansekartleggind11d7ccePreSignup\"\n  }\n]",
     "hostedUIProviderCreds": "[]",
     "googleClientId": "501380647535-kbb6lcaonhmb9g42lhov8fi1rdqege20.apps.googleusercontent.com",
     "parentStack": {

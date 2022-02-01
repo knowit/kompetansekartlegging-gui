@@ -12,6 +12,15 @@
             "Arn",
             "Name"
           ]
+        },
+        {
+          "category": "function",
+          "resourceName": "kompetansekartleggind11d7ccePreSignup",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
         }
       ],
       "customAuth": false
@@ -160,6 +169,21 @@
           "resourceName": "kompetansekartleggind11d7cce",
           "attributes": [
             "UserPoolId"
+          ]
+        }
+      ]
+    },
+    "kompetansekartleggind11d7ccePreSignup": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "kompetansekartleggin",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
           ]
         }
       ]
