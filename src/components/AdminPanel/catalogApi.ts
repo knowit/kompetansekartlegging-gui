@@ -348,8 +348,13 @@ const createCategory = async (
             description,
             index,
             formDefinitionID,
+<<<<<<< HEAD
             organizationID: organizationID,
             orgAdmins: `${organizationID}0admin`
+=======
+            orgAdmins: `${organizationID}0admin`,
+            organizationID: organizationID
+>>>>>>> fixing_external_api_organizations
         };
         const gq = await callGraphQL<CreateCategoryMutation>(createCategoryGq, {
             input,
@@ -357,6 +362,7 @@ const createCategory = async (
         const el = gq?.data?.createCategory as Category;
         return { result: el || null };
     } catch (e) {
+
         return {
             error: `Could not create category '${name}'.`,
         };
@@ -384,6 +390,7 @@ const createQuestion = async (
             categoryID,
             organizationID: organizationID,
             orgAdmins: `${organizationID}0admin`,
+            organizationID: organizationID,
             ...questionConfig,
         };
         const gq = await callGraphQL<CreateQuestionMutation>(createQuestionGq, {

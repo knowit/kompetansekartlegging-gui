@@ -3,7 +3,7 @@
   "paths": {
     "/": {
       "permissions": {
-        "setting": "private",
+        "setting": "open",
         "auth": [
           "read"
         ]
