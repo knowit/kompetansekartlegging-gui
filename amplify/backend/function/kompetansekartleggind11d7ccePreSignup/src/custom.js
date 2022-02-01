@@ -165,7 +165,9 @@ exports.handler = async (event, context, callback) => {
         });
         
         // const identifierAttributeValue = getIdentifierValue(event);
-        const organizationID = await getOrganizationID(providerName);
+        let orgIdentifier = providerName;
+        if (event.request.userAttributes["custom:company"]) orgIdentifier = event.request.userAttributes["custom:company"]; 
+        const organizationID = await getOrganizationID(orgIdentifier);
         // TODO: Change providerName to appropriate attribute
         
         
