@@ -123,7 +123,9 @@ exports.handler = async (event, context, callback) => {
   if (event.triggerSource === 'PreSignUp_ExternalProvider') {
     const userRs = await getUserByEmail(event.userPoolId, event.request.userAttributes.email)
     if (userRs && userRs.Users.length > 0) {
-      const [ providerName, providerUserId ] = event.userName.split('_') // event userName example: "Facebook_12324325436"
+      const splitUserName = event.userName.split('_');
+      const providerName = splitUserName[0];
+      let providerUserId = splitUserName.slice(1).join("_");
       await linkProviderToUser(userRs.Users[0].Username, event.userPoolId, providerName, providerUserId)
     } else {
       attributes = [];
@@ -133,6 +135,15 @@ exports.handler = async (event, context, callback) => {
       })
       if (event.userName != event.request.userAttributes.email){
         const userEmail = event.request.userAttributes.email;
+        
+        const splitUserName = event.userName.split('_');
+        const providerName = splitUserName[0];
+        let providerUserId = splitUserName.slice(1).join("_");
+        
+        let orgIdentifier = providerName;
+        if (event.request.userAttributes["custom:company"]) orgIdentifier = event.request.userAttributes["custom:company"]; 
+        const organizationID = await getOrganizationID(orgIdentifier);
+
         console.log("Creating new Cognito User Pool user", attributes)
         console.log(await new Promise((resolve, reject) => {
           cognitoIdp.adminCreateUser({
@@ -150,9 +161,6 @@ exports.handler = async (event, context, callback) => {
         })
         );
         // const [ providerName, providerUserId ] = event.userName.split('_');
-        const splitUserName = event.userName.split('_');
-        const providerName = splitUserName[0];
-        let providerUserId = splitUserName.slice(1).join("_");
         await linkProviderToUser(userEmail, event.userPoolId, providerName, providerUserId);
 
         await adminSetUserPassword(event.userPoolId, userEmail); // Set user to confirmed
@@ -165,7 +173,6 @@ exports.handler = async (event, context, callback) => {
         });
         
         // const identifierAttributeValue = getIdentifierValue(event);
-        const organizationID = await getOrganizationID(providerName);
         // TODO: Change providerName to appropriate attribute
         
         
