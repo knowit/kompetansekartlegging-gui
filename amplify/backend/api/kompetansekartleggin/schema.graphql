@@ -23,8 +23,6 @@ type FormDefinition
     @model
     @auth(
         rules: [
-            # { allow: private, operations: [read] }
-            # { allow: groups, groups: ["admin"] }
             { allow: groups, groupsField: "orgAdmins" }
             { allow: groups, groupsField: "organizationID", operations: [read] }
         ]
@@ -33,6 +31,11 @@ type FormDefinition
         name: "byCreatedAt"
         fields: ["sortKeyConstant", "createdAt"]
         queryField: "formByCreatedAt"
+    )
+    @key(
+        name: "byOrganizationByCreatedAt"
+        fields:["organizationID", "createdAt"]
+        queryField: "formByOrganizationByCreatedAt"
     )
     @key(
         name: "byOrganization"
@@ -47,8 +50,7 @@ type FormDefinition
         @connection(keyName: "byFormDefinition", fields: ["id"])
     organizationID: ID!
     organization: Organization @connection(fields:["organizationID"])
-    organizationGroup: String # Hva skal vi med dette feltet_
-    orgAdmins: String
+    orgAdmins: String!
 }
 
 type UserForm
@@ -56,8 +58,6 @@ type UserForm
     @auth(
         rules: [
             { allow: owner }
-            # { allow: groups, groups: ["admin"] }
-            # { allow: groups, groups: ["groupLeader"], operations: [read] }
             { allow: groups, groupsField: "orgAdmins" }
             { allow: groups, groupsField: "orgGroupLeaders", operations: [read] }
         ]
@@ -75,8 +75,8 @@ type UserForm
         @connection(keyName: "byUserForm", fields: ["id"])
     formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
     
-    orgGroupLeaders: String
-    orgAdmins: String
+    orgGroupLeaders: String!
+    orgAdmins: String!
 }
 
 type QuestionAnswer
@@ -84,8 +84,6 @@ type QuestionAnswer
     @auth(
         rules: [
             { allow: owner }
-            # { allow: groups, groups: ["admin"] }
-            # { allow: groups, groups: ["groupLeader"], operations: [read] }
             { allow: groups, groupsField: "orgAdmins" }
             { allow: groups, groupsField: "orgGroupLeaders", operations: [read] }
         ]
@@ -95,8 +93,8 @@ type QuestionAnswer
     userFormID: ID!
     questionID: ID!
     question: Question @connection(fields: ["questionID"])
-    orgGroupLeaders: String
-    orgAdmins: String
+    orgGroupLeaders: String!
+    orgAdmins: String!
     
 
     # if question.type == null or knowledgeMotivation
@@ -116,15 +114,13 @@ enum QuestionType {
     text
 }
 
-# {allow:private, operations: [read]} er ikke sikkert, gir hvem som helst som har bruker muligheten til å hente
-# spørsmålene til alle organisasjoner
+
 type Question
     @model
     @auth(
         rules: [
-            { allow: private, operations: [read] }
-            # { allow: groups, groups: ["admin"] }
             { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "organizationID", operations: [read] }
         ]
     )
     @key(
@@ -151,18 +147,17 @@ type Question
     scaleMiddle: String
     scaleEnd: String
     
-    orgAdmins: String
+    orgAdmins: String!
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
 }
 
-# {allow:private, operations: [read]} er ikke sikkert, gir hvem som helst som har bruker muligheten til å hente 
-# kategoriene til alle organisasjoner
 type Category
     @model
     @auth(
         rules: [
-            { allow: private, operations: [read] }
-            # { allow: groups, groups: ["admin"] }
             { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "organizationID", operations: [read] }
         ]
     )
     @key(
@@ -178,25 +173,25 @@ type Category
     formDefinition: FormDefinition @connection(fields: ["formDefinitionID"])
     questions: [Question] @connection(keyName: "byCategory", fields: ["id"])
 
-    orgAdmins: String
+    orgAdmins: String!
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
 }
 
 type Group
     @model
     @auth(
         rules: [
-            # { allow: groups, groups: ["admin"] }
-            # { allow: groups, groups: ["groupLeader"], operations: [read] }
             { allow: groups, groupsField: "orgAdmins" }
             { allow: groups, groupsField: "orgGroupLeaders", operations: [read] }
         ]
     ) {
     id: ID!
     groupLeaderUsername: String!
-    orgID: ID!
-    organization: Organization @connection(fields: ["orgID"])
-    orgGroupLeaders: String
-    orgAdmins: String
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
+    orgGroupLeaders: String!
+    orgAdmins: String!
 }
 
 # Må endres til at access reguleres med orgGroupLeader og orgAdmin
@@ -213,8 +208,8 @@ type User
     id: ID!
     groupID: ID!
     group: Group! @connection(fields: ["groupID"])
-    orgID: ID!
-    organization: Organization @connection(fields: ["orgID"])
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
     orgGroups: [String]
 }
 

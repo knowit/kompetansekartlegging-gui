@@ -104,7 +104,7 @@ const addUserToGroup = async (
             input: {
                 id,
                 groupID,
-                orgID,
+                organizationID: orgID,
                 orgGroups: [`${orgID}${GROUPLEADER_COGNITOGROUP_SUFFIX}`, `${orgID}${ADMIN_COGNITOGROUP_SUFFIX}`]
             },
         });
@@ -159,7 +159,7 @@ const addGroup = async (user: any, orgID: any): Promise<ApiResponse<Group>> => {
             input: {
                 id: uuidv4(),
                 groupLeaderUsername: user.Username,
-                orgID: orgID,
+                organizationID: orgID,
                 orgGroupLeaders: `${orgID}${GROUPLEADER_COGNITOGROUP_SUFFIX}`,
                 orgAdmins: `${orgID}${ADMIN_COGNITOGROUP_SUFFIX}`,
             },
