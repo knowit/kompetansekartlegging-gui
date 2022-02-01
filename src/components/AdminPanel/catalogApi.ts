@@ -348,8 +348,8 @@ const createCategory = async (
             description,
             index,
             formDefinitionID,
-            organizationID: organizationID,
-            orgAdmins: `${organizationID}0admin`
+            orgAdmins: `${organizationID}0admin`,
+            organizationID: organizationID
         };
         const gq = await callGraphQL<CreateCategoryMutation>(createCategoryGq, {
             input,
@@ -357,6 +357,7 @@ const createCategory = async (
         const el = gq?.data?.createCategory as Category;
         return { result: el || null };
     } catch (e) {
+
         return {
             error: `Could not create category '${name}'.`,
         };
