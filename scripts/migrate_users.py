@@ -1,18 +1,18 @@
 import boto3
 import json
 
-source_iam_user = 'KompetanseCognitoReadOnly'
+source_iam_user = ''
 source_session = boto3.Session(profile_name=source_iam_user)
 source_client = source_session.client('cognito-idp')
-sourceUserPoolId = "eu-central-1_znSOUo9KZ"
+sourceUserPoolId = ""
 
-destination_iam_user = 'EUCentralAmplify'
+destination_iam_user = ''
 destination_session = boto3.Session(profile_name=destination_iam_user)
 destination_cognito_client = destination_session.client('cognito-idp')
 destination_dynamo_client = destination_session.client('dynamodb')
-destination_table_id = "2izuv7sucjcjpj4zvqrm3r6nfe" 
-destination_env = "migrate"
-destUserPoolId = "eu-central-1_mQpy9cuyE"
+destination_table_id = "" 
+destination_env = ""
+destUserPoolId = ""
 
 def migrate_user(user):
     userGroups = source_client.admin_list_groups_for_user(
@@ -96,7 +96,8 @@ while next_token:
         PaginationToken = next_token
     )
     for user in response["Users"]:
-        migrate_user(user)
+        userName, email = migrate_user(user)
+        usernameToEmail[userName] = email
 
     next_token = None
     if "PaginationToken" in response.keys():
