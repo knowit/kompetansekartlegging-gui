@@ -19,9 +19,22 @@ const CATEGORY_TABLE_NAME =
 const FORM_DEFINITION_TABLE_NAME =
     process.env.API_KOMPETANSEKARTLEGGIN_FORMDEFINITIONTABLE_NAME;
 const USER_POOL_ID = process.env.AUTH_KOMPETANSEKARTLEGGIND11D7CCE_USERPOOLID;
+const APIKEYPERMISSION_TABLE_NAME = process.env.API_KOMPETANSEKARTLEGGIN_APIKEYPERMISSIONTABLE_NAME;
 
 const organizationFilterParameter = ':oid';
 const organizationFilterExpression = 'organizationID = ' + organizationFilterParameter;
+
+
+const getOrganizationIDFromAPIKeyHashed = async (APIKeyHashed) => {
+    let organizationIDItem = await docClient.query({
+        TableName: APIKEYPERMISSION_TABLE_NAME,
+        IndexName: "byAPIKeyHashed",
+        KeyConditionExpression: "APIKeyHashed = :apikh",
+        ExpressionAttributeValues: { ":apikh": APIKeyHashed}
+    }).promise();
+    return organizationIDItem.Items[0]['organizationID'];
+};
+
 
 // Get answers for a user form.
 const getAnswersForUserForm = async (userFormID) => {
@@ -176,13 +189,12 @@ const getAllUsers = async (organization_ID) => {
         const res = await cognito
             .listUsers({
                 UserPoolId: USER_POOL_ID,
-                AttributesToGet: [
-                    "email",
-                    "custom:OrganizationID"
-                ],
+                Filter:'cognito:user_status=\"CONFIRMED\"',
                 PaginationToken
             })
-            .promise();
+            .promise().catch((err) => {
+                console.log('err:',err);
+            });
         allUsers = [...allUsers, ...res.Users];
         PaginationToken = res.PaginationToken;
     } while (PaginationToken);
@@ -201,7 +213,7 @@ const getAllUsers = async (organization_ID) => {
             ...user,
             Attributes: (
                 user['Attributes'].filter((attribute) => (
-                    attribute['Name'] !== 'custom:OrganizationID'
+                    attribute['Name'] === 'email'
                 ))
             )
         }
@@ -255,4 +267,5 @@ module.exports = {
     getAnswersForUser,
     getAllCategoriesForFormDef,
     getAllQuestionForCategory,
+    getOrganizationIDFromAPIKeyHashed
 };

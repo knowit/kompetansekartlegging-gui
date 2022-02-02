@@ -1,3 +1,22 @@
+type APIKeyPermission
+
+    @model
+    @auth(
+        rules:[
+            { allow: groups, groups:["admin"]}
+        ]
+    )
+    @key(
+        name: "byAPIKeyHashed"
+        fields: ["APIKeyHashed"]
+        queryField: "organizationByAPIKeyHashed"
+    ){
+    id: ID!
+    APIKeyHashed: String!
+    organizationID: String!
+}
+
+
 # Private authorization should ideally be replaced
 type Organization
     @model

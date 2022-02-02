@@ -22,18 +22,7 @@ const cors = require("cors");
 const compression = require("compression");
 const { getCurrentInvoke } = require("@vendia/serverless-express");
 
-
-const apiKeyTable = {
-    '59tjlpHjTr6QEN3T79mUI57JQjSpuqLE6iJnFFHB': 'knowitobjectnet',
-    'FIrEpJPxEG6UzHBYyXEsG5tIUENlw7yj1aWagLFH': 'knowitsolutions'
-};
-
-const getOrganizationID = () => {
-    const {event, context} = getCurrentInvoke();
-    const apiKey = event['requestContext']['identity']['apiKey']
-    return apiKeyTable[apiKey];
-};
-
+const crypto = require('crypto');
 
 // db helpers
 const {
@@ -45,7 +34,17 @@ const {
     getAllFormDefs,
     getAllCategoriesForFormDef,
     getAllQuestionForCategory,
+    getOrganizationIDFromAPIKeyHashed
 } = require("./db");
+
+const getOrganizationID = async () => {
+    const {event, context} = getCurrentInvoke();
+    const apiKey = event['requestContext']['identity']['apiKey']
+    const hash = crypto.createHash('sha256');
+    const apiKey_hashed = hash.update(apiKey).digest('hex');
+    const organization_ID = await getOrganizationIDFromAPIKeyHashed(apiKey_hashed);
+    return organization_ID
+};
 
 // general helpers
 const { mapFromArray } = require("./helpers");
@@ -72,7 +71,7 @@ router.get("/answers", async (req, res) => {
     // Find the newest FormDefinition.
 
 
-    const organization_ID = getOrganizationID();
+    const organization_ID = await getOrganizationID();
 
     const newestFormDef = await getNewestFormDef(organization_ID);
 
@@ -136,7 +135,7 @@ router.get("/answers/:username", (req, res) => {
 // returns: answers for the newest form definition for the given username
 router.get("/answers/:username/newest", async (req, res) => {
 
-    const organization_ID = getOrganizationID();
+    const organization_ID = await getOrganizationID();
 
     const googleID = req.params.username;
     if (!googleID) {
@@ -176,7 +175,7 @@ router.get("/answers/:username/newest", async (req, res) => {
 // returns: list of all users
 router.get("/users", async (req, res) => {
 
-    const organization_ID = getOrganizationID();
+    const organization_ID = await getOrganizationID();
 
     const allUsers = await getAllUsers(organization_ID);
     return res.json(
@@ -192,7 +191,7 @@ router.get("/users", async (req, res) => {
 // returns: list of all form definitions
 router.get("/catalogs", async (req, res) => {
 
-    const organization_ID = getOrganizationID();
+    const organization_ID = await getOrganizationID();
 
     const allFormDefs = await getAllFormDefs(organization_ID);
     return res.json(
