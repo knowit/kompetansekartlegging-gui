@@ -1,7 +1,6 @@
 import boto3
 import json
 
-
 source_iam_user = 'KompetanseCognitoReadOnly'
 source_session = boto3.Session(profile_name=source_iam_user)
 source_client = source_session.client('cognito-idp')
@@ -15,61 +14,93 @@ destination_table_id = "2izuv7sucjcjpj4zvqrm3r6nfe"
 destination_env = "migrate"
 destUserPoolId = "eu-central-1_mQpy9cuyE"
 
-response = source_client.admin_get_user(
-    UserPoolId=sourceUserPoolId,
-    Username='Google_104475194586241570827'
-)
-
-userGroups = source_client.admin_list_groups_for_user(
-    UserPoolId=sourceUserPoolId,
-    Username=response["Username"]
-)
-
-isGroupLeader = any([group["GroupName"] == "groupLeader" for group in userGroups["Groups"]])
-if isGroupLeader:
-    print("IsGroupLeader!")
-isAdmin = any([group["GroupName"] == "groupLeader" for group in userGroups["Groups"]])
-if isAdmin:
-    print("IsAdmin!")
-
-userName = response["Username"]
-userAttributes = [item for item in response['UserAttributes'] if item['Name'] != 'sub' and item['Name'] != 'identities']
-email = [item for item in response['UserAttributes'] if item['Name'] == 'email'][0]['Value']
-userAttributes.append({"Name": "custom:OrganizationID", "Value": "knowitobjectnet"})
-
-destination_cognito_client.admin_create_user(
-    UserPoolId=destUserPoolId,
-    Username=email,
-    MessageAction="SUPPRESS",
-    UserAttributes=userAttributes
-)
-
-destination_cognito_client.admin_set_user_password(
-    UserPoolId=destUserPoolId,
-    Username=email,
-    Password="NotReal123",
-    Permanent=True
-)
-
-destination_cognito_client.admin_add_user_to_group(
-    UserPoolId=destUserPoolId,
-    Username=email,
-    GroupName="knowitobjectnet"
-)
-
-if isGroupLeader:
-    destination_cognito_client.admin_add_user_to_group(
-        UserPoolId=destUserPoolId,
-        Username=email,
-        GroupName="knowitobjectnet0groupLeader"
+def migrate_user(user):
+    userGroups = source_client.admin_list_groups_for_user(
+        UserPoolId=sourceUserPoolId,
+        Username=user["Username"]
     )
-    
-if isAdmin:
-    destination_cognito_client.admin_add_user_to_group(
-        UserPoolId=destUserPoolId,
-        Username=email,
-        GroupName="knowitobjectnet0admin"
+    userName = user["Username"]
+
+    isGroupLeader = any([group["GroupName"] == "groupLeader" for group in userGroups["Groups"]])
+    if isGroupLeader:
+        print(f"{userName} IsGroupLeader!")
+    isAdmin = any([group["GroupName"] == "groupLeader" for group in userGroups["Groups"]])
+    if isAdmin:
+        print(f"{userName} IsAdmin!")
+
+    userAttributes = [item for item in user['Attributes'] if item['Name'] != 'sub' and item['Name'] != 'identities']
+    email = [item for item in user['Attributes'] if item['Name'] == 'email'][0]['Value']
+    userAttributes.append({"Name": "custom:OrganizationID", "Value": "knowitobjectnet"})
+    try:
+        destination_cognito_client.admin_create_user(
+            UserPoolId=destUserPoolId,
+            Username=email,
+            MessageAction="SUPPRESS",
+            UserAttributes=userAttributes
+        )
+
+        destination_cognito_client.admin_set_user_password(
+            UserPoolId=destUserPoolId,
+            Username=email,
+            Password="NotReal123",
+            Permanent=True
+        )
+
+        destination_cognito_client.admin_add_user_to_group(
+            UserPoolId=destUserPoolId,
+            Username=email,
+            GroupName="knowitobjectnet"
+        )
+
+        if isGroupLeader:
+            destination_cognito_client.admin_add_user_to_group(
+                UserPoolId=destUserPoolId,
+                Username=email,
+                GroupName="knowitobjectnet0groupLeader"
+            )
+            
+        if isAdmin:
+            destination_cognito_client.admin_add_user_to_group(
+                UserPoolId=destUserPoolId,
+                Username=email,
+                GroupName="knowitobjectnet0admin"
+            )
+    except:
+        print("Error when creating user")
+    return userName, email
+
+
+
+# response = source_client.admin_get_user(
+#     UserPoolId=sourceUserPoolId,
+#     Username='Google_104475194586241570827'
+# )
+
+response = source_client.list_users(
+    UserPoolId = sourceUserPoolId
+)
+
+usernameToEmail = {}
+
+next_token = None
+if "PaginationToken" in response.keys():
+    next_token = response["PaginationToken"]
+
+for user in response["Users"]:
+    userName, email = migrate_user(user)
+    usernameToEmail[userName] = email
+
+while next_token:
+    response = source_client.list_users(
+        UserPoolId = sourceUserPoolId,
+        PaginationToken = next_token
     )
+    for user in response["Users"]:
+        migrate_user(user)
+
+    next_token = None
+    if "PaginationToken" in response.keys():
+        next_token = response["PaginationToken"]
 
 tables = [
     {
@@ -101,8 +132,6 @@ tables = [
         "ownerAttribute": ["owner"]
     }
 ]
-userName='Google_104475194586241570827'
-email='kristian.stamland@knowit.no'
 
 for table in tables:
     dynamopaginator = destination_dynamo_client.get_paginator('scan')
@@ -117,8 +146,9 @@ for table in tables:
         for item in page['Items']:
             updateItem = False
             for tableItem in table["ownerAttribute"]:
-                if item[tableItem]["S"] == userName:
-                    item[tableItem] = { "S": email }
+                if item[tableItem]["S"] in usernameToEmail.keys(): # I tilfellet hvor en bruker er blitt slettet ?
+                    userMail = usernameToEmail[item[tableItem]["S"]]
+                    item[tableItem] = { "S": userMail}
                     updateItem = True
             if updateItem:
                 destination_dynamo_client.put_item(
