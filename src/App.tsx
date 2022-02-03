@@ -16,6 +16,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUserInfo, setUserInfoLogOut, selectUserState, fetchOrganizationNameByID } from './redux/User';
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 
+const userBranch = process.env.REACT_APP_USER_BRANCH;
+
+switch(userBranch) {
+    case "master":
+        awsconfig.oauth.domain = "auth.kompetanse.knowit.no";
+        break;
+    case "dev":
+        awsconfig.oauth.domain = "auth.dev.kompetanse.knowit.no";
+        break;
+    default:
+        break;
+}
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -94,8 +106,7 @@ const App = () => {
                     }
                     break;
                 case "signIn_failure":
-                    console.trace("Failed to sign in");
-                    Auth.federatedSignIn();
+                    console.trace("Failed to sign in", event, data);
                     break;
                 case "signOut":
                     dispatch(setUserInfoLogOut());
