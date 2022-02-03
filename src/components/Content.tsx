@@ -36,6 +36,11 @@ import {
     createQuestionAnswers,
     setFirstAnswers,
 } from "./answersApi";
+import {useSelector} from 'react-redux';
+import { selectUserState, selectIsSuperAdmin ,selectIsAdmin, selectIsGroupLeader, 
+     selectAdminCognitoGroupName, selectGroupLeaderCognitoGroupName } from "../redux/User";
+import { SuperAdminMenu } from "./SuperAdminPanel/SuperAdminMenu";
+import { SuperAdminPanel } from "./SuperAdminPanel/SuperAdminPanel";
 
 const cardCornerRadius: number = 40;
 
@@ -170,6 +175,11 @@ const updateCategoryAlerts = (
 };
 
 const Content = ({ ...props }: ContentProps) => {
+
+    const userState = useSelector(selectUserState);
+    const adminCognitoGroupName = useSelector(selectAdminCognitoGroupName);
+    const groupLeaderCognitoGroupName = useSelector(selectGroupLeaderCognitoGroupName);
+
     const [formDefinition, setFormDefinition] = useState<FormDefinition | null>(
         null
     );
@@ -243,6 +253,8 @@ const Content = ({ ...props }: ContentProps) => {
                     questionID: quAns.question.id,
                     customScaleValue: quAns.customScaleValue,
                     formDefinitionID: formDefinition.id.toString(),
+                    orgAdmins: adminCognitoGroupName,
+                    orgGroupLeaders: groupLeaderCognitoGroupName
                 });
                 return;
             }
@@ -254,6 +266,8 @@ const Content = ({ ...props }: ContentProps) => {
                 knowledge: quAns.knowledge,
                 motivation: quAns.motivation,
                 formDefinitionID: formDefinition.id.toString(),
+                orgAdmins: adminCognitoGroupName,
+                orgGroupLeaders: groupLeaderCognitoGroupName
             });
         });
         if (quAnsInput.length === 0) {
@@ -265,7 +279,7 @@ const Content = ({ ...props }: ContentProps) => {
         let result = (
             await helper.callBatchGraphQL<CreateQuestionAnswerResult>(
                 customQueries.batchCreateQuestionAnswer2,
-                { input: quAnsInput },
+                { input: quAnsInput, organizationID: userState.organizationID },
                 "QuestionAnswer"
             )
         ).map((result) => result.data?.batchCreateQuestionAnswer);
@@ -306,13 +320,14 @@ const Content = ({ ...props }: ContentProps) => {
     }, [questionAnswers]);
 
     useEffect(() => {
+        console.log('fetchLastFormDefitniio');
         fetchLastFormDefinition(
             setFormDefinition,
             (formDef) => createQuestionAnswers(formDef, setCategories),
             (formDef) =>
                 getUserAnswers(
                     formDef,
-                    props.user,
+                    userState.userName,
                     setUserAnswers,
                     setActivePanel,
                     setUserAnswersLoaded,
@@ -330,7 +345,7 @@ const Content = ({ ...props }: ContentProps) => {
                 )
         );
     }, [
-        props.user,
+        userState,
         props.setFirstTimeLogin,
         props.setScaleDescOpen,
         props.isMobile,
@@ -478,8 +493,9 @@ const Content = ({ ...props }: ContentProps) => {
      *
      *  NOTE: Active panel should be changed somehow to instead check if parent button is active or not
      */
-    const isAdmin = props.roles.includes(UserRole.Admin);
-    const isGroupLeader = props.roles.includes(UserRole.GroupLeader);
+    const isSuperAdmin = useSelector(selectIsSuperAdmin);
+    const isAdmin = useSelector(selectIsAdmin);
+    const isGroupLeader = useSelector(selectIsGroupLeader);
 
     const buttonSetup = [
         { text: "OVERSIKT", buttonType: MenuButton.Overview, show: true },
@@ -646,13 +662,14 @@ const Content = ({ ...props }: ContentProps) => {
                     <GroupLeaderPanel
                         setActiveSubmenuItem={setActiveSubmenuItem}
                         activeSubmenuItem={activeSubmenuItem}
-                        user={props.user}
                         members={groupMembers}
                         setMembers={setGroupMembers}
                     />
                 );
             case Panel.Admin:
                 return <AdminPanel activeSubmenuItem={activeSubmenuItem} />;
+            case Panel.SuperAdmin:
+                return <SuperAdminPanel activeSubmenuItem={activeSubmenuItem} />;
             case Panel.Other:
                 return <div>Hello! This is the "Other" panel :D</div>;
         }
@@ -672,9 +689,6 @@ const Content = ({ ...props }: ContentProps) => {
                 <NavBarMobile
                     menuButtons={setUpMobileMenu()}
                     activePanel={activePanel}
-                    userName={props.userName}
-                    userPicture={props.userPicture}
-                    organizationName={props.organizationName}
                     signout={props.signout}
                 />
             ) : (
@@ -684,7 +698,6 @@ const Content = ({ ...props }: ContentProps) => {
                         members={groupMembers}
                         show={isGroupLeader}
                         selected={activePanel === Panel.GroupLeader}
-                        user={props.user}
                         setActivePanel={setActivePanel}
                         setActiveSubmenuItem={setActiveSubmenuItem}
                         activeSubmenuItem={activeSubmenuItem}
@@ -694,6 +707,15 @@ const Content = ({ ...props }: ContentProps) => {
                     <AdminMenu
                         show={isAdmin}
                         selected={activePanel === Panel.Admin}
+                        setShowFab={props.setShowFab}
+                        setActivePanel={setActivePanel}
+                        setActiveSubmenuItem={setActiveSubmenuItem}
+                        activeSubmenuItem={activeSubmenuItem}
+                        style={style}
+                    />
+                    <SuperAdminMenu
+                        show={isSuperAdmin}
+                        selected={activePanel === Panel.SuperAdmin}
                         setShowFab={props.setShowFab}
                         setActivePanel={setActivePanel}
                         setActiveSubmenuItem={setActiveSubmenuItem}

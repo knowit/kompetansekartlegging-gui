@@ -1,4 +1,9 @@
-/**
+/* Amplify Params - DO NOT EDIT
+	API_KOMPETANSEKARTLEGGIN_GRAPHQLAPIENDPOINTOUTPUT
+	API_KOMPETANSEKARTLEGGIN_GRAPHQLAPIIDOUTPUT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT *//**
  * @fileoverview
  *
  * This CloudFormation Trigger creates a handler which awaits the other handlers

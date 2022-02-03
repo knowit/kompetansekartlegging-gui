@@ -19,14 +19,18 @@ import {
 import Main from "./Main";
 import GroupMember from "./GroupMember";
 import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
+import {useSelector} from 'react-redux';
+import {selectGroupLeaderCognitoGroupName, selectUserState} from '../../redux/User';
 
 const GroupLeaderPanel = ({
     members,
     setMembers,
     activeSubmenuItem,
-    setActiveSubmenuItem,
-    user,
+    setActiveSubmenuItem
 }: any) => {
+
+    const userState = useSelector(selectUserState);
+
     const {
         result: groups,
         error: groupsError,
@@ -55,11 +59,11 @@ const GroupLeaderPanel = ({
         loading: allAvailableUsersLoading,
     } = useApiGet({
         getFn: listAllAvailableUsersInOrganization,
-        params: user.attributes[ORGANIZATION_ID_ATTRIBUTE]
+        params: userState.organizationID
     });
 
     const group = groups?.find(
-        (g: Group) => g.groupLeaderUsername === user.username
+        (g: Group) => g.groupLeaderUsername === userState.userName
     );
     const groupId = group?.id;
     const [
@@ -89,7 +93,7 @@ const GroupLeaderPanel = ({
                 if (userHasGroup) {
                     return updateUserGroup(u.Username, groupId);
                 } else {
-                    return addUserToGroup(u.Username, groupId, user.attributes[ORGANIZATION_ID_ATTRIBUTE]);
+                    return addUserToGroup(u.Username, groupId, userState.organizationID);
                 }
             })
         );

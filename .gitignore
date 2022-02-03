@@ -72,6 +72,8 @@ ignoreFolder
 
 
 scripts/parameters.json
+scripts/saml_params.json
+scripts/ui_params.json
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

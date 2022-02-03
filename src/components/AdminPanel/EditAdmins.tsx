@@ -18,11 +18,13 @@ import commonStyles from "./common.module.css";
 import AddUserToGroupDialog from "./AddUserToGroupDialog";
 import DeleteUserFromGroupDialog from "./DeleteUserFromGroupDialog";
 import useApiGet from "./useApiGet";
-import { listAllUsers, listAllUsersInOrganization, listAdmins, removeAdmin, addAdmin } from "./adminApi";
+import { listAllUsers, listAllUsersInOrganization, listAdmins, removeUserFromGroup, addUserToGroup } from "./adminApi";
 import { getAttribute } from "./helpers";
 import Button from "../mui/Button";
 import Table from "../mui/Table";
 import PictureAndNameCell from "./PictureAndNameCell";
+import {useSelector} from 'react-redux';
+import {selectAdminCognitoGroupName } from '../../redux/User';
 
 const Admin = (props: any) => {
     const { admin, deleteAdmin } = props;
@@ -75,9 +77,13 @@ const AdminTable = ({ admins, deleteAdmin }: any) => {
     );
 };
 
-const EditAdmins = ({user} : any) => {
+const EditAdmins = () => {
+
+    const adminCognitoGroupName = useSelector(selectAdminCognitoGroupName);
+
     const { result: admins, error, loading, refresh } = useApiGet({
-        getFn: listAdmins,
+        getFn: listAllUsersInOrganization,
+        params: adminCognitoGroupName
     });
     const [showAddAdmin, setShowAddAdmin] = useState<boolean>(false);
     const [
@@ -91,14 +97,14 @@ const EditAdmins = ({user} : any) => {
         setAdminToDelete(user);
     };
     const deleteAdminConfirm = async () => {
-        await removeAdmin(adminToDelete);
+        await removeUserFromGroup(adminCognitoGroupName, adminToDelete.Username);
         setShowDeleteUserFromGroupDialog(false);
         refresh();
     };
     const clearSelectedAdmin = () => setAdminToDelete(null);
     const hideShowAddAdmin = () => setShowAddAdmin(false);
-    const addAdminConfirm = async (user: any) => {
-        await addAdmin(user);
+    const addAdminConfirm = async (newAdminUser: any) => {
+        await addUserToGroup(adminCognitoGroupName, newAdminUser.Username);
         setShowAddAdmin(false);
         refresh();
     };
@@ -144,7 +150,6 @@ const EditAdmins = ({user} : any) => {
                 <AddUserToGroupDialog
                     open={showAddAdmin}
                     currentUsersInGroup={admins}
-                    user={user}
                     userGetFn={listAllUsersInOrganization}
                     onCancel={hideShowAddAdmin}
                     onConfirm={addAdminConfirm}

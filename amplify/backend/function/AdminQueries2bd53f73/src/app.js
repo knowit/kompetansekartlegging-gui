@@ -57,6 +57,14 @@ const checkGroup = function(req, res, next) {
   // Fail if group enforcement is being used
   if (req.apiGateway.event.requestContext.authorizer.claims['cognito:groups']) {
     const groups = req.apiGateway.event.requestContext.authorizer.claims['cognito:groups'].split(',');
+    const newRoles = [];
+    groups.forEach(group => {
+      const splitGroup = group.split("0");
+      if (splitGroup.length > 1) {
+        newRoles.push(splitGroup[1]);
+      }
+    });
+    groups.push(...newRoles);
     // allow groupLeader group to list all users in the cognito user pool
     if ((req.path == "/listUsers" || req.path == "/listUsersInGroup") && groups.includes(allowedListUsersGroup)) {}
     else if (!(allowedGroup && groups.indexOf(allowedGroup) > -1)) {

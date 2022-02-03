@@ -41,20 +41,15 @@ const activeSubmenuItemToSubmenuCategory = (
 
 const AdminPanel = ({ activeSubmenuItem }: AdminPanelProps) => {
     const category = activeSubmenuItemToSubmenuCategory(activeSubmenuItem);
-    const [user, setUser] = useState<any | null>(null)
-
-    if (!user) {
-        Auth.currentAuthenticatedUser().then(setUser);
-    }
 
     return (
         <div className={style.container}>
             {(category === SubmenuCategory.MAIN ||
                 category === SubmenuCategory.EDIT_GROUP_LEADERS) && (
-                <EditGroupLeaders user={user}/>
+                <EditGroupLeaders/>
             )}
-            {category === SubmenuCategory.EDIT_ADMINS && <EditAdmins user={user}/>}
-            {category === SubmenuCategory.EDIT_GROUPS && <EditGroups user = {user}/>}
+            {category === SubmenuCategory.EDIT_ADMINS && <EditAdmins/>}
+            {category === SubmenuCategory.EDIT_GROUPS && <EditGroups/>}
             {category === SubmenuCategory.EDIT_CATALOGS && (
                 <EditCatalogsRouter />
             )}

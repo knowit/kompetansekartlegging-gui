@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.5\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.9\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -77,6 +77,32 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "API_KOMPETANSEKARTLEGGIN_APIKEYPERMISSIONTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apikompetansekartlegginGraphQLAPIIdOutput}:GetAtt:APIKeyPermissionTable:Name"
+              }
+            },
+            "API_KOMPETANSEKARTLEGGIN_APIKEYPERMISSIONTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apikompetansekartlegginGraphQLAPIIdOutput}:GetAtt:APIKeyPermissionTable:Name"
+                    }
+                  }
+                ]
+              ]
             },
             "API_KOMPETANSEKARTLEGGIN_FORMDEFINITIONTABLE_NAME": {
               "Fn::ImportValue": {
@@ -359,6 +385,62 @@
                       {
                         "Ref": "authkompetansekartleggind11d7cceUserPoolId"
                       }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apikompetansekartlegginGraphQLAPIIdOutput}:GetAtt:APIKeyPermissionTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apikompetansekartlegginGraphQLAPIIdOutput}:GetAtt:APIKeyPermissionTable:Name"
+                        }
+                      },
+                      "/index/*"
                     ]
                   ]
                 }

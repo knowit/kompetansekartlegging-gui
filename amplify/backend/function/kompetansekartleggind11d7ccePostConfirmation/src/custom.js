@@ -1,26 +1,56 @@
 const { CognitoIdentityProviderClient, AdminAddUserToGroupCommand, AdminUpdateUserAttributesCommand } = require("@aws-sdk/client-cognito-identity-provider");
 
+const AWS = require('aws-sdk');
+const docClient = new AWS.DynamoDB.DocumentClient();
+
+// Should probably be environment variables, but haven't figured how to fix it with amplify so far, without
+// some hacky editing of the cloud-formation template
+const OrganizationConstants = {
+  TableName: 'Organization',
+  IndexName: 'byIdentifierAttribute',
+  IdentifierAttribute: 'identifierAttribute',
+}
+
 
 const isDeveloperLogin = event => {
   return event["request"]["userAttributes"]["identities"] === undefined
 }
 
-const getGroupName = event => {
-
-
-  const providerToGroup = {
-    "Google": "knowitobjectnet",
-    "azureprovider": "knowitsolutions",
-    "AzureAD": "knowitsolutions"
-  };
-
+const getIdentifierValue = event => {
   const identities = JSON.parse(event["request"]["userAttributes"]["identities"]);
   const providerName = identities[0]["providerName"];
-
-  const groupName = providerToGroup[providerName];
-  return groupName;
+  return providerName;
 };
 
+
+const getOrganizationID = (identifierAttributeValue) => new Promise(async (resolve, reject) => {
+  const params = {
+    TableName: OrganizationConstants["TableName"]+'-'+process.env.API_KOMPETANSEKARTLEGGIN_GRAPHQLAPIIDOUTPUT+"-"+process.env.ENV,
+    IndexName: OrganizationConstants["IndexName"],
+    KeyConditionExpression: OrganizationConstants["IdentifierAttribute"] + " = :iA",
+    ExpressionAttributeValues: { ":iA": identifierAttributeValue },
+    ProjectionExpression: "id",
+    Select: "SPECIFIC_ATTRIBUTES"
+  }
+  
+
+  console.log(params);
+
+  try{
+    const data = await docClient.query(params).promise();
+    console.log(data);
+    if(data.Count >= 1){
+      const organizationID = data['Items'][0]['id'];
+      resolve(organizationID);
+    }else{
+      reject('Could not find any item with the the identifier attribute:', identifierAttributeValue)
+    }
+ 
+  } catch (err){
+    reject(err);
+  }
+
+});
 
 exports.handler = async (event, context, callback) => {
 
@@ -32,14 +62,15 @@ exports.handler = async (event, context, callback) => {
     const client = new CognitoIdentityProviderClient({
       region: event["region"]
     });
-  
-  
-    groupName = getGroupName(event);
+    
+    const identifierAttributeValue = getIdentifierValue(event);
+    const organizationID = await getOrganizationID(identifierAttributeValue);
+      
   
     const user_to_group_command = new AdminAddUserToGroupCommand({
         UserPoolId: event["userPoolId"],
         Username: event["userName"],
-        GroupName: groupName
+        GroupName: organizationID
       });
   
     const update_user_attribute_command = new AdminUpdateUserAttributesCommand({
@@ -47,11 +78,10 @@ exports.handler = async (event, context, callback) => {
         UserPoolId: event["userPoolId"],
         UserAttributes: [{
           Name: "custom:OrganizationID", 
-          Value: groupName 
+          Value: organizationID
         }]
     });
-  
-  
+        
     try{
       const [response_user_group, response_custom_attribute] = await Promise.all(
         [client.send(user_to_group_command), client.send(update_user_attribute_command)]

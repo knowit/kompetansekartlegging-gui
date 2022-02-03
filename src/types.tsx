@@ -4,11 +4,25 @@ import { AlertType } from "./components/AlertNotification";
 import { Dispatch, SetStateAction } from "react";
 import { OverviewType } from "./components/TypedOverviewChart";
 
+
+export interface UserState {
+    isSignedIn: boolean
+    organizationID: string,
+    email: string,
+    name: string,
+    userName: string,
+    organizationName: string
+    picture: string,
+    roles: UserRole[]
+}
+
+
 export enum Panel {
     Overview,
     MyAnswers,
     GroupLeader,
     Admin,
+    SuperAdmin,
     ScaleDescription,
     Other,
     None,
@@ -400,18 +414,11 @@ export type NavBarProps = {
 export type NavBarPropsDesktop = {
     displayAnswers: () => void;
     signout: () => void;
-    userName: string;
-    userPicture: string;
-    organizationName: string;
-
 };
 
 export type NavBarPropsMobile = {
     menuButtons: JSX.Element[];
     activePanel: Panel;
-    userName: string;
-    userPicture: string;
-    organizationName: string;
     signout: () => void;
 };
 
@@ -440,19 +447,16 @@ export type HistoryTreeViewProps = {
 
 export enum UserRole {
     NormalUser,
+    SuperAdmin,
     Admin,
     GroupLeader,
 }
 
 export type ContentProps = {
-    user: any;
     setAnswerHistoryOpen: (historyViewOpen: boolean) => void;
     answerHistoryOpen: boolean;
     isMobile: boolean;
     signout: () => void;
-    userName: string;
-    userPicture: string;
-    organizationName: string;
     collapseMobileCategories: boolean;
     categoryNavRef: React.MutableRefObject<HTMLInputElement | null>;
     scrollToTop: () => void;
@@ -460,7 +464,6 @@ export type ContentProps = {
     setCollapseMobileCategories: (collapseMobileCategories: boolean) => void;
     setScaleDescOpen: Dispatch<SetStateAction<boolean>>;
     setFirstTimeLogin: Dispatch<SetStateAction<boolean>>;
-    roles: UserRole[];
     setShowFab: Dispatch<SetStateAction<boolean>>;
 };
 

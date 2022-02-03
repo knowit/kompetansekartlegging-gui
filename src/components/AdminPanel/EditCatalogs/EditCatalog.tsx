@@ -18,6 +18,8 @@ import RouterBreadcrumbs from "./Breadcrumbs";
 import useQuery from "./useQuery";
 import AddCategoryDialog from "./AddCategoryDialog";
 import Button from "../../mui/Button";
+import { ORGANIZATION_ID_ATTRIBUTE } from "../../../constants";
+import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -43,6 +45,11 @@ const useStyles = makeStyles(() =>
 );
 
 const EditCatalog = () => {
+    const [user, setUser] = useState<any | null>(null);
+
+    if (!user) {Auth.currentAuthenticatedUser().then(setUser);}
+
+
     const classes = useStyles();
     const { id: formDefinitionID } = useParams<Record<string, string>>();
     const query = useQuery();
@@ -71,7 +78,8 @@ const EditCatalog = () => {
             name,
             description,
             categories.length + 1,
-            formDefinitionID
+            formDefinitionID,
+            (user) ? user.attributes[ORGANIZATION_ID_ATTRIBUTE] : ""
         );
         setShowAddCategoryDialog(false);
         refresh();

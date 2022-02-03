@@ -24,6 +24,8 @@ import {
     updateUser,
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
+import { ADMIN_COGNITOGROUP_SUFFIX, GROUPLEADER_COGNITOGROUP_SUFFIX } from '../../constants';
+
 
 const getGroupMembers = async (
     groupID: string
@@ -102,8 +104,9 @@ const addUserToGroup = async (
             input: {
                 id,
                 groupID,
-                orgID,
-                orgGroups: [`${orgID}_groupLeader`, `${orgID}_admin`]
+                organizationID: orgID,
+                orgAdmins: `${orgID}${ADMIN_COGNITOGROUP_SUFFIX}`,
+                orgGroupLeaders: `${orgID}${GROUPLEADER_COGNITOGROUP_SUFFIX}`
             },
         });
         const user = userGQ?.data?.createUser as User;
@@ -151,12 +154,15 @@ const removeUserFromGroup = async (
     }
 };
 
-const addGroup = async (user: any): Promise<ApiResponse<Group>> => {
+const addGroup = async (user: any, orgID: any): Promise<ApiResponse<Group>> => {
     try {
         const groupsGQ = await callGraphQL<CreateGroupMutation>(createGroup, {
             input: {
                 id: uuidv4(),
                 groupLeaderUsername: user.Username,
+                organizationID: orgID,
+                orgGroupLeaders: `${orgID}${GROUPLEADER_COGNITOGROUP_SUFFIX}`,
+                orgAdmins: `${orgID}${ADMIN_COGNITOGROUP_SUFFIX}`,
             },
         });
         const group = groupsGQ?.data?.createGroup as Group;

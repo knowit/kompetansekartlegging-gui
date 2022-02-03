@@ -1,4 +1,6 @@
 import { API, Auth,  } from "aws-amplify";
+import { ADMIN_COGNITOGROUP_SUFFIX, GROUPLEADER_COGNITOGROUP_SUFFIX } from '../../constants';
+
 
 
 export interface Response<T> {
@@ -11,7 +13,7 @@ export interface Failure {
 
 export type ApiResponse<T> = Response<T> | Failure;
 
-const removeUserFromGroup = async (
+export const removeUserFromGroup = async (
     groupname: string,
     username: string
 ): Promise<ApiResponse<any>> => {
@@ -40,13 +42,13 @@ const removeUserFromGroup = async (
     }
 };
 
-const removeGroupLeader = async (user: any) =>
-    await removeUserFromGroup("groupLeader", user.Username);
-const removeAdmin = async (user: any) =>
-    await removeUserFromGroup("admin", user.Username);
+const removeGroupLeader = async (user: any, org: any) =>
+    await removeUserFromGroup(`${org}0groupLeader`, user.Username);
+const removeAdmin = async (user: any, org: any) =>
+    await removeUserFromGroup(`${org}0admin`, user.Username);
 
-const addUserToGroup = async (
-    groupname: string,
+export const addUserToGroup = async (
+    groupname: string,  
     username: string
 ): Promise<ApiResponse<any>> => {
     let apiName = "AdminQueries";
@@ -73,11 +75,6 @@ const addUserToGroup = async (
         };
     }
 };
-
-const addGroupLeader = async (user: any) =>
-    await addUserToGroup("groupLeader", user.Username);
-const addAdmin = async (user: any) =>
-    await addUserToGroup("admin", user.Username);
 
 const listUsersInGroup = async (
     groupname: string
@@ -107,7 +104,9 @@ const listUsersInGroup = async (
 };
 
 const listAllUsersInOrganization = async (organizationID: string) => await listUsersInGroup(organizationID);
+const listGroupLeadersInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}${GROUPLEADER_COGNITOGROUP_SUFFIX}`);
 const listGroupLeaders = async () => await listUsersInGroup("groupLeader");
+const listAdminsInOrganization = async (organizationID: string) => await listUsersInGroup(`${organizationID}${ADMIN_COGNITOGROUP_SUFFIX}`);
 const listAdmins = async () => await listUsersInGroup("admin");
 
 const listAllUsers = async (
@@ -142,22 +141,12 @@ const listAllUsers = async (
     return { result: allUsers };
 };
 
-const listGroupLeadersInOrganization = async (user: any, credentials: any) => {
-    const apiName = "FetchGroupLeaders";
-    try {
-        // TODO: Implement function call to Lambda function FetchGroupLeaders
-    } catch(error) {
-
-    }
-}
 
 export {
     listAllUsers,
     listAllUsersInOrganization,
     listGroupLeaders,
-    addGroupLeader,
-    removeGroupLeader,
+    listGroupLeadersInOrganization,
     listAdmins,
-    addAdmin,
-    removeAdmin,
+    listAdminsInOrganization,
 };

@@ -9,9 +9,25 @@ import { debounce, makeStyles } from "@material-ui/core";
 import { isMobile } from "react-device-detect";
 import FloatingScaleDescButton from "./components/FloatingScaleDescButton";
 import NavBarDesktop from "./components/NavBarDesktop";
-import { UserRole } from "./types";
 import theme from "./theme";
-import { getActiveOrganizationName } from "./helperFunctions";
+
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserInfo, setUserInfoLogOut, selectUserState, fetchOrganizationNameByID } from './redux/User';
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
+
+const userBranch = process.env.REACT_APP_USER_BRANCH;
+
+switch(userBranch) {
+    case "master":
+        awsconfig.oauth.domain = "auth.kompetanse.knowit.no";
+        break;
+    case "dev":
+        awsconfig.oauth.domain = "auth.dev.kompetanse.knowit.no";
+        break;
+    default:
+        break;
+}
 
 awsconfig.oauth.redirectSignIn = `${window.location.origin}/`;
 awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
@@ -23,6 +39,22 @@ Auth.configure(awsconfig);
 
 Hub.listen(/.*/, (data) => {
     console.log('Hub listening to all messages: ', data);
+    if (data.payload.event === "signIn_failure") {
+        let message = data.payload.data.message; 
+        if (message.includes("Google")) {
+            Auth.federatedSignIn({
+                customProvider:
+                    CognitoHostedUIIdentityProvider.Google,
+            });
+        } else if (message.includes("AzureAD")) {
+            // console.log("Failure in the membrane");
+            Auth.federatedSignIn({
+                customProvider:
+                    "AzureAD",
+            });
+        }
+        // Auth.federatedSignIn();
+    }
 });
 
 const appStyle = makeStyles({
@@ -38,25 +70,16 @@ const appStyle = makeStyles({
     },
 });
 
-const hasRole = (role: string) => (user: any): boolean => {
-    const groups: Array<string> =
-        user?.signInUserSession?.idToken?.payload["cognito:groups"];
-    return groups?.includes(role);
-};
-const isAdmin = hasRole("admin");
-const isGroupLeader = hasRole("groupLeader");
-const userToRoles = (user: any): UserRole[] => {
-    let roles = [UserRole.NormalUser];
-    if (isAdmin(user)) roles.push(UserRole.Admin);
-    if (isGroupLeader(user)) roles.push(UserRole.GroupLeader);
-    return roles;
+// Sometimes the cognito-object does not contain attributes. Not sure why
+const cognitoUserContainsAttributes = (data:any) : boolean => {
+    return 'attributes' in data;
 };
 
 const App = () => {
-    const style = appStyle();
+    const dispatch = useDispatch();
+    const userState = useSelector(selectUserState);
 
-    const [user, setUser] = useState<any | null>(null);
-    const [roles, setRoles] = useState<UserRole[]>([UserRole.NormalUser]);
+    const style = appStyle();
     const [showFab, setShowFab] = useState<boolean>(true);
     const [answerHistoryOpen, setAnswerHistoryOpen] = useState<boolean>(false);
     const [scaleDescOpen, setScaleDescOpen] = useState(false);
@@ -74,25 +97,33 @@ const App = () => {
 
     useEffect(() => {
         Hub.listen("auth", ({ payload: { event, data } }) => {
-            console.log('event listener', event, data);
+            console.log("Auth occured", event);
             switch (event) {
                 case "signIn":
-                    setUser({...data});
+                    if(cognitoUserContainsAttributes(data)){
+                        dispatch(setUserInfo(data));
+                        dispatch(fetchOrganizationNameByID(data));
+                    }
                     break;
                 case "signIn_failure":
-                    console.trace("Failed to sign in");
+                    console.trace("Failed to sign in", event, data);
                     break;
                 case "signOut":
-                    setUser(null);
+                    dispatch(setUserInfoLogOut());
                     break;
             }
         });
         Auth.currentAuthenticatedUser()
             .then((res) => {
-                console.log(res);
-                setUser(res);
+                if(cognitoUserContainsAttributes(res)){
+                    dispatch(setUserInfo(res));
+                    dispatch(fetchOrganizationNameByID(res));
+                }
             })
-            .catch(() => console.log("Not signed in"));
+            .catch(() => {
+                console.log("Not signed in");
+                dispatch(setUserInfoLogOut());
+            });
     }, []);
 
     useEffect(() => {
@@ -105,31 +136,6 @@ const App = () => {
             }
         }
     }, [scaleDescOpen]);
-
-    // used to reference items in desktop navbar
-    const [userName, setUserName] = useState<string>("");
-    const [userPicture, setUserPicture] = useState<string>("");
-    const [organizationName, setOrganizationName] = useState<any>("");
-
-    useEffect(() => {
-
-        console.log('userEffect user', user);
-
-        if (user) {
-            if (
-                typeof user != "undefined" &&
-                user.hasOwnProperty("attributes")
-            ) {
-                setRoles(userToRoles(user));
-                let attributes = user.attributes;
-                setUserName(attributes.name);
-                setUserPicture(attributes.picture);
-                getActiveOrganizationName()
-                    .then(setOrganizationName)
-                    .catch((e) => console.log(e));
-            }
-        }
-    }, [user]);
 
     const signout = () => {
         Auth.signOut();
@@ -177,27 +183,20 @@ const App = () => {
     return (
         <ThemeProvider theme={theme}>
             <div className={style.root}>
-                {user ? (
+                {userState.isSignedIn ? (
                     <Fragment>
                         {isMobile ? null : (
                             <NavBarDesktop
                                 displayAnswers={displayAnswers}
                                 signout={signout}
-                                userName={userName}
-                                organizationName={organizationName}
-                                userPicture={userPicture}
                             />
                         )}
 
                         <Content
-                            user={user}
                             setAnswerHistoryOpen={setAnswerHistoryOpen}
                             answerHistoryOpen={answerHistoryOpen}
                             isMobile={isMobile}
                             signout={signout}
-                            userName={userName}
-                            organizationName={organizationName}
-                            userPicture={userPicture}
                             collapseMobileCategories={collapseMobileCategories}
                             categoryNavRef={categoryNavRef}
                             mobileNavRef={mobileNavRef}
@@ -207,7 +206,6 @@ const App = () => {
                             }
                             setScaleDescOpen={setScaleDescOpen}
                             setFirstTimeLogin={setFirstTimeLogin}
-                            roles={roles}
                             setShowFab={setShowFab}
                         />
                         {showFab && (

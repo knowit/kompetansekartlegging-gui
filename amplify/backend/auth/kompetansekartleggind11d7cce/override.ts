@@ -2,13 +2,19 @@ import { AmplifyAuthCognitoStackTemplate } from '@aws-amplify/cli-extensibility-
 
 export function override(resources: AmplifyAuthCognitoStackTemplate) {
     
-    const customAttribute = {
+    const organizationID = {
         "attributeDataType" : 'String',
         "developerOnlyAttribute" : false,
         "mutable" : true,
         "name" : 'OrganizationID',
         "required" : false
     };
-     
-    resources.userPool.schema = [customAttribute];
+    const company = {
+        "attributeDataType" : 'String',
+        "developerOnlyAttribute" : false,
+        "mutable" : true,
+        "name" : 'company',
+        "required" : false
+    };
+    resources.userPool.schema = [organizationID, company];
 }
