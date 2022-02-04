@@ -23,7 +23,7 @@ destination_graphql_api_id = parameters['destination_graphql_api_id']
 destination_env = parameters['destination_env']
 
 
-tablenames = ["User", "UserForm", "Category", "FormDefinition", "Group", "Question", "QuestionAnswer", "Organization"]
+tablenames = ["User", "UserForm", "Category", "FormDefinition", "Group", "Question", "QuestionAnswer", "Organization", "APIKeyPermission"]
 
 source_client_session = boto3.Session(profile_name=source_iam_user)
 destination_client_session = boto3.Session(profile_name=destination_iam_user)
