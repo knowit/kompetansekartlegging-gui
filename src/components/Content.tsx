@@ -320,7 +320,7 @@ const Content = ({ ...props }: ContentProps) => {
     }, [questionAnswers]);
 
     useEffect(() => {
-        console.log('fetchLastFormDefitniio');
+        // console.log('fetchLastFormDefitniio');
         fetchLastFormDefinition(
             setFormDefinition,
             (formDef) => createQuestionAnswers(formDef, setCategories),

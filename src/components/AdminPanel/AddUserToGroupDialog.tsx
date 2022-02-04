@@ -86,7 +86,7 @@ const AddUserToGroupDialog = ({
                 </Box>
                 <TextField
                     fullWidth
-                    placeholder="Søk etter ansatt i Knowit Objectnet"
+                    placeholder={`Søk etter ansatt i ${userState.organizationName}`}
                     variant="outlined"
                     value={nameFilter}
                     className={style.searchField}

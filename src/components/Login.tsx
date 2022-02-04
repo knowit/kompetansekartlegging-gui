@@ -167,7 +167,7 @@ const Login = (props: { isMobile: boolean }) => {
                             })
                         }
                     >
-                        Logg inn (Google)
+                        Logg inn (Knowit Objectnet)
                     </Button>
                     <Button
                         className={style.loginButton}
@@ -178,7 +178,7 @@ const Login = (props: { isMobile: boolean }) => {
                             })
                         }
                     >
-                        Logg inn (Microsoft)
+                        Logg inn (Andre Knowit Selskaper)
                     </Button>
                     {isNotProd && (
                         <Button

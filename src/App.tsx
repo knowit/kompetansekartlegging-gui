@@ -17,6 +17,7 @@ import { setUserInfo, setUserInfoLogOut, selectUserState, fetchOrganizationNameB
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 
 const userBranch = process.env.REACT_APP_USER_BRANCH;
+// console.log("Hosted branch: ", userBranch);
 
 switch(userBranch) {
     case "master":

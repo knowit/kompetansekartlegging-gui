@@ -26,6 +26,8 @@ import PictureAndNameCell from "./PictureAndNameCell";
 import { dialogStyles } from "../../styles";
 import { CloseIcon } from "../DescriptionTable";
 import { not, getAttribute } from "./helpers";
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUserState } from "../../redux/User";
 
 const getNameOrUsername = (user: any) => {
     const name = getAttribute(user, "name");
@@ -40,6 +42,8 @@ const AddMemberToGroupDialog = ({
     members,
 }: any) => {
     const style = dialogStyles();
+    const userState = useSelector(selectUserState);
+
 
     const [showOnlyUnset, setShowOnlyUnset] = useState<boolean>(true);
     const [nameFilter, setNameFilter] = useState<string>("");
@@ -104,7 +108,7 @@ const AddMemberToGroupDialog = ({
                 <FormGroup row>
                     <TextField
                         fullWidth
-                        placeholder="Søk etter ansatt i Knowit Objectnet"
+                        placeholder={`Søk etter ansatt i ${userState.organizationName}`}
                         variant="outlined"
                         value={nameFilter}
                         className={style.searchField}
