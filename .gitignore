@@ -74,6 +74,7 @@ ignoreFolder
 scripts/parameters.json
 scripts/saml_params.json
 scripts/ui_params.json
+scripts/__pycache__
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
