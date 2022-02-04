@@ -8,14 +8,14 @@ import json
 with open('parameters.json') as parameters_file:
     parameters = json.load(parameters_file)
 
-parameter_keys = ['source_iam_user', 'destination_iam_user', 'destination_graphql_api_id', 'destination_env']
+parameter_keys = ['source_iam_user', 'source_graphql_api_id', 'source_env', 'destination_iam_user', 'destination_graphql_api_id', 'destination_env']
 
 if not all(key in parameters for key in parameter_keys):
     print(f"parameters.json must contain the following keys: f{parameter_keys}")
     exit()
 
-source_graphql_api_id = '3hic5nngffevtfafcd62sdoece'
-source_env = 'dev'
+source_graphql_api_id = parameters['source_graphql_api_id']
+source_env = parameters['source_env']
 source_iam_user = parameters['source_iam_user']
 
 destination_iam_user = parameters['destination_iam_user']
@@ -23,7 +23,7 @@ destination_graphql_api_id = parameters['destination_graphql_api_id']
 destination_env = parameters['destination_env']
 
 
-tablenames = ["User", "UserForm", "Category", "FormDefinition", "Group", "Question", "QuestionAnswer"]
+tablenames = ["User", "UserForm", "Category", "FormDefinition", "Group", "Question", "QuestionAnswer", "Organization"]
 
 source_client_session = boto3.Session(profile_name=source_iam_user)
 destination_client_session = boto3.Session(profile_name=destination_iam_user)
