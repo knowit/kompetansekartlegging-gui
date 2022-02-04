@@ -112,10 +112,6 @@ const loginStyle = makeStyles({
 });
 
 const userBranch = process.env.REACT_APP_USER_BRANCH;
-
-console.log('eeevvvnnn:', process.env.REACT_APP_BUILD_ENV);
-
-
 const isNotProd = userBranch !== "master";
 const Login = (props: { isMobile: boolean }) => {
     // console.log("/tree/", userBranch, isNotProd);

@@ -164,7 +164,6 @@ export const getOrganizationNameByID = (organizationID : string) => new Promise<
         }
 
     } catch(e) {
-        console.log('getorganizationnamebyid error:', e);
         reject('no org found');
     }
 });
