@@ -126,7 +126,7 @@ exports.handler = async (event, context, callback) => {
       const splitUserName = event.userName.split('_');
       const providerName = splitUserName[0];
       let providerUserId = splitUserName.slice(1).join("_");
-      await linkProviderToUser(userRs.Users[0].Username, event.userPoolId, providerName, providerUserId)
+      await linkProviderToUser(event.request.userAttributes.email, event.userPoolId, providerName, providerUserId)
     } else {
       attributes = [];
       Object.keys(event.request.userAttributes).forEach(key => {
@@ -139,11 +139,14 @@ exports.handler = async (event, context, callback) => {
         const splitUserName = event.userName.split('_');
         const providerName = splitUserName[0];
         let providerUserId = splitUserName.slice(1).join("_");
-        
+        let organizationID = "";
         let orgIdentifier = providerName;
         if (event.request.userAttributes["custom:company"]) orgIdentifier = event.request.userAttributes["custom:company"]; 
-        const organizationID = await getOrganizationID(orgIdentifier);
-
+        try {
+          organizationID = await getOrganizationID(orgIdentifier);
+        } catch (err) {
+          throw `Could not find a valid organization for ${orgIdentifier}`;
+        }
         console.log("Creating new Cognito User Pool user", attributes)
         console.log(await new Promise((resolve, reject) => {
           cognitoIdp.adminCreateUser({
