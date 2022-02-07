@@ -31,6 +31,7 @@ def migrate_user(user):
     userAttributes = [item for item in user['Attributes'] if item['Name'] != 'sub' and item['Name'] != 'identities']
     email = [item for item in user['Attributes'] if item['Name'] == 'email'][0]['Value']
     userAttributes.append({"Name": "custom:OrganizationID", "Value": "knowitobjectnet"})
+    # if email == userName:
     try:
         destination_cognito_client.admin_create_user(
             UserPoolId=destUserPoolId,
@@ -52,19 +53,19 @@ def migrate_user(user):
             GroupName="knowitobjectnet"
         )
 
-        if isGroupLeader:
+        for group in userGroups["Groups"]:
             destination_cognito_client.admin_add_user_to_group(
                 UserPoolId=destUserPoolId,
                 Username=email,
-                GroupName="knowitobjectnet0groupLeader"
+                GroupName=group["GroupName"]
             )
             
-        if isAdmin:
-            destination_cognito_client.admin_add_user_to_group(
-                UserPoolId=destUserPoolId,
-                Username=email,
-                GroupName="knowitobjectnet0admin"
-            )
+        # if isAdmin:
+        #     destination_cognito_client.admin_add_user_to_group(
+        #         UserPoolId=destUserPoolId,
+        #         Username=email,
+        #         GroupName="knowitobjectnet0admin"
+        #     )
     except:
         print("Error when creating user")
     return userName, email
@@ -103,6 +104,7 @@ while next_token:
     if "PaginationToken" in response.keys():
         next_token = response["PaginationToken"]
 
+# exit()
 tables = [
     {
         "name": "User",
