@@ -81,7 +81,7 @@ const listUsersInGroup = async (
 ): Promise<ApiResponse<any[]>> => {
     let apiName = "AdminQueries";
     let path = "/listUsersInGroup";
-    let myInit = {
+    let myInit: any = {
         queryStringParameters: {
             groupname,
         },
@@ -94,7 +94,22 @@ const listUsersInGroup = async (
     };
 
     try {
-        const { Users } = await API.get(apiName, path, myInit);
+        let response = await API.get(apiName, path, myInit);
+        console.log(response);
+        const Users: any[] = [];
+        let nextToken = (response.NextToken) ? response.NextToken : null;
+        Users.push(...response.Users);
+        while (nextToken) {
+            myInit.queryStringParameters["token"] = nextToken;
+            response = await API.get(apiName, path, myInit);
+            Users.push(...response.Users);
+            if (response.NextToken && response.NextToken != nextToken) {
+                nextToken = response.NextToken;
+            } else {
+                nextToken = null
+            }
+        // nextToken = () ? response.NextToken : null;
+        }
         return { result: Users };
     } catch (e) {
         return {
