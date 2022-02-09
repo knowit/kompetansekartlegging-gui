@@ -176,8 +176,8 @@ const getUserAnswers = async (
     } while (nextToken);
 
     if (
-        paginatedUserform &&
-        paginatedUserform.formDefinitionID === formDef?.id
+        paginatedUserform
+        // && paginatedUserform.formDefinitionID === formDef?.id
     ) {
         // console.log("Found user form!", paginatedUserform);
         const removedQuestionsFiltered = questionAnswers.filter(
@@ -210,6 +210,7 @@ const setFirstAnswers = (
         React.SetStateAction<Map<string, QuestionAnswer[]>>
     >
 ) => {
+    // console.log(quAns, newUserAnswers);
     let newMap = new Map<string, QuestionAnswer[]>();
     quAns.forEach((quAns, category) => {
         newMap.set(
@@ -240,6 +241,7 @@ const setFirstAnswers = (
             })
         );
     });
+    // console.log(quAns, newMap);
     setQuestionAnswers(newMap);
     setAnswersBeforeSubmitted(new Map(newMap));
 };
