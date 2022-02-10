@@ -5,7 +5,7 @@ import awsconfig from "./aws-exports";
 import Content from "./components/Content";
 import Login from "./components/Login";
 import { ThemeProvider } from "@material-ui/core/styles";
-import { debounce, makeStyles } from "@material-ui/core";
+import { Button, debounce, makeStyles, Snackbar } from "@material-ui/core";
 import { isMobile } from "react-device-detect";
 import FloatingScaleDescButton from "./components/FloatingScaleDescButton";
 import NavBarDesktop from "./components/NavBarDesktop";
@@ -180,10 +180,21 @@ const App = () => {
             setCollapseMobileCategories(true);
         }
     };
+    const [bannerOpen, setBannerOpen] = useState(true);
 
     return (
         <ThemeProvider theme={theme}>
             <div className={style.root}>
+                 {(userBranch !== "master") ? <Snackbar open={bannerOpen} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
+                    <div style= {{
+                        background:"rgba(255,127,80, 255)",
+                        borderRadius:5,
+                        padding: 4,
+                        textAlign:"center"
+                    }}>
+                    NB: Dette er et test miljø!  <Button onClick={() => setBannerOpen(false)}>Close</Button>
+                    </div>
+                </Snackbar> : null}
                 {userState.isSignedIn ? (
                     <Fragment>
                         {isMobile ? null : (
