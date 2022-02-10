@@ -79,12 +79,12 @@ tables = [
     },
     {
         "name": "Category",
-        "ownerAttribute": ["orgAdmins", "organizationID"],
+        "ownerAttribute": [],
         "orgitems": ["orgAdmins", "organizationID"]
     },
     {
         "name": "FormDefinition",
-        "ownerAttribute": ["orgAdmins", "organizationID"],
+        "ownerAttribute": [],
         "orgitems": ["orgAdmins", "organizationID"]
     },
     {
@@ -94,7 +94,7 @@ tables = [
     },
     {
         "name": "Question",
-        "ownerAttribute": ["orgAdmins", "organizationID"],
+        "ownerAttribute": [],
         "orgitems": ["orgAdmins", "organizationID"]
     },
     {
@@ -104,8 +104,8 @@ tables = [
     }
 ]
 
-count = 0
-
+# count = 0
+benchmark = datetime.datetime.now()
 for table in tables:
     dynamopaginator = source_dynamo_client.get_paginator('scan')
     source_tabname = table['name'] + '-' + source_graphql_api_id + '-' + source_env
@@ -116,19 +116,31 @@ for table in tables:
         ReturnConsumedCapacity = 'NONE',
         ConsistentRead = True
     )
+    bulkWrite = {}
+    bulkWrite[destination_tabname] = []
     for page in dynamoresponse:
         for item in page['Items']:
             itemUpdatedAt = item['updatedAt']['S']
             itemCreatedAt = item['createdAt']['S']
             dateUpdatedAt = parser.parse(itemUpdatedAt)
             dateCreatedAt = parser.parse(itemCreatedAt)
-            if (dateUpdatedAt > datefilter or dateCreatedAt > datefilter):
-                for attribute in table['ownerAttribute']:
-                    if (item[attribute]['S'] in username_to_email.keys()):
-                        item[attribute] = {'S': username_to_email[item[attribute]['S']]}
-                for tableItem in table["orgitems"]:
-                    item[tableItem] = { "S": orgItems[tableItem] }
-                count += 1
+            # if (dateUpdatedAt > datefilter or dateCreatedAt > datefilter):
+            for attribute in table['ownerAttribute']:
+                if (item[attribute]['S'] in username_to_email.keys()):
+                    item[attribute] = {'S': username_to_email[item[attribute]['S']]}
+            for tableItem in table["orgitems"]:
+                item[tableItem] = { "S": orgItems[tableItem] }
+            bulkWrite[destination_tabname].append({
+                'PutRequest': {
+                    'Item': item
+                }
+            })
+            if len(bulkWrite[destination_tabname]) == 25:
+                response = destination_dynamo_client.batch_write_item(RequestItems=bulkWrite)
+                if "UnprocessedItems" in response.keys() and len(response["UnprocessedItems"]) > 0:
+                    response = destination_dynamo_client.batch_write_item(RequestItems=response["UnprocessedItems"])
+                bulkWrite[destination_tabname] = []
+            # count += 1
                 # destination_dynamo_client.put_item(
                 #     TableName = destination_tabname,
                 #     Item = item
@@ -137,4 +149,11 @@ for table in tables:
             #     TableName = destination_tabname,
             #     Item = item
             # )
-print(f"Number of updated items: {count}")
+    if len(bulkWrite[destination_tabname]) > 0: # There might be some items left to write at the end :)
+        response = destination_dynamo_client.batch_write_item(RequestItems=bulkWrite)
+        if "UnprocessedItems" in response.keys() and len(response["UnprocessedItems"]) > 0:
+            response = destination_dynamo_client.batch_write_item(RequestItems=response["UnprocessedItems"])
+        bulkWrite[destination_tabname] = []
+    
+    print(f"Finished migrating table {table['name']}")
+print(f"Finished migrating database. Finished in: {datetime.datetime.now() - benchmark}")
