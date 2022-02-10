@@ -22,6 +22,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { KnowitColors } from "../styles";
 import { NavBarPropsDesktop } from "../types";
 import { ReactComponent as KnowitLogo } from "../Logotype-Knowit-Digital-white 1.svg";
+import { useSelector } from "react-redux";
+import { selectUserState } from "../redux/User";
+
 
 const navbarStyles = makeStyles((theme) => ({
     root: {
@@ -73,6 +76,8 @@ const navbarStyles = makeStyles((theme) => ({
 }));
 
 const NavBarDesktop = ({ ...props }: NavBarPropsDesktop) => {
+    const userState = useSelector(selectUserState);
+
     const [avatarMenuOpen, setAvatarMenuOpen] = useState<boolean>(false);
     // return focus to the button when we transitioned from !avatarMenuOpen -> avatarMenuOpen
     const avatarMenuPrevOpen = React.useRef(avatarMenuOpen);
@@ -154,7 +159,7 @@ const NavBarDesktop = ({ ...props }: NavBarPropsDesktop) => {
                     <div className={style.logo}>
                         <KnowitLogo />
                     </div>
-                    <h1 className={style.title}>Kompetansekartlegging</h1>
+                    <h1 className={style.title}>Kompetansekartlegging for {userState.organizationName}</h1>
 
                     {/* <Button variant="contained" className={classes.logoutButton} onClick={() => Auth.signOut()}>Sign out</Button>  */}
                     <div className={style.dropdownMenuButton}>
@@ -168,11 +173,11 @@ const NavBarDesktop = ({ ...props }: NavBarPropsDesktop) => {
                             aria-label="Toggle dropdownmenu"
                         >
                             <div className={style.userName}>
-                                {props.userName}
+                                {userState.name}
                             </div>
                             <Avatar
                                 className={style.userPicture}
-                                src={props.userPicture}
+                                src={userState.picture}
                                 alt="Profile Picture"
                             />
                         </Button>

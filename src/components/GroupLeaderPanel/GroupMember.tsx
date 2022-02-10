@@ -43,7 +43,7 @@ const GroupMember = ({ members, userId, isMobile = false }: any) => {
                     (formDef) =>
                         getUserAnswers(
                             formDef,
-                            member,
+                            member.username || member.Username,
                             setUserAnswers,
                             voidFn,
                             setUserAnswersLoaded,
@@ -61,7 +61,7 @@ const GroupMember = ({ members, userId, isMobile = false }: any) => {
                         )
                 );
             } catch (e) {
-                setError(e.toString());
+                setError(typeof e == 'string' ? e.toString() : 'undefined');
             }
             setLoading(false);
         };

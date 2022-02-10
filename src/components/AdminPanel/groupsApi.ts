@@ -24,6 +24,8 @@ import {
     updateUser,
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
+import { ADMIN_COGNITOGROUP_SUFFIX, GROUPLEADER_COGNITOGROUP_SUFFIX } from '../../constants';
+
 
 const getGroupMembers = async (
     groupID: string
@@ -86,6 +88,7 @@ const listAllUsers = async (): Promise<ApiResponse<User[]>> => {
             allUsers = [...allUsers, ...(users || [])];
         } while (nextToken);
     } catch (e) {
+        console.error(e);
         return { error: `Could not get a list of all users.` };
     }
     return { result: allUsers };
@@ -93,13 +96,17 @@ const listAllUsers = async (): Promise<ApiResponse<User[]>> => {
 
 const addUserToGroup = async (
     id: string,
-    groupID: string
+    groupID: string,
+    orgID: string
 ): Promise<ApiResponse<User>> => {
     try {
         const userGQ = await callGraphQL<CreateUserMutation>(createUser, {
             input: {
                 id,
                 groupID,
+                organizationID: orgID,
+                orgAdmins: `${orgID}${ADMIN_COGNITOGROUP_SUFFIX}`,
+                orgGroupLeaders: `${orgID}${GROUPLEADER_COGNITOGROUP_SUFFIX}`
             },
         });
         const user = userGQ?.data?.createUser as User;
@@ -147,12 +154,15 @@ const removeUserFromGroup = async (
     }
 };
 
-const addGroup = async (user: any): Promise<ApiResponse<Group>> => {
+const addGroup = async (user: any, orgID: any): Promise<ApiResponse<Group>> => {
     try {
         const groupsGQ = await callGraphQL<CreateGroupMutation>(createGroup, {
             input: {
                 id: uuidv4(),
                 groupLeaderUsername: user.Username,
+                organizationID: orgID,
+                orgGroupLeaders: `${orgID}${GROUPLEADER_COGNITOGROUP_SUFFIX}`,
+                orgAdmins: `${orgID}${ADMIN_COGNITOGROUP_SUFFIX}`,
             },
         });
         const group = groupsGQ?.data?.createGroup as Group;

@@ -19,6 +19,22 @@ const CATEGORY_TABLE_NAME =
 const FORM_DEFINITION_TABLE_NAME =
     process.env.API_KOMPETANSEKARTLEGGIN_FORMDEFINITIONTABLE_NAME;
 const USER_POOL_ID = process.env.AUTH_KOMPETANSEKARTLEGGIND11D7CCE_USERPOOLID;
+const APIKEYPERMISSION_TABLE_NAME = process.env.API_KOMPETANSEKARTLEGGIN_APIKEYPERMISSIONTABLE_NAME;
+
+const organizationFilterParameter = ':oid';
+const organizationFilterExpression = 'organizationID = ' + organizationFilterParameter;
+
+
+const getOrganizationIDFromAPIKeyHashed = async (APIKeyHashed) => {
+    let organizationIDItem = await docClient.query({
+        TableName: APIKEYPERMISSION_TABLE_NAME,
+        IndexName: "byAPIKeyHashed",
+        KeyConditionExpression: "APIKeyHashed = :apikh",
+        ExpressionAttributeValues: { ":apikh": APIKeyHashed}
+    }).promise();
+    return organizationIDItem.Items[0]['organizationID'];
+};
+
 
 // Get answers for a user form.
 const getAnswersForUserForm = async (userFormID) => {
@@ -129,7 +145,7 @@ const getAllQuestionForCategory = async (categoryID) => {
 };
 
 // Finds all categories.
-const getAllCategories = async () => {
+const getAllCategories = async (organization_ID) => {
     return await docClient
         .scan({
             TableName: CATEGORY_TABLE_NAME,
@@ -137,6 +153,8 @@ const getAllCategories = async () => {
             ExpressionAttributeNames: {
                 "#text": "text",
             },
+            FilterExpression: organizationFilterExpression,
+            ExpressionAttributeValues: {[organizationFilterParameter]: organization_ID}
         })
         .promise();
 };
@@ -161,8 +179,9 @@ const getAllCategoriesForFormDef = async (formDefID) => {
         .promise();
 };
 
-// Find all users.
-const getAllUsers = async () => {
+// With the current arcitecture, users have to be filtered after fetching everyone from
+// cognito, because custom-attributes are not searchable
+const getAllUsers = async (organization_ID) => {
     let allUsers = [];
     let PaginationToken = null;
 
@@ -170,42 +189,70 @@ const getAllUsers = async () => {
         const res = await cognito
             .listUsers({
                 UserPoolId: USER_POOL_ID,
-                AttributesToGet: [
-                    // "name",
-                    "email",
-                ],
-                PaginationToken,
+                Filter:'cognito:user_status=\"CONFIRMED\"',
+                PaginationToken
             })
-            .promise();
+            .promise().catch((err) => {
+                console.log('err:',err);
+            });
         allUsers = [...allUsers, ...res.Users];
         PaginationToken = res.PaginationToken;
     } while (PaginationToken);
 
-    return allUsers;
+
+    filteredUsers = allUsers.filter((user) => {
+
+        const organizationAttribute = user['Attributes'].filter((attribute) => (
+            attribute['Name'] === 'custom:OrganizationID'))[0]
+
+        return organizationAttribute['Value'] === organization_ID
+    });
+
+    filteredUsersWithoutOrganizationID = filteredUsers.map((user) => {
+        return {
+            ...user,
+            Attributes: (
+                user['Attributes'].filter((attribute) => (
+                    attribute['Name'] === 'email'
+                ))
+            )
+        }
+    });
+
+    return filteredUsersWithoutOrganizationID;
 };
 
 // Find all form definitions.
-const getAllFormDefs = async () => {
+const getAllFormDefs = async (organization_ID) => {
+
     return await docClient
         .scan({
             TableName: FORM_DEFINITION_TABLE_NAME,
+            FilterExpression: organizationFilterExpression,
+            ExpressionAttributeValues: {[organizationFilterParameter]: organization_ID}
         })
         .promise();
 };
 
 // Get the newest form definition.
-const getNewestFormDef = async () => {
+const getNewestFormDef = async (organization_ID) => {
+
+    const form_query = {
+        TableName: FORM_DEFINITION_TABLE_NAME,
+        IndexName: "byOrganizationByCreatedAt",
+        KeyConditionExpression: `${organizationFilterExpression}`,
+        ExpressionAttributeValues: {
+            [organizationFilterParameter]: organization_ID
+        },
+        Limit: 1,
+        ScanIndexForward: false, // desc
+
+    }
+
+    console.log(form_query);
+
     const formDefs = await docClient
-        .query({
-            TableName: FORM_DEFINITION_TABLE_NAME,
-            IndexName: "byCreatedAt",
-            KeyConditionExpression: "sortKeyConstant = :v",
-            ExpressionAttributeValues: {
-                ":v": "formDefinitionConstant",
-            },
-            Limit: 1,
-            ScanIndexForward: false, // desc
-        })
+        .query(form_query)
         .promise();
     return formDefs.Items.length === 0 ? null : formDefs.Items[0];
 };
@@ -220,4 +267,5 @@ module.exports = {
     getAnswersForUser,
     getAllCategoriesForFormDef,
     getAllQuestionForCategory,
+    getOrganizationIDFromAPIKeyHashed
 };

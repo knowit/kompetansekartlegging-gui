@@ -24,7 +24,9 @@ import DeleteGroupDialog from "./DeleteGroupDialog";
 import useApiGet from "./useApiGet";
 import {
     listAllUsers as listAllAvailableUsers,
-    listGroupLeaders,
+    listAllUsersInOrganization as listAllAvailableUsersInOrganization,
+    // listGroupLeaders,
+    listGroupLeadersInOrganization
 } from "./adminApi";
 import {
     listAllGroups,
@@ -43,6 +45,9 @@ import AddUserToGroupDialog from "./AddUserToGroupDialog";
 import Button from "../mui/Button";
 import Table from "../mui/Table";
 import TableRow from "../mui/TableRow";
+import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
+import {useSelector} from 'react-redux';
+import { selectUserState } from "../../redux/User";
 
 const useRowStyles = makeStyles({
     root: {
@@ -215,6 +220,9 @@ const GroupsTable = ({
 };
 
 const EditGroups = () => {
+
+    const userState = useSelector(selectUserState);
+
     const {
         result: users,
         error,
@@ -229,7 +237,8 @@ const EditGroups = () => {
         loading: allAvailableUsersLoading,
         // refresh: refreshAllAvailableUsers,
     } = useApiGet({
-        getFn: listAllAvailableUsers,
+        getFn: listAllAvailableUsersInOrganization,
+        params: userState.organizationID,
     });
     const {
         result: groupLeaders,
@@ -237,7 +246,8 @@ const EditGroups = () => {
         loading: groupLeadersLoading,
         refresh: refreshGroupLeaders,
     } = useApiGet({
-        getFn: listGroupLeaders,
+        getFn: listGroupLeadersInOrganization,
+        params: userState.organizationID
     });
     const {
         result: groups,
@@ -256,8 +266,8 @@ const EditGroups = () => {
         setShowDeleteUserFromGroupDialog,
     ] = useState<boolean>(false);
 
-    const deleteMember = (user: any, group: any) => {
-        setMemberToDelete({ user, group });
+    const deleteMember = (member: any, group: any) => {
+        setMemberToDelete({ user: member, group });
         setShowDeleteUserFromGroupDialog(true);
     };
     const deleteMemberConfirm = async () => {
@@ -281,8 +291,8 @@ const EditGroups = () => {
     };
     const clearSelectedGroup = () => setGroupToDelete(null);
     const hideShowAddGroup = () => setShowAddGroup(false);
-    const addGroupConfirm = async (user: any) => {
-        await addGroup(user);
+    const addGroupConfirm = async (groupLeaderUser: any) => {
+        await addGroup(groupLeaderUser, userState.organizationID);
         setShowAddGroup(false);
         refreshGroups();
     };
@@ -302,7 +312,7 @@ const EditGroups = () => {
                 if (userHasGroup) {
                     return updateUserGroup(u.Username, groupId);
                 } else {
-                    return addUserToGroup(u.Username, groupId);
+                    return addUserToGroup(u.Username, groupId, userState.organizationID);
                 }
             })
         );

@@ -1,7 +1,9 @@
-import { API, graphqlOperation } from "aws-amplify";
+import { API, Auth, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api";
 import { UserFormList, UserFormWithAnswers } from "./types";
 import * as customQueries from "./graphql/custom-queries";
+import { GetOrganizationQuery } from './API';
+import { getOrganization } from "./graphql/queries";
 
 /*
     Used to call graphql queries and mutations.
@@ -71,7 +73,7 @@ const splitArray = <T>(array: T[]): T[][] => {
 */
 export const callBatchGraphQL = async <T>(
     query: any,
-    variables: { input: any[] },
+    variables: { input: any[], organizationID: String },
     table: string
 ): Promise<GraphQLResult<T>[]> => {
     if (variables.input.length === 0) {
@@ -84,7 +86,7 @@ export const callBatchGraphQL = async <T>(
     for (const element of split) {
         returnValue.push(
             (await API.graphql(
-                graphqlOperation(query, { input: element })
+                graphqlOperation(query, { input: element, organizationID: variables.organizationID })
             )) as GraphQLResult<T>
         );
     }
@@ -145,3 +147,23 @@ export const Millisecs = {
     THREEDAYS: 259200000,
     THREEMONTHS: 7889400000,
 };
+
+export const getOrganizationNameByID = (organizationID : string) => new Promise<string>(async (resolve, reject) => {
+    try{
+
+        const res = await callGraphQL<GetOrganizationQuery>(getOrganization, {
+            id: organizationID
+        });
+
+        const organizationName = res.data?.getOrganization?.orgname;
+
+        if (typeof organizationName === 'string'){
+            resolve(organizationName);
+        }else{
+            reject('no org found');
+        }
+
+    } catch(e) {
+        reject('no org found');
+    }
+});

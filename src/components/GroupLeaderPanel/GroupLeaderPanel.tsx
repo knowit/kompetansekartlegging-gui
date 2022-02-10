@@ -4,6 +4,7 @@ import style from "./GroupLeaderPanel.module.css";
 import { Group } from "../../API";
 import useApiGet from "../AdminPanel/useApiGet";
 import {
+    listAllUsersInOrganization as listAllAvailableUsersInOrganization,
     listAllUsers as listAllAvailableUsers,
     listGroupLeaders,
 } from "../AdminPanel/adminApi";
@@ -17,14 +18,19 @@ import {
 
 import Main from "./Main";
 import GroupMember from "./GroupMember";
+import {ORGANIZATION_ID_ATTRIBUTE} from "../../constants";
+import {useSelector} from 'react-redux';
+import {selectGroupLeaderCognitoGroupName, selectUserState} from '../../redux/User';
 
 const GroupLeaderPanel = ({
     members,
     setMembers,
     activeSubmenuItem,
-    setActiveSubmenuItem,
-    user,
+    setActiveSubmenuItem
 }: any) => {
+
+    const userState = useSelector(selectUserState);
+
     const {
         result: groups,
         error: groupsError,
@@ -52,11 +58,12 @@ const GroupLeaderPanel = ({
         error: allAvailableUsersError,
         loading: allAvailableUsersLoading,
     } = useApiGet({
-        getFn: listAllAvailableUsers,
+        getFn: listAllAvailableUsersInOrganization,
+        params: userState.organizationID
     });
 
     const group = groups?.find(
-        (g: Group) => g.groupLeaderUsername === user.username
+        (g: Group) => g.groupLeaderUsername === userState.userName
     );
     const groupId = group?.id;
     const [
@@ -86,7 +93,7 @@ const GroupLeaderPanel = ({
                 if (userHasGroup) {
                     return updateUserGroup(u.Username, groupId);
                 } else {
-                    return addUserToGroup(u.Username, groupId);
+                    return addUserToGroup(u.Username, groupId, userState.organizationID);
                 }
             })
         );

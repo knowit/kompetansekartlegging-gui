@@ -16,6 +16,8 @@ import { not, getAttribute } from "./helpers";
 import useApiGet from "./useApiGet";
 import UsersTable from "./UsersTable";
 import { CloseIcon } from "../DescriptionTable";
+import {useSelector} from 'react-redux';
+import {selectUserState } from '../../redux/User';
 
 const AddUserToGroupDialog = ({
     onCancel,
@@ -29,10 +31,12 @@ const AddUserToGroupDialog = ({
     confirmButtonText,
 }: any) => {
     const style = dialogStyles();
+    const userState = useSelector(selectUserState);
 
     const { result: users, error, loading } = useApiGet({
         getFn: userGetFn,
         constantResult: usersConstant,
+        params: userState.isSignedIn ? userState.organizationID : null,
     });
     const [selectedUser, setSelectedUser] = useState<any>();
     const onSelect = (user: any) => {
@@ -82,7 +86,7 @@ const AddUserToGroupDialog = ({
                 </Box>
                 <TextField
                     fullWidth
-                    placeholder="Søk etter ansatt i Knowit Objectnet"
+                    placeholder={`Søk etter ansatt i ${userState.organizationName}`}
                     variant="outlined"
                     value={nameFilter}
                     className={style.searchField}

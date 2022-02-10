@@ -1,15 +1,65 @@
+type APIKeyPermission
+
+    @model
+    @auth(
+        rules:[
+            { allow: groups, groups:["admin"]}
+        ]
+    )
+    @key(
+        name: "byAPIKeyHashed"
+        fields: ["APIKeyHashed"]
+        queryField: "organizationByAPIKeyHashed"
+    ){
+    id: ID!
+    APIKeyHashed: String!
+    organizationID: String!
+}
+
+
+# Private authorization should ideally be replaced
+type Organization
+    @model
+    @auth(
+        rules: [
+            { allow: private, operations: [read]} 
+            { allow: groups, groups: ["admin"] }
+        ]
+    )
+    @key(
+        name: "byIdentifierAttribute"
+        fields: ["identifierAttribute"]
+        queryField: "organizationByIdentifierAttribute"
+    ) {
+    id: ID!
+    createdAt: AWSDateTime!
+    owner: String
+    orgname: String!
+    identifierAttribute: String!
+}
+
 type FormDefinition
     @model
     @auth(
         rules: [
-            { allow: private, operations: [read] }
-            { allow: groups, groups: ["admin"] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "organizationID", operations: [read] }
         ]
     )
     @key(
         name: "byCreatedAt"
         fields: ["sortKeyConstant", "createdAt"]
         queryField: "formByCreatedAt"
+    )
+    @key(
+        name: "byOrganizationByCreatedAt"
+        fields:["organizationID", "createdAt"]
+        queryField: "formByOrganizationByCreatedAt"
+    )
+    @key(
+        name: "byOrganization"
+        fields: ["organizationID"]
+        queryField: "formDefinitionByOrganizationID"
     ) {
     id: ID!
     label: String
@@ -17,6 +67,9 @@ type FormDefinition
     sortKeyConstant: String!
     questions: [Question]
         @connection(keyName: "byFormDefinition", fields: ["id"])
+    organizationID: ID!
+    organization: Organization @connection(fields:["organizationID"])
+    orgAdmins: String!
 }
 
 type UserForm
@@ -24,8 +77,8 @@ type UserForm
     @auth(
         rules: [
             { allow: owner }
-            { allow: groups, groups: ["admin"] }
-            { allow: groups, groups: ["groupLeader"], operations: [read] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "orgGroupLeaders", operations: [read] }
         ]
     )
     @key(
@@ -40,6 +93,9 @@ type UserForm
     questionAnswers: [QuestionAnswer]!
         @connection(keyName: "byUserForm", fields: ["id"])
     formDefinition: FormDefinition! @connection(fields: ["formDefinitionID"])
+    
+    orgGroupLeaders: String!
+    orgAdmins: String!
 }
 
 type QuestionAnswer
@@ -47,8 +103,8 @@ type QuestionAnswer
     @auth(
         rules: [
             { allow: owner }
-            { allow: groups, groups: ["admin"] }
-            { allow: groups, groups: ["groupLeader"], operations: [read] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "orgGroupLeaders", operations: [read] }
         ]
     )
     @key(name: "byUserForm", fields: ["userFormID"]) {
@@ -56,6 +112,9 @@ type QuestionAnswer
     userFormID: ID!
     questionID: ID!
     question: Question @connection(fields: ["questionID"])
+    orgGroupLeaders: String!
+    orgAdmins: String!
+    
 
     # if question.type == null or knowledgeMotivation
     knowledge: Float
@@ -78,8 +137,8 @@ type Question
     @model
     @auth(
         rules: [
-            { allow: private, operations: [read] }
-            { allow: groups, groups: ["admin"] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "organizationID", operations: [read] }
         ]
     )
     @key(
@@ -105,14 +164,18 @@ type Question
     scaleStart: String
     scaleMiddle: String
     scaleEnd: String
+    
+    orgAdmins: String!
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
 }
 
 type Category
     @model
     @auth(
         rules: [
-            { allow: private, operations: [read] }
-            { allow: groups, groups: ["admin"] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "organizationID", operations: [read] }
         ]
     )
     @key(
@@ -127,32 +190,44 @@ type Category
     formDefinitionID: ID!
     formDefinition: FormDefinition @connection(fields: ["formDefinitionID"])
     questions: [Question] @connection(keyName: "byCategory", fields: ["id"])
+
+    orgAdmins: String!
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
 }
 
 type Group
     @model
     @auth(
         rules: [
-            { allow: groups, groups: ["admin"] }
-            { allow: groups, groups: ["groupLeader"], operations: [read] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "orgGroupLeaders", operations: [read] }
         ]
     ) {
     id: ID!
     groupLeaderUsername: String!
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
+    orgGroupLeaders: String!
+    orgAdmins: String!
 }
 
 type User
     @model
     @auth(
         rules: [
-            { allow: groups, groups: ["admin"] }
-            { allow: groups, groups: ["groupLeader"] }
+            { allow: groups, groupsField: "orgAdmins" }
+            { allow: groups, groupsField: "orgGroupLeaders"}
         ]
     )
     @key(name: "byGroup", fields: ["groupID"], queryField: "usersByGroup") {
     id: ID!
     groupID: ID!
     group: Group! @connection(fields: ["groupID"])
+    organizationID: ID!
+    organization: Organization @connection(fields: ["organizationID"])
+    orgAdmins: String!
+    orgGroupLeaders: String!
 }
 
 type CreateQuestionAnswerResult {
@@ -179,10 +254,13 @@ input CreateQuestionAnswerInput {
     motivation: Float
     customScaleValue: Float
     formDefinitionID: String!
+    orgAdmins: String
+    orgGroupLeaders: String
 }
 
 type Mutation {
     batchCreateQuestionAnswer(
         input: [CreateQuestionAnswerInput]
+        organizationID: String
     ): CreateQuestionAnswerResult @function(name: "createUserformBatch-${env}")
 }

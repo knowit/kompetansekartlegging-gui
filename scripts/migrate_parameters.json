@@ -1,0 +1,7 @@
+{
+    "source_iam_user":"KompetanseCognitoReadOnly",
+    "destination_iam_user":"EUCentralAmplify",
+    "destination_graphql_api_id":"rtyk5fxvnzfulcxnq4gumpxnqu",
+    "destination_env":"krisandbox",
+    "destination_userpool_id": "eu-central-1_iMKyotuSu"
+}

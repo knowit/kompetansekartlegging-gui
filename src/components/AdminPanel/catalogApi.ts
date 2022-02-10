@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { callGraphQL } from "../../helperFunctions";
+import { store } from "../../redux/store";
+
 import {
     CategoriesByFormDefinitionQuery,
     Category,
@@ -8,7 +10,6 @@ import {
     DeleteFormDefinitionMutation,
     DeleteQuestionMutation,
     FormDefinition,
-    ListFormDefinitionsQuery,
     Question,
     QuestionsByCategoryQuery,
     UpdateCategoryMutation,
@@ -18,10 +19,11 @@ import {
     CreateCategoryMutation,
     QuestionType,
     CreateQuestionMutation,
+    FormDefinitionByOrganizationIdQuery,
 } from "../../API";
 import {
     categoriesByFormDefinition,
-    listFormDefinitions,
+    formDefinitionByOrganizationId,
     questionsByCategory,
 } from "../../graphql/queries";
 import {
@@ -37,14 +39,31 @@ import {
 } from "../../graphql/mutations";
 import { ApiResponse } from "./adminApi";
 
-const listAllFormDefinitions = async (): Promise<
+const listAllFormDefinitionsForLoggedInUser = async (): Promise<
+    ApiResponse<FormDefinition[]>
+> => {
+
+    const organizationID = store.getState().user.userState.organizationID;
+    try {
+        return await listAllFormDefinitionsByOrganizationID(organizationID as string);
+    } catch (e) {
+        return { error: `Could not get a list of all form definitions for organization id '${organizationID}'.` };
+    }
+};
+
+const listAllFormDefinitionsByOrganizationID = async (
+    organizationID: string
+): Promise<
     ApiResponse<FormDefinition[]>
 > => {
     try {
-        const gq = await callGraphQL<ListFormDefinitionsQuery>(
-            listFormDefinitions
+        const gq = await callGraphQL<FormDefinitionByOrganizationIdQuery>(
+            formDefinitionByOrganizationId,
+            {
+                organizationID,
+            }
         );
-        const els = gq?.data?.listFormDefinitions?.items?.map(
+        const els = gq?.data?.formDefinitionByOrganizationID?.items?.map(
             (el) =>
                 ({
                     id: el?.id,
@@ -52,12 +71,14 @@ const listAllFormDefinitions = async (): Promise<
                     createdAt: el?.createdAt,
                     updatedAt: el?.updatedAt,
                     sortKeyConstant: el?.sortKeyConstant,
+                    organizationID: el?.organizationID,
                 } as FormDefinition)
         );
 
         return { result: els || [] };
     } catch (e) {
-        return { error: `Could not get a list of all form definitions.` };
+        console.log(e)
+        return { error: `listAllFormDefinitionsByOrganizationID: Could not get a list of all form definitions for organization id '${organizationID}'.` };
     }
 };
 
@@ -289,9 +310,12 @@ const createFormDefinition = async (
     name: string
 ): Promise<ApiResponse<FormDefinition>> => {
     try {
+        const organizationID = store.getState().user.userState.organizationID;
         const input = {
             id: uuidv4(),
             label: name,
+            organizationID: organizationID,
+            orgAdmins: `${organizationID}0admin`,
             sortKeyConstant: "formDefinitionConstant",
             createdAt: new Date(0).toISOString(),
         };
@@ -314,7 +338,8 @@ const createCategory = async (
     name: string,
     description: string,
     index: number,
-    formDefinitionID: string
+    formDefinitionID: string,
+    organizationID: string
 ): Promise<ApiResponse<Category>> => {
     try {
         const input = {
@@ -323,6 +348,8 @@ const createCategory = async (
             description,
             index,
             formDefinitionID,
+            orgAdmins: `${organizationID}0admin`,
+            organizationID: organizationID
         };
         const gq = await callGraphQL<CreateCategoryMutation>(createCategoryGq, {
             input,
@@ -330,6 +357,7 @@ const createCategory = async (
         const el = gq?.data?.createCategory as Category;
         return { result: el || null };
     } catch (e) {
+
         return {
             error: `Could not create category '${name}'.`,
         };
@@ -343,7 +371,8 @@ const createQuestion = async (
     index: number,
     formDefinitionID: string,
     categoryID: string,
-    questionConfig: any
+    questionConfig: any,
+    organizationID: string
 ): Promise<ApiResponse<Question>> => {
     try {
         const input = {
@@ -354,6 +383,8 @@ const createQuestion = async (
             index,
             formDefinitionID,
             categoryID,
+            organizationID: organizationID,
+            orgAdmins: `${organizationID}0admin`,
             ...questionConfig,
         };
         const gq = await callGraphQL<CreateQuestionMutation>(createQuestionGq, {
@@ -369,7 +400,7 @@ const createQuestion = async (
 };
 
 export {
-    listAllFormDefinitions,
+    listAllFormDefinitionsForLoggedInUser,
     listCategoriesByFormDefinitionID,
     updateCategoryIndex,
     listQuestionsByCategoryID,

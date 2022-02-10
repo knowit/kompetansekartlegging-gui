@@ -158,16 +158,27 @@ const Login = (props: { isMobile: boolean }) => {
                     </h1>
                 </div>
                 <div className={style.buttonAlign}>
-                    <Button
+                <Button
                         className={style.loginButton}
-                        onClick={() =>
-                            Auth.federatedSignIn({
+                        onClick={
+                            () => Auth.federatedSignIn({
                                 customProvider:
-                                    CognitoHostedUIIdentityProvider.Google,
+                                CognitoHostedUIIdentityProvider.Google,
                             })
                         }
                     >
-                        Logg inn
+                        Logg inn (Knowit Objectnet)
+                    </Button>
+                    <Button
+                        className={style.loginButton}
+                        onClick={
+                            () => Auth.federatedSignIn({
+                                customProvider:
+                                    "AzureAD",
+                            })
+                        }
+                    >
+                        Logg inn (Andre Knowit Selskaper)
                     </Button>
                     {isNotProd && (
                         <Button

@@ -8,6 +8,7 @@ import {
     FormDefinitionPaginated,
     UserFormPaginated,
     UserFormByCreatedAtPaginated,
+    UserState,
 } from "../types";
 import * as helper from "../helperFunctions";
 import * as customQueries from "../graphql/custom-queries";
@@ -69,6 +70,8 @@ const fetchLastFormDefinition = async (
     setFirstAnswers: (arg0: any, arg1: any) => void
 ) => {
     let nextToken: string | null = null;
+    let nextFormToken: string | null = null; // For some reason, the custom query returns empty response if the first item is from a different organization
+    let foundOrganizationForm = false; // Therefore, we need to keep querying until we reach the first response connected to the users organization
     let questions: Question[] = [];
     let formDefPaginated: FormDefinitionPaginated = undefined; // The form definition response has pagination on questions, with nextToken; see types
     try {
@@ -78,6 +81,7 @@ const fetchLastFormDefinition = async (
                 {
                     ...customQueries.formByCreatedAtInputConsts,
                     nextToken: nextToken,
+                    nextFormToken: nextFormToken,
                 }
             );
             if (currentForm.data && currentForm.data.formByCreatedAt.items[0]) {
@@ -96,8 +100,12 @@ const fetchLastFormDefinition = async (
                 nextToken =
                     currentForm.data.formByCreatedAt.items[0].questions
                         .nextToken;
+                foundOrganizationForm = true;
+                // nextFormToken = null;
+            } else if (currentForm.data && currentForm.data.formByCreatedAt && !foundOrganizationForm) {
+                nextFormToken = currentForm.data.formByCreatedAt.nextToken;
             }
-        } while (nextToken);
+        } while (nextToken || (nextFormToken && !foundOrganizationForm));
 
         if (formDefPaginated) {
             let formDef: FormDefinition = {
@@ -125,7 +133,7 @@ const fetchLastFormDefinition = async (
 
 const getUserAnswers = async (
     formDef: FormDefinition,
-    user: any,
+    userName: string,
     setUserAnswers: React.Dispatch<React.SetStateAction<UserAnswer[]>>,
     setActivePanel: React.Dispatch<React.SetStateAction<Panel>>,
     setUserAnswersLoaded: React.Dispatch<React.SetStateAction<boolean>>,
@@ -134,8 +142,12 @@ const getUserAnswers = async (
     setScaleDescOpen: React.Dispatch<React.SetStateAction<boolean>>,
     isMobile: boolean
 ) => {
-    if (!user) return console.error("User not found when getting useranswers");
     let nextToken: string | null = null;
+
+    if(!userName){
+        console.error("User not found when getting useranswers");
+    };
+
     let questionAnswers: UserAnswer[] = [];
     let paginatedUserform: UserFormPaginated | undefined; // The userform response has pagination on questionAnswers, with nextToken; see types
     do {
@@ -144,7 +156,7 @@ const getUserAnswers = async (
                 customQueries.customUserFormByCreatedAt,
                 {
                     ...customQueries.userFormByCreatedAtInputConsts,
-                    owner: user.username || user.Username,
+                    owner: userName,
                     nextToken: nextToken,
                 }
             )
@@ -164,8 +176,8 @@ const getUserAnswers = async (
     } while (nextToken);
 
     if (
-        paginatedUserform &&
-        paginatedUserform.formDefinitionID === formDef?.id
+        paginatedUserform
+        // && paginatedUserform.formDefinitionID === formDef?.id
     ) {
         // console.log("Found user form!", paginatedUserform);
         const removedQuestionsFiltered = questionAnswers.filter(
@@ -198,6 +210,7 @@ const setFirstAnswers = (
         React.SetStateAction<Map<string, QuestionAnswer[]>>
     >
 ) => {
+    // console.log(quAns, newUserAnswers);
     let newMap = new Map<string, QuestionAnswer[]>();
     quAns.forEach((quAns, category) => {
         newMap.set(
@@ -228,6 +241,7 @@ const setFirstAnswers = (
             })
         );
     });
+    // console.log(quAns, newMap);
     setQuestionAnswers(newMap);
     setAnswersBeforeSubmitted(new Map(newMap));
 };
