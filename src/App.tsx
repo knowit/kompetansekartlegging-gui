@@ -187,7 +187,7 @@ const App = () => {
             <div className={style.root}>
                  {(userBranch !== "master") ? <Snackbar open={bannerOpen} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
                     <div style= {{
-                        background:"rgba(255,127,80, 255)",
+                        background:"rgba(0,255,0, 255)",
                         borderRadius:5,
                         padding: 4,
                         textAlign:"center"
