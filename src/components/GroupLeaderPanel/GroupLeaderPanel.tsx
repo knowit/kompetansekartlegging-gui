@@ -138,9 +138,10 @@ const GroupLeaderPanel = ({
 
     useEffect(() => {
         if (allAvailableUsersAnnotated) {
+            console.log(groupId);
             setMembers(
                 allAvailableUsersAnnotated.filter(
-                    (u: any) => u.groupId === groupId
+                    (u: any) => groupId && u.groupId === groupId
                 )
             );
         }

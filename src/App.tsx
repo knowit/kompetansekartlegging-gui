@@ -42,12 +42,12 @@ Hub.listen(/.*/, (data) => {
     console.log('Hub listening to all messages: ', data);
     if (data.payload.event === "signIn_failure") {
         let message = data.payload.data.message; 
-        if (message.includes("Google")) {
+        if (message.includes("Google") && !message.includes("organization")) {
             Auth.federatedSignIn({
                 customProvider:
                     CognitoHostedUIIdentityProvider.Google,
             });
-        } else if (message.includes("AzureAD")) {
+        } else if (message.includes("AzureAD") && !message.includes("organization")) {
             // console.log("Failure in the membrane");
             Auth.federatedSignIn({
                 customProvider:
