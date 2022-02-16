@@ -188,5 +188,11 @@
         }
       ]
     }
+  },
+  "analytics": {
+    "kompetansekartleggin": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

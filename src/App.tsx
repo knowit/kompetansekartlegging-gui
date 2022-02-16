@@ -15,6 +15,7 @@ import theme from "./theme";
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserInfo, setUserInfoLogOut, selectUserState, fetchOrganizationNameByID } from './redux/User';
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
+import Analytics from '@aws-amplify/analytics';
 
 const userBranch = process.env.REACT_APP_USER_BRANCH;
 // console.log("Hosted branch: ", userBranch);
@@ -37,6 +38,12 @@ awsconfig.oauth.redirectSignOut = `${window.location.origin}/`;
 // console.log(config);
 API.configure(awsconfig);
 Auth.configure(awsconfig);
+Analytics.configure(awsconfig);
+Analytics.autoTrack('session', {
+    // REQUIRED, turn on/off the auto tracking
+    enable: true,
+});
+console.log ('Analytics enabled');
 
 Hub.listen(/.*/, (data) => {
     console.log('Hub listening to all messages: ', data);
@@ -187,7 +194,7 @@ const App = () => {
             <div className={style.root}>
                  {(userBranch !== "master") ? <Snackbar open={bannerOpen} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
                     <div style= {{
-                        background:"rgba(255,127,80, 255)",
+                        background:"rgba(0,255,0, 255)",
                         borderRadius:5,
                         padding: 4,
                         textAlign:"center"
