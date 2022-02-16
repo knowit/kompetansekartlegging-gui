@@ -189,9 +189,9 @@
       ]
     }
   },
-  "hosting": {
-    "S3AndCloudFront": {
-      "service": "S3AndCloudFront",
+  "analytics": {
+    "kompetansekartleggin": {
+      "service": "Pinpoint",
       "providerPlugin": "awscloudformation"
     }
   }

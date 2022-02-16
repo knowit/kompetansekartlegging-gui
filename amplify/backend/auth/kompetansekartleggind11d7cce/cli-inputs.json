@@ -2,11 +2,10 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "kompetansekartleggind11d7cce_identitypool_d11d7cce",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "kompetd11d7cce",
     "userPoolName": "kompetansekartleggind11d7cce_userpool_d11d7cce",
-    "autoVerifiedAttributes": [
-    ],
+    "autoVerifiedAttributes": [],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
       "SMS Text Message"
@@ -46,9 +45,6 @@
       "knowitobjectnet0admin",
       "knowitsolutions0groupLeader",
       "knowitsolutions0admin"
-    ],
-    "usernameAttributes": [
-      "username"
     ],
     "hostedUI": true,
     "hostedUIDomainName": "kompetansekartleggine8062390-e8062390",
@@ -99,9 +95,10 @@
     "breakCircularDependency": true,
     "useEnabledMfas": false,
     "permissions": [],
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"kompetansekartleggind11d7ccePostConfirmation\"\n  },\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"kompetansekartleggind11d7ccePreSignup\"\n  }\n]",
-    "hostedUIProviderCreds": "[]",
-    "googleClientId": "501380647535-kbb6lcaonhmb9g42lhov8fi1rdqege20.apps.googleusercontent.com",
+    "authTriggerConnections": [
+      "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"kompetansekartleggind11d7ccePostConfirmation\"}",
+      "{\"triggerType\":\"PreSignUp\",\"lambdaFunctionName\":\"kompetansekartleggind11d7ccePreSignup\"}"
+    ],
     "parentStack": {
       "Ref": "AWS::StackId"
     },

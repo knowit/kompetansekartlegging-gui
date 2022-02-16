@@ -76,5 +76,12 @@ export type AmplifyDependentResourcesAttributes = {
             "LambdaExecutionRole": "string",
             "Region": "string"
         }
+    },
+    "analytics": {
+        "kompetansekartleggin": {
+            "Region": "string",
+            "Id": "string",
+            "appName": "string"
+        }
     }
 }
