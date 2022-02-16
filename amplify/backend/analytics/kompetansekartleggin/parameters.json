@@ -1,0 +1,21 @@
+{
+    "appName": "kompetansekartleggin",
+    "roleName": "pinpointLambdaRole54b1baca",
+    "cloudformationPolicyName": "cloudformationPolicy54b1baca",
+    "cloudWatchPolicyName": "cloudWatchPolicy54b1baca",
+    "pinpointPolicyName": "pinpointPolicy54b1baca",
+    "authPolicyName": "pinpoint_amplify_54b1baca",
+    "unauthPolicyName": "pinpoint_amplify_54b1baca",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
