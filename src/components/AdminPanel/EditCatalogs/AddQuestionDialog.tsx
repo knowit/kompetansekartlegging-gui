@@ -109,6 +109,7 @@ const AddQuestionDialog = ({ onCancel, onConfirm, open }: any) => {
                     }
                     value={description}
                     className={style.textField}
+                    inputProps={{'data-cy': 'question-description-input'}}
                     onChange={(e: any) => setDescription(e.target.value)}
                 />
                 <FormControl component="fieldset">

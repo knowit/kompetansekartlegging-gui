@@ -66,6 +66,7 @@ const AddCategoryDialog = ({ onCancel, onConfirm, open }: any) => {
                     variant="outlined"
                     value={description}
                     className={style.textField}
+                    inputProps={{'data-cy': 'category-description-input'}}
                     onChange={(e: any) => setDescription(e.target.value)}
                 />
             </DialogContent>
