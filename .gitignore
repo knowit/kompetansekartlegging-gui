@@ -101,3 +101,7 @@ amplifytools.xcconfig
 # lambda events
 amplify/backend/function/FetchGroupLeaders/src/event.json
 amplify/backend/function/kompetansekartleggind11d7ccePostConfirmation/src/event.json
+
+
+# cypress environment
+cypress.json

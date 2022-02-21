@@ -4,14 +4,14 @@ import random
 import string
 import datetime
 
-iam_user = 'knowit_sandbox'
+iam_user = 'xxxxxxxxxxxxxxx'
 session = boto3.Session(profile_name=iam_user)
 cognito_client = session.client('cognito-idp')
 dynamodb_client = session.resource('dynamodb')
 
-userPool_ID = 'eu-central-1_JDeTczCOk'
-amplify_environment = 'hakondev'
-graphql_api_id = 'fvjop4nobjg6lfyk7rrzkel24i'
+userPool_ID = 'xxxxxxxxxxxxxxxxxx'
+amplify_environment = 'xxxxxxxxxxxx'
+graphql_api_id = 'xxxxxxxxxxxxxxxx'
 
 
 organization_ID = 'testorganization'
@@ -59,7 +59,7 @@ for userpool_group in userpool_groups:
 
 user_names = ['testbruker1@randomtestmail.no', 'testbruker2@randomtestmail.no']
 names = ['Test Testsen 1', 'Test Testsen 2']
-passwords = ['', '']
+passwords = ['xxxxxxxxxxxxxxxxx', 'xxxxxxxxxxxxxxxx']
 
 
 for user_name, name, password in zip(user_names, names, passwords):
