@@ -52,7 +52,7 @@ table.put_item(
 
 userpool_groups = [organization_ID, organization_ID + '0admin', organization_ID +'0groupLeader']
 precedence = 1000
-'''
+
 for userpool_group in userpool_groups:
 
     cognito_client.create_group(
@@ -61,7 +61,6 @@ for userpool_group in userpool_groups:
         Precedence=precedence
     )
     precedence += 1    
-'''
 
 
 # creating test users

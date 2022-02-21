@@ -19,9 +19,7 @@ def add_api_key(organization_ID, api_key_name, iam_user, graphql_api_id, env, ap
     add_api_key_to_dynamodb(organization_ID, api_key, iam_user, graphql_api_id, env)
     add_api_key_to_apigateway(iam_user, api_key, api_key_name, {'organizationID': organization_ID})
 
-    if args.apikey is None:
-        print('The api_key has the value:', api_key)
-
+    print('The api-key has the value:', api_key)
 
 
 if __name__ == '__main__':
