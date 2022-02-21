@@ -3,15 +3,24 @@ import time
 import random
 import string
 import datetime
+from add_api_key import generate_api_key, add_api_key
 
 iam_user = 'xxxxxxxxxxxxxxx'
+amplify_environment = 'xxxxxxxxxxxx'
+graphql_api_id = 'xxxxxxxxxxxxxxxx'
+userPool_ID = 'xxxxxxxxxxxxxxxxxx'
+
+api_key_name = 'TestOrganizationKey'
+
+user_names = ['testbruker1@randomtestmail.no', 'testbruker2@randomtestmail.no']
+names = ['Test Testsen 1', 'Test Testsen 2']
+passwords = ['xxxxxxxxxxxxxxxxx', 'xxxxxxxxxxxxxxxxxx']
+
+
 session = boto3.Session(profile_name=iam_user)
 cognito_client = session.client('cognito-idp')
 dynamodb_client = session.resource('dynamodb')
 
-userPool_ID = 'xxxxxxxxxxxxxxxxxx'
-amplify_environment = 'xxxxxxxxxxxx'
-graphql_api_id = 'xxxxxxxxxxxxxxxx'
 
 
 organization_ID = 'testorganization'
@@ -56,11 +65,6 @@ for userpool_group in userpool_groups:
 
 
 # creating test users
-
-user_names = ['testbruker1@randomtestmail.no', 'testbruker2@randomtestmail.no']
-names = ['Test Testsen 1', 'Test Testsen 2']
-passwords = ['xxxxxxxxxxxxxxxxx', 'xxxxxxxxxxxxxxxx']
-
 
 for user_name, name, password in zip(user_names, names, passwords):
     cognito_client.admin_create_user(
@@ -108,3 +112,5 @@ cognito_client.admin_add_user_to_group(
     Username = user_names[1],
     GroupName = userpool_groups[0]
 )
+
+add_api_key(organization_ID, api_key_name, iam_user, graphql_api_id, amplify_environment, generate_api_key())
