@@ -103,7 +103,7 @@ export const userSlice = createSlice({
       }
     },
     setUserInfoLogOut: (state) => {
-      state = initialState
+      state.userState = initialState.userState
     }
   },
   extraReducers: (builder) => {
