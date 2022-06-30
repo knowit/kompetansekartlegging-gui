@@ -2,7 +2,7 @@ openapi: 3.0.0
 servers:
     - url: https://api.kompetanse.knowit.no/
       description: Default server
-    - url: https://api.kompetanse.knowit.no/dev
+    - url: https://api.dev.kompetanse.knowit.no/
       description: Dev server
 info:
     title: Kompetansekartlegging API
